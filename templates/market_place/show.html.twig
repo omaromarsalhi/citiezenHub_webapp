@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    <h1>Product</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdProd</th>
+                <td>{{ product.idProd }}</td>
+            </tr>
+            <tr>
+                <th>IdUser</th>
+                <td>{{ product.idUser }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ product.name }}</td>
+            </tr>
+            <tr>
+                <th>Descreption</th>
+                <td>{{ product.descreption }}</td>
+            </tr>
+            <tr>
+                <th>IsDeleted</th>
+                <td>{{ product.isDeleted ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ product.price }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ product.quantity }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ product.state }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ product.timestamp ? product.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ product.type }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>{{ product.category }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_market_place_index') }}">back to list</a>
+
+    <a href="{{ path('app_market_place_edit', {'idProd': product.idProd}) }}">edit</a>
+
+    {{ include('market_place/_delete_form.html.twig') }}
+{% endblock %}
