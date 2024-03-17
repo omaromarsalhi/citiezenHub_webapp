@@ -587,7 +587,7 @@
                                     <a class="page-link active" href="#" id="page-1">1</a>
                                 </li>
                                 {% for i in 2..nbr_pages %}
-                                <li class="page-item"><a class="page-link" href="#" id="page-{{ i }}">{{ i }}</a></li>
+                                <li class="page-item"><a class="page-link" onclick="DisplayListProducts({{ i }})" id="page-{{ i }}">{{ i }}</a></li>
                                 {% endfor %}
                                 <li class="page-item">
                                     <a class="page-link" onclick="DisplayListProducts('next')" >Next</a>

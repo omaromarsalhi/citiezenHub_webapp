@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\ProductImagesRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,30 +28,40 @@ class MarketPlaceController extends AbstractController
             $prods=$session->get('allProducts');
             $nbr_pages=$session->get('nbr_pages');
             $current_page=$session->get('current_page');
+            $previous_page=$current_page;
 
             if($current_page!=$nbr_pages&&$movement_direction=="next")
                 $current_page++;
             else if($current_page!=1&&$movement_direction=="previous")
                 $current_page--;
+            else
+                $current_page=$movement_direction;
 
             $session->set('current_page',$current_page);
+
+
 
             return  $this->render('market_place/sub_market.html.twig', [
                 'products' => array_slice($prods,($current_page-1)*12,12),
                 'current_page' => $current_page,
+                'previous_page' => $previous_page,
             ]);
 
         }
+
+
 
         $session->set('allProducts',$productRepository->findAll());
         $prods=$session->get('allProducts');
         $session->set('nbr_pages',ceil(sizeof($prods)/12));
         $session->set('current_page',1);
 
+
         return $this->render('market_place/market.html.twig', [
             'products' => array_slice($prods,0,12),
             'nbr_pages'=> ceil(sizeof($prods)/12),
             'current_page' => 1,
+            'previous_page' => 2,
         ]);
     }
 

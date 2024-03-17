@@ -33,6 +33,11 @@
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/market.css') }}" />
 
+
+        <!--Swiper slider css-->
+        <link href="{{ asset('assetsOfOutsiderElements/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" >
+
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -1256,5 +1261,10 @@
         <script src="{{ asset('assets/js/vendor/web3.min.js') }}"></script>
         <script src="{{ asset('assets/js/vendor/maralis.js') }}"></script>
         <script src="{{ asset('assets/js/vendor/nft.js') }}"></script>
+
+
+        <script src="{{ asset('assetsOfOutsiderElements/libs/swiper/swiper-bundle.min.js') }}"></script>
+        <script src="{{ asset('assetsOfOutsiderElements/js/pages/extended-swiper.js') }}"></script>
+
     </body>
 </html>

@@ -1,5 +1,6 @@
 
-<input type="hidden" id="curentPage" value={{ current_page }}>
+<input type="hidden" id="currentPage" value={{ current_page }}>
+<input type="hidden" id="previousPage" value={{ previous_page }}>
 
 {% for i,product in products %}
     <!-- start single product -->
@@ -12,10 +13,56 @@
         <div class="product-style-one no-overlay with-placeBid">
             <div class="card-thumbnail">
                 <a href="product-details.html">
-                    <img
-                            src="{{ asset('assets/images/portfolio/portfolio-02.jpg') }}"
-                            alt="NFT_portfolio"
-                    />
+{#                    <img#}
+{#                            src="{{ asset('/assets/images/portfolio/portfolio-02.jpg') }}"#}
+{#                            {% for image in product.productImages %}#}
+{#                                src="{{ asset(image.path)|default("Not available")  }}"#}
+{#                            {%  endfor %}#}
+{#                            alt="NFT_portfolio"#}
+{#                            width="225"#}
+{#                            height="225"#}
+{#                    />#}
+
+
+                    <!-- Swiper -->
+{#                    <div class="swiper effect-creative-swiper rounded">#}
+{#                        <div class="swiper-wrapper">#}
+{#                            {% for image in product.productImages %}#}
+{#                            <div class="swiper-slide">#}
+{#                                <img src="{{ asset(image.path)|default("Not available")  }}"#}
+{#                                     alt="NFT_portfolio"#}
+{#                                     width="225"#}
+{#                                     height="225"#}
+{#                                />#}
+{#                            </div>#}
+{#                            {%  endfor %}#}
+{#                        </div>#}
+{#                        <div class="swiper-pagination"></div>#}
+{#                    </div>#}
+
+                    <!-- Swiper -->
+                    <div class="swiper rounded effect-creative-swiper" id="product_images_{{ i+1 }}">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <img src="{{ asset('assetsOfOutsiderElements/images/small/img-9.jpg') }}" alt="" class="imgTrash"/>
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="{{ asset('assetsOfOutsiderElements/images/small/img-10.jpg') }}" alt="" class="imgTrash"/>
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="{{ asset('assetsOfOutsiderElements/images/small/img-11.jpg') }}" alt="" class="imgTrash"/>
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="{{ asset('assetsOfOutsiderElements/images/small/img-11.jpg') }}" alt="" class="imgTrash"/>
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="{{ asset('assetsOfOutsiderElements/images/small/img-11.jpg') }}" alt="" class="imgTrash"/>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+
+
                 </a>
                 <a href="product-details.html" class="btn btn-primary"
                 >Buy</a
@@ -104,7 +151,10 @@
                 </div>
             </div>
             <a href="product-details.html"
-            ><span class="product-name">{{ product.name }}</span></a
+            >
+
+                 <span class="product-name">{{ product.name }}</span>
+            </a
             >
             <span class="latest-bid">Highest bid 1/20</span>
             <div class="bid-react-area">

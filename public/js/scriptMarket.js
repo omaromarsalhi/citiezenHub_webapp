@@ -16,31 +16,30 @@ function DisplayListProducts(movement_direction) {
             $("#sub-market-block").html(response);
 
             setTimeout(function() {
-                var children = document.getElementById("sub-market-block").children;
-                for (var i = 0; i < children.length; i++) {
-                    var child = children[i];
-                    child.classList.add("sal-animate");
-
-                }
+                showProducts();
+                launchSwiper();
             }, 1000);
 
             jQuery('html, body').animate({scrollTop: 10}, 550);
 
-            var page_index_to_disable=$('#curentPage').val();
+            var page_index_to_enable=$('#currentPage').val();
+            var page_index_to_disable=$('#previousPage').val();
 
-            document.getElementById("page-"+page_index_to_disable).classList.add("active")
-
-            if (movement_direction === "next")
-                page_index_to_disable--;
-            else if(movement_direction === "previous")
-                page_index_to_disable++;
-
+            document.getElementById("page-"+page_index_to_enable).classList.add("active")
             document.getElementById("page-" +page_index_to_disable ).classList.remove("active")
         },
         error: function (response) {
             console.log(response);
         },
     });
+}
+
+function showProducts() {
+    var children = document.getElementById("sub-market-block").children;
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        child.classList.add("sal-animate");
+    }
 }
 
 // function executeTasks() {
