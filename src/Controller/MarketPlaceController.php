@@ -68,20 +68,20 @@ class MarketPlaceController extends AbstractController
     #[Route('/new', name: 'app_market_place_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
+//        $product = new Product();
+//        $form = $this->createForm(ProductType::class, $product);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager->persist($product);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_market_place_index', [], Response::HTTP_SEE_OTHER);
+//        }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($product);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_market_place_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('market_place/new.html.twig', [
-            'product' => $product,
-            'form' => $form,
+        return $this->renderForm('market_place/create.html.twig', [
+//            'product' => $product,
+//            'form' => $form,
         ]);
     }
 

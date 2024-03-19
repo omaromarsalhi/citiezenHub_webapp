@@ -1,5 +1,11 @@
 
-
 .imgTrash{
     min-height: 297px;
+}
+
+.selectCategory{
+    min-height: 50px;
+    border-width: 2px !important;
+    justify-items: center;
+    padding-top: 3px;
 }

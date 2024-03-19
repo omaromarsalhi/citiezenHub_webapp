@@ -4,6 +4,8 @@
     // DisplayListProducts();
 });*/
 
+
+
 function DisplayListProducts(movement_direction) {
     $.ajax({
         url: '/market/place/',
