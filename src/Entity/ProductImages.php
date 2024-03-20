@@ -19,12 +19,6 @@ class ProductImages
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\ManyToOne(targetEntity:Product::class,inversedBy: 'productImages')]
-    #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
-    private ?Product $product = null;
-
-
-
 
 
     public function getIdImage(): ?int
@@ -55,19 +49,6 @@ class ProductImages
 
         return $this;
     }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): static
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
 
 
 }

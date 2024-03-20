@@ -57,9 +57,6 @@ class Product
     }
 
 
-
-
-
     public function getIdProduct(): ?int
     {
         return $this->idProduct;

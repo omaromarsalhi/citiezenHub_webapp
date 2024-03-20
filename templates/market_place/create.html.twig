@@ -28,7 +28,7 @@
 
 
     <!-- create new product area -->
-    <form class="row" action="#">
+{#    <form class="row" method="post">#}
         <div class="create-area rn-section-gapTop">
             <div class="container">
                 <div class="row g-5">
@@ -91,11 +91,11 @@
 
                                 <div class="col-md-12">
                                     <div class="input-box pb--20">
-                                        <label for="Discription" class="form-label"
+                                        <label for="description" class="form-label"
                                         >Discription</label
                                         >
                                         <textarea
-                                                id="Discription"
+                                                id="description"
                                                 placeholder="e. g. “After purchasing the product you can get item...”"
                                                 style="min-height: 200px;"
                                         ></textarea>
@@ -104,28 +104,30 @@
 
                                 <div class="col-md-4">
                                     <div class="input-box pb--20">
-                                        <label for="dollerValue" class="form-label"
+                                        <label for="price" class="form-label"
                                         >Item Price in Dt</label
                                         >
-                                        <input id="dollerValue" placeholder="e. g. `20Dt`"/>
+                                        <input id="price" placeholder="e. g. `20Dt`"/>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="input-box pb--20">
-                                        <label for="Size" class="form-label">Quantity</label>
-                                        <input id="Size" placeholder="e. g. `10`"/>
+                                        <label for="quantity" class="form-label">Quantity</label>
+                                        <input id="quantity" placeholder="e. g. `10`"/>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="input-box pb--20 ">
-                                        <label for="Propertie" class="form-label">Category</label>
+                                        <label for="category" class="form-label">Category</label>
 <!--{#                                        <input id="Propertie" placeholder="e. g. `Sport`"/>#}-->
-                                        <select id="Propertie" >
-                                            <option value="1" selected>Male</option>
-                                            <option value="2">Female</option>
-                                            <option value="3">Third Gender</option>
+                                        <select id="category" >
+                                            <option value="food" selected>Food</option>
+                                            <option value="sports">Sports</option>
+                                            <option value="entertainment">Entertainment</option>
+                                            <option value="realestate">RealEstate</option>
+                                            <option value="vehicul">Vehicul</option>
                                         </select>
                                     </div>
                                 </div>
@@ -149,7 +151,7 @@
 
                                 <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
                                     <div class="input-box">
-                                        <button class="btn btn-primary btn-large w-100">
+                                        <button class="btn btn-primary btn-large w-100" onclick="createProduct()">
                                             Submit Item
                                         </button>
                                     </div>
@@ -166,7 +168,7 @@
                 </div>
             </div>
         </div>
-    </form>
+{#    </form>#}
     <!-- create new product area -->
 
     <!-- Modal -->
