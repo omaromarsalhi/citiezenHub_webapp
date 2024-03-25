@@ -68,7 +68,6 @@ function consultProd(){
 
 
 function regex(){
-    const regex=/^[a-zA-Z][a-zA-Z0-9\s]*$/
 
     const all_inputs={
         name:{
@@ -79,16 +78,21 @@ function regex(){
         },
         price:{
             input_name:'price',
-            regex:/\d+(\.\d{1,2})?/,
+            regex: /^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/,
             error_div:'error-message-price',
-            error_text:'Please enter a valid price (numbers only).'
+            error_text:'Please enter a valid Price (numbers only).'
+        },
+        quantity:{
+            input_name:'quantity',
+            regex: /^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/,
+            error_div:'error-message-quantity',
+            error_text:'Please enter a valid Quantity (numbers only).'
         }
     }
 
     for(const key in all_inputs ) {
         document.getElementById(all_inputs[key].input_name).addEventListener('input', function () {
             const errorMessageElement = document.getElementById(all_inputs[key].error_div);
-
             if (this.value.match(all_inputs[key].regex)) {
                 this.classList.remove('name_regex_f');
                 this.classList.add('name_regex_t');
@@ -98,7 +102,6 @@ function regex(){
                 this.classList.add('name_regex_f');
                 errorMessageElement.textContent = all_inputs[key].error_text;
             }
-
             if (this.value.trim().length === 0) {
                 this.classList.remove('name_regex_t');
                 this.classList.remove('name_regex_f');
