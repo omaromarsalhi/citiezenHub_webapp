@@ -9,3 +9,8 @@
     justify-items: center;
     padding-top: 3px;
 }
+
+.fixedImagesSize{
+    min-height: 390px !important;
+    min-width: 350px !important;
+}

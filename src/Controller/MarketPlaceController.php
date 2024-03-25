@@ -94,7 +94,10 @@ class MarketPlaceController extends AbstractController
 
             $product_id=$productRepository->findOneBy([], ['idProduct' => 'DESC'])->getIdProduct();
 
-            $imageHelper->saveImages($request->files->get('image'),$product_id);
+            $images=$request->files->all();
+            for ($i = 0; $i < sizeof($images); $i++) {
+                $imageHelper->saveImages($images['file-'.($i+1)],$product_id);
+            }
 
             return new JsonResponse(['state' => 'done']);
         }

@@ -1,0 +1,18 @@
+
+
+
+.name_regex_f:focus{
+    border-color: red !important;
+}
+
+.name_regex_t:focus{
+    border-color: #0f9f0f !important;
+}
+
+.error{
+    font-family: "Ubuntu", sans-serif;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 4px;
+}

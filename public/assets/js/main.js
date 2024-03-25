@@ -665,10 +665,16 @@
                 $("#createinputfile").click();
             });
             function rbtPreview() {
-                const [file2] = createinputfile.files
-                if (file2) {
-                    createfileImage.src = URL.createObjectURL(file2)
-                }
+                // const [file2] = createinputfile.files
+                const fileList = createinputfile.files;
+                // for (let i = 0; i < fileList.length; i++) {
+                //     console.log(fileList[i])
+                    createfileImage.src = URL.createObjectURL(fileList[0])
+                // }
+                // console.log(file2)
+                // if (file2) {
+                //     createfileImage.src = URL.createObjectURL(file2)
+                // }
             }
             $("#createinputfile").change(function () {
                 rbtPreview(this);

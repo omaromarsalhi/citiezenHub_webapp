@@ -18190,7 +18190,7 @@ figcaption {
 
 .form-wrapper-one input:focus,
 .form-wrapper-one textarea:focus {
-  border: 2px solid var(--color-primary) !important;
+  border: 2px solid var(--color-primary) ;
   box-shadow: none;
   background: var(--background-color-4);
 }

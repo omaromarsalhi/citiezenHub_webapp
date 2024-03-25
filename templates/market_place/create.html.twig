@@ -1,8 +1,14 @@
 {% extends 'base.html.twig' %}
 
  {% block javascripts %}
-  <script src="{{ asset('js/createScript.js') }}"></script>
+     <script src="{{ asset('js/createScript.js') }}"></script>
  {% endblock %}
+
+{% block stylesheets %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Riot&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 
@@ -28,147 +34,155 @@
 
 
     <!-- create new product area -->
-{#    <form class="row" method="post">#}
-        <div class="create-area rn-section-gapTop">
-            <div class="container">
-                <div class="row g-5">
-                    <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
-                        <!-- file upload area -->
-                        <div class="upload-area">
-                            <div class="upload-formate mb--30">
-                                <h6 class="title">Upload file</h6>
-                                <p class="formate">Drag or choose your file to upload</p>
-                            </div>
-
-                            <div class="brows-file-wrapper">
-                                <!-- actual upload which is hidden -->
-                                <input
-                                        name="createinputfile"
-                                        id="createinputfile"
-                                        type="file"
-                                        class="inputfile"
-                                />
-                                <img
-                                        id="createfileImage"
-                                        src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
-                                        alt=""
-                                        data-black-overlay="6"
-                                />
-                                <!-- our custom upload button -->
-                                <label for="createinputfile" title="No File Choosen">
-                                    <i class="feather-upload"></i>
-                                    <span class="text-center">Choose a File</span>
-                                    <p class="text-center mt--10">
-                                        PNG, GIF, WEBP, MP4 or MP3. <br/>
-                                        Max 1Gb.
-                                    </p>
-                                </label>
-                            </div>
+    {#    <form class="row" method="post"> #}
+    <div class="create-area rn-section-gapTop">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+                    <!-- file upload area -->
+                    <div class="upload-area">
+                        <div class="upload-formate mb--30">
+                            <h6 class="title">Upload file</h6>
+                            <p class="formate">Drag or choose your file to upload</p>
                         </div>
-                        <!-- end upoad file area -->
 
-                        <div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
-                            <h5>Note:</h5>
-                            <span> Service fee : <strong>2.5%</strong> </span> <br/>
-                            <span>
-                You will receive : <strong>25.00 ETH $50,000</strong></span
-                            >
+                        <div class="brows-file-wrapper">
+                            <!-- actual upload which is hidden -->
+                            <input
+                                    name="createinputfile"
+                                    id="createinputfile"
+                                    type="file"
+                                    class="inputfile"
+                                    multiple
+                            />
+                            <img
+                                    id="createfileImage"
+                                    src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                    alt=""
+                                    data-black-overlay="6"
+                            />
+
+                            <!-- our custom upload button -->
+                            <label for="createinputfile" title="No File Choosen">
+                                <i class="feather-upload"></i>
+                                <span class="text-center">Choose a File</span>
+                                <p class="text-center mt&#45;&#45;10">
+                                    PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                    Max 1Gb.
+                                </p>
+                            </label>
                         </div>
+
                     </div>
+                    <!-- end upoad file area -->
 
-                    <div class="col-lg-7">
-                        <div class="form-wrapper-one">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="input-box pb--20">
-                                        <label for="name" class="form-label">Product Name</label>
-                                        <input
-                                                id="name"
-                                                placeholder="e. g. `Digital Awesome Game`"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="input-box pb--20">
-                                        <label for="description" class="form-label"
-                                        >Discription</label
-                                        >
-                                        <textarea
-                                                id="description"
-                                                placeholder="e. g. “After purchasing the product you can get item...”"
-                                                style="min-height: 200px;"
-                                        ></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="input-box pb--20">
-                                        <label for="price" class="form-label"
-                                        >Item Price in Dt</label
-                                        >
-                                        <input id="price" placeholder="e. g. `20Dt`"/>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="input-box pb--20">
-                                        <label for="quantity" class="form-label">Quantity</label>
-                                        <input id="quantity" placeholder="e. g. `10`"/>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="input-box pb--20 ">
-                                        <label for="category" class="form-label">Category</label>
-<!--{#                                        <input id="Propertie" placeholder="e. g. `Sport`"/>#}-->
-                                        <select id="category" >
-                                            <option value="food" selected>Food</option>
-                                            <option value="sports">Sports</option>
-                                            <option value="entertainment">Entertainment</option>
-                                            <option value="realestate">RealEstate</option>
-                                            <option value="vehicul">Vehicul</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-12 col-sm-12">
-
-                                </div>
-                                <div class="col-md-12 col-xl-4">
-                                    <div class="input-box">
-                                        <button
-                                                type="button"
-                                                class="btn btn-primary-alta btn-large w-100"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#uploadModal"
-                                        >
-                                            Preview
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
-                                    <div class="input-box">
-                                        <button class="btn btn-primary btn-large w-100" onclick="createProduct()">
-                                            Submit Item
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">
+                    <div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
                         <h5>Note:</h5>
                         <span> Service fee : <strong>2.5%</strong> </span> <br/>
-                        <span> You will receive : <strong>25.00 ETH $50,000</strong></span>
+                        <span>
+                You will receive : <strong>25.00 ETH $50,000</strong></span
+                        >
                     </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="form-wrapper-one">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-box pb--20">
+                                    <label for="name" class="form-label">Product Name</label>
+                                    <input
+                                            id="name"
+                                            placeholder="e. g. `Digital Awesome Game`"
+                                    />
+                                    <div id="error-message" class="error">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="input-box pb--20">
+                                    <label for="description" class="form-label"
+                                    >Discription</label
+                                    >
+                                    <textarea
+                                            id="description"
+                                            placeholder="e. g. “After purchasing the product you can get item...”"
+                                            style="min-height: 200px;"
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="input-box pb--20">
+                                    <label for="price" class="form-label"
+                                    >Item Price in Dt</label
+                                    >
+                                    <input id="price" placeholder="e. g. `20Dt`"/>
+                                    <div id="error-message-price" class="error">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="input-box pb--20">
+                                    <label for="quantity" class="form-label">Quantity</label>
+                                    <input id="quantity" placeholder="e. g. `10`"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="input-box pb--20 ">
+                                    <label for="category" class="form-label">Category</label>
+                                    <!--{#                                        <input id="Propertie" placeholder="e. g. `Sport`"/> #}-->
+                                    <select id="category">
+                                        <option value="food" selected>Food</option>
+                                        <option value="sports">Sports</option>
+                                        <option value="entertainment">Entertainment</option>
+                                        <option value="realestate">RealEstate</option>
+                                        <option value="vehicul">Vehicul</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 col-sm-12">
+
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <div class="input-box">
+                                    <button
+                                            type="button"
+                                            class="btn btn-primary-alta btn-large w-100"
+{#                                            data-bs-toggle="modal"#}
+{#                                            data-bs-target="#uploadModal"#}
+                                            onclick="consultProd()"
+                                    >
+                                        Preview
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
+                                <div class="input-box">
+                                    <button class="btn btn-primary btn-large w-100" onclick="createProduct()">
+                                        Submit Item
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">
+                    <h5>Note:</h5>
+                    <span> Service fee : <strong>2.5%</strong> </span> <br/>
+                    <span> You will receive : <strong>25.00 ETH $50,000</strong></span>
                 </div>
             </div>
         </div>
-{#    </form>#}
+    </div>
+    {#    </form> #}
     <!-- create new product area -->
 
     <!-- Modal -->
@@ -192,10 +206,13 @@
                     <div class="product-style-one no-overlay">
                         <div class="card-thumbnail">
                             <a href="../pages/product-details.html"
-                            ><img
-                                        src="{{ asset('assets/images/portfolio/portfolio-08.jpg') }}"
-                                        alt="NFT_portfolio"
-                                /></a>
+                            >
+                                <!-- Swiper -->
+                                <div class="swiper rounded effect-creative-swiper" id="slider">
+
+                                </div>
+
+                            </a>
                         </div>
                         <div class="product-share-wrapper">
                             <div class="profile-share">
