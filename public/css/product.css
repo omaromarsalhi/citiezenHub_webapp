@@ -46,3 +46,8 @@
 .ai_btn:hover{
     color: #00a3ff;
 }
+
+.description_style{
+    background: transparent url("../marketPlaceImages/Ripple-1s-200px.gif") no-repeat center center !important;
+    background-size: 8% !important;
+}

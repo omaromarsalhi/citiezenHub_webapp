@@ -11,15 +11,14 @@ function loader_stop(time){
     }, time)
 }
 
-function stop_scroll(){
-    // scroll_timerId = setTimeout(jQuery(window).on('scroll', function() {
-    //     jQuery('html, body').animate({scrollTop: jQuery(this).scrollTop()}, 550);
-    // }), 0);
-    // $('html, body').css('overflow-y', 'hidden');
+function loader_start_desc(){
+    document.getElementById('description').disabled=true;
+    $('#description').addClass('description_style');
 }
-function resume_scroll(){
-    // console.log(scroll_timerId)
-    // clearTimeout(scroll_timerId);
-    // console.log('waaa')
-    // $('html, body').css('overflow-y', 'auto');
+function loader_stop_desc(time){
+    setTimeout(function () {
+        document.getElementById('description').disabled=false;
+        $('#description').removeClass('description_style');
+    }, time)
 }
+

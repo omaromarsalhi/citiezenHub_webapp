@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
  {% block javascripts %}
-     <script src="{{ asset('js/worker.js') }}"></script>
      <script src="{{ asset('js/createScript.js') }}"></script>
  {% endblock %}
 
@@ -106,18 +105,20 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <div class="input-box pb--20">
+                                        <div class="input-box pb--20 ">
                                             <div class="flex">
                                                 <label for="description" class="form-label">
                                                     Discription
                                                 </label>
-                                                <button class="ai_btn" onclick="generateDescreption()">
-                                                    <i class="fi fi-rr-artificial-intelligence "></i></button>
+                                                <button id="ai_btn" class="ai_btn" onclick="generateDescreption()">
+                                                    <i class="fi fi-rr-artificial-intelligence "></i>
+                                                </button>
                                             </div>
                                             <textarea
                                                     id="description"
                                                     placeholder="e. g. “After purchasing the product you can get item...”"
                                                     style="min-height: 200px;"
+                                                    class=""
                                             ></textarea>
                                         </div>
                                     </div>

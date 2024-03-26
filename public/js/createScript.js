@@ -81,7 +81,7 @@ function regex() {
     const all_inputs = {
         name: {
             input_name: 'name',
-            regex: /^[a-zA-Z][a-zA-Z0-9\\s]*$/,
+            regex: /^[a-zA-Z][a-zA-Z0-9\s]*$/,
             error_div: 'error-message',
             error_text: 'Please enter a valid name (letters and numbers only).'
         },
@@ -122,20 +122,27 @@ function regex() {
 
 
 function generateDescreption() {
+    // $('#ai_btn').removeClass("active");
+    loader_start_desc()
     let title = $('#name').val();
+    console.log(title)
     if (title === '') {
         console.log('error')
     } else {
         $.ajax({
             url: '/product/generate_description',
             type: "POST",
-            data: title,
+            data: {
+                title: title,
+            },
             async: true,
             success: function (response) {
                 console.log(response.description)
+                $('#description').val(response.description)
+                loader_stop_desc()
             },
             error: function (response) {
-                console.log( "error")
+                console.log("error")
             },
         });
     }
