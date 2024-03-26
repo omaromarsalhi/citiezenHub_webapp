@@ -1,284 +1,295 @@
 {% extends 'base.html.twig' %}
 
  {% block javascripts %}
+     <script src="{{ asset('js/worker.js') }}"></script>
      <script src="{{ asset('js/createScript.js') }}"></script>
  {% endblock %}
 
 {% block stylesheets %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Protest+Riot&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Riot&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+          rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 
 
-    <!-- start page title area -->
-    <div class="rn-breadcrumb-inner ptb--30">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <h5 class="title text-center text-md-start">Crete a New File</h5>
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-list">
-                        <li class="item"><a href="index.html">Home</a></li>
-                        <li class="separator"><i class="feather-chevron-right"></i></li>
-                        <li class="item current">Crete a New File</li>
-                    </ul>
+
+    <div>
+        <div class="" id="loading-div">
+        </div>
+        <div class="" id="container">
+            <!-- start page title area -->
+            <div class="rn-breadcrumb-inner ptb--30 ">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <h5 class="title text-center text-md-start">Crete a New File</h5>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <ul class="breadcrumb-list">
+                                <li class="item"><a href="index.html">Home</a></li>
+                                <li class="separator"><i class="feather-chevron-right"></i></li>
+                                <li class="item current">Crete a New File</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- end page title area -->
+            <!-- end page title area -->
 
 
-    <!-- create new product area -->
-    {#    <form class="row" method="post"> #}
-    <div class="create-area rn-section-gapTop">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
-                    <!-- file upload area -->
-                    <div class="upload-area">
-                        <div class="upload-formate mb--30">
-                            <h6 class="title">Upload file</h6>
-                            <p class="formate">Drag or choose your file to upload</p>
-                        </div>
+            <!-- create new product area -->
 
-                        <div class="brows-file-wrapper">
-                            <!-- actual upload which is hidden -->
-                            <input
-                                    name="createinputfile"
-                                    id="createinputfile"
-                                    type="file"
-                                    class="inputfile"
-                                    multiple
-                            />
-                            <img
-                                    id="createfileImage"
-                                    src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
-                                    alt=""
-                                    data-black-overlay="6"
-                            />
+            <div class="create-area rn-section-gapTop">
+                <div class="container">
+                    <div class="row g-5">
+                        <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+                            <!-- file upload area -->
+                            <div class="upload-area">
+                                <div class="upload-formate mb--30">
+                                    <h6 class="title">Upload file</h6>
+                                    <p class="formate">Drag or choose your file to upload</p>
+                                </div>
 
-                            <!-- our custom upload button -->
-                            <label for="createinputfile" title="No File Choosen">
-                                <i class="feather-upload"></i>
-                                <span class="text-center">Choose a File</span>
-                                <p class="text-center mt&#45;&#45;10">
-                                    PNG, GIF, WEBP, MP4 or MP3. <br/>
-                                    Max 1Gb.
-                                </p>
-                            </label>
-                        </div>
-
-                    </div>
-                    <!-- end upoad file area -->
-
-                    <div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
-                        <h5>Note:</h5>
-                        <span> Service fee : <strong>2.5%</strong> </span> <br/>
-                        <span>
-                You will receive : <strong>25.00 ETH $50,000</strong></span
-                        >
-                    </div>
-                </div>
-
-                <div class="col-lg-7">
-                    <div class="form-wrapper-one">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="input-box pb--20">
-                                    <label for="name" class="form-label">Product Name</label>
+                                <div class="brows-file-wrapper">
+                                    <!-- actual upload which is hidden -->
                                     <input
-                                            id="name"
-                                            placeholder="e. g. `Digital Awesome Game`"
+                                            name="createinputfile"
+                                            id="createinputfile"
+                                            type="file"
+                                            class="inputfile"
+                                            multiple
                                     />
-                                    <div id="error-message" class="error">
+                                    <img
+                                            id="createfileImage"
+                                            src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                            alt=""
+                                            data-black-overlay="6"
+                                    />
+
+                                    <!-- our custom upload button -->
+                                    <label for="createinputfile" title="No File Choosen">
+                                        <i class="feather-upload"></i>
+                                        <span class="text-center">Choose a File</span>
+                                        <p class="text-center mt&#45;&#45;10">
+                                            PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                            Max 1Gb.
+                                        </p>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <!-- end upoad file area -->
+
+                            <div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
+                                <h5>Note:</h5>
+                                <span><strong>Click The Ai Button And You Will Get A Generated Description Of The Product Based On Its Title</strong></span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="form-wrapper-one">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-box pb--20">
+                                            <label for="name" class="form-label">Product Name</label>
+                                            <input
+                                                    id="name"
+                                                    placeholder="e. g. `Digital Awesome Game`"
+                                            />
+                                            <div id="error-message" class="error">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="input-box pb--20">
+                                            <div class="flex">
+                                                <label for="description" class="form-label">
+                                                    Discription
+                                                </label>
+                                                <button class="ai_btn" onclick="generateDescreption()">
+                                                    <i class="fi fi-rr-artificial-intelligence "></i></button>
+                                            </div>
+                                            <textarea
+                                                    id="description"
+                                                    placeholder="e. g. “After purchasing the product you can get item...”"
+                                                    style="min-height: 200px;"
+                                            ></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="input-box pb--20">
+                                            <label for="price" class="form-label"
+                                            >Item Price in Dt</label
+                                            >
+                                            <input id="price" placeholder="e. g. `20Dt`"/>
+                                            <div id="error-message-price" class="error">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="input-box pb--20">
+                                            <label for="quantity" class="form-label">Quantity</label>
+                                            <input id="quantity" placeholder="e. g. `10`"/>
+                                            <div id="error-message-quantity" class="error">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="input-box pb--20 ">
+                                            <label for="category" class="form-label">Category</label>
+                                            <!--{#                                        <input id="Propertie" placeholder="e. g. `Sport`"/> #}-->
+                                            <select id="category">
+                                                <option value="food" selected>Food</option>
+                                                <option value="sports">Sports</option>
+                                                <option value="entertainment">Entertainment</option>
+                                                <option value="realestate">RealEstate</option>
+                                                <option value="vehicul">Vehicul</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12 col-sm-12">
+
+                                    </div>
+                                    <div class="col-md-12 col-xl-4">
+                                        <div class="input-box">
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-primary-alta btn-large w-100"
+                                                    {#                                            data-bs-toggle="modal" #}
+                                                    {#                                            data-bs-target="#uploadModal" #}
+                                                    onclick="consultProd()"
+                                            >
+                                                Preview
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
+                                        <div class="input-box">
+                                            <button class="btn btn-primary btn-large w-100" onclick="createProduct()">
+                                                Submit Item
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-12">
-                                <div class="input-box pb--20">
-                                    <label for="description" class="form-label"
-                                    >Discription</label
-                                    >
-                                    <textarea
-                                            id="description"
-                                            placeholder="e. g. “After purchasing the product you can get item...”"
-                                            style="min-height: 200px;"
-                                    ></textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="input-box pb--20">
-                                    <label for="price" class="form-label"
-                                    >Item Price in Dt</label
-                                    >
-                                    <input id="price" placeholder="e. g. `20Dt`"/>
-                                    <div id="error-message-price" class="error">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="input-box pb--20">
-                                    <label for="quantity" class="form-label">Quantity</label>
-                                    <input id="quantity" placeholder="e. g. `10`"/>
-                                    <div id="error-message-quantity" class="error">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="input-box pb--20 ">
-                                    <label for="category" class="form-label">Category</label>
-                                    <!--{#                                        <input id="Propertie" placeholder="e. g. `Sport`"/> #}-->
-                                    <select id="category">
-                                        <option value="food" selected>Food</option>
-                                        <option value="sports">Sports</option>
-                                        <option value="entertainment">Entertainment</option>
-                                        <option value="realestate">RealEstate</option>
-                                        <option value="vehicul">Vehicul</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-12 col-sm-12">
-
-                            </div>
-                            <div class="col-md-12 col-xl-4">
-                                <div class="input-box">
-                                    <button
-                                            type="button"
-                                            class="btn btn-primary-alta btn-large w-100"
-{#                                            data-bs-toggle="modal"#}
-{#                                            data-bs-target="#uploadModal"#}
-                                            onclick="consultProd()"
-                                    >
-                                        Preview
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
-                                <div class="input-box">
-                                    <button class="btn btn-primary btn-large w-100" onclick="createProduct()">
-                                        Submit Item
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">
+                            <h5>Note:</h5>
+                            <span> Service fee : <strong>2.5%</strong> </span> <br/>
+                            <span> You will receive : <strong>25.00 ETH $50,000</strong></span>
                         </div>
                     </div>
                 </div>
-
-                <div class="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">
-                    <h5>Note:</h5>
-                    <span> Service fee : <strong>2.5%</strong> </span> <br/>
-                    <span> You will receive : <strong>25.00 ETH $50,000</strong></span>
-                </div>
             </div>
-        </div>
-    </div>
-    {#    </form> #}
-    <!-- create new product area -->
 
-    <!-- Modal -->
-    <div
-            class="rn-popup-modal upload-modal-wrapper modal fade"
-            id="uploadModal"
-            tabindex="-1"
-            aria-hidden="true"
-    >
-        <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-        >
-            <i data-feather="x"></i>
-        </button>
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content share-wrapper">
-                <div class="modal-body">
-                    <div class="product-style-one no-overlay">
-                        <div class="card-thumbnail">
-                            <a href="../pages/product-details.html"
-                            >
-                                <!-- Swiper -->
-                                <div class="swiper rounded effect-creative-swiper" id="slider">
+            <!-- create new product area -->
 
-                                </div>
-
-                            </a>
-                        </div>
-                        <div class="product-share-wrapper">
-                            <div class="profile-share">
-                                <a href="author.html" class="avatar" data-tooltip="Jone lee"
-                                ><img
-                                            src="{{ asset('assets/images/client/client-1.png') }}"
-                                            alt="Nft_Profile"
-                                    /></a>
-                                <a href="author.html" class="avatar" data-tooltip="Jone lee"
-                                ><img
-                                            src="{{ asset('assets/images/client/client-2.png') }}"
-                                            alt="Nft_Profile"
-                                    /></a>
-                                <a href="author.html" class="avatar" data-tooltip="Jone lee"
-                                ><img
-                                            src="{{ asset('assets/images/client/client-3.png') }}"
-                                            alt="Nft_Profile"
-                                    /></a>
-                                <a class="more-author-text" href="#">9+ Place Bit.</a>
-                            </div>
-                            <div class="share-btn share-btn-activation dropdown">
-                                <div
-                                        class="share-btn-setting dropdown-menu dropdown-menu-end"
-                                >
-                                    <button
-                                            type="button"
-                                            class="btn-setting-text share-text"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#shareModal"
+            <!-- Modal -->
+            <div
+                    class="rn-popup-modal upload-modal-wrapper modal fade"
+                    id="uploadModal"
+                    tabindex="-1"
+                    aria-hidden="true"
+            >
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                >
+                    <i data-feather="x"></i>
+                </button>
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content share-wrapper">
+                        <div class="modal-body">
+                            <div class="product-style-one no-overlay">
+                                <div class="card-thumbnail">
+                                    <a href="../pages/product-details.html"
                                     >
-                                        Share
-                                    </button>
-                                    <button
-                                            type="button"
-                                            class="btn-setting-text report-text"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#reportModal"
-                                    >
-                                        Report
-                                    </button>
+                                        <!-- Swiper -->
+                                        <div class="swiper rounded effect-creative-swiper" id="slider">
+
+                                        </div>
+
+                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                        <a href="../pages/product-details.html"
-                        ><span class="product-name">Preatent</span></a
-                        >
-                        <span class="latest-bid">Highest bid 1/20</span>
-                        <div class="bid-react-area">
-                            <div class="last-bid">0.244wETH</div>
-                            <div class="react-area">
-                                <svg
-                                        viewBox="0 0 17 16"
-                                        fill="none"
-                                        width="16"
-                                        height="16"
-                                        class="sc-bdnxRM sc-hKFxyN kBvkOu"
+                                <div class="product-share-wrapper">
+                                    <div class="profile-share">
+                                        <a href="author.html" class="avatar" data-tooltip="Jone lee"
+                                        ><img
+                                                    src="{{ asset('assets/images/client/client-1.png') }}"
+                                                    alt="Nft_Profile"
+                                            /></a>
+                                        <a href="author.html" class="avatar" data-tooltip="Jone lee"
+                                        ><img
+                                                    src="{{ asset('assets/images/client/client-2.png') }}"
+                                                    alt="Nft_Profile"
+                                            /></a>
+                                        <a href="author.html" class="avatar" data-tooltip="Jone lee"
+                                        ><img
+                                                    src="{{ asset('assets/images/client/client-3.png') }}"
+                                                    alt="Nft_Profile"
+                                            /></a>
+                                        <a class="more-author-text" href="#">9+ Place Bit.</a>
+                                    </div>
+                                    <div class="share-btn share-btn-activation dropdown">
+                                        <div
+                                                class="share-btn-setting dropdown-menu dropdown-menu-end"
+                                        >
+                                            <button
+                                                    type="button"
+                                                    class="btn-setting-text share-text"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#shareModal"
+                                            >
+                                                Share
+                                            </button>
+                                            <button
+                                                    type="button"
+                                                    class="btn-setting-text report-text"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#reportModal"
+                                            >
+                                                Report
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="../pages/product-details.html"
+                                ><span class="product-name">Preatent</span></a
                                 >
-                                    <path
-                                            d="M8.2112 14L12.1056 9.69231L14.1853 7.39185C15.2497 6.21455 15.3683 4.46116 14.4723 3.15121V3.15121C13.3207 1.46757 10.9637 1.15351 9.41139 2.47685L8.2112 3.5L6.95566 2.42966C5.40738 1.10976 3.06841 1.3603 1.83482 2.97819V2.97819C0.777858 4.36443 0.885104 6.31329 2.08779 7.57518L8.2112 14Z"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                    ></path>
-                                </svg>
-                                <span class="number">322</span>
+                                <span class="latest-bid">Highest bid 1/20</span>
+                                <div class="bid-react-area">
+                                    <div class="last-bid">0.244wETH</div>
+                                    <div class="react-area">
+                                        <svg
+                                                viewBox="0 0 17 16"
+                                                fill="none"
+                                                width="16"
+                                                height="16"
+                                                class="sc-bdnxRM sc-hKFxyN kBvkOu"
+                                        >
+                                            <path
+                                                    d="M8.2112 14L12.1056 9.69231L14.1853 7.39185C15.2497 6.21455 15.3683 4.46116 14.4723 3.15121V3.15121C13.3207 1.46757 10.9637 1.15351 9.41139 2.47685L8.2112 3.5L6.95566 2.42966C5.40738 1.10976 3.06841 1.3603 1.83482 2.97819V2.97819C0.777858 4.36443 0.885104 6.31329 2.08779 7.57518L8.2112 14Z"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                            ></path>
+                                        </svg>
+                                        <span class="number">322</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -6,6 +6,7 @@
 setTimeout(function () {
     adjustSelection();
     regex();
+
 }, 1000);
 
 function adjustSelection() {
@@ -14,9 +15,9 @@ function adjustSelection() {
 }
 
 
-
 function createProduct(e) {
 
+    loader_start()
     let name = $('#name').val();
     let description = $('#description').val();
     let price = $('#price').val();
@@ -24,9 +25,9 @@ function createProduct(e) {
     let category = $('#category').val();
 
     let form_data = new FormData();
-    const list=$('#createinputfile').prop('files');
-    for (let i=0;i<list.length;i++ ) {
-        form_data.append('file-'+(i+1), list[i]);
+    const list = $('#createinputfile').prop('files');
+    for (let i = 0; i < list.length; i++) {
+        form_data.append('file-' + (i + 1), list[i]);
     }
     form_data.append('name', name);
     form_data.append('description', description);
@@ -35,14 +36,22 @@ function createProduct(e) {
     form_data.append('category', category);
 
     $.ajax({
-        url: '/market/place/new',
+        url: '/product/new',
         type: "POST",
-        data:form_data,
+        data: form_data,
         async: true,
         processData: false,
         contentType: false,
         success: function (response) {
             console.log(response.state);
+            loader_stop(4000)
+            $('#createinputfile').val(null)
+            $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
+            $('#name').val('');
+            $('#description').val('');
+            $('#price').val('');
+            $('#quantity').val('');
+            $('#category').val('');
         },
         error: function (response) {
             console.log("error");
@@ -50,47 +59,47 @@ function createProduct(e) {
     });
 }
 
-function consultProd(){
-    const files=$('#createinputfile').prop('files');
-    let html='<div class="swiper-wrapper" >';   
+function consultProd() {
+    const files = $('#createinputfile').prop('files');
+    let html = '<div class="swiper-wrapper" >';
     for (let i = 0; i < files.length; i++) {
         console.log(i)
-        html+='<div class="swiper-slide">\n' +
-            '<img src="'+URL.createObjectURL(files[i])+'"'+
+        html += '<div class="swiper-slide">\n' +
+            '<img src="' + URL.createObjectURL(files[i]) + '"' +
             ' alt="" class="fixedImagesSize"/>\n' +
             '</div>'
     }
-    html+='<div class="swiper-pagination"></div></div>'
+    html += '<div class="swiper-pagination"></div></div>'
     $("#slider").html(html);
     $("#uploadModal").modal("show");
     launchSwiper()
 }
 
 
-function regex(){
+function regex() {
 
-    const all_inputs={
-        name:{
-            input_name:'name',
-            regex:/^[a-zA-Z][a-zA-Z0-9\\s]*$/,
-            error_div:'error-message',
-            error_text:'Please enter a valid name (letters and numbers only).'
+    const all_inputs = {
+        name: {
+            input_name: 'name',
+            regex: /^[a-zA-Z][a-zA-Z0-9\\s]*$/,
+            error_div: 'error-message',
+            error_text: 'Please enter a valid name (letters and numbers only).'
         },
-        price:{
-            input_name:'price',
+        price: {
+            input_name: 'price',
             regex: /^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/,
-            error_div:'error-message-price',
-            error_text:'Please enter a valid Price (numbers only).'
+            error_div: 'error-message-price',
+            error_text: 'Please enter a valid Price (numbers only).'
         },
-        quantity:{
-            input_name:'quantity',
+        quantity: {
+            input_name: 'quantity',
             regex: /^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/,
-            error_div:'error-message-quantity',
-            error_text:'Please enter a valid Quantity (numbers only).'
+            error_div: 'error-message-quantity',
+            error_text: 'Please enter a valid Quantity (numbers only).'
         }
     }
 
-    for(const key in all_inputs ) {
+    for (const key in all_inputs) {
         document.getElementById(all_inputs[key].input_name).addEventListener('input', function () {
             const errorMessageElement = document.getElementById(all_inputs[key].error_div);
             if (this.value.match(all_inputs[key].regex)) {
@@ -110,6 +119,29 @@ function regex(){
         })
     }
 }
+
+
+function generateDescreption() {
+    let title = $('#name').val();
+    if (title === '') {
+        console.log('error')
+    } else {
+        $.ajax({
+            url: '/product/generate_description',
+            type: "POST",
+            data: title,
+            async: true,
+            success: function (response) {
+                console.log(response.description)
+            },
+            error: function (response) {
+                console.log( "error")
+            },
+        });
+    }
+}
+
+
 
 
 

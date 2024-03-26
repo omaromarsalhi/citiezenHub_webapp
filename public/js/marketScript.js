@@ -24,6 +24,8 @@ function DisplayListProducts(movement_direction) {
 
             jQuery('html, body').animate({scrollTop: 10}, 550);
 
+
+
             var page_index_to_enable=$('#currentPage').val();
             var page_index_to_disable=$('#previousPage').val();
 
