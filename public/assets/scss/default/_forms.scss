@@ -1,11 +1,23 @@
 /* ========= Forms Styles ========= */
 input,
 button,
-select,
-textarea {
+select{
     background: transparent;
     border: 1px solid var(--color-border);
     transition: all 0.4s ease-out 0s;
+    color: var(--color-body);
+    width: 100%;
+
+    &:focus,
+    &:active {
+        outline: none;
+        border-color: var(--color-primary);
+    }
+}
+
+textarea {
+    background: transparent;
+    border: 1px solid var(--color-border);
     color: var(--color-body);
     width: 100%;
 

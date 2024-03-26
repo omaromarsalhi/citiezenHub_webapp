@@ -42,12 +42,17 @@
 .ai_btn{
     max-width: 30px;
     border-color: transparent;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    margin-right: 4px;
 }
 .ai_btn:hover{
     color: #00a3ff;
 }
 
+
 .description_style{
-    background: transparent url("../marketPlaceImages/Ripple-1s-200px.gif") no-repeat center center !important;
-    background-size: 8% !important;
+    background: transparent  no-repeat center center url("../marketPlaceImages/Ripple-1s-200px.gif") !important;
+    background-size: 6% !important;
+    z-index: 100;
 }

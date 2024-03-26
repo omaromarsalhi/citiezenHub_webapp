@@ -6,7 +6,6 @@
 setTimeout(function () {
     adjustSelection();
     regex();
-
 }, 1000);
 
 function adjustSelection() {
@@ -16,50 +15,64 @@ function adjustSelection() {
 
 
 function createProduct(e) {
+    if(!check_all_inputs()){
+        console.log('error')
+    }else {
+        loader_start()
+        let name = $('#name').val();
+        let description = $('#description').val();
+        let price = $('#price').val();
+        let quantity = $('#quantity').val();
+        let category = $('#category').val();
 
-    loader_start()
+        let form_data = new FormData();
+        const list = $('#createinputfile').prop('files');
+        for (let i = 0; i < list.length; i++) {
+            form_data.append('file-' + (i + 1), list[i]);
+        }
+        form_data.append('name', name);
+        form_data.append('description', description);
+        form_data.append('price', price);
+        form_data.append('quantity', quantity);
+        form_data.append('category', category);
+
+        $.ajax({
+            url: '/product/new',
+            type: "POST",
+            data: form_data,
+            async: true,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log(response.state);
+                loader_stop(4000)
+                $('#createinputfile').val(null)
+                $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
+                $('#name').val('');
+                $('#description').val('');
+                $('#price').val('');
+                $('#quantity').val('');
+                $('#category').val('');
+            },
+            error: function (response) {
+                console.log("error");
+            },
+        });
+    }
+}
+
+function consultProd() {
+
     let name = $('#name').val();
-    let description = $('#description').val();
     let price = $('#price').val();
     let quantity = $('#quantity').val();
     let category = $('#category').val();
 
-    let form_data = new FormData();
-    const list = $('#createinputfile').prop('files');
-    for (let i = 0; i < list.length; i++) {
-        form_data.append('file-' + (i + 1), list[i]);
-    }
-    form_data.append('name', name);
-    form_data.append('description', description);
-    form_data.append('price', price);
-    form_data.append('quantity', quantity);
-    form_data.append('category', category);
+    $("#name_model").html(name.charAt(0).toUpperCase()+name.slice(1).toLowerCase())
+    $("#price_model").html(price+' DT')
+    $("#quantity_model").html(quantity+' Pieces/ ')
+    $("#category_model").html(category.charAt(0).toUpperCase()+category.slice(1).toLowerCase())
 
-    $.ajax({
-        url: '/product/new',
-        type: "POST",
-        data: form_data,
-        async: true,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-            console.log(response.state);
-            loader_stop(4000)
-            $('#createinputfile').val(null)
-            $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
-            $('#name').val('');
-            $('#description').val('');
-            $('#price').val('');
-            $('#quantity').val('');
-            $('#category').val('');
-        },
-        error: function (response) {
-            console.log("error");
-        },
-    });
-}
-
-function consultProd() {
     const files = $('#createinputfile').prop('files');
     let html = '<div class="swiper-wrapper" >';
     for (let i = 0; i < files.length; i++) {
@@ -72,10 +85,31 @@ function consultProd() {
     html += '<div class="swiper-pagination"></div></div>'
     $("#slider").html(html);
     $("#uploadModal").modal("show");
+
     launchSwiper()
 }
 
+function check_all_inputs(){
+    let errors = [];
+    $('#error-message-image').html('')
 
+    if(! $('#name').val().match(/^[a-zA-Z][a-zA-Z0-9\s]*$/))
+        errors.push({text: "name", el: $('#error-message')});
+    if(! $('#price').val().match(/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/))
+        errors.push({text: "price", el: $('#error-message-price')});
+    if(! $('#quantity').val().match(/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/))
+        errors.push({text: "quantity", el: $('#error-message-quantity')});
+    if( $('#description').val().trim() === '')
+        errors.push({text: "description", el: $('#error-message-desc')});
+    if($('#createinputfile').prop('files').length===0)
+        errors.push({text: "image", el: $('#error-message-image')});
+
+    if (errors.length > 0) {
+        handle_errors(errors);
+        return false
+    }
+    return true
+}
 function regex() {
 
     const all_inputs = {
@@ -122,13 +156,14 @@ function regex() {
 
 
 function generateDescreption() {
-    // $('#ai_btn').removeClass("active");
-    loader_start_desc()
+    const errorMessageElement = document.getElementById('error-message-desc');
     let title = $('#name').val();
     console.log(title)
     if (title === '') {
-        console.log('error')
+        errorMessageElement.textContent = 'Please enter a valid product name so that Ai can help you generating a description';
     } else {
+        loader_start_desc()
+        errorMessageElement.textContent=''
         $.ajax({
             url: '/product/generate_description',
             type: "POST",
@@ -137,7 +172,6 @@ function generateDescreption() {
             },
             async: true,
             success: function (response) {
-                console.log(response.description)
                 $('#description').val(response.description)
                 loader_stop_desc()
             },
