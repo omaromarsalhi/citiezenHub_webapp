@@ -44,15 +44,18 @@ function createProduct(e) {
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log(response.state);
                 loader_stop(4000)
-                $('#createinputfile').val(null)
-                $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
-                $('#name').val('');
-                $('#description').val('');
-                $('#price').val('');
-                $('#quantity').val('');
-                $('#category').val('');
+                setTimeout(function (){
+                    handle_success('the product has been added successfully')
+                    $('#createinputfile').val(null)
+                    $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
+                    $('#name').val('');
+                    $('#description').val('');
+                    $('#price').val('');
+                    $('#quantity').val('');
+                    $('#category').val('');
+                },4100)
+
             },
             error: function (response) {
                 console.log("error");

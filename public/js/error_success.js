@@ -1,5 +1,5 @@
 
-const errors_el = document.getElementById('error');
+const message = document.getElementById('message');
 const all_inputs = {
     name: {
         error_text: 'Please enter a valid name (letters and numbers only).'
@@ -30,8 +30,21 @@ function handle_errors(errs) {
     error_el.innerText = str;
 
     error_el.addEventListener('click', function () {
-        errors_el.removeChild(error_el);
+        message.removeChild(error_el);
     });
 
-    errors_el.appendChild(error_el);
+    message.appendChild(error_el);
+}
+
+function handle_success(str) {
+
+    let success_el = document.createElement('div');
+    success_el.classList.add('success');
+    success_el.innerText = str;
+
+    success_el.addEventListener('click', function () {
+        message.removeChild(success_el);
+    });
+
+    message.appendChild(success_el);
 }

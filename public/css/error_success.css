@@ -1,4 +1,4 @@
-.errors {
+.message_class {
     position: fixed;
     left: 0;
     right: 80px;
@@ -8,10 +8,23 @@
     pointer-events: none;
 }
 
-.errors .error {
+.message_class .error {
     padding: 15px;
     border-radius: 8px;
     background-color: rgba(230, 20, 20, 0.8);
+    color: #fff;
+    font-size: 14px;
+    transform: translateY(300px);
+    pointer-events: all;
+    margin-bottom: 10px;
+    animation: slide-in .6s ease-out forwards;
+}
+
+
+.message_class .success {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: rgba(6, 150, 53, 0.8);
     color: #fff;
     font-size: 14px;
     transform: translateY(300px);
