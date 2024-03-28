@@ -11,23 +11,24 @@ class Transport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:"idTransport")]
+    #[ORM\Column(name: "idTransport")]
     private ?int $idTransport = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Type_Vehicule = null;
+    private ?string $TypeVehicule = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Reference = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Vehicule_Image = null;
+    private ?string $VehiculeImage = null;
 
     #[ORM\Column]
     private ?float $Prix = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $Heure = null;
+    // Heure property with string type
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Heure = null;
 
     #[ORM\Column]
     private ?int $Station_depart = null;
@@ -42,12 +43,12 @@ class Transport
 
     public function getTypeVehicule(): ?string
     {
-        return $this->Type_Vehicule;
+        return $this->TypeVehicule;
     }
 
-    public function setTypeVehicule(?string $Type_Vehicule): static
+    public function setTypeVehicule(?string $TypeVehicule): static
     {
-        $this->Type_Vehicule = $Type_Vehicule;
+        $this->TypeVehicule = $TypeVehicule;
 
         return $this;
     }
@@ -66,12 +67,12 @@ class Transport
 
     public function getVehiculeImage(): ?string
     {
-        return $this->Vehicule_Image;
+        return $this->VehiculeImage;
     }
 
-    public function setVehiculeImage(string $Vehicule_Image): static
+    public function setVehiculeImage(string $VehiculeImage): static
     {
-        $this->Vehicule_Image = $Vehicule_Image;
+        $this->VehiculeImage = $VehiculeImage;
 
         return $this;
     }
@@ -88,12 +89,12 @@ class Transport
         return $this;
     }
 
-    public function getHeure(): ?\DateTimeInterface
+    public function getHeure(): ?string
     {
         return $this->Heure;
     }
 
-    public function setHeure(\DateTimeInterface $Heure): static
+    public function setHeure(?string $Heure): static
     {
         $this->Heure = $Heure;
 
