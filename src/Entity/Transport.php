@@ -11,8 +11,8 @@ class Transport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-//    #[ORM\Column(length: 255)]
-//    private ?int $id = null;
+    #[ORM\Column(name:"idTransport")]
+    private ?int $idTransport = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Type_Vehicule = null;
