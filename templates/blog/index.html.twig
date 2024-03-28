@@ -50,98 +50,15 @@
                                     </label>
                                 </div>
                             </div>
-                            <button name="submit" type="submit" class="btn btn-primary" onclick="addPost(event)">Send
-                                Message
-                            </button>
+                            <button name="submit" type="submit" class="btn btn-primary" onclick="addPost(event)">Publier</button>
                         </form>
                     </div>
                 </div>
-
-                <!-- Modal de modification -->
-                <div id="modifierModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeModifierPopup()">&times;</span>
-                        <div class="login-area message-area rn-section-gapTop">
-                            <div class="container">
-                                <div class="row g-5">
-                                    <div class="col-lg-6" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
-                                        <div class="connect-thumbnail">
-                                            <div class="left-image">
-                                                <img src="assets/images/contact/contact1.png" alt="Nft_Profile" id="imageModifer">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
-                                        <div class="form-wrapper-one registration-area">
-                                            <h3 class="mb--30">Modifier votre post</h3>
-                                            <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
-                                                <div class="mb-5">
-                                                    <label for="contact-message" class="form-label">Write Message</label>
-                                                    <textarea name="contact-message" id="captionModfier" rows="3"></textarea>
-                                                </div>
-                                                <div class="button-area mb-5">
-                                                    <div class="brows-file-wrapper">
-                                                        <label for="nipa" class="form-label">Upload an image</label>
-                                                        <!-- actual upload which is hidden -->
-                                                        <input name="nipa" id="nipa" type="file">
-                                                        <!-- our custom upload button -->
-                                                        <label for="nipa" title="No File Choosen">
-                                                            <span class="text-center color-white">Upload Cover</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <button name="submit" type="submit" class="btn btn-primary">Modifier</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <style>
-                    /* Styles pour la modal */
-                    .modal {
-                        display: none; /* Masquer la modal par défaut */
-                        position: fixed; /* Positionnement fixe pour rester au centre */
-                        left: 0;
-                        top: 0;
-                        width: 100%; /* Pleine largeur */
-                        height: 100%; /* Pleine hauteur */
-                        overflow: auto; /* Activer le défilement si nécessaire */
-                        background-color: rgba(0,0,0,0.4); /* Fond semi-transparent */
-                    }
-
-                    .modal-content {
-                        overflow: auto; /* Empêche le défilement */
-                        width: 80%; /* Ajustez la largeur selon vos besoins */
-                        height: 80%; /* Ajustez la hauteur selon vos besoins */
-                        background-color: #1d1d26; /* Couleur de fond */
-                        margin: auto; /* Centrez horizontalement */
-                        padding: 20px;
-                        border: 1px solid #888;
-                        border-radius: 10px;
-                        position: relative; /* Position relative pour centrer verticalement */
-                        top: 50%; /* Déplacez la moitié de la hauteur de la modal vers le haut */
-                        transform: translateY(-50%); /* Ajustez pour centrer verticalement */
-                    }
-                    .close {
-                        font-size:
-                                30px; /* Choisissez la taille souhaitée */
-                    }
-                </style>
-
-
-
                 <script>
-
                     function addPost(event) {
                         event.preventDefault();
                         let formData = new FormData();
                         let caption = $('#contact-message').val();
-
-                        // let image=$('#image');
                         formData.append('image', $('#nipa').prop('files')[0]);
                         formData.append('caption', caption);
 
@@ -258,6 +175,7 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <span>{{ i.datePost|date('D d M Y H:i') }}</span>
 
 
                                     <script>
@@ -307,13 +225,35 @@
                                         function closeModifierPopup() {
                                             // Récupérer la fenêtre modale
                                             var modal = document.getElementById("modifierModal");
-
                                             modal.style.display = "none";
                                         }
 
                                         // Fonction appelée lorsque l'utilisateur soumet le formulaire
-                                        function submitModifierForm() {
+                                        function submitModifierForm(event, idPost) {
+                                            event.preventDefault();
+                                            let formData = new FormData();
+                                            let caption = $('#contact-messageUpload').val();
+                                            formData.append('image', $('#nipaUpload').prop('files')[0]);
+                                            formData.append('caption', caption);
 
+                                            $.ajax({
+
+                                                url: '/blog/edit/' + idPost,
+                                                type: "POST",
+                                                data: formData,
+
+                                                async: true,
+                                                processData: false,
+                                                contentType: false,
+                                                success: function (response) {
+                                                    console.log(response.state);
+                                                    $('#contact-message').val('');
+                                                    $('#nipa').val('');
+                                                },
+                                                error: function (response) {
+                                                    console.log("error");
+                                                },
+                                            });
                                             closeModifierPopup();
                                         }
 
@@ -334,6 +274,83 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal de modification -->
+                    <div id="modifierModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModifierPopup()">&times;</span>
+                            <div class="login-area message-area rn-section-gapTop">
+                                <div class="container">
+                                    <div class="row g-5">
+                                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                                            <div class="connect-thumbnail">
+                                                <div class="left-image">
+                                                    <img src="assets/images/contact/contact1.png" alt="Nft_Profile" id="imageModifer">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
+                                            <div class="form-wrapper-one registration-area">
+                                                <h3 class="mb--30">Modifier votre post</h3>
+                                                <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
+                                                    <div class="mb-5">
+                                                        <label for="contact-message" class="form-label">Write Message</label>
+                                                        <textarea name="contact-messageUpload" id="captionModfier" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="button-area mb-5">
+                                                        <div class="brows-file-wrapper">
+                                                            <label for="nipa" class="form-label">Upload an image</label>
+                                                            <!-- actual upload which is hidden -->
+                                                            <input name="nipaUpload" id="nipa" type="file">
+                                                            <!-- our custom upload button -->
+                                                            <label for="nipa" title="No File Choosen">
+                                                                <span class="text-center color-white">Upload Cover</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <button name="submit" type="submit" class="btn btn-primary" onclick="submitModifierForm(event)">Modifier</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        /* Styles pour la modal */
+                        .modal {
+                            display: none; /* Masquer la modal par défaut */
+                            position: fixed; /* Positionnement fixe pour rester au centre */
+                            left: 0;
+                            top: 0;
+                            width: 100%; /* Pleine largeur */
+                            height: 100%; /* Pleine hauteur */
+                            overflow: auto; /* Activer le défilement si nécessaire */
+                            background-color: rgba(0,0,0,0.4); /* Fond semi-transparent */
+                        }
+
+                        .modal-content {
+                            overflow: auto; /* Empêche le défilement */
+                            width: 80%; /* Ajustez la largeur selon vos besoins */
+                            height: 80%; /* Ajustez la hauteur selon vos besoins */
+                            background-color: #1d1d26; /* Couleur de fond */
+                            margin: auto; /* Centrez horizontalement */
+                            padding: 20px;
+                            border: 1px solid #888;
+                            border-radius: 10px;
+                            position: relative; /* Position relative pour centrer verticalement */
+                            top: 50%; /* Déplacez la moitié de la hauteur de la modal vers le haut */
+                            transform: translateY(-50%); /* Ajustez pour centrer verticalement */
+                        }
+                        .close {
+                            font-size:
+                                    30px; /* Choisissez la taille souhaitée */
+                        }
+                    </style>
+
+
                 {% endfor %}
                 <!-- end single blog -->
 
