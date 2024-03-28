@@ -96,7 +96,6 @@ class UserController extends AbstractController
     public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req): Response
     {   $user=$rep->findOneBy([ 'email' =>$req->query->get('email')]);
         if ($req->isXmlHttpRequest()) {
-
             $email =$req->get('email');
             $user = $rep->findOneBy([ 'email' => $email]);
             $name =$req->get('name');
@@ -114,36 +113,27 @@ class UserController extends AbstractController
             $user->setPhoneNumber($phoneNumber);
             $user->setCin($cin);
             $user->setRole($role);
-//            $this->uploadImageAction($req,$mtTools,$user);
             $user->setImageFile($fichierImage);
+            var_dump($user->getImage());
             if($status==1)
              $user->setStatus("Married");
             else$user->setStatus("Single");
             $em = $doc->getManager();
             $em->persist($user);
             $em->flush();
-            return $this->render('user/edit_profile.html.twig', [
-//                'name' => $user->getFirstName(),
-//                'lastname' => $user->getLastName(),
-//                'email' => $user->getEmail(),
-//                'address' => $user->getAddress(),
-//                'role' => $user->getRole(),
-//                'cin' => '',
-//                'phoneNumber'=> '',
-//                'age' => '',
-//                'status' => '',
-            ]);
+            return $this->render('user/edit_profile.html.twig', []);
         }
         return $this->render('user/edit_profile.html.twig', [
             'name' =>$user->getFirstName(),
             'lastname' =>$user->getLastName(),
             'email' => $user->getEmail(),
-            'address' => $user->getEmail(),
+            'address' => $user->getAddress(),
             'role' => $user->getRole(),
             'cin' => $user->getCin(),
             'phoneNumber'=>$user->getPhoneNumber(),
             'age' =>$user->getAge(),
             'status' =>$user->getStatus(),
+            'image'=>$user->getImage(),
         ]);
 
 

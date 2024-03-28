@@ -12,7 +12,7 @@ class GoogleController extends AbstractController
 {
     public function connectAction(ClientRegistry $clientRegistry)
         {
-        return $clientRegistrye
+        return $clientRegistry
         ->getClient('google')
         ->redirect();
         }

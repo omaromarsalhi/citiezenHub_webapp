@@ -54,27 +54,26 @@
                             <div class="nuron-information">
 
                                 <div class="profile-change row g-5">
-                                    <div class="profile-left col-lg-4">
-                                        <div class="profile-image mb--30">
-                                            <h6 class="title">Change Your Profile Picture</h6>
-                                            <img id="rbtinput1" src="assets/images/profile/profile-01.jpg" alt="Profile-NFT">
-                                        </div>
-                                        <div class="button-area">
-                                            <div class="brows-file-wrapper">
-                                                <!-- actual upload which is hidden -->
-                                                <input name="image" id="image" type="file">
-                                                <!-- our custom upload button -->
-                                                <label for="image" title="No File Choosen">
-                                                    <span class="text-center color-white">Upload Profile</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
+{#                                    <div class="profile-left col-lg-4">#}
+{#                                        <div class="profile-image mb--30">#}
+{#                                            <h6 class="title">Change Your Profile Picture</h6>#}
+{#                                            <img id="rbtinput1" src="assets/images/profile/profile-01.jpg" alt="Profile-NFT">#}
+{#                                        </div>#}
+{#                                        <div class="button-area">#}
+{#                                            <div class="brows-file-wrapper">#}
+{#                                                <!-- actual upload which is hidden -->#}
+{#                                                <input name="image" id="image" type="file">#}
+{#                                                <!-- our custom upload button -->#}
+{#                                                <label for="image" title="No File Choosen">#}
+{#                                                    <span class="text-center color-white">Upload Profile</span>#}
+{#                                                </label>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
                                     <div class="profile-left right col-lg-8">
                                         <div class="profile-image mb--30">
                                             <h6 class="title">Change Your Cover Photo</h6>
-                                            <img id="rbtinput2" src="assets/images/profile/cover-04.png" alt="Profile-NFT">
+                                            <img id="rbtinput2" src="{{ asset('public/images/users/' ~ image) }}" alt="Profile-NFT">
                                         </div>
                                         <div class="button-area">
                                             <div class="brows-file-wrapper">
@@ -84,13 +83,41 @@
                                                 <label for="nipa" title="No File Choosen">
                                                     <span class="text-center color-white">Upload Cover</span>
                                                 </label>
+
                                             </div>
+
                                         </div>
+                                        <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="updateImage()">Save
+                                        </button>
                                     </div>
+
+
                                 </div>
                             </div>
                             <!-- End personal information -->
                         </div>
+                        <script>
+                            function updateImage() {
+
+                                var xhr = new XMLHttpRequest();
+                                xhr.onreadystatechange = function() {
+                                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                                        if (xhr.status === 200) {
+                                            var imagePath = "public/images/";
+                                            var imageName = xhr.responseText;
+                                            var imageUrl = imagePath + imageName;
+                                            var imageElement = document.getElementById('rbtinput2');
+                                            imageElement.src = imageUrl;
+                                        } else {
+                                            console.error('La requête a échoué avec un statut ' + xhr.status);
+                                        }
+                                    }
+                                };
+
+                                xhr.open('GET', '/editProfile', true);
+                                xhr.send();
+                            }
+                        </script>
                         <!-- End single tabv content -->
                         <!-- sigle tab content -->
                         <div class="tab-pane fade" id="nav-homes" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -124,7 +151,7 @@
                                     <!-- start Role area -->
                                     <div class="role-area mt--15">
                                         <label for="Address" class="form-label mb--10">Your Address</label>
-                                        <input name="address" id="address" type="text" value={{address}}  readonly >
+                                        <input name="address" id="address" type="text" value={{ address}}  readonly >
                                     </div>
                                     <select class="profile-edit-select" name="user[status]" id="status" >
                                         <option value="1">Married</option>
@@ -405,97 +432,6 @@
             </div>
         </div>
     </div>
-{#    <script>#}
-{#        // Écoute l'événement de clic sur le bouton "Save"#}
-{#        document.getElementById('submit_button').addEventListener('change', function() {#}
-
-{#            var formData = $('#editProfileForm').serialize();#}
-{#            console.log(formData);#}
-{#            $.ajax({#}
-{#                url: '/editProfile',#}
-{#                type: 'POST',#}
-{#                data: formData,#}
-{#                success: function(response) {#}
-{#                    console.log('Données envoyées avec succès à Symfony.');#}
-{#                    // Traitez la réponse du serveur si nécessaire#}
-{#                },#}
-{#                error: function(xhr, status, error) {#}
-{#                    console.error('Erreur lors de l\'envoi des données à Symfony:', error);#}
-{#                }#}
-{#            });#}
-{#        });#}
-{#    </script>#}
-
-        {#// Attache un gestionnaire d'événements pour le changement de l'élément d'entrée de type fichier#}
-        {#document.getElementById('fatima').addEventListener('change', function() {#}
-        {#    // Récupère le chemin du fichier sélectionné#}
-        {#    var filePath = this.value;#}
-
-        {#    // Affiche le chemin dans la console#}
-        {#    console.log('Chemin du fichier sélectionné : ' + filePath);#}
-        {#    $.ajax({#}
-        {#        url: '{{ path('editProfile')}}',#}
-        {#        type: 'POST',#}
-        {#        data: { filePath: filePath },#}
-        {#        success: function(response) {#}
-        {#            console.log('Chemin du fichier envoyé avec succès à Symfony.');#}
-        {#            // Traitez la réponse du serveur si nécessaire#}
-        {#        },#}
-        {#        error: function(xhr, status, error) {#}
-        {#            console.error('Erreur lors de l\'envoi du chemin du fichier à Symfony:', error);#}
-        {#        }#}
-        {#    });#}
-        {#});#}
-        {#        document.getElementById('submit_button').addEventListener('change', function() {#}
-
-        {#            var formData = $('#editProfileForm').serialize();#}
-        {#            console.log(formData);#}
-        {#            $.ajax({#}
-        {#                url: '/editProfile',#}
-        {#                type: 'POST',#}
-        {#                data: formData,#}
-        {#                success: function(response) {#}
-        {#                    console.log('Données envoyées avec succès à Symfony.');#}
-        {#                    // Traitez la réponse du serveur si nécessaire#}
-        {#                },#}
-        {#                error: function(xhr, status, error) {#}
-        {#                    console.error('Erreur lors de l\'envoi des données à Symfony:', error);#}
-        {#                }#}
-        {#            });#}
-        {#        });#}
-{#        // document.getElementById('fatima').addEventListener('change', function() {#}
-{#        //     // Récupère le chemin du fichier sélectionné#}
-{#        //     var filePath = this.value;#}
-{#        //         console.log('Chemin du fichier sélectionné : ' + filePath);#}
-{#        //         sendFormData(filePath);#}
-{#        //     });#}
-{#        //#}
-{#        // $('submit_button').on('click', function(event) {#}
-{#        //     console.log("kkkkk");#}
-{#        //         event.preventDefault();#}
-{#        //         var formData = ('#editProfileForm').serialize();#}
-{#        //         console.log("formData");#}
-{#        //        sendFormData(formData);#}
-{#        //     });#}
-{#        //#}
-{#        //     function sendFormData(data) {#}
-{#        //         $.ajax({#}
-{#        //             url: '/editProfile',#}
-{#        //             type: 'POST',#}
-{#        //             data: data,#}
-{#        //             processData: false,#}
-{#        //             contentType: false,#}
-{#        //             success: function(response) {#}
-{#        //                 console.log('Données envoyées avec succès à Symfony.');#}
-{#        //                 console.log(data);#}
-{#        //             },#}
-{#        //             error: function(xhr, status, error) {#}
-{#        //                 console.error('Erreur lors de l\'envoi des données à Symfony:', error);#}
-{#        //             }#}
-{#        //         });#}
-{#        //     }#}
-
-
     <!-- End tabs area -->
 
 
