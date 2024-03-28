@@ -1,0 +1,360 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+
+{% block body %}
+    <!-- start page title area -->
+    <div class="rn-breadcrumb-inner ptb--30">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <h5 class="title text-center text-md-start">Blog Single Column</h5>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-list">
+                        <li class="item"><a href="index.html">Home</a></li>
+                        <li class="separator"><i class="feather-chevron-right"></i></li>
+                        <li class="item current">Blog Single column</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end page title area -->
+
+
+
+    <!-- blog details area start -->
+    <div class="rn-blog-area rn-blog-details-default rn-section-gapTop">
+        <div class="container">
+            <div class="row g-5 flex-wrap">
+
+                <!-- login form -->
+                <div class="col-lg-8" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
+                    <div class="form-wrapper-one registration-area">
+                        <h3 class="mb--30">Exprimer Vous!</h3>
+                        <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
+                            <div class="mb-5">
+                                <label for="contact-message" class="form-label">Write Message</label>
+                                <textarea name="contact-message" id="contact-message" rows="3"></textarea>
+                            </div>
+                            <div class="button-area mb-5">
+                                <div class="brows-file-wrapper">
+                                    <label for="nipa" class="form-label">Upload an image</label>
+                                    <!-- actual upload which is hidden -->
+                                    <input name="nipa" id="nipa" type="file">
+                                    <!-- our custom upload button -->
+                                    <label for="nipa" title="No File Choosen">
+                                        <span class="text-center color-white">Upload Cover</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <button name="submit" type="submit" class="btn btn-primary" onclick="addPost(event)">Send
+                                Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal de modification -->
+                <div id="modifierModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModifierPopup()">&times;</span>
+                        <div class="login-area message-area rn-section-gapTop">
+                            <div class="container">
+                                <div class="row g-5">
+                                    <div class="col-lg-6" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                                        <div class="connect-thumbnail">
+                                            <div class="left-image">
+                                                <img src="assets/images/contact/contact1.png" alt="Nft_Profile" id="imageModifer">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
+                                        <div class="form-wrapper-one registration-area">
+                                            <h3 class="mb--30">Modifier votre post</h3>
+                                            <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
+                                                <div class="mb-5">
+                                                    <label for="contact-message" class="form-label">Write Message</label>
+                                                    <textarea name="contact-message" id="captionModfier" rows="3"></textarea>
+                                                </div>
+                                                <div class="button-area mb-5">
+                                                    <div class="brows-file-wrapper">
+                                                        <label for="nipa" class="form-label">Upload an image</label>
+                                                        <!-- actual upload which is hidden -->
+                                                        <input name="nipa" id="nipa" type="file">
+                                                        <!-- our custom upload button -->
+                                                        <label for="nipa" title="No File Choosen">
+                                                            <span class="text-center color-white">Upload Cover</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <button name="submit" type="submit" class="btn btn-primary">Modifier</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    /* Styles pour la modal */
+                    .modal {
+                        display: none; /* Masquer la modal par défaut */
+                        position: fixed; /* Positionnement fixe pour rester au centre */
+                        left: 0;
+                        top: 0;
+                        width: 100%; /* Pleine largeur */
+                        height: 100%; /* Pleine hauteur */
+                        overflow: auto; /* Activer le défilement si nécessaire */
+                        background-color: rgba(0,0,0,0.4); /* Fond semi-transparent */
+                    }
+
+                    .modal-content {
+                        overflow: auto; /* Empêche le défilement */
+                        width: 80%; /* Ajustez la largeur selon vos besoins */
+                        height: 80%; /* Ajustez la hauteur selon vos besoins */
+                        background-color: #1d1d26; /* Couleur de fond */
+                        margin: auto; /* Centrez horizontalement */
+                        padding: 20px;
+                        border: 1px solid #888;
+                        border-radius: 10px;
+                        position: relative; /* Position relative pour centrer verticalement */
+                        top: 50%; /* Déplacez la moitié de la hauteur de la modal vers le haut */
+                        transform: translateY(-50%); /* Ajustez pour centrer verticalement */
+                    }
+                    .close {
+                        font-size:
+                                30px; /* Choisissez la taille souhaitée */
+                    }
+                </style>
+
+
+
+                <script>
+
+                    function addPost(event) {
+                        event.preventDefault();
+                        let formData = new FormData();
+                        let caption = $('#contact-message').val();
+
+                        // let image=$('#image');
+                        formData.append('image', $('#nipa').prop('files')[0]);
+                        formData.append('caption', caption);
+
+                        $.ajax({
+
+                            url: '/new',
+                            type: "POST",
+                            data: formData,
+
+                            async: true,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                console.log(response.state);
+                                $('#contact-message').val('');
+                                $('#nipa').val('');
+                            },
+                            error: function (response) {
+                                console.log("error");
+                            },
+                        });
+                    }
+
+                </script>
+                <!-- login form end -->
+
+                <div class="col-xl-4 col-lg-4 mt_md--40 mt_sm--40">
+                    <aside class="rwt-sidebar">
+
+                        <div class="rbt-single-widget widget_categories">
+                            <h3 class="title">Categories</h3>
+                            <div class="inner">
+                                <ul class="category-list ">
+                                    <li><a href="#"><span class="left-content">Music NFT's</span><span
+                                                    class="count-text">300</span></a></li>
+                                    <li><a href="#"><span class="left-content">NFT Creators</span><span
+                                                    class="count-text">275</span></a></li>
+                                    <li><a href="#"><span class="left-content">Rare Products</span><span
+                                                    class="count-text">625</span></a></li>
+                                    <li><a href="#"><span class="left-content">Rate Vedios</span><span
+                                                    class="count-text">556</span></a></li>
+                                    <li><a href="#"><span class="left-content">Digital Arts</span><span
+                                                    class="count-text">247</span></a></li>
+                                    <li><a href="#"><span class="left-content">App
+                                                Music NFT's</span><span class="count-text">457</span></a></li>
+                                    <li><a href="#"><span class="left-content">Application</span><span
+                                                    class="count-text">423</span></a></li>
+                                    <li><a href="#"><span class="left-content">Art</span><span
+                                                    class="count-text">235</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="rbt-single-widget widget_recent_entries mt--40">
+                            <h3 class="title">Recent Posts</h3>
+                            <div class="inner">
+                                <ul>
+                                    <li><a class="d-block" href="#">Best Corporate Tips You Will
+                                            Read This Year.</a><span class="cate">Music NFT's</span></li>
+                                    <li><a class="d-block" href="#">Should Fixing Corporate Take
+                                            100 Steps.</a><span class="cate">Digital Arts</span></li>
+                                    <li><a class="d-block" href="#">The Next 100 Things To
+                                            Immediately Do About.</a><span class="cate">NFT Creators</span></li>
+                                    <li><a class="d-block" href="#">Top 5 Lessons About
+                                            Corporate
+                                            To Learn Before.</a><span class="cate">Rare Products</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="rbt-single-widget widget_tag_cloud mt--40">
+                            <h3 class="title">Tags</h3>
+                            <div class="inner mt--20">
+                                <div class="tagcloud">
+                                    <a href="#">Digital Art</a>
+                                    <a href="#">Rare Image</a>
+                                    <a href="#">Digital Image</a>
+                                    <a href="#">Music</a>
+                                    <a href="#">NFT Vedios</a>
+                                    <a href="#">Company</a>
+                                    <a href="#">Token</a>
+                                    <a href="#">Landing NFts</a>
+                                    <a href="#">Single Image</a>
+                                    <a href="#">App</a>
+                                    <a href="#">Business</a>
+                                    <a href="#">Software</a>
+                                    <a href="#">Landing</a>
+                                    <a href="#">Art</a>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <!-- start single blog -->
+                {% for i in posts %}
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters"
+                             data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                            <div class="inner">
+                                <div class="content mb-4">
+                                    <div class="category-info">
+                                        <div class="category-list">
+                                            <img src="{{ asset('assets/images/activity/activity-01.jpg') }}" height="50" width="50" style="margin-right: 10px">
+                                            <a href="blog-details.html">Omar marrakchi</a>
+                                        </div>
+                                        <div class="meta">
+                                            <select onchange="handleMenuAction(this, {{ i.id }}, '{{ i.caption }}', '{{ i.image }}')">
+                                                <!-- Utiliser une icône d'engrenage pour l'option -->
+                                                <option value="" disabled selected hidden><i class="fas fa-cogs"></i></option>
+                                                <option value="modifier">Modifier</option>
+                                                <option value="supprimer">Supprimer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <script>
+                                        function handleMenuAction(select, postId, caption, image) {
+                                            var selectedValue = select.value;
+                                            if (selectedValue === "modifier") {
+                                                showModifierPopup(caption, image);
+                                            } else if (selectedValue === "supprimer") {
+                                                if (postId) {
+                                                    deletePost(postId);
+                                                }
+                                            }
+                                        }
+
+                                        function deletePost(postId) {
+                                            if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?" + postId)) {
+                                                $.ajax({
+                                                    url: '/blog/' + postId,
+                                                    type: 'DELETE',
+                                                    success: function(response) {
+                                                        // Rafraîchir la page ou mettre à jour la liste des posts
+                                                        location.reload();
+                                                    },
+                                                    error: function(xhr, status, error) {
+                                                        // Gérer les erreurs en fonction de vos besoins
+                                                        console.error(error);
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                        function showModifierPopup(caption, image) {
+                                            var modal = document.getElementById("modifierModal");
+                                            var form = document.getElementById("modifierForm");
+                                            let messageTextarea = document.getElementById("captionModfier");
+                                            let imageModifier = document.getElementById("imageModifer");
+                                            messageTextarea.value = caption;
+                                            imageModifier.src = "images/blog/" + image;
+
+
+                                            modal.style.display = "block";
+
+                                            form.reset();
+                                        }
+
+
+                                        function closeModifierPopup() {
+                                            // Récupérer la fenêtre modale
+                                            var modal = document.getElementById("modifierModal");
+
+                                            modal.style.display = "none";
+                                        }
+
+                                        // Fonction appelée lorsque l'utilisateur soumet le formulaire
+                                        function submitModifierForm() {
+
+                                            closeModifierPopup();
+                                        }
+
+                                    </script>
+
+
+                                    <h4 class="title"><a href="blog-details.html">{{ i.caption }} <i
+                                                    class="feather-arrow-up-right"></i></a></h4>
+                                </div>
+                                {% if i.image %}
+                                    <div class="thumbnail">
+                                        <a href="blog-details.html">
+                                            <img src="{{ asset('images/blog/' ~ i.image) }}"
+                                                 alt="Personal Portfolio Images">
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <!-- end single blog -->
+
+
+                <!-- navigation Pagination -->
+                <div class="row">
+                    <div class="col-lg-8" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
+                        <nav class="pagination-wrapper" aria-label="Page navigation example">
+                            <ul class="pagination single-column-blog">
+                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- navigation Pagination End-->
+            </div>
+        </div>
+    </div>
+    <!-- blog details area end -->
+{% endblock %}
