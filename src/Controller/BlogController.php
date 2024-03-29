@@ -62,32 +62,28 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('app_blog');
     }
 
-    #[Route('/blog/edit/{id}', name: 'app_blog_update', methods: ['PUT'])]
+    #[Route('/edit/{id}', name: 'app_blog_update', methods: ['POST'])]
     public function update(ManagerRegistry $doctrine, $id, Request $req): Response
     {
-        if ($req->isXmlHttpRequest()) {
-            $entityManager = $doctrine->getManager();
-            $post = $entityManager->getRepository(Post::class)->find($id);
+        $post = $doctrine->getRepository(Post::class)->find($id);
 
-            if (!$post) {
-                return new JsonResponse(['error' => 'Le post avec l\'identifiant ' . $id . ' n\'existe pas.'], Response::HTTP_NOT_FOUND);
-            }
-
-            // Récupérer les données envoyées depuis la requête AJAX
-            $requestData = json_decode($req->getContent(), true);
-
-            // Mettre à jour les champs du post
-            $post->setCaption($requestData['caption']);
-            // Ajouter d'autres champs à mettre à jour si nécessaire
-
-            // Enregistrer les modifications en base de données
-            $entityManager->flush();
-
-            // Répondre avec un message de succès
-            return new JsonResponse(['message' => 'Le post a été mis à jour avec succès.'], Response::HTTP_OK);
+        if (!$post) {
+            throw $this->createNotFoundException('Le post d\'id '.$id.' n\'a pas été trouvé.');
         }
+            $caption = $req->get('caption');
+            $fichierImage = $req->files->get('image');
 
-        return $this->redirectToRoute('app_blog');
+            $post->setDatePost(new DateTime());
+            $post->setCaption($caption);
+            $post->setImageFile($fichierImage);
+
+            $em = $doctrine->getManager();
+            $em->persist($post);
+            $em->flush();
+
+            $this->addFlash('success', 'Le post a bien été modifié.');
+
+            return $this->redirectToRoute('app_blog');
     }
 
 }

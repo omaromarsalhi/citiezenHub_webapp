@@ -50,6 +50,7 @@
                                     </label>
                                 </div>
                             </div>
+
                             <button name="submit" type="submit" class="btn btn-primary" onclick="addPost(event)">Publier</button>
                         </form>
                     </div>
@@ -61,7 +62,6 @@
                         let caption = $('#contact-message').val();
                         formData.append('image', $('#nipa').prop('files')[0]);
                         formData.append('caption', caption);
-
                         $.ajax({
 
                             url: '/new',
@@ -180,9 +180,11 @@
 
 
                                     <script>
+                                        var postIdToModify = null;
                                         function handleMenuAction(select, postId, caption, image) {
                                             var selectedValue = select.value;
                                             if (selectedValue === "modifier") {
+                                                postIdToModify = postId;
                                                 showModifierPopup(caption, image);
                                             } else if (selectedValue === "supprimer") {
                                                 if (postId) {
@@ -230,16 +232,17 @@
                                         }
 
                                         // Fonction appelée lorsque l'utilisateur soumet le formulaire
-                                        function submitModifierForm(event, idPost) {
+                                        function submitModifierForm(event) {
                                             event.preventDefault();
                                             let formData = new FormData();
-                                            let caption = $('#contact-messageUpload').val();
-                                            formData.append('image', $('#nipaUpload').prop('files')[0]);
+                                            let caption = $('#captionModfier').val();
                                             formData.append('caption', caption);
+                                            formData.append('image', $('#nipaUpload').prop('files')[0]);
+                                            console.log('image', $('#nipaUpload').prop('files')[0]);
+
 
                                             $.ajax({
-
-                                                url: '/blog/edit/' + idPost,
+                                                url: '/edit/' + postIdToModify,
                                                 type: "POST",
                                                 data: formData,
 
@@ -248,8 +251,6 @@
                                                 contentType: false,
                                                 success: function (response) {
                                                     console.log(response.state);
-                                                    $('#contact-message').val('');
-                                                    $('#nipa').val('');
                                                 },
                                                 error: function (response) {
                                                     console.log("error");
@@ -257,7 +258,6 @@
                                             });
                                             closeModifierPopup();
                                         }
-
                                     </script>
 
 
@@ -295,16 +295,16 @@
                                                 <h3 class="mb--30">Modifier votre post</h3>
                                                 <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
                                                     <div class="mb-5">
-                                                        <label for="contact-message" class="form-label">Write Message</label>
-                                                        <textarea name="contact-messageUpload" id="captionModfier" rows="3"></textarea>
+                                                        <label for="captionModfier" class="form-label">Write Message</label>
+                                                        <textarea name="captionModfier" id="captionModfier" rows="3"></textarea>
                                                     </div>
                                                     <div class="button-area mb-5">
                                                         <div class="brows-file-wrapper">
                                                             <label for="nipa" class="form-label">Upload an image</label>
                                                             <!-- actual upload which is hidden -->
-                                                            <input name="nipaUpload" id="nipa" type="file">
+                                                            <input name="nipaUpload" id="nipaUpload" type="file">
                                                             <!-- our custom upload button -->
-                                                            <label for="nipa" title="No File Choosen">
+                                                            <label for="nipaUpload" title="No File Choosen">
                                                                 <span class="text-center color-white">Upload Cover</span>
                                                             </label>
                                                         </div>
