@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\ProductImages;
 use App\Repository\ProductRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,9 +24,9 @@ class UserDashboardController extends AbstractController
 
             $movement_direction = $request->get("movement_direction");
 
-            $prods = $session->get('allProducts');
-            $nbr_pages = $session->get('nbr_pages');
-            $current_page = $session->get('current_page');
+            $prods = $session->get('allProducts4Owner');
+            $nbr_pages = $session->get('nbr_pages4Owner');
+            $current_page = $session->get('current_page4Owner');
             $previous_page = $current_page;
 
             if ($current_page != $nbr_pages && $movement_direction == "next")
@@ -35,21 +36,20 @@ class UserDashboardController extends AbstractController
             else
                 $current_page = $movement_direction;
 
-            $session->set('current_page', $current_page);
+            $session->set('current_page4Owner', $current_page);
 
 
-            return $this->render('market_place/sub_market.html.twig', [
+            return $this->render('user_dashboard/sub_onsale_products.html.twig', [
                 'products' => array_slice($prods, ($current_page - 1) * 10, 10),
                 'current_page' => $current_page,
                 'previous_page' => $previous_page,
             ]);
-
         }
 
-        $session->set('allProducts', $productRepository->findBy(['isDeleted' => false]));
-        $prods = $session->get('allProducts');
-        $session->set('nbr_pages', ceil(sizeof($prods) / 10));
-        $session->set('current_page', 1);
+        $session->set('allProducts4Owner', $productRepository->findBy(['isDeleted' => false]));
+        $prods = $session->get('allProducts4Owner');
+        $session->set('nbr_pages4Owner', ceil(sizeof($prods) / 10));
+        $session->set('current_page4Owner', 1);
 
 
         return $this->render('user_dashboard/author.html.twig', [

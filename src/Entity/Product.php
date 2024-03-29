@@ -47,8 +47,8 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $category = null;
 
-    #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product')]
-//    #[ORM\JoinColumn(name: "images",referencedColumnName:"idProduct")]
+    #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product',fetch:"EAGER")]
+//    #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
     private Collection $images;
 
     public function __construct()

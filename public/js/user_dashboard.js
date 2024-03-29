@@ -15,8 +15,7 @@ function DisplayListProducts4Owner(movement_direction) {
         },
         async: true,
         success: function (response) {
-            $("#sub-market-block").html(response);
-
+            $("#sub-onsale-block").html(response);
             setTimeout(function() {
                 launchSwiper();
             }, 1000);

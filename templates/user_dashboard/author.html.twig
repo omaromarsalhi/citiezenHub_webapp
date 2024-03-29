@@ -115,26 +115,26 @@
                         <nav class="tab-button-one">
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <button
-                                        class="nav-link"
+                                        class="nav-link active"
                                         id="nav-home-tab"
                                         data-bs-toggle="tab"
                                         data-bs-target="#nav-home"
                                         type="button"
                                         role="tab"
                                         aria-controls="nav-home"
-                                        aria-selected="false"
+                                        aria-selected="true"
                                 >
                                     On Sale
                                 </button>
                                 <button
-                                        class="nav-link active"
+                                        class="nav-link"
                                         id="nav-profile-tab"
                                         data-bs-toggle="tab"
                                         data-bs-target="#nav-profile"
                                         type="button"
                                         role="tab"
                                         aria-controls="nav-profile"
-                                        aria-selected="true"
+                                        aria-selected="false"
                                 >
                                     Owned
                                 </button>
@@ -152,7 +152,7 @@
                                 </button>
                                 <button
                                         class="nav-link"
-                                        id="nav-liked-tab"
+                                        id="nav-unverified-tab"
                                         data-bs-toggle="tab"
                                         data-bs-target="#nav-liked"
                                         type="button"
@@ -160,7 +160,7 @@
                                         aria-controls="nav-liked"
                                         aria-selected="false"
                                 >
-                                    Liked
+                                    Unverified
                                 </button>
                             </div>
                         </nav>
@@ -170,11 +170,13 @@
 
             <div class="tab-content rn-bid-content" id="nav-tabContent">
 
-                <div class="tab-pane row g-5 d-flex fade" id="nav-home" role="tabpanel"
+                <div class="tab-pane row g-5 d-flex fade show active" id="nav-home" role="tabpanel"
                      aria-labelledby="nav-home-tab">
-                    <!-- start single product -->
-                    {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': products} %}
-                    <!-- end single product -->
+                    <div id="sub-onsale-block" class="row g-5">
+                        <!-- start single product -->
+                        {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': products} %}
+                        <!-- end single product -->
+                    </div>
                     {% if nbr_pages >= 2 %}
                         <nav class="pagination-wrapper" aria-label="Page navigation example">
                             <ul class="pagination single-column-blog">
@@ -185,10 +187,10 @@
                                     <a class="page-link active" onclick="DisplayListProducts4Owner(1)" id="page-1">1</a>
                                 </li>
                                 {% for i in 2..nbr_pages %}
-                                <li class="page-item">
-                                    <a class="page-link" onclick="DisplayListProducts4Owner({{ i }})"
-                                       id="page-{{ i }}">{{ i }}</a>
-                                </li>
+                                    <li class="page-item">
+                                        <a class="page-link" onclick="DisplayListProducts4Owner({{ i }})"
+                                           id="page-{{ i }}">{{ i }}</a>
+                                    </li>
                                 {% endfor %}
                                 <li class="page-item">
                                     <a class="page-link" onclick="DisplayListProducts4Owner('next')">Next</a>
@@ -197,7 +199,7 @@
                         </nav>
                     {% endif %}
                 </div>
-                <div class="tab-pane row g-5 d-flex fade show active" id="nav-profile" role="tabpanel"
+                <div class="tab-pane row g-5 d-flex fade" id="nav-profile" role="tabpanel"
                      aria-labelledby="nav-profile-tab">
                     <!-- start single product -->
                     <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
@@ -418,7 +420,7 @@
                     <!-- end single product -->
                 </div>
                 <div class="tab-pane row g-5 d-flex fade" id="nav-liked" role="tabpanel"
-                     aria-labelledby="nav-contact-tab">
+                     aria-labelledby="nav-unverified-tab">
                     <!-- start single product -->
                     <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="product-style-one no-overlay with-placeBid">
@@ -501,7 +503,7 @@
                                 </div>
                             </div>
                             <a href="product-details.html"
-                            ><span class="product-name">NameStroam</span></a
+                            ><span class="product-name">unverified</span></a
                             >
                             <span class="latest-bid">Highest bid 1/20</span>
                             <div class="bid-react-area">
