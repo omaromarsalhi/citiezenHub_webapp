@@ -19,6 +19,10 @@ class ProductImages
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
+    private ?Product $product = null;
+
 
 
     public function getIdImage(): ?int
@@ -46,6 +50,18 @@ class ProductImages
     public function setPath(string $path): static
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }

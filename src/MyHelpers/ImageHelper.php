@@ -2,6 +2,7 @@
 
 namespace App\MyHelpers;
 
+use App\Entity\Product;
 use App\Entity\ProductImages;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,16 +16,16 @@ class ImageHelper
     {
         $this->entityManager = $entityManager;
     }
-    public  function saveImages(Mixed $file,int $id_product): void{
+    public  function saveImages(Mixed $file,Product $product): void{
         if ($file) {
             $product_image = new ProductImages();
             $fileName = md5(uniqid()) . '.' . $file->guessClientExtension();
-                $file->move(
+            $file->move(
                     '../public/usersImg/',
                     $fileName
                 );
             $product_image->setPath('usersImg/'.$fileName);
-            $product_image->setIdProduct($id_product);
+            $product_image->setProduct($product);
 
             $this->entityManager->persist($product_image);
             $this->entityManager->flush();

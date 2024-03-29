@@ -44,6 +44,7 @@ function createProduct(e) {
             processData: false,
             contentType: false,
             success: function (response) {
+                console.log(response.state)
                 loader_stop(4000)
                 setTimeout(function (){
                     handle_success('the product has been added successfully')
@@ -55,10 +56,9 @@ function createProduct(e) {
                     $('#quantity').val('');
                     $('#category').val('');
                 },4100)
-
             },
             error: function (response) {
-                console.log("error");
+                console.log("error oo");
             },
         });
     }

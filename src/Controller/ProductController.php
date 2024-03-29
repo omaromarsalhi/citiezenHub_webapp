@@ -46,11 +46,11 @@ class ProductController extends AbstractController
             $entityManager->persist($new_product);
             $entityManager->flush();
 
-            $product_id = $productRepository->findOneBy([], ['idProduct' => 'DESC'])->getIdProduct();
+            $product = $productRepository->findOneBy([], ['idProduct' => 'DESC']);
 
             $images = $request->files->all();
             for ($i = 0; $i < sizeof($images); $i++) {
-                $imageHelper->saveImages($images['file-' . ($i + 1)], $product_id);
+                $imageHelper->saveImages($images['file-' . ($i + 1)], $product);
             }
 
             return new JsonResponse(['state' => 'done']);

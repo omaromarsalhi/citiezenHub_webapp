@@ -4,25 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\ProductImages;
-use App\Form\ProductType;
-use App\MyHelpers\ImageHelper;
-use App\Repository\ProductImagesRepository;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/market/place')]
-class MarketPlaceController extends AbstractController
+#[Route('/user/dashboard', name: 'app_user_dashboard')]
+class UserDashboardController extends AbstractController
 {
-
-    #[Route('/', name: 'app_market_place_index', methods: ['GET', 'POST'])]
-    public function index(ProductRepository $productRepository, Request $request): Response
+    #[Route('/', name: '_index')]
+    public function index(ProductRepository $productRepository,Request $request): Response
     {
+
         $session = $request->getSession();
 
         if ($request->isXmlHttpRequest()) {
@@ -45,35 +39,25 @@ class MarketPlaceController extends AbstractController
 
 
             return $this->render('market_place/sub_market.html.twig', [
-                'products' => array_slice($prods, ($current_page - 1) * 12, 12),
+                'products' => array_slice($prods, ($current_page - 1) * 10, 10),
                 'current_page' => $current_page,
                 'previous_page' => $previous_page,
             ]);
 
         }
 
-        $session->set('allProducts', $productRepository->findAll());
+        $session->set('allProducts', $productRepository->findBy(['isDeleted' => false]));
         $prods = $session->get('allProducts');
-        $session->set('nbr_pages', ceil(sizeof($prods) / 12));
+        $session->set('nbr_pages', ceil(sizeof($prods) / 10));
         $session->set('current_page', 1);
 
-//        $productimage=new ProductImages();
-//        $productimage->setPath('usersImg/f76c774e989a81e8ad43906570a26d48.png');
-//
-//        $prodss=new Product();
-//        $prodss=$prodss->addProductImage($productimage);
 
-//        dump($prods);
-//        for($i=0;$i<sizeof($prods);$i++)
-//            echo $prods[$i]->getImages()[0]->getPath();
-//        die();
-
-        return $this->render('market_place/market.html.twig', [
-            'products' => array_slice($prods, 0, 12),
-            'nbr_pages' => ceil(sizeof($prods) / 12),
+        return $this->render('user_dashboard/author.html.twig', [
+            'products' => array_slice($prods, 0, 10),
+            'nbr_pages' => ceil(sizeof($prods) / 10),
             'current_page' => 1,
             'previous_page' => 2,
         ]);
-    }
 
+    }
 }

@@ -14,3 +14,8 @@
     min-height: 390px !important;
     min-width: 350px !important;
 }
+
+
+.fixedImagesSize4owner{
+    min-height: 300px !important;
+}
