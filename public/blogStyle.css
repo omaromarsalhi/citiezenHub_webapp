@@ -1,0 +1,31 @@
+.modal {
+    display: none; /* Masquer la modal par défaut */
+    position: fixed; /* Positionnement fixe pour rester au centre */
+    left: 0;
+    top: 0;
+    width: 100%; /* Pleine largeur */
+    height: 100%; /* Pleine hauteur */
+    overflow: auto; /* Activer le défilement si nécessaire */
+    background-color: rgba(0, 0, 0, 0.4); /* Fond semi-transparent */
+}
+
+.modal-content {
+    overflow: auto; /* Empêche le défilement */
+    width: 80%; /* Ajustez la largeur selon vos besoins */
+    height: 80%; /* Ajustez la hauteur selon vos besoins */
+    background-color: #1d1d26; /* Couleur de fond */
+    margin: auto; /* Centrez horizontalement */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    position: relative; /* Position relative pour centrer verticalement */
+    top: 50%; /* Déplacez la moitié de la hauteur de la modal vers le haut */
+    transform: translateY(-50%); /* Ajustez pour centrer verticalement */
+}
+
+.close {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+

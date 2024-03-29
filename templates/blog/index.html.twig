@@ -2,6 +2,48 @@
 
 {% block title %}Hello BlogController!{% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/feature.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}">
+
+    <!-- Style css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('blogStyle.css') }}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{ asset('js/BlogScript.js') }}"></script>
+    <script src="assets/js/vendor/jquery.js"></script>
+    <script src="assets/js/vendor/jquery.nice-select.min.js"></script>
+    <script src="assets/js/vendor/jquery-ui.js"></script>
+    <script src="assets/js/vendor/modernizer.min.js"></script>
+    <script src="assets/js/vendor/feather.min.js"></script>
+    <script src="assets/js/vendor/slick.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/vendor/sal.min.js"></script>
+    <script src="assets/js/vendor/particles.js"></script>
+    <script src="assets/js/vendor/jquery.style.swicher.js"></script>
+    <script src="assets/js/vendor/js.cookie.js"></script>
+    <script src="assets/js/vendor/count-down.js"></script>
+    <script src="assets/js/vendor/isotop.js"></script>
+    <script src="assets/js/vendor/imageloaded.js"></script>
+    <script src="assets/js/vendor/backtoTop.js"></script>
+    <script src="assets/js/vendor/odometer.js"></script>
+    <script src="assets/js/vendor/jquery-appear.js"></script>
+    <script src="assets/js/vendor/scrolltrigger.js"></script>
+    <script src="assets/js/vendor/jquery.custom-file-input.js"></script>
+    <script src="assets/js/vendor/savePopup.js"></script>
+    <script src="assets/js/vendor/vanilla.tilt.js"></script>
+
+    <!-- main JS -->
+    <script src="assets/js/main.js"></script>
+{% endblock %}
 
 {% block body %}
     <!-- start page title area -->
@@ -22,8 +64,6 @@
         </div>
     </div>
     <!-- end page title area -->
-
-
 
     <!-- blog details area start -->
     <div class="rn-blog-area rn-blog-details-default rn-section-gapTop">
@@ -51,108 +91,15 @@
                                 </div>
                             </div>
 
-                            <button name="submit" type="submit" class="btn btn-primary" onclick="addPost(event)">Publier</button>
+                            <button name="submit" type="submit" class="btn btn-primary" onclick="addPost(event)">
+                                Publier
+                            </button>
                         </form>
                     </div>
                 </div>
-                <script>
-                    function addPost(event) {
-                        event.preventDefault();
-                        let formData = new FormData();
-                        let caption = $('#contact-message').val();
-                        formData.append('image', $('#nipa').prop('files')[0]);
-                        formData.append('caption', caption);
-                        $.ajax({
-
-                            url: '/new',
-                            type: "POST",
-                            data: formData,
-
-                            async: true,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                console.log(response.state);
-                                $('#contact-message').val('');
-                                $('#nipa').val('');
-                            },
-                            error: function (response) {
-                                console.log("error");
-                            },
-                        });
-                    }
-
-                </script>
                 <!-- login form end -->
 
-                <div class="col-xl-4 col-lg-4 mt_md--40 mt_sm--40">
-                    <aside class="rwt-sidebar">
-
-                        <div class="rbt-single-widget widget_categories">
-                            <h3 class="title">Categories</h3>
-                            <div class="inner">
-                                <ul class="category-list ">
-                                    <li><a href="#"><span class="left-content">Music NFT's</span><span
-                                                    class="count-text">300</span></a></li>
-                                    <li><a href="#"><span class="left-content">NFT Creators</span><span
-                                                    class="count-text">275</span></a></li>
-                                    <li><a href="#"><span class="left-content">Rare Products</span><span
-                                                    class="count-text">625</span></a></li>
-                                    <li><a href="#"><span class="left-content">Rate Vedios</span><span
-                                                    class="count-text">556</span></a></li>
-                                    <li><a href="#"><span class="left-content">Digital Arts</span><span
-                                                    class="count-text">247</span></a></li>
-                                    <li><a href="#"><span class="left-content">App
-                                                Music NFT's</span><span class="count-text">457</span></a></li>
-                                    <li><a href="#"><span class="left-content">Application</span><span
-                                                    class="count-text">423</span></a></li>
-                                    <li><a href="#"><span class="left-content">Art</span><span
-                                                    class="count-text">235</span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="rbt-single-widget widget_recent_entries mt--40">
-                            <h3 class="title">Recent Posts</h3>
-                            <div class="inner">
-                                <ul>
-                                    <li><a class="d-block" href="#">Best Corporate Tips You Will
-                                            Read This Year.</a><span class="cate">Music NFT's</span></li>
-                                    <li><a class="d-block" href="#">Should Fixing Corporate Take
-                                            100 Steps.</a><span class="cate">Digital Arts</span></li>
-                                    <li><a class="d-block" href="#">The Next 100 Things To
-                                            Immediately Do About.</a><span class="cate">NFT Creators</span></li>
-                                    <li><a class="d-block" href="#">Top 5 Lessons About
-                                            Corporate
-                                            To Learn Before.</a><span class="cate">Rare Products</span></li>
-                                </ul>
-                            </div>
-                        </div>
-
-
-                        <div class="rbt-single-widget widget_tag_cloud mt--40">
-                            <h3 class="title">Tags</h3>
-                            <div class="inner mt--20">
-                                <div class="tagcloud">
-                                    <a href="#">Digital Art</a>
-                                    <a href="#">Rare Image</a>
-                                    <a href="#">Digital Image</a>
-                                    <a href="#">Music</a>
-                                    <a href="#">NFT Vedios</a>
-                                    <a href="#">Company</a>
-                                    <a href="#">Token</a>
-                                    <a href="#">Landing NFts</a>
-                                    <a href="#">Single Image</a>
-                                    <a href="#">App</a>
-                                    <a href="#">Business</a>
-                                    <a href="#">Software</a>
-                                    <a href="#">Landing</a>
-                                    <a href="#">Art</a>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
-                </div>
+                <!-- categorie area houni -->
 
                 <!-- start single blog -->
                 {% for i in posts %}
@@ -163,104 +110,20 @@
                                 <div class="content mb-4">
                                     <div class="category-info">
                                         <div class="category-list">
-                                            <img src="{{ asset('assets/images/activity/activity-01.jpg') }}" height="50" width="50" style="margin-right: 10px">
+                                            <img src="{{ asset('assets/images/activity/activity-01.jpg') }}" height="50"
+                                                 width="50" style="margin-right: 10px">
                                             <a href="blog-details.html">Omar marrakchi</a>
                                         </div>
                                         <div class="meta">
                                             <select onchange="handleMenuAction(this, {{ i.id }}, '{{ i.caption }}', '{{ i.image }}')">
-                                                <!-- Utiliser une icône d'engrenage pour l'option -->
-                                                <option value="" disabled selected hidden><i class="fas fa-cogs"></i></option>
+                                                <option value="" disabled selected hidden><i class="fas fa-cogs"></i>
+                                                </option>
                                                 <option value="modifier">Modifier</option>
                                                 <option value="supprimer">Supprimer</option>
                                             </select>
                                         </div>
                                     </div>
                                     <span>{{ i.datePost|date('D d M Y H:i') }}</span>
-
-
-
-                                    <script>
-                                        var postIdToModify = null;
-                                        function handleMenuAction(select, postId, caption, image) {
-                                            var selectedValue = select.value;
-                                            if (selectedValue === "modifier") {
-                                                postIdToModify = postId;
-                                                showModifierPopup(caption, image);
-                                            } else if (selectedValue === "supprimer") {
-                                                if (postId) {
-                                                    deletePost(postId);
-                                                }
-                                            }
-                                        }
-
-                                        function deletePost(postId) {
-                                            if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?" + postId)) {
-                                                $.ajax({
-                                                    url: '/blog/' + postId,
-                                                    type: 'DELETE',
-                                                    success: function(response) {
-                                                        // Rafraîchir la page ou mettre à jour la liste des posts
-                                                        location.reload();
-                                                    },
-                                                    error: function(xhr, status, error) {
-                                                        // Gérer les erreurs en fonction de vos besoins
-                                                        console.error(error);
-                                                    }
-                                                });
-                                            }
-                                        }
-
-                                        function showModifierPopup(caption, image) {
-                                            var modal = document.getElementById("modifierModal");
-                                            var form = document.getElementById("modifierForm");
-                                            let messageTextarea = document.getElementById("captionModfier");
-                                            let imageModifier = document.getElementById("imageModifer");
-                                            messageTextarea.value = caption;
-                                            imageModifier.src = "images/blog/" + image;
-
-
-                                            modal.style.display = "block";
-
-                                            form.reset();
-                                        }
-
-
-                                        function closeModifierPopup() {
-                                            // Récupérer la fenêtre modale
-                                            var modal = document.getElementById("modifierModal");
-                                            modal.style.display = "none";
-                                        }
-
-                                        // Fonction appelée lorsque l'utilisateur soumet le formulaire
-                                        function submitModifierForm(event) {
-                                            event.preventDefault();
-                                            let formData = new FormData();
-                                            let caption = $('#captionModfier').val();
-                                            formData.append('caption', caption);
-                                            formData.append('image', $('#nipaUpload').prop('files')[0]);
-                                            console.log('image', $('#nipaUpload').prop('files')[0]);
-
-
-                                            $.ajax({
-                                                url: '/edit/' + postIdToModify,
-                                                type: "POST",
-                                                data: formData,
-
-                                                async: true,
-                                                processData: false,
-                                                contentType: false,
-                                                success: function (response) {
-                                                    console.log(response.state);
-                                                },
-                                                error: function (response) {
-                                                    console.log("error");
-                                                },
-                                            });
-                                            closeModifierPopup();
-                                        }
-                                    </script>
-
-
                                     <h4 class="title"><a href="blog-details.html">{{ i.caption }} <i
                                                     class="feather-arrow-up-right"></i></a></h4>
                                 </div>
@@ -275,85 +138,59 @@
                             </div>
                         </div>
                     </div>
+                {% endfor %}
+                <!-- end single blog -->
 
-                    <!-- Modal de modification -->
-                    <div id="modifierModal" class="modal">
-                        <div class="modal-content">
-                            <span class="close" onclick="closeModifierPopup()">&times;</span>
-                            <div class="login-area message-area rn-section-gapTop">
-                                <div class="container">
-                                    <div class="row g-5">
-                                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
-                                            <div class="connect-thumbnail">
-                                                <div class="left-image">
-                                                    <img src="assets/images/contact/contact1.png" alt="Nft_Profile" id="imageModifer">
-                                                </div>
+                <!-- Modal de modification -->
+                <div id="modifierModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModifierPopup()">&times;</span>
+                        <div class="login-area message-area rn-section-gapTop">
+                            <div class="container">
+                                <div class="row g-5">
+                                    <div class="col-lg-6" data-sal="slide-up" data-sal-delay="150"
+                                         data-sal-duration="800">
+                                        <div class="connect-thumbnail">
+                                            <div class="left-image">
+                                                <img src="assets/images/contact/contact1.png" alt="Nft_Profile"
+                                                     id="imageModifer">
                                             </div>
                                         </div>
-                                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
-                                            <div class="form-wrapper-one registration-area">
-                                                <h3 class="mb--30">Modifier votre post</h3>
-                                                <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
-                                                    <div class="mb-5">
-                                                        <label for="captionModfier" class="form-label">Write Message</label>
-                                                        <textarea name="captionModfier" id="captionModfier" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-lg-6" data-sal="slide-up" data-sal-delay="200"
+                                         data-sal-duration="800">
+                                        <div class="form-wrapper-one registration-area">
+                                            <h3 class="mb--30">Modifier votre post</h3>
+                                            <form class="rwt-dynamic-form" id="contact-form" method="POST"
+                                                  action="mail.php">
+                                                <div class="mb-5">
+                                                    <label for="captionModfier" class="form-label">Write
+                                                        Message</label>
+                                                    <textarea name="captionModfier" id="captionModfier"
+                                                              rows="3"></textarea>
+                                                </div>
+                                                <div class="button-area mb-5">
+                                                    <div class="brows-file-wrapper">
+                                                        <label for="nipa" class="form-label">Upload an image</label>
+                                                        <!-- actual upload which is hidden -->
+                                                        <input name="nipaUpload" id="nipaUpload" type="file" onclick="changerImage()">
+                                                        <!-- our custom upload button -->
+                                                        <label for="nipaUpload" title="No File Choosen">
+                                                            <span class="text-center color-white">Upload Cover</span>
+                                                        </label>
                                                     </div>
-                                                    <div class="button-area mb-5">
-                                                        <div class="brows-file-wrapper">
-                                                            <label for="nipa" class="form-label">Upload an image</label>
-                                                            <!-- actual upload which is hidden -->
-                                                            <input name="nipaUpload" id="nipaUpload" type="file">
-                                                            <!-- our custom upload button -->
-                                                            <label for="nipaUpload" title="No File Choosen">
-                                                                <span class="text-center color-white">Upload Cover</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <button name="submit" type="submit" class="btn btn-primary" onclick="submitModifierForm(event)">Modifier</button>
-                                                </form>
-                                            </div>
+                                                </div>
+                                                <button name="submit" type="submit" class="btn btn-primary"
+                                                        onclick="submitModifierForm(event)">Modifier
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <style>
-                        /* Styles pour la modal */
-                        .modal {
-                            display: none; /* Masquer la modal par défaut */
-                            position: fixed; /* Positionnement fixe pour rester au centre */
-                            left: 0;
-                            top: 0;
-                            width: 100%; /* Pleine largeur */
-                            height: 100%; /* Pleine hauteur */
-                            overflow: auto; /* Activer le défilement si nécessaire */
-                            background-color: rgba(0,0,0,0.4); /* Fond semi-transparent */
-                        }
-
-                        .modal-content {
-                            overflow: auto; /* Empêche le défilement */
-                            width: 80%; /* Ajustez la largeur selon vos besoins */
-                            height: 80%; /* Ajustez la hauteur selon vos besoins */
-                            background-color: #1d1d26; /* Couleur de fond */
-                            margin: auto; /* Centrez horizontalement */
-                            padding: 20px;
-                            border: 1px solid #888;
-                            border-radius: 10px;
-                            position: relative; /* Position relative pour centrer verticalement */
-                            top: 50%; /* Déplacez la moitié de la hauteur de la modal vers le haut */
-                            transform: translateY(-50%); /* Ajustez pour centrer verticalement */
-                        }
-                        .close {
-                            font-size:
-                                    30px; /* Choisissez la taille souhaitée */
-                        }
-                    </style>
-
-
-                {% endfor %}
-                <!-- end single blog -->
+                </div>
 
 
                 <!-- navigation Pagination -->
