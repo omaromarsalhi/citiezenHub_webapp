@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReclamationController!
+{% endblock %}
+
+{% block body %}
+	<!-- start page title area -->
+	<div class="rn-breadcrumb-inner ptb--30">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-6 col-md-6 col-12">
+					<h5 class="title text-center text-md-start">Add Reclamation
+					</h5>
+				</div>
+				<div class="col-lg-6 col-md-6 col-12">
+					<ul class="breadcrumb-list">
+						<li class="item">
+							<a href="index.html">Home</a>
+						</li>
+						<li class="separator">
+							<i class="feather-chevron-right"></i>
+						</li>
+						<li class="item current">Reclamation</li>
+						{% for message in app.flashes('success') %}
+							<div class="alert alert-success">
+								{{message}}
+							</div>
+						{% endfor %}
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end page title area -->
+
+	<!-- create new product area -->
+	<div class="create-area rn-section-gapTop">
+		<div class="container">
+			<div class="row g-5">
+				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+					<form id="form" name="reclamation" method="post" enctype="multipart/form-data">
+						<div class="upload-area">
+							<div class="upload-formate mb--30">
+								<h6 class="title">
+									Upload file
+								</h6>
+								<p class="formate">
+									Drag or choose your file to upload
+								</p>
+							</div>
+							<div class="brows-file-wrapper">
+								<input type="file" name="reclamation[imageFile][file]" id="reclamation_imageFile_file" required="required" accept="image/*" class="inputfile"/>
+								<img id="createfileImage" src="{{ asset('/assets/images/portfolio/1.jpeg') }}" alt data-black-overlay="6">
+								<label for="reclamation_imageFile_file" title="No File Choosen">
+									<i class="feather-upload"></i>
+									<span class="text-center">Choose a File</span>
+									<p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3.
+										<br>
+										Max 1Gb.</p>
+								</label>
+							</div>
+						</div>
+					
+					
+						<!-- file upload area 
+													////
+													<div>
+						                                <label class="brows-file-wrapper required">Photo</label>
+						                                <div class="vich-image">
+						                                    <input type="file" id="reclamation_imageFile_file" name="reclamation[imageFile][file]" required="required" accept="image/*"/>
+						                                </div>
+						                            </div>
+													//////////
+																<div class="upload-area">
+											
+																	<div class="upload-formate mb--30">
+																		<h6 class="title">
+																			Upload file
+																		</h6>
+																		<p class="formate">
+																			Drag or choose your file to upload
+																		</p>
+																	</div>
+											
+																	<div class="brows-file-wrapper">
+																		<input name="createinputfile" id="createinputfile" type="file" class="inputfile"/>
+											
+																	
+																		<img id="createfileImage" src="/assets/images/portfolio/1.jpeg" alt data-black-overlay="6">
+											
+																		<label for="createinputfile" title="No File Choosen">
+																			<i class="feather-upload"></i>
+																			<span class="text-center">Choose a File</span>
+																			<p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3.
+																				<br>
+																				Max 1Gb.</p>
+																		</label>
+																	</div>
+																	 end upoad file area -->
+						<div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
+							<h5>Note:
+							</h5>
+							<span>enjoy our Service
+							</span>
+							<br>
+							<span>You will receive our reponse soon
+							</span>
+						</div>
+					</div>
+					<div class="col-lg-7">
+						<div class="form-wrapper-one">
+							<div class="col-md-12">
+								<div class="input-box pb--20">
+									<div>
+										<label for="reclamation_privateKey" class="required">Private Key</label>
+										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required="required"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="input-box pb--20">
+									<div>
+										<label for="reclamation_subject" class="required">Subject</label>
+										<input type="text" id="reclamation_subject" name="reclamation[subject]" required="required"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="input-box pb--20">
+									<div>
+										<label for="reclamation_description" class="required">Description</label>
+										<textarea id="reclamation_description" name="reclamation[description]" required="required"></textarea>
+									</div>
+								</div>
+							</div>
+							<span></span>
+							<span></span>
+							<div class="col-md-12">
+								<div class="input-box">
+									<button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="reclamation__token" name="reclamation[_token]" value="edfefdd8a408443a012c.c_gIArByPEgON4s4Sv8_WXHe6FRKy7Ah9XqrA6GoLmk.PcxBY9cWTX9gBthxC8tSCQHp0SAsifMRmBvTNtDwTCA3sHt7xB9lJUF23g"/>
+	</form>
+
+
+	<!-- create new product area -->
+
+{% endblock %}
