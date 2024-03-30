@@ -25,14 +25,10 @@ class Reeclamation
 
     #[ORM\Column(length: 255)]
     private ?string $imagePath = null;
-    #[Vich\UploadableField(mapping: 'user_images', fileNameProperty: 'imagePath', uploadName: 'my_image_')]
-        private ?File $imageFile = null;
-        private $imageNamePrefix = 'my_image_';
+    #[Vich\UploadableField(mapping: 'user_images', fileNameProperty: 'imagePath' ,)]
+    private ?File $imageFile = null;
 
-        public function getImageName(): string
-        {
-            return $this->imageNamePrefix . uniqid();
-        }
+
     public function getImageFile(): ?File
     {
         return $this->imageFile;
