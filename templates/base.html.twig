@@ -54,38 +54,48 @@
 			<script src="{{asset('/assets/js/vendor/web3.min.js')}}"></script>
 			<script src="{{asset('/assets/js/vendor/maralis.js')}}"></script>
 			<script src="{{asset('/assets/js/vendor/nft.js')}}"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 		{% endblock %}
 	</head>
 	{% include 'parts/header.html.twig' %}
 	<body>
 		{% block body %}{% endblock %}
-		
+
 		<script>
-		  (function() {
-			const form = document.getElementById('form');
-			const submitButton = document.getElementById('submit-button');
-
-			submitButton.addEventListener('click', (e) => {
-			  e.preventDefault();
-
-			  const formData = new FormData(form);
-
-			  fetch('/reclamation', {
-				method: 'POST',
-				body: formData,
-			  })
-			  .then(response => response.text())
-			  .then(data => {
-				// Handle the response from the server
-				console.log(data);
-			  })
-			  .catch(error => {
-				// Handle any errors that occur
-				console.error(error);
-			  });
-			});
-		  })();
-		</script>
-	</body>
-	{% include 'parts/footer.html.twig' %}
-</html>
+			(function() { const form = document.getElementById('form'); const submitButton = document.getElementById('submit-button'); 
+			// Add a submit event listener to the form element
+			 form.addEventListener('submit', function(event) { event.preventDefault();
+			  // Check if the form is valid 
+			  if (form.checkValidity()) { const formData = new FormData(form);
+			   fetch('/reclamation', { method: 'POST',
+			    body: formData, }) 
+				.then(response => response.text()) 
+				.then(data => { 
+					 Swal.fire({ title: 'Success!',
+					  text: 'Your reclamation has been submitted.'
+					 , icon: 'success', confirmButtonText: 'Cool'
+					 , }).
+					 then(() => { // Clear all the form fields
+					  const inputs = form.querySelectorAll('input, textarea');
+					   inputs.forEach(input => { input.value = ''; }); 
+					  
+					   form.reset(); 
+					   }); }) 
+					   .catch(error => {
+						 
+					 console.error(error); 
+					 Swal.fire({ title: 'Error!',
+					  text: 'An error occurred while submitting your reclamation. Please try again later.',
+					   icon: 'error',
+					    confirmButtonText: 'OK',
+						 }); }); } });
+						  submitButton.addEventListener('click', function(event) { 
+							
+							 if (form.checkValidity()) { form.reportValidity(); } }); })();
+							  </script>
+			
+			
+				</body>
+				{% include 'parts/footer.html.twig' %}
+			</html>

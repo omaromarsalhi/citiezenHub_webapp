@@ -61,43 +61,7 @@
 								</label>
 							</div>
 						</div>
-					
-					
-						<!-- file upload area 
-													////
-													<div>
-						                                <label class="brows-file-wrapper required">Photo</label>
-						                                <div class="vich-image">
-						                                    <input type="file" id="reclamation_imageFile_file" name="reclamation[imageFile][file]" required="required" accept="image/*"/>
-						                                </div>
-						                            </div>
-													//////////
-																<div class="upload-area">
-											
-																	<div class="upload-formate mb--30">
-																		<h6 class="title">
-																			Upload file
-																		</h6>
-																		<p class="formate">
-																			Drag or choose your file to upload
-																		</p>
-																	</div>
-											
-																	<div class="brows-file-wrapper">
-																		<input name="createinputfile" id="createinputfile" type="file" class="inputfile"/>
-											
-																	
-																		<img id="createfileImage" src="/assets/images/portfolio/1.jpeg" alt data-black-overlay="6">
-											
-																		<label for="createinputfile" title="No File Choosen">
-																			<i class="feather-upload"></i>
-																			<span class="text-center">Choose a File</span>
-																			<p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3.
-																				<br>
-																				Max 1Gb.</p>
-																		</label>
-																	</div>
-																	 end upoad file area -->
+				
 						<div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
 							<h5>Note:
 							</h5>
@@ -114,7 +78,8 @@
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_privateKey" class="required">Private Key</label>
-										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required="required"/>
+<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required pattern="^[0-9]+$" />
+
 									</div>
 								</div>
 							</div>
@@ -122,7 +87,8 @@
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_subject" class="required">Subject</label>
-										<input type="text" id="reclamation_subject" name="reclamation[subject]" required="required"/>
+<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required pattern="^[a-zA-Z]+$" />
+
 									</div>
 								</div>
 							</div>
@@ -130,7 +96,8 @@
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_description" class="required">Description</label>
-										<textarea id="reclamation_description" name="reclamation[description]" required="required"></textarea>
+<textarea id="reclamation_description" name="reclamation[description]" required></textarea>
+
 									</div>
 								</div>
 							</div>
