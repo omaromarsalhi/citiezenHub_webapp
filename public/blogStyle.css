@@ -15,17 +15,17 @@
     height: 80%; /* Ajustez la hauteur selon vos besoins */
     background-color: #1d1d26; /* Couleur de fond */
     margin: auto; /* Centrez horizontalement */
-    padding: 20px;
-    border: 1px solid #888;
+    padding: 30px;
+    border: 2px solid #30303b;
     border-radius: 10px;
     position: relative; /* Position relative pour centrer verticalement */
     top: 50%; /* Déplacez la moitié de la hauteur de la modal vers le haut */
     transform: translateY(-50%); /* Ajustez pour centrer verticalement */
 }
 
-.close {
+/*.close {
     font-size: 30px;
     cursor: pointer;
-}
+}*/
 
 

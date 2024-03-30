@@ -59,7 +59,12 @@ function showModifierPopup(caption, image) {
     let messageTextarea = document.getElementById("captionModfier");
     let imageModifier = document.getElementById("imageModifer");
     messageTextarea.value = caption;
-    imageModifier.src = "images/blog/" + image;
+    if (image !== "") {
+        imageModifier.src = "images/blog/" + image;
+    }
+    else {
+        imageModifier.src = "aucuneImg.png";
+    }
     modal.style.display = "block";
     form.reset();
 }
@@ -99,6 +104,20 @@ function submitModifierForm(event) {
     closeModifierPopup();
 }
 
+// Cette fonction vérifie si le clic a été effectué en dehors de la fenêtre modale
+function windowOnClick(event) {
+    var modal = document.getElementById('modifierModal');
+    if (event.target === modal) {
+        closeModifierPopup();
+    }
+}
+
+// Ajoutez cet écouteur d'événements à la fenêtre
+document.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('click', windowOnClick);
+});
+
+
 function changerImage() {
     document.getElementById("nipaUpload").addEventListener("change", function () {
         var imageFile = this.files[0];
@@ -107,7 +126,6 @@ function changerImage() {
             var imageModifier = document.getElementById("imageModifer");
             imageModifier.src = event.target.result;
         };
-        // Lire le contenu de l'image en tant que URL de données
         reader.readAsDataURL(imageFile);
     });
 }
