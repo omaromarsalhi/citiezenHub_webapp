@@ -1,5 +1,5 @@
-{#<input type="hidden" id="currentPage" value={{ current_page }}>#}
-{#<input type="hidden" id="previousPage" value={{ previous_page }}>#}
+{# <input type="hidden" id="currentPage" value={{ current_page }}> #}
+{# <input type="hidden" id="previousPage" value={{ previous_page }}> #}
 
 {% for i,product in products %}
     <!-- start single product -->
@@ -21,8 +21,14 @@
                             <div class="swiper-pagination"></div>
                         </div>
                     {% else %}
-                        <a href="product-details.html"><img src="{{ asset(product.images[0].path) }}"
-                                                            alt="NFT_portfolio"></a>
+                        <div>
+                            <a href="product-details.html"><img src="{{ asset(product.images[0].path) }}"
+                                                                alt="NFT_portfolio"
+                                                                class="unverifiedCss"
+                                                                    >
+                            </a>
+
+                        </div>
                     {% endif %}
                 </a>
             </div>

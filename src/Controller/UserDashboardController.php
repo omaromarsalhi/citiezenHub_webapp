@@ -58,8 +58,8 @@ class UserDashboardController extends AbstractController
         }
 
 
-        $on_sale=$productRepository->findBy(['isDeleted' => false]);
-        $unverified=$productRepository->findBy(['isDeleted' => false]);
+        $on_sale=$productRepository->findBy(['isDeleted' => false,'state' => 'verified']);
+        $unverified=$productRepository->findBy(['isDeleted' => false,'state' => 'unverified']);
 
         $map=[
             'on_sale'=>new PaginationHelper($on_sale,1,2,ceil(sizeof($on_sale) / 10)),
