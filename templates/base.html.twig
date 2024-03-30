@@ -69,7 +69,7 @@
 			  // Check if the form is valid 
 			  if (form.checkValidity()) { const formData = new FormData(form);
 			   fetch('/reclamation', { method: 'POST',
-			    body: formData, }) 
+				body: formData, }) 
 				.then(response => response.text()) 
 				.then(data => { 
 					 Swal.fire({ title: 'Success!',
@@ -86,9 +86,9 @@
 						 
 					 console.error(error); 
 					 Swal.fire({ title: 'Error!',
-					  text: 'An error occurred while submitting your reclamation. Please try again later.',
+					  text: error.message,
 					   icon: 'error',
-					    confirmButtonText: 'OK',
+						confirmButtonText: 'OK',
 						 }); }); } });
 						  submitButton.addEventListener('click', function(event) { 
 							
