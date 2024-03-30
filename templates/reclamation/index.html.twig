@@ -41,42 +41,42 @@
 				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
 					<form id="form" name="reclamation" method="post" enctype="multipart/form-data">
 						<div class="upload-area">
-													<div class="upload-formate mb--30">
-														<h6 class="title">
-															Upload file
-														</h6>
-														<p class="formate">
-															Drag or choose your file to upload
-														</p>
-													</div>
-													<div class="brows-file-wrapper">
-														<input type="file" name="reclamation[imageFile][file]" id="reclamation_imageFile_file" required="required" accept="image/*" class="inputfile"/>
-														<img id="createfileImage" src="{{ asset('/assets/images/portfolio/1.jpeg') }}" alt data-black-overlay="6">
-														<label for="reclamation_imageFile_file" title="No File Choosen">
-															<i class="feather-upload"></i>
-															<span class="text-center">Choose a File</span>
-															<p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3.
-																<br>
-																Max 1Gb.</p>
-														</label>
-													</div>
-												</div>
-						
+							<div class="upload-formate mb--30">
+								<h6 class="title">
+									Upload file
+								</h6>
+								<p class="formate">
+									Drag or choose your file to upload
+								</p>
+							</div>
+							<div class="brows-file-wrapper">
+								<input type="file" name="reclamation[imageFile][file]" id="reclamation_imageFile_file" required="required" accept="image/*" class="inputfile"/>
+								<img id="createfileImage" src="{{ asset('/assets/images/portfolio/1.jpeg') }}" alt data-black-overlay="6">
+								<label for="reclamation_imageFile_file" title="No File Choosen">
+									<i class="feather-upload"></i>
+									<span class="text-center">Choose a File</span>
+									<p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3.
+										<br>
+										Max 1Gb.</p>
+								</label>
+							</div>
+						</div>
+
 						<script>
-						const input = document.getElementById('reclamation_imageFile_file');
-						const img = document.getElementById('createfileImage');
-						
-						input.addEventListener('change', function() {
-						  if (input.files && input.files[0]) {
-							const reader = new FileReader();
-						
-							reader.onload = function(e) {
-							  img.setAttribute('src', e.target.result);
-							}
-						
-							reader.readAsDataURL(input.files[0]);
-						  }
-						});
+							const input = document.getElementById('reclamation_imageFile_file');
+const img = document.getElementById('createfileImage');
+
+input.addEventListener('change', function () {
+if (input.files && input.files[0]) {
+const reader = new FileReader();
+
+reader.onload = function (e) {
+img.setAttribute('src', e.target.result);
+}
+
+reader.readAsDataURL(input.files[0]);
+}
+});
 						</script>
 						<div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
 							<h5>Note:
@@ -94,7 +94,7 @@
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_privateKey" class="required">Private Key</label>
-<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required pattern="^[0-9]+$" />
+										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required pattern="^[0-9]+$"/>
 
 									</div>
 								</div>
@@ -103,8 +103,7 @@
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_subject" class="required">Subject</label>
-<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required pattern="^[a-zA-Z]+$" />
-
+										<input type="text" id="reclamation_subject" name="reclamation[subject]" required pattern="^[a-zA-Z]+$"/>
 									</div>
 								</div>
 							</div>
@@ -112,7 +111,7 @@
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_description" class="required">Description</label>
-<textarea id="reclamation_description" name="reclamation[description]" required></textarea>
+										<textarea id="reclamation_description" name="reclamation[description]" required></textarea>
 
 									</div>
 								</div>
