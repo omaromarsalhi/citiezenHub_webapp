@@ -24,6 +24,31 @@ function addPost(event) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    var textarea = document.getElementById('contact-message');
+    var fileInput = document.getElementById('nipa');
+    var submitButton = document.getElementById('ajoutPost');
+
+    // Fonction pour vérifier l'état du bouton
+    function verifierEtatBouton() {
+        var caption = textarea.value.trim();
+        var image = fileInput.files.length > 0;
+        // Le bouton est activé si le caption ou l'image est présent, mais pas les deux vides
+        submitButton.disabled = !(caption || image);
+    }
+
+    // Écouteur d'événements pour la textarea
+    textarea.addEventListener('input', verifierEtatBouton);
+
+    // Écouteur d'événements pour l'input de fichier
+    fileInput.addEventListener('change', verifierEtatBouton);
+
+    // Vérification initiale au chargement de la page
+    verifierEtatBouton();
+});
+
+
+
 var postIdToModify = null;
 
 function handleMenuAction(select, postId, caption, image) {

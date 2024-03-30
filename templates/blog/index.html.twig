@@ -19,13 +19,13 @@
 
 {% block js %}
     <script src="{{ asset('js/BlogScript.js') }}"></script>
-    <script src="assets/js/vendor/jquery.js"></script>
-    <script src="assets/js/vendor/jquery.nice-select.min.js"></script>
-    <script src="assets/js/vendor/jquery-ui.js"></script>
-    <script src="assets/js/vendor/modernizer.min.js"></script>
-    <script src="assets/js/vendor/feather.min.js"></script>
-    <script src="assets/js/vendor/slick.min.js"></script>
-    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src={{ asset('assets/js/vendor/jquery.js') }}></script>
+    <script src={{ asset('assets/js/vendor/jquery.nice-select.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/jquery-ui.js') }}></script>
+    <script src={{ asset('assets/js/vendor/modernizer.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/feather.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/slick.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/bootstrap.min.js') }}></script>
     <script src="assets/js/vendor/sal.min.js"></script>
     <script src="assets/js/vendor/particles.js"></script>
     <script src="assets/js/vendor/jquery.style.swicher.js"></script>
@@ -104,7 +104,7 @@
 
                             </div>
 
-                            <button name="submit" type="submit" class="btn btn-primary" onclick="addPost(event)">
+                            <button name="submit" id="ajoutPost" type="submit" class="btn btn-primary" onclick="addPost(event)">
                                 Publier
                             </button>
                         </form>

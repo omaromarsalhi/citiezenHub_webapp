@@ -21,7 +21,6 @@ class BlogController extends AbstractController
     #[Route('/blog', name: 'app_blog')]
     public function index(PostRepository $postRepository): Response
     {
-        // Récupérer les posts triés par ordre décroissant en fonction de leur ID
         $posts = $postRepository->findBy([], ['datePost' => 'DESC']);
 
         return $this->render('blog/index.html.twig', [
@@ -36,10 +35,16 @@ class BlogController extends AbstractController
             $post = new Post();
             $caption = $req->get('caption');
             $fichierImage = $req->files->get('image');
+
+            // Contrôle de saisie
+            if ((empty($caption) && empty($fichierImage)) || (ctype_space($caption) && empty($fichierImage))) {
+                // Retourner une réponse JSON indiquant l'échec de la validation
+                return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
+            }
+
             $post->setCaption($caption);
             $post->setImageFile($fichierImage);
             $post->setDatePost(new DateTime());
-
 
             $em = $doc->getManager();
             $em->persist($post);
@@ -48,6 +53,7 @@ class BlogController extends AbstractController
         }
         return $this->redirectToRoute('app_blog');
     }
+
 
     #[Route('/blog/{id}', name: 'app_blog_delete', methods: ['DELETE'])]
     public function delete(ManagerRegistry $doctrine, $id, PostRepository $postRepository, Request $req): Response
