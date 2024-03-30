@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class GoogleAuthentificator extends SocialAuthenticator
-{  //lllll
+{  //lllllnn
 
     private $clientRegistry;
     private $entityManager;
