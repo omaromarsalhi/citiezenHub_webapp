@@ -17,5 +17,6 @@
 
 
 .fixedImagesSize4owner{
-    min-height: 300px !important;
+    min-height: 251px !important;
+    min-width: 251px !important;
 }
