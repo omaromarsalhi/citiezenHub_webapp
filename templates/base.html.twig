@@ -26,34 +26,52 @@
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
-			<script src="{{asset('/assets/js/vendor/jquery.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/jquery.nice-select.min.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/jquery-ui.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/modernizer.min.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/feather.min.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/slick.min.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/bootstrap.min.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/sal.min.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/particles.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/jquery.style.swicher.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/js.cookie.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/count-down.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/isotop.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/imageloaded.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/backtoTop.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/odometer.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/jquery-appear.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/scrolltrigger.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/jquery.custom-file-input.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/savePopup.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/vanilla.tilt.js')}}"></script>
+			<!-- End Footer Area -->
+			<div class="mouse-cursor cursor-outer"></div>
+			<div class="mouse-cursor cursor-inner"></div>
+			<!-- Start Top To Bottom Area  -->
+			<div class="rn-progress-parent">
+				<svg class="rn-back-circle svg-inner" width="100%" height="100%" viewbox="-1 -1 102 102">
+					<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+				</svg>
+			</div>
+			<!-- End Top To Bottom Area  -->
+
+			<!-- JS ============================================ -->
+			<script src="{{ asset('assets/js/vendor/jquery.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/jquery.nice-select.min.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/jquery-ui.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/modernizer.min.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/feather.min.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/slick.min.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/bootstrap.min.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/sal.min.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/particles.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/jquery.style.swicher.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/js.cookie.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/count-down.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/isotop.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/imageloaded.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/backtoTop.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/odometer.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/jquery-appear.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/scrolltrigger.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/jquery.custom-file-input.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/savePopup.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/vanilla.tilt.js') }}"></script>
 
 			<!-- main JS -->
-			<script src="{{asset('/assets/js/main.js')}}"></script>
+			<script src="{{ asset('assets/js/main.js') }}"></script>
 			<!-- Meta Mask  -->
-			<script src="{{asset('/assets/js/vendor/web3.min.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/maralis.js')}}"></script>
-			<script src="{{asset('/assets/js/vendor/nft.js')}}"></script>
+			<script src="{{ asset('assets/js/vendor/web3.min.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/maralis.js') }}"></script>
+			<script src="{{ asset('assets/js/vendor/nft.js') }}"></script>
+
+
+			<script src="{{ asset('assetsOfOutsiderElements/libs/swiper/swiper-bundle.min.js') }}"></script>
+			<script src="{{ asset('assetsOfOutsiderElements/js/pages/extended-swiper.js') }}"></script>
+			<script src="{{ asset('js/loader.js') }}"></script>
+			<script src="{{ asset('js/error_success.js') }}"></script>
 			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 		{% endblock %}
@@ -63,39 +81,51 @@
 		{% block body %}{% endblock %}
 
 		<script>
-			(function() { const form = document.getElementById('form'); const submitButton = document.getElementById('submit-button'); 
-			// Add a submit event listener to the form element
-			 form.addEventListener('submit', function(event) { event.preventDefault();
-			  // Check if the form is valid 
-			  if (form.checkValidity()) { const formData = new FormData(form);
-			   fetch('/reclamation', { method: 'POST',
-				body: formData, }) 
-				.then(response => response.text()) 
-				.then(data => { 
-					 Swal.fire({ title: 'Success!',
-					  text: 'Your reclamation has been submitted.'
-					 , icon: 'success', confirmButtonText: 'Cool'
-					 , }).
-					 then(() => { // Clear all the form fields
-					  const inputs = form.querySelectorAll('input, textarea');
-					   inputs.forEach(input => { input.value = ''; }); 
-					  
-					   form.reset(); 
-					   }); }) 
-					   .catch(error => {
-						 
-					 console.error(error); 
-					 Swal.fire({ title: 'Error!',
-					  text: error.message,
-					   icon: 'error',
-						confirmButtonText: 'OK',
-						 }); }); } });
-						  submitButton.addEventListener('click', function(event) { 
-							
-							 if (form.checkValidity()) { form.reportValidity(); } }); })();
-							  </script>
-			
-			
-				</body>
-				{% include 'parts/footer.html.twig' %}
-			</html>
+			(function () {
+const form = document.getElementById('form');
+const submitButton = document.getElementById('submit-button');
+// Add a submit event listener to the form element
+form.addEventListener('submit', function (event) {
+event.preventDefault();
+// Check if the form is valid
+if (form.checkValidity()) {
+const formData = new FormData(form);
+fetch('/reclamation', {
+method: 'POST',
+body: formData
+}).then(response => response.text()).then(data => {
+Swal.fire({title: 'Success!', text: 'Your reclamation has been submitted.', icon: 'success', confirmButtonText: 'Cool'}).then(() => { // Clear all the form fields
+const inputs = form.querySelectorAll('input, textarea');
+inputs.forEach(input => {
+input.value = '';
+});
+
+form.reset();
+});
+}).catch(error => {
+
+console.error(error);
+Swal.fire({title: 'Error!', text: error.message, icon: 'error', confirmButtonText: 'OK'});
+});
+}
+});
+submitButton.addEventListener('click', function (event) {
+
+if (form.checkValidity()) {
+form.reportValidity();
+}
+});
+})();
+		</script>
+
+		<div class="mouse-cursor cursor-outer"></div>
+		<div class="mouse-cursor cursor-inner"></div>
+		<!-- Start Top To Bottom Area  -->
+		<div class="rn-progress-parent">
+			<svg class="rn-back-circle svg-inner" width="100%" height="100%" viewbox="-1 -1 102 102">
+				<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+			</svg>
+		</div>
+	</body>
+	{% include 'parts/footer.html.twig' %}
+</html>
