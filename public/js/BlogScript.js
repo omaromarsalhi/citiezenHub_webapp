@@ -13,6 +13,7 @@ function createPostHTML(post) {
     return `
         <div class="col-xl-8 col-lg-8" data-post-id="${post.id}">
             <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
+            ${post.id}
                 <div class="inner">
                     <div class="content mb-4">
                         <div class="category-info">
@@ -44,6 +45,8 @@ function createPostHTML(post) {
 var currentPage = 1;
 var isLoading = false;
 var totalPostsCount = 0;
+var allPostsLoaded = false;
+var postIdToModify = null;
 
 function getTotalPostsCount(callback) {
     $.ajax({
@@ -66,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadPostsPage(page) {
-    if (isLoading || page * 5 > totalPostsCount) {
+    if (isLoading || allPostsLoaded) {
         return;
     }
     isLoading = true;
@@ -78,7 +81,11 @@ function loadPostsPage(page) {
                 var newPostHTML = createPostHTML(post);
                 $('#postsContainer').append(newPostHTML);
             });
-            currentPage++;
+            if (response.posts.length < 5) {
+                allPostsLoaded = true;
+            } else {
+                currentPage++;
+            }
             isLoading = false;
         },
         error: function(xhr, status, error) {
@@ -137,6 +144,9 @@ function addPost(event) {
                 $('#nipa').val('');
                 $('#rbtinput2').attr('src', 'aucuneImg.png');
                 $('#ajoutPost').prop('disabled', true);
+                $('html, body').animate({
+                    scrollTop: 950
+                }, 300);
             } else {
                 console.error('Failed to create post: ' + response.message);
             }
@@ -181,8 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
     verifierEtatBoutonModifier
 });
 
-var postIdToModify = null;
-
 function handleMenuAction(select, postId, caption, image) {
     var selectedValue = select.value;
     if (selectedValue === "modifier") {
@@ -199,7 +207,8 @@ function deletePost(postId) {
             url: '/blog/' + postId,
             type: 'DELETE',
             success: function (response) {
-                $("div[data-post-id='" + postIdToModify + "']").remove();
+                console.log(postId);
+                $("div[data-post-id='" + postId + "']").remove();
             },
             error: function (xhr, status, error) {
                 // Gérer les erreurs en fonction de vos besoins
