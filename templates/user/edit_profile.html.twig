@@ -3,6 +3,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.6/flatpickr.min.js"></script>
+    <script src="{{ asset('js/userScript.js') }}"></script>
     <!-- start page title area -->
     <div class="rn-breadcrumb-inner ptb--30">
         <div class="container">
@@ -29,7 +30,7 @@
             <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
                 <div class="col-12 d-flex justify-content-between mb--30 align-items-center">
                     <h4 class="title-left">Edit Your Profile</h4>
-                    <a  href="{{path('profile',{i:name,j:lastname})}}" class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
+                    <a  href="" class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
                 </div>
             </div>
             <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
@@ -54,26 +55,32 @@
                             <div class="nuron-information">
 
                                 <div class="profile-change row g-5">
-{#                                    <div class="profile-left col-lg-4">#}
-{#                                        <div class="profile-image mb--30">#}
-{#                                            <h6 class="title">Change Your Profile Picture</h6>#}
-{#                                            <img id="rbtinput1" src="assets/images/profile/profile-01.jpg" alt="Profile-NFT">#}
-{#                                        </div>#}
-{#                                        <div class="button-area">#}
-{#                                            <div class="brows-file-wrapper">#}
-{#                                                <!-- actual upload which is hidden -->#}
-{#                                                <input name="image" id="image" type="file">#}
-{#                                                <!-- our custom upload button -->#}
-{#                                                <label for="image" title="No File Choosen">#}
-{#                                                    <span class="text-center color-white">Upload Profile</span>#}
-{#                                                </label>#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                    </div>#}
+                                    <div class="profile-left col-lg-4">
+                                        <div class="profile-image mb--30">
+                                            <h6 class="title">Change Your Profile Picture</h6>
+                                            <img id="rbtinput1" src="" alt="Profile-NFT">
+                                        </div>
+                                        <div class="button-area">
+                                            <div class="brows-file-wrapper">
+                                                <!-- actual upload which is hidden -->
+                                                <input name="image" id="image" type="file">
+                                                <!-- our custom upload button -->
+                                                <label for="image" title="No File Choosen">
+                                                    <span class="text-center color-white">Upload Profile</span>
+                                                </label>
+                                            </div>
+                                            <div class="button-area save-btn-edit">
+                                                <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editImage(event)">Save
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="profile-left right col-lg-8">
                                         <div class="profile-image mb--30">
                                             <h6 class="title">Change Your Cover Photo</h6>
-                                            <img id="rbtinput2" src="{{ asset('public/images/users/' ~ image) }}" alt="Profile-NFT">
+                                            <img id="rbtinput2" src="{{ asset('images/users/' ~ image) }}" alt="Profile-NFT">
                                         </div>
                                         <div class="button-area">
                                             <div class="brows-file-wrapper">
@@ -83,41 +90,13 @@
                                                 <label for="nipa" title="No File Choosen">
                                                     <span class="text-center color-white">Upload Cover</span>
                                                 </label>
-
                                             </div>
-
                                         </div>
-                                        <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="updateImage()">Save
-                                        </button>
                                     </div>
-
-
                                 </div>
                             </div>
                             <!-- End personal information -->
                         </div>
-                        <script>
-                            function updateImage() {
-
-                                var xhr = new XMLHttpRequest();
-                                xhr.onreadystatechange = function() {
-                                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                                        if (xhr.status === 200) {
-                                            var imagePath = "public/images/";
-                                            var imageName = xhr.responseText;
-                                            var imageUrl = imagePath + imageName;
-                                            var imageElement = document.getElementById('rbtinput2');
-                                            imageElement.src = imageUrl;
-                                        } else {
-                                            console.error('La requête a échoué avec un statut ' + xhr.status);
-                                        }
-                                    }
-                                };
-
-                                xhr.open('GET', '/editProfile', true);
-                                xhr.send();
-                            }
-                        </script>
                         <!-- End single tabv content -->
                         <!-- sigle tab content -->
                         <div class="tab-pane fade" id="nav-homes" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -151,11 +130,12 @@
                                     <!-- start Role area -->
                                     <div class="role-area mt--15">
                                         <label for="Address" class="form-label mb--10">Your Address</label>
-                                        <input name="address" id="address" type="text" value={{ address}}  readonly >
+                                        <input name="address" id="address" type="text" value={{ address }}  readonly >
                                     </div>
-                                    <select class="profile-edit-select" name="user[status]" id="status" >
-                                        <option value="1">Married</option>
-                                        <option value="2">Single</option>
+                                    <select class="profile-edit-select" name="user[status]"  id="status" >
+                                        {% set status = status %}
+                                        <option value="Married" {% if status == 'Married' %}selected{% endif %}>Married</option>
+                                        <option value="Single" {% if status == 'Single' %}selected{% endif %}>Single</option>
                                     </select>
                                 </div>
 
@@ -165,10 +145,10 @@
                                         <label for="Role" class="form-label mb--10">Your Role</label>
                                         <input name=role" id="role" type="text" value={{role}}>
                                     </div>
-                                    <select class="profile-edit-select" name="user[gender]" >
-                                        <option selected>Select Your Gender</option>
-                                        <option value="1">Male</option>
-                                        <option value="2">Female</option>
+                                    <select class="profile-edit-select" name="user[gender]"  id="gender" >
+                                        {% set gender = gender %}
+                                        <option value="Male" {% if gender == 'Married' %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if gender == 'Single' %}selected{% endif %}>Female</option>
                                     </select>
                                     <!-- end gender -->
                                 </div>
@@ -205,74 +185,13 @@
 
 
                             </form>
-                            <div class="button-area save-btn-edit">
-                                <a href="#" class="btn btn-primary-alta mr--15" onclick="customAlert.alert('Cancel Edit Profile?')">Cancel</a>
-                                <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editProfile(event)">Save
-                                </button>
 
-                            </div>
-
-                            <script>
-
-                                function editProfile(event) {
-                                    event.preventDefault();
-                                    let formData = new FormData();
-                                    let name=$('#firstname').val();
-                                    let lastname=$('#lastname').val();
-                                    let email=$('#email').val();
-                                    let role=$('#role').val();
-                                    let age=$('#age').val();
-                                    let gender=$('#gender').val();
-                                    let status=$('#status').val();
-                                    let cin=$('#cin').val();
-                                    let phoneNumber=$('#phoneNumber').val();
-                                    let dob=$('#dob').val();
-                                    // let image=$('#image');
-                                    formData.append('image',$('#nipa').prop('files')[0]);
-                                    formData.append('name',name);
-                                    formData.append('lastname',lastname);
-                                    formData.append('email',email);
-                                    formData.append('role',role);
-                                    formData.append('age',age);
-                                    formData.append('gender',gender);
-                                    formData.append('status',status);
-                                    formData.append('cin',cin);
-                                    formData.append('phoneNumber',phoneNumber);
-                                    formData.append('dob',dob);
-                                    $.ajax({
-
-                                        url: '/editProfile',
-                                        type: "POST",
-                                        data:formData,
-                                        //     {
-                                        //     // name: name,
-                                        //     // lastname: lastname,
-                                        //     // email: email,
-                                        //     // role: role,
-                                        //     // age: age,
-                                        //     // gender: gender,
-                                        //     // status: status,
-                                        //     // cin: cin,
-                                        //     // phoneNumber: phoneNumber,
-                                        //     // // image : image,
-                                        //
-                                        // },
-
-                                        async: true,
-                                        processData: false,
-                                        contentType: false,
-                                        success: function (response) {
-                                            console.log(response.state);
-
-                                        },
-                                        error: function (response) {
-                                            console.log("error");
-                                        },
-                                    });
-                                }
-
-                            </script>
-
+                                <div class="button-area save-btn-edit">
+                                    <a href="#" class="btn btn-primary-alta mr--15" onclick="customAlert.alert('Cancel Edit Profile?')">Cancel</a>
+                                    <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editProfile(event)">Save
+                                    </button>
+                                </div>
+                                <a href="{{path('app_user_delete')}}" class="btn btn-primary-alta mr--15" >Delete</a>
 
                             <!-- End personal information -->
 
@@ -432,6 +351,8 @@
             </div>
         </div>
     </div>
+
+
     <!-- End tabs area -->
 
 

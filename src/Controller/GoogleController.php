@@ -1,16 +1,18 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\User;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class GoogleController extends AbstractController
-{
-    //lllll
+{    #[Route('/connect/google', name: 'connect_google')]
     public function connectAction(ClientRegistry $clientRegistry)
         {
         return $clientRegistry
@@ -20,28 +22,53 @@ class GoogleController extends AbstractController
     #[Route('/connect/google/check', name: 'connect_google_check')]
         public function connectCheckAction(Request $request, ClientRegistry $clientRegistry)
         {
-            if(!$this->getUser()){
-                return new JsonResponse(array('status'=> false,'message'=>"user not found "));
-            }else{
-                return $this->redirectToRoute('login');
-            }
-        $client = $clientRegistry->getClient('google');
-
-
-//        try {
-//            // the exact class depends on which provider you're using
-//            /** @var \League\OAuth2\Client\Provider\FacebookUser $user */
-//            $user = $client->fetchUser();
+//            // ** if you want to *authenticate* the user, then
+//            // leave this method blank and create a Guard authenticator
+//            // (read below)
 //
-//            // do something with all this new power!
-//            // e.g. $name = $user->getFirstName();
-//            var_dump($user); die;
-//            // ...
-//        } catch (IdentityProviderException $e) {
-//            // something went wrong!
-//            // probably you should return the reason to the user
-//            var_dump($e->getMessage()); die;
-//        }
-    }
+//            /** @var \KnpU\OAuth2ClientBundle\Client\Provider\googleClient $client */
+//            $client = $clientRegistry->getClient('google');
+//
+//            try {
+//                /** @var \League\OAuth2\Client\Provider\googleUser $user */
+//                $user = $client->fetchUser();
+//
+//                // do something with all this new power!
+//                  $name = $user->getFirstName();
+////                var_dump($user);
+//                return $this->render('test/signup.html.twig', [
+//                    'user'=>$user,
+//                ]);
+////                return $this->redirectToRoute('addUser', [
+////                    'user'=>$user,
+////                ]);
+////
+////                $newUser = new User();
+////                $newUser->setEmail($user->getEmail());
+////                $newUser->setFirstName($user->getFirstName());
+////                $newUser->setLastName($user->getLastName());
+////                $em = $doc->getManager();
+////                $em->persist($user);
+////                $em->flush();
+//                die;
+//
+//                // ...
+//            } catch (IdentityProviderException $e) {
+//                // something went wrong!
+//                // probably you should return the reason to the user
+//                var_dump($e->getMessage());
+//
+//                die;
+//            }
+////            if($user)
+////            {
+////                return $this->redirectToRoute('app_login',[
+////                'user'=>$user,
+////
+////                ]);
+////            }
+///
+die;
+        }
 
 }

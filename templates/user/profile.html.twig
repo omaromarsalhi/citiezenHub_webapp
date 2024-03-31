@@ -161,7 +161,7 @@
                     <div class="author-wrapper">
                         <div class="author-inner">
                             <div class="user-thumbnail">
-                                <img src="assets/images/slider/banner-06.png" alt="">
+                                <img id="rbtinput2" src="{{ asset('images/users/' ~ image) }}" alt="Profile-NFT">
                             </div>
                             <div class="rn-author-info-content">
                                 <h4 class="title">{{ name }} {{ lastname }}</h4>
@@ -198,7 +198,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="{{path('editProfile')}}"class="btn at-follw follow-button edit-btn"><i data-feather="edit"></i></a>
+                                    <a href="/editProfile" class="btn at-follw follow-button edit-btn"><i data-feather="edit"></i></a>
 
 
                                 </div>

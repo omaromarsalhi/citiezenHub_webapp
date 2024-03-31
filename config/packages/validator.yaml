@@ -1,13 +1,40 @@
 framework:
     validation:
         email_validation_mode: html5
-
         # Enables validator auto-mapping support.
         # For instance, basic validation constraints will be inferred from Doctrine's metadata.
-        #auto_mapping:
+        auto_mapping: true
         #    App\Entity\: []
 
+#        # Définition des contraintes de validation pour l'entité User
+#        App\Entity\User:
+#            properties:
+#                firstName:
+#                    - NotBlank:
+#                          message: "Le prénom ne peut pas être vide."
+#                lastName:
+#                    - NotBlank:
+#                          message: "Le nom de famille ne peut pas être vide."
+#                email:
+#                    - NotBlank:
+#                          message: "L'adresse email ne peut pas être vide."
+#                    - Email:
+#                          message: "L'adresse email n'est pas valide."
+#                address:
+#                    - NotBlank:
+#                          message: "L'adresse ne peut pas être vide."
+#                password:
+#                    - NotBlank:
+#                          message: "Le mot de passe ne peut pas être vide."
+#                password1:
+#                    - NotBlank:
+#                          message: "La confirmation du mot de passe ne peut pas être vide."
+#                agreeTerms:
+#                    - IsTrue:
+#                          message: 'You must agree to our terms and conditions'
+
+    # Configuration supplémentaire pour le test
 when@test:
-    framework:
-        validation:
-            not_compromised_password: false
+        framework:
+            validation:
+                not_compromised_password: false

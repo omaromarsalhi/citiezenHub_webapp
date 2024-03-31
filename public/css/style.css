@@ -1,0 +1,58 @@
+.message-container {
+    position: fixed;
+    left: 0;
+    right: 80px;
+    bottom: 2px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.message-container .error,
+.message-container .success {
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    pointer-events: all;
+    margin-bottom: 10px;
+    opacity: 1; /* Réglage de l'opacité à 1 pour les rendre initialement visibles */
+    animation-fill-mode: forwards;
+}
+
+.message-container .error {
+    background-color: rgba(230, 20, 20, 0.8);
+    color: #fff;
+    animation: slide-in-error 0.5s ease-out, fade-out 0.5s 5s forwards;
+}
+
+.message-container .success {
+    background-color: rgba(6, 150, 53, 0.8);
+    color: #fff;
+    animation: slide-in-success 0.5s ease-out, fade-out 0.5s 5s forwards;
+}
+
+@keyframes slide-in-error {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-success {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

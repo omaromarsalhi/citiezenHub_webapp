@@ -5,14 +5,18 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements PasswordAuthenticatedUserInterface
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements PasswordAuthenticatedUserInterface,UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,14 +24,25 @@ class User implements PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide')]
+    #[Assert\Length(
+        min:3, minMessage: 'le nom il faut contenir au moi 5 caractere',
+    )]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
+    #[Assert\Length(
+        min:5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
+    )]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
     private ?string $cin = null;
-
+    /**
+     * @Assert\NotBlank(message="Le prénom ne peut pas être vide.")
+     * @Assert\Email
+     */
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
@@ -36,11 +51,14 @@ class User implements PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?int $phoneNumber = null;
-
+    #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
+    #[Assert\Length(
+        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
+    )]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[ORM\Column(length: 255)]
+
     private ?string $role = null;
 
     #[ORM\Column(length: 255)]
@@ -60,6 +78,9 @@ class User implements PasswordAuthenticatedUserInterface
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
     private ?File $imageFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $gender = null;
 
     public function getId(): ?int
     {
@@ -218,7 +239,6 @@ class User implements PasswordAuthenticatedUserInterface
     public function setImage(string $image): static
     {
         $this->image = $image;
-
         return $this;
     }
     public function getImageFile()
@@ -229,8 +249,56 @@ class User implements PasswordAuthenticatedUserInterface
     public function setImageFile($imageFile)
     {
         $this->imageFile = $imageFile;
-        if (null !== $imageFile) {
+       if(null !==$imageFile) {
 
         }
     }
+
+    public function getRoles()
+    {
+//         return $this->role;
+
+//        // Si vous n'avez pas de champ roles, vous pouvez simplement retourner un tableau vide
+        return [];
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
+    }
+    public function getUserIdentifier(): string
+    {
+
+        return $this->email;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): static
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+
+
 }

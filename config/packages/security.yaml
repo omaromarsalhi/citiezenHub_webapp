@@ -16,9 +16,23 @@ security:
         main:
             lazy: true
             provider:  my_custom_provider
+#            custom_authenticator: App\Security\UserAuthanticatorAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                target: app_register
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
+
             guard:
-                authenticators: # Utilisez l'option "authenticators" ici
-                    - App\Utils\GoogleAuthentificator
+                authenticators:
+                    - App\Security\GoogleAuthentificator
+
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
