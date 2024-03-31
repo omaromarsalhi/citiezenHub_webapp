@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GoogleController extends AbstractController
 {
+    //lllll
     public function connectAction(ClientRegistry $clientRegistry)
         {
         return $clientRegistry
