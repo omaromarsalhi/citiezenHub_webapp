@@ -1,3 +1,46 @@
+function createPostHTML(post) {
+    var imageHTML = '';
+    if (post.image) {
+        imageHTML = `
+            <div class="thumbnail">
+                <a href="blog-details.html">
+                    <img src="images/blog/${post.image}"
+                         alt="Personal Portfolio Images">
+                </a>
+            </div>
+        `;
+    }
+    return `
+        <div class="col-xl-8 col-lg-8">
+            <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
+                <div class="inner">
+                    <div class="content mb-4">
+                        <div class="category-info">
+                            <div class="category-list">
+                                <img src="assets/images/activity/activity-01.jpg" height="50"
+                                     width="50" style="margin-right: 10px">
+                                <a href="blog-details.html">Omar marrakchi</a>
+                            </div>
+                            <div class="meta">
+                                <select onchange="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.image}')">
+                                    <option value="" disabled selected hidden><i class="fas fa-cogs"></i>
+                                    </option>
+                                    <option value="modifier">Modifier</option>
+                                    <option value="supprimer">Supprimer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span>${post.datePost}</span>
+                        <h4 class="title"><a href="blog-details.html">${post.caption} <i
+                                    class="feather-arrow-up-right"></i></a></h4>
+                    </div>
+                    ${imageHTML}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 function addPost(event) {
     event.preventDefault();
     let formData = new FormData();
@@ -5,21 +48,26 @@ function addPost(event) {
     formData.append('image', $('#nipa').prop('files')[0]);
     formData.append('caption', caption);
     $.ajax({
-
         url: '/new',
         type: "POST",
         data: formData,
-
         async: true,
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response.state);
-            $('#contact-message').val('');
-            $('#nipa').val('');
+            if (response.success) {
+                var newPostHTML = createPostHTML(response.post);
+                $('#postsContainer').prepend(newPostHTML);
+                $('#contact-message').val('');
+                $('#nipa').val('');
+                $('#rbtinput2').attr('src', 'aucuneImg.png');
+                $('#ajoutPost').prop('disabled', true);
+            } else {
+                console.error('Failed to create post: ' + response.message);
+            }
         },
         error: function (response) {
-            console.log("error");
+            console.error("error");
         },
     });
 }
@@ -108,7 +156,6 @@ function submitModifierForm(event) {
     let caption = $('#captionModfier').val();
     formData.append('caption', caption);
     formData.append('image', $('#nipaUpload').prop('files')[0]);
-    console.log('image', $('#nipaUpload').prop('files')[0]);
 
 
     $.ajax({

@@ -74,7 +74,7 @@
                 <div class="col-lg-8" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
                     <div class="form-wrapper-one registration-area">
                         <h3 class="mb--30">Exprimer Vous!</h3>
-                        <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
+                        <form class="rwt-dynamic-form" id="contact-form" method="POST">
                             <div class="mb-5">
                                 <label for="contact-message" class="form-label">Write Message</label>
                                 <textarea name="contact-message" id="contact-message" rows="3"></textarea>
@@ -84,12 +84,14 @@
                                     <label class="title">Ajouter une image</label>
                                     <div class="create-collection-input feature-image">
                                         <center>
-                                        <div class="logo-c-image feature">
-                                            <img id="rbtinput2" src="{{ asset('aucuneImg.png') }}" alt="Profile-NFT">
-                                            <label for="nipa" title="No File Choosen">
-                                                <span class="text-center color-white"><i class="feather-edit"></i></span>
-                                            </label>
-                                        </div>
+                                            <div class="logo-c-image feature">
+                                                <img id="rbtinput2" src="{{ asset('aucuneImg.png') }}"
+                                                     alt="Profile-NFT">
+                                                <label for="nipa" title="No File Choosen">
+                                                    <span class="text-center color-white"><i
+                                                                class="feather-edit"></i></span>
+                                                </label>
+                                            </div>
                                         </center>
                                         <div class="button-area">
                                             <div class="brows-file-wrapper">
@@ -100,11 +102,9 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
-
-                            <button name="submit" id="ajoutPost" type="submit" class="btn btn-primary" onclick="addPost(event)">
+                            <button name="submit" id="ajoutPost" type="submit" class="btn btn-primary"
+                                    onclick="addPost(event)">
                                 Publier
                             </button>
                         </form>
@@ -115,46 +115,52 @@
                 <!-- categorie area houni -->
 
                 <!-- start single blog -->
+                <div id="postsContainer">
+
+                </div>
                 {% for i in posts %}
-                    <div class="col-xl-8 col-lg-8">
-                        <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters"
-                             data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
-                            <div class="inner">
-                                <div class="content mb-4">
-                                    <div class="category-info">
-                                        <div class="category-list">
-                                            <img src="{{ asset('assets/images/activity/activity-01.jpg') }}" height="50"
-                                                 width="50" style="margin-right: 10px">
-                                            <a href="blog-details.html">Omar marrakchi</a>
+
+                        <div class="col-xl-8 col-lg-8">
+                            <div class="rn-blog single-column mb--30" data-post-id="{{ i.id }}" data-toggle="modal"
+                                 data-target="#exampleModalCenters"
+                                 data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                                <div class="inner">
+                                    <div class="content mb-4">
+                                        <div class="category-info">
+                                            <div class="category-list">
+                                                <img src="{{ asset('assets/images/activity/activity-01.jpg') }}"
+                                                     height="50"
+                                                     width="50" style="margin-right: 10px">
+                                                <a href="blog-details.html">Omar marrakchi</a>
+                                            </div>
+                                            <div class="meta">
+                                                <select onchange="handleMenuAction(this, {{ i.id }}, '{{ i.caption }}', '{{ i.image }}')">
+                                                    <option value="" disabled selected hidden><i
+                                                                class="fas fa-cogs"></i>
+                                                    </option>
+                                                    <option value="modifier">Modifier</option>
+                                                    <option value="supprimer">Supprimer</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="meta">
-                                            <select onchange="handleMenuAction(this, {{ i.id }}, '{{ i.caption }}', '{{ i.image }}')">
-                                                <option value="" disabled selected hidden><i class="fas fa-cogs"></i>
-                                                </option>
-                                                <option value="modifier">Modifier</option>
-                                                <option value="supprimer">Supprimer</option>
-                                            </select>
-                                        </div>
+                                        <span>{{ i.datePost|date('D d M Y H:i') }}</span>
+                                        <h4 class="title"><a href="blog-details.html">{{ i.caption }} <i
+                                                        class="feather-arrow-up-right"></i></a></h4>
                                     </div>
-                                    <span>{{ i.datePost|date('D d M Y H:i') }}</span>
-                                    <h4 class="title"><a href="blog-details.html">{{ i.caption }} <i
-                                                    class="feather-arrow-up-right"></i></a></h4>
+                                    {% if i.image %}
+                                        <div class="thumbnail">
+                                            <a href="blog-details.html">
+                                                <img src="{{ asset('images/blog/' ~ i.image) }}"
+                                                     alt="Personal Portfolio Images">
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                {% if i.image %}
-                                    <div class="thumbnail">
-                                        <a href="blog-details.html">
-                                            <img src="{{ asset('images/blog/' ~ i.image) }}"
-                                                 alt="Personal Portfolio Images">
-                                        </a>
-                                    </div>
-                                {% endif %}
                             </div>
                         </div>
-                    </div>
+
                 {% endfor %}
                 <!-- end single blog -->
-
-
 
 
                 <!-- navigation Pagination -->
@@ -190,17 +196,19 @@
                                 <label class="title required">Modifier votre image</label>
                                 <div class="create-collection-input logo-image" style="margin-top: 80px">
                                     <center>
-                                    <div class="logo-c-image logo">
-                                        <img id="imageModifer" src="{{ asset('aucuneImg.png') }}"  alt="Profile-NFT">
-                                        <label for="nipaUpload" title="No File Choosen">
-                                            <span class="text-center color-white"><i class="feather-edit"></i></span>
-                                        </label>
-                                    </div>
+                                        <div class="logo-c-image logo">
+                                            <img id="imageModifer" src="{{ asset('aucuneImg.png') }}" alt="Profile-NFT">
+                                            <label for="nipaUpload" title="No File Choosen">
+                                                <span class="text-center color-white"><i
+                                                            class="feather-edit"></i></span>
+                                            </label>
+                                        </div>
                                     </center>
                                     <div class="button-area">
                                         <div class="brows-file-wrapper">
                                             <!-- actual upload which is hidden -->
-                                            <input name="nipaUpload" id="nipaUpload" type="file" onclick="changerImage()">
+                                            <input name="nipaUpload" id="nipaUpload" type="file"
+                                                   onclick="changerImage()">
                                             <!-- our custom upload button -->
                                         </div>
                                     </div>

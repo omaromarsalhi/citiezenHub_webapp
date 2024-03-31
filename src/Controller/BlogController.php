@@ -49,7 +49,15 @@ class BlogController extends AbstractController
             $em = $doc->getManager();
             $em->persist($post);
             $em->flush();
-            return new JsonResponse(['success' => true]);
+            return new JsonResponse([
+                'success' => true,
+                'post' => [
+                    'id' => $post->getId(),
+                    'caption' => $post->getCaption(),
+                    'image' => $post->getImage(),
+                    'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+                ]
+            ]);
         }
         return $this->redirectToRoute('app_blog');
     }
@@ -89,7 +97,15 @@ class BlogController extends AbstractController
 
             $this->addFlash('success', 'Le post a bien été modifié.');
 
-            return $this->redirectToRoute('app_blog');
+        return new JsonResponse([
+            'success' => true,
+            'post' => [
+                'id' => $post->getId(),
+                'caption' => $post->getCaption(),
+                'image' => $post->getImage(),
+                'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+            ]
+        ]);
     }
 
 }
