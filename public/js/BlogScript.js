@@ -11,7 +11,7 @@ function createPostHTML(post) {
         `;
     }
     return `
-        <div class="col-xl-8 col-lg-8">
+        <div class="col-xl-8 col-lg-8" data-post-id="${post.id}">
             <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
                 <div class="inner">
                     <div class="content mb-4">
@@ -40,6 +40,81 @@ function createPostHTML(post) {
         </div>
     `;
 }
+
+var currentPage = 1;
+var isLoading = false;
+var totalPostsCount = 0;
+
+function getTotalPostsCount(callback) {
+    $.ajax({
+        url: '/blog/count',
+        type: 'GET',
+        success: function(response) {
+            callback(response.count);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    getTotalPostsCount(function(count) {
+        totalPostsCount = count;
+        loadPostsPage(currentPage);
+    });
+});
+
+function loadPostsPage(page) {
+    if (isLoading || page * 5 > totalPostsCount) {
+        return;
+    }
+    isLoading = true;
+    $.ajax({
+        url: '/blog/page/' + page,
+        type: 'GET',
+        success: function(response) {
+            response.posts.forEach(function(post) {
+                var newPostHTML = createPostHTML(post);
+                $('#postsContainer').append(newPostHTML);
+            });
+            currentPage++;
+            isLoading = false;
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            isLoading = false;
+        }
+    });
+}
+
+window.onscroll = function() {
+    var scrollPosition = window.pageYOffset;
+    var windowSize     = window.innerHeight;
+    var bodyHeight     = document.body.offsetHeight;
+
+    // Charger plus de posts 500px avant d'arriver au bas de la page
+    if (Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
+        loadPostsPage(currentPage);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadPostsPage(currentPage);
+});
+
+window.onscroll = function() {
+    var scrollPosition = window.pageYOffset;
+    var windowSize     = window.innerHeight;
+    var bodyHeight     = document.body.offsetHeight;
+
+    // Charger plus de posts 500px avant d'arriver au bas de la page
+    if (Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
+        loadPostsPage(currentPage);
+    }
+};
+
+
 
 function addPost(event) {
     event.preventDefault();
@@ -77,25 +152,34 @@ document.addEventListener('DOMContentLoaded', function() {
     var fileInput = document.getElementById('nipa');
     var submitButton = document.getElementById('ajoutPost');
 
-    // Fonction pour vérifier l'état du bouton
     function verifierEtatBouton() {
         var caption = textarea.value.trim();
         var image = fileInput.files.length > 0;
-        // Le bouton est activé si le caption ou l'image est présent, mais pas les deux vides
         submitButton.disabled = !(caption || image);
     }
 
-    // Écouteur d'événements pour la textarea
     textarea.addEventListener('input', verifierEtatBouton);
-
-    // Écouteur d'événements pour l'input de fichier
     fileInput.addEventListener('change', verifierEtatBouton);
 
-    // Vérification initiale au chargement de la page
     verifierEtatBouton();
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    var textarea = document.getElementById('captionModfier');
+    var fileInput = document.getElementById('nipaUpload');
+    var submitButton = document.getElementById('modifierButton');
 
+    function verifierEtatBoutonModifier() {
+        var caption = textarea.value.trim();
+        var image = fileInput.files.length > 0;
+        submitButton.disabled = !(caption || image);
+    }
+
+    textarea.addEventListener('input', verifierEtatBoutonModifier);
+    fileInput.addEventListener('change', verifierEtatBoutonModifier);
+
+    verifierEtatBoutonModifier
+});
 
 var postIdToModify = null;
 
@@ -115,8 +199,7 @@ function deletePost(postId) {
             url: '/blog/' + postId,
             type: 'DELETE',
             success: function (response) {
-                // Rafraîchir la page ou mettre à jour la liste des posts
-                location.reload();
+                $("div[data-post-id='" + postIdToModify + "']").remove();
             },
             error: function (xhr, status, error) {
                 // Gérer les erreurs en fonction de vos besoins
@@ -128,7 +211,6 @@ function deletePost(postId) {
 
 function showModifierPopup(caption, image) {
     var modal = document.getElementById("modifierModal");
-    var form = document.getElementById("modifierForm");
     let messageTextarea = document.getElementById("captionModfier");
     let imageModifier = document.getElementById("imageModifer");
     messageTextarea.value = caption;
@@ -139,24 +221,19 @@ function showModifierPopup(caption, image) {
         imageModifier.src = "aucuneImg.png";
     }
     modal.style.display = "block";
-    form.reset();
 }
 
-
 function closeModifierPopup() {
-    // Récupérer la fenêtre modale
     var modal = document.getElementById("modifierModal");
     modal.style.display = "none";
 }
 
-// Fonction appelée lorsque l'utilisateur soumet le formulaire
 function submitModifierForm(event) {
     event.preventDefault();
     let formData = new FormData();
     let caption = $('#captionModfier').val();
     formData.append('caption', caption);
     formData.append('image', $('#nipaUpload').prop('files')[0]);
-
 
     $.ajax({
         url: '/edit/' + postIdToModify,
@@ -167,24 +244,23 @@ function submitModifierForm(event) {
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response.state);
+            $("div[data-post-id='" + postIdToModify + "']").remove();
+            var newPostHTML = createPostHTML(response.post);
+            $('#postsContainer').prepend(newPostHTML);
+            closeModifierPopup();
         },
         error: function (response) {
             console.log("error");
         },
     });
-    closeModifierPopup();
 }
 
-// Cette fonction vérifie si le clic a été effectué en dehors de la fenêtre modale
 function windowOnClick(event) {
     var modal = document.getElementById('modifierModal');
     if (event.target === modal) {
         closeModifierPopup();
     }
 }
-
-// Ajoutez cet écouteur d'événements à la fenêtre
 document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('click', windowOnClick);
 });

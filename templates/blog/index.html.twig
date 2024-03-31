@@ -118,66 +118,11 @@
                 <div id="postsContainer">
 
                 </div>
-                {% for i in posts %}
 
-                        <div class="col-xl-8 col-lg-8">
-                            <div class="rn-blog single-column mb--30" data-post-id="{{ i.id }}" data-toggle="modal"
-                                 data-target="#exampleModalCenters"
-                                 data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
-                                <div class="inner">
-                                    <div class="content mb-4">
-                                        <div class="category-info">
-                                            <div class="category-list">
-                                                <img src="{{ asset('assets/images/activity/activity-01.jpg') }}"
-                                                     height="50"
-                                                     width="50" style="margin-right: 10px">
-                                                <a href="blog-details.html">Omar marrakchi</a>
-                                            </div>
-                                            <div class="meta">
-                                                <select onchange="handleMenuAction(this, {{ i.id }}, '{{ i.caption }}', '{{ i.image }}')">
-                                                    <option value="" disabled selected hidden><i
-                                                                class="fas fa-cogs"></i>
-                                                    </option>
-                                                    <option value="modifier">Modifier</option>
-                                                    <option value="supprimer">Supprimer</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <span>{{ i.datePost|date('D d M Y H:i') }}</span>
-                                        <h4 class="title"><a href="blog-details.html">{{ i.caption }} <i
-                                                        class="feather-arrow-up-right"></i></a></h4>
-                                    </div>
-                                    {% if i.image %}
-                                        <div class="thumbnail">
-                                            <a href="blog-details.html">
-                                                <img src="{{ asset('images/blog/' ~ i.image) }}"
-                                                     alt="Personal Portfolio Images">
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-
-                {% endfor %}
                 <!-- end single blog -->
 
 
-                <!-- navigation Pagination -->
-                <div class="row">
-                    <div class="col-lg-8" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
-                        <nav class="pagination-wrapper" aria-label="Page navigation example">
-                            <ul class="pagination single-column-blog">
-                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <!-- navigation Pagination End-->
+
             </div>
         </div>
     </div>
@@ -226,7 +171,7 @@
                                         <textarea name="captionModfier" id="captionModfier"
                                                   rows="5" style="height: 307px"></textarea>
                                     </div>
-                                    <button name="submit" type="submit" class="btn btn-primary"
+                                    <button name="submit" id="modifierButton" type="submit" class="btn btn-primary"
                                             onclick="submitModifierForm(event)">Save
                                     </button>
                                 </form>

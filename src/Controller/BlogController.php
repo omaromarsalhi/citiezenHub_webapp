@@ -2,16 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Author;
-use App\Form\AuthorType;
-use App\Repository\AuthorRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
 use App\Entity\Post;
 use App\Repository\PostRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +24,34 @@ class BlogController extends AbstractController
             'posts' => $posts,
         ]);
     }
+
+    #[Route('/blog/page/{page}', name: 'app_blog_page', methods: ['GET'])]
+public function page(int $page, PostRepository $postRepository): Response
+{
+    $postsPerPage = 5;
+    $offset = ($page - 1) * $postsPerPage;
+
+    $posts = $postRepository->findBy([], ['datePost' => 'DESC'], $postsPerPage, $offset);
+
+    $postsArray = array_map(function($post) {
+        return [
+            'id' => $post->getId(),
+            'caption' => $post->getCaption(),
+            'image' => $post->getImage(),
+            'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+        ];
+    }, $posts);
+
+    return new JsonResponse(['posts' => $postsArray]);
+}
+
+#[Route('/blog/count', name: 'app_blog_count', methods: ['GET'])]
+public function count(PostRepository $postRepository): Response
+{
+    $count = $postRepository->count([]);
+
+    return new JsonResponse(['count' => $count]);
+}
 
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
     public function new(Request $req, ManagerRegistry $doc): Response
@@ -82,20 +107,20 @@ class BlogController extends AbstractController
         $post = $doctrine->getRepository(Post::class)->find($id);
 
         if (!$post) {
-            throw $this->createNotFoundException('Le post d\'id '.$id.' n\'a pas été trouvé.');
+            throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
         }
-            $caption = $req->get('caption');
-            $fichierImage = $req->files->get('image');
+        $caption = $req->get('caption');
+        $fichierImage = $req->files->get('image');
 
-            $post->setDatePost(new DateTime());
-            $post->setCaption($caption);
-            $post->setImageFile($fichierImage);
+        $post->setDatePost(new DateTime());
+        $post->setCaption($caption);
+        $post->setImageFile($fichierImage);
 
-            $em = $doctrine->getManager();
-            $em->persist($post);
-            $em->flush();
+        $em = $doctrine->getManager();
+        $em->persist($post);
+        $em->flush();
 
-            $this->addFlash('success', 'Le post a bien été modifié.');
+        $this->addFlash('success', 'Le post a bien été modifié.');
 
         return new JsonResponse([
             'success' => true,
