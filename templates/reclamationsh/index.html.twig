@@ -273,11 +273,9 @@
 			</div>
 			<div class="row g-5 d-flex flex-wrap">
 
-            {% for recl in rec[:4] %}
+            <!-- [:4]  -->
+            {% for recl in rec %} 
                         <div class="inner flex-grow-1" style="max-width: 300px; overflow-wrap: break-word;">
-                            <h1>
-                                AAAA
-                            </h1>
                             <div class="thumbnail">
                                 <a href="blog-details.html">
                                     <img src="{{ asset("images/reclamation/"~recl.getImagePath()) }}" alt="Personal Portfolio Images"></a>
