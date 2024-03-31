@@ -1,0 +1,58 @@
+
+
+
+.name_regex_f:focus{
+    border-color: red !important;
+}
+
+.name_regex_t:focus{
+    border-color: #0f9f0f !important;
+}
+
+.error{
+    font-family: "Ubuntu", sans-serif;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 4px;
+}
+
+.loader{
+    background: transparent url("../marketPlaceImages/Ripple-1s-200px.gif") no-repeat center center;
+    background-size: 5%;
+    position: fixed;
+    z-index: 100;
+    height: 100%;
+    width: 100%;
+}
+
+.body{
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+}
+
+.flex{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 100;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.ai_btn{
+    max-width: 30px;
+    border-color: transparent;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    margin-right: 4px;
+}
+.ai_btn:hover{
+    color: #00a3ff;
+}
+
+
+.description_style{
+    background: transparent  no-repeat center center url("../marketPlaceImages/Ripple-1s-200px.gif") !important;
+    background-size: 6% !important;
+    z-index: 100;
+}

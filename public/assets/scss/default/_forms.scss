@@ -1,8 +1,12 @@
 /* ========= Forms Styles ========= */
 input,
 button,
+<<<<<<< HEAD
 select,
 textarea {
+=======
+select{
+>>>>>>> b31d97a5851e56ecafa4c29a6014963eca1960c0
     background: transparent;
     border: 1px solid var(--color-border);
     transition: all 0.4s ease-out 0s;
@@ -16,6 +20,22 @@ textarea {
     }
 }
 
+<<<<<<< HEAD
+=======
+textarea {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-body);
+    width: 100%;
+
+    &:focus,
+    &:active {
+        outline: none;
+        border-color: var(--color-primary);
+    }
+}
+
+>>>>>>> b31d97a5851e56ecafa4c29a6014963eca1960c0
 button,
 [type="button"],
 [type="reset"],

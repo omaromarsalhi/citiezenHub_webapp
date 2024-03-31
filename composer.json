@@ -4,7 +4,11 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
+<<<<<<< HEAD
         "php": ">=8.1",
+=======
+        "php": ">=8.0",
+>>>>>>> b31d97a5851e56ecafa4c29a6014963eca1960c0
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3",
@@ -14,6 +18,7 @@
         "easycorp/easyadmin-bundle": "^4.9",
         "nesbot/carbon": "^3.2",
         "phpdocumentor/reflection-docblock": "^5.3",
+<<<<<<< HEAD
         "phpstan/phpdoc-parser": "^1.27",
         "symfony/asset": "6.1.*",
         "symfony/console": "6.1.*",
@@ -27,6 +32,24 @@
         "symfony/intl": "6.1.*",
         "symfony/mailer": "6.1.*",
         "symfony/mime": "6.1.*",
+=======
+        "phpstan/phpdoc-parser": "^1.26",
+        "sensio/framework-extra-bundle": "^6.2",
+        "symfony/asset": "5.4.*",
+        "symfony/asset-mapper": ">=5.4",
+        "symfony/console": "5.4.*",
+        "symfony/doctrine-messenger": "5.4.*",
+        "symfony/dotenv": "5.4.*",
+        "symfony/expression-language": "5.4.*",
+        "symfony/flex": "^1.17|^2",
+        "symfony/form": "5.4.*",
+        "symfony/framework-bundle": "5.4.*",
+        "symfony/http-client": "5.4.*",
+        "symfony/http-foundation": "5.4.*",
+        "symfony/intl": "5.4.*",
+        "symfony/mailer": "5.4.*",
+        "symfony/mime": "5.4.*",
+>>>>>>> b31d97a5851e56ecafa4c29a6014963eca1960c0
         "symfony/monolog-bundle": "^3.0",
         "symfony/notifier": "6.1.*",
         "symfony/process": "6.1.*",
@@ -106,5 +129,18 @@
             "allow-contrib": true,
             "require": "6.1.*"
         }
+<<<<<<< HEAD
+=======
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "5.4.*",
+        "symfony/css-selector": "5.4.*",
+        "symfony/debug-bundle": "5.4.*",
+        "symfony/maker-bundle": "^1.50",
+        "symfony/phpunit-bridge": "^7.0",
+        "symfony/stopwatch": "5.4.*",
+        "symfony/web-profiler-bundle": "5.4.*"
+>>>>>>> b31d97a5851e56ecafa4c29a6014963eca1960c0
     }
 }
