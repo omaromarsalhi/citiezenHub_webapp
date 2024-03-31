@@ -19,4 +19,5 @@ class ReclamationshController extends AbstractController
             'rec' => $rec
         ]);
     }
+    
 }
