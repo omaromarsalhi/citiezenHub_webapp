@@ -18,7 +18,8 @@
 			<link rel="stylesheet" href="{{asset('/assets/css/vendor/nice-select.css')}}">
 			<link rel="stylesheet" href="{{asset('/assets/css/plugins/feature.css')}}">
 			<link rel="stylesheet" href="{{asset('/assets/css/plugins/jquery-ui.min.css')}}">
-			<link rel="stylesheet" href="{{asset('/assets/css/vendor/odometer.css')}}">
+			<link
+			rel="stylesheet" href="{{asset('/assets/css/vendor/odometer.css')}}">
 			<!-- Style css -->
 			<link rel="stylesheet" href="{{asset('/assets/css/style.css')}}">
 		{% endblock %}
@@ -79,7 +80,7 @@
 	<body>
 		{% block body %}{% endblock %}
 
-<script>
+		<script>
 			(function () {
 const form = document.getElementById('form');
 const submitButton = document.getElementById('submit-button');
@@ -115,7 +116,6 @@ form.reportValidity();
 }
 });
 })();
-
 		</script>
 	</body>
 	{% include 'parts/footer.html.twig' %}
