@@ -124,7 +124,6 @@ window.onscroll = function() {
         loadPostsPage(currentPage);
     }
 };
-
 function addPost(event) {
     event.preventDefault();
     let formData = new FormData();
@@ -142,13 +141,14 @@ function addPost(event) {
             if (response.success) {
                 var newPostHTML = createPostHTML(response.post);
                 $('#postsContainer').prepend(newPostHTML);
+                $('html, body').animate({
+                    scrollTop: 950
+                }, 300);
                 $('#contact-message').val('');
                 $('#nipa').val('');
                 $('#rbtinput2').attr('src', 'aucuneImg.png');
                 $('#ajoutPost').prop('disabled', true);
-                $('html, body').animate({
-                    scrollTop: 950
-                }, 300);
+                document.getElementById("delImage").style.display = "none";
             } else {
                 console.error('Failed to create post: ' + response.message);
             }
@@ -228,8 +228,10 @@ function showModifierPopup(caption, image) {
     initialCaption = caption;
     if (image !== "null") {
         imageModifier.src = "images/blog/" + image;
+        document.getElementById("delImageUpdate").style.display = "block";
     } else {
         imageModifier.src = "aucuneImg.png";
+        document.getElementById("delImageUpdate").style.display = "none";
     }
     modal.style.display = "block";
 }
@@ -245,6 +247,8 @@ function submitModifierForm(event) {
     let caption = $('#captionModfier').val();
     formData.append('caption', caption);
     formData.append('image', $('#nipaUpload').prop('files')[0]);
+    console.log($('#nipaUpload').prop('files')[0]);
+
 
     $.ajax({
         url: '/edit/' + postIdToModify,
@@ -255,10 +259,12 @@ function submitModifierForm(event) {
         processData: false,
         contentType: false,
         success: function (response) {
+            console.log(response);
             $("div[data-post-id='" + postIdToModify + "']").remove();
             var newPostHTML = createPostHTML(response.post);
             $('#postsContainer').prepend(newPostHTML);
             closeModifierPopup();
+
             $('html, body').animate({
                 scrollTop: 890
             }, 500);
@@ -291,3 +297,31 @@ function changerImage() {
         reader.readAsDataURL(imageFile);
     });
 }
+
+function afficherIconDelImage() {
+    document.getElementById("nipa").addEventListener("change", function () {
+        var delImageLabel = document.getElementById("delImage");
+        if (this.files.length > 0) {
+            delImageLabel.style.display = "block";
+        } else {
+            delImageLabel.style.display = "none";
+        }
+    });
+}
+
+document.getElementById("delImage").addEventListener("click", function () {
+    var nipaInput = document.getElementById("nipa");
+    nipaInput.value = "";
+    var rbtinput2 = document.getElementById("rbtinput2");
+    rbtinput2.src = "aucuneImg.png";
+    this.style.display = "none";
+    $('#ajoutPost').prop('disabled', true);
+});
+
+document.getElementById("delImageUpdate").addEventListener("click", function () {
+    var nipaInput = document.getElementById("nipaUpload");
+    nipaInput.value = null;
+    var rbtinput2 = document.getElementById("imageModifer");
+    rbtinput2.src = "aucuneImg.png";
+    this.style.display = "none";
+});

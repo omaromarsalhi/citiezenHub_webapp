@@ -88,12 +88,16 @@
                                                     <span class="text-center color-white"><i
                                                                 class="feather-edit"></i></span>
                                                 </label>
+                                                <label id="delImage" style="position: absolute; top: 0; left: -8px; display: none">
+                                                    <span class="text-center color-white"><i
+                                                                class="feather-x"></i></span>
+                                                </label>
                                             </div>
                                         </center>
                                         <div class="button-area">
                                             <div class="brows-file-wrapper">
                                                 <!-- actual upload which is hidden -->
-                                                <input name="nipa" id="nipa" type="file" accept="image/*,.gif">
+                                                <input name="nipa" id="nipa" type="file" accept="image/*,.gif" onclick="afficherIconDelImage()">
                                                 <!-- our custom upload button -->
                                             </div>
                                         </div>
@@ -144,9 +148,13 @@
                                     <center>
                                         <div class="logo-c-image logo">
                                             <img id="imageModifer" src="{{ asset('aucuneImg.png') }}" alt="Profile-NFT">
-                                            <label for="nipaUpload" title="No File Choosen">
+                                            <label for="nipaUpload" title="No File Choosen" style="position: absolute; top: 0; right: -8px;">
                                                 <span class="text-center color-white"><i
                                                             class="feather-edit"></i></span>
+                                            </label>
+                                            <label id="delImageUpdate" style="position: absolute; top: 0; left: -8px; display: none">
+                                                    <span class="text-center color-white"><i
+                                                                class="feather-x"></i></span>
                                             </label>
                                         </div>
                                     </center>

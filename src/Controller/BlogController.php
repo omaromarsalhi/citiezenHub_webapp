@@ -26,32 +26,32 @@ class BlogController extends AbstractController
     }
 
     #[Route('/blog/page/{page}', name: 'app_blog_page', methods: ['GET'])]
-public function page(int $page, PostRepository $postRepository): Response
-{
-    $postsPerPage = 5;
-    $offset = ($page - 1) * $postsPerPage;
+    public function page(int $page, PostRepository $postRepository): Response
+    {
+        $postsPerPage = 5;
+        $offset = ($page - 1) * $postsPerPage;
 
-    $posts = $postRepository->findBy([], ['datePost' => 'DESC'], $postsPerPage, $offset);
+        $posts = $postRepository->findBy([], ['datePost' => 'DESC'], $postsPerPage, $offset);
 
-    $postsArray = array_map(function($post) {
-        return [
-            'id' => $post->getId(),
-            'caption' => $post->getCaption(),
-            'image' => $post->getImage(),
-            'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
-        ];
-    }, $posts);
+        $postsArray = array_map(function ($post) {
+            return [
+                'id' => $post->getId(),
+                'caption' => $post->getCaption(),
+                'image' => $post->getImage(),
+                'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+            ];
+        }, $posts);
 
-    return new JsonResponse(['posts' => $postsArray]);
-}
+        return new JsonResponse(['posts' => $postsArray]);
+    }
 
-#[Route('/blog/count', name: 'app_blog_count', methods: ['GET'])]
-public function count(PostRepository $postRepository): Response
-{
-    $count = $postRepository->count([]);
+    #[Route('/blog/count', name: 'app_blog_count', methods: ['GET'])]
+    public function count(PostRepository $postRepository): Response
+    {
+        $count = $postRepository->count([]);
 
-    return new JsonResponse(['count' => $count]);
-}
+        return new JsonResponse(['count' => $count]);
+    }
 
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
     public function new(Request $req, ManagerRegistry $doc): Response
@@ -115,6 +115,10 @@ public function count(PostRepository $postRepository): Response
         $post->setDatePost(new DateTime());
         $post->setCaption($caption);
         $post->setImageFile($fichierImage);
+
+        if ((empty($caption) && empty($fichierImage)) || (ctype_space($caption) && empty($fichierImage))) {
+            return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
+        }
 
         $em = $doctrine->getManager();
         $em->persist($post);

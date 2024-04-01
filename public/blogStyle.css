@@ -63,10 +63,23 @@
 }
 
 button.dropbtn .fas.fa-cog {
-    font-size: 20px;
+    font-size: 21px;
 }
 
 .dropbtn {
     border: none;
+}
+
+#delImage .feather-x {
+    position: absolute;
+    top: 50%; /* Ajustez cette valeur selon vos besoins */
+    left: 50%; /* Ajustez cette valeur selon vos besoins */
+    transform: translate(-50%, -50%); /* Centrer l'icône par rapport à sa position */
+}
+#delImageUpdate .feather-x {
+    position: absolute;
+    top: 50%; /* Ajustez cette valeur selon vos besoins */
+    left: 50%; /* Ajustez cette valeur selon vos besoins */
+    transform: translate(-50%, -50%); /* Centrer l'icône par rapport à sa position */
 }
 
