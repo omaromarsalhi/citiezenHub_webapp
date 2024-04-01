@@ -56,3 +56,11 @@
     background-size: 6% !important;
     z-index: 100;
 }
+
+.unverifiedCss{
+    background: transparent url("../marketPlaceImages/t9gQ2ptYYn.gif") no-repeat center center;
+    background-size: 100%;
+    z-index: 10000;
+    min-height: 200px;
+    min-width: 200px;
+}

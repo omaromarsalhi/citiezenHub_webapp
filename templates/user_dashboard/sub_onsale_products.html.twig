@@ -1,24 +1,35 @@
-<input type="hidden" id="currentPage" value={{ current_page }}>
-<input type="hidden" id="previousPage" value={{ previous_page }}>
+{# <input type="hidden" id="currentPage" value={{ current_page }}> #}
+{# <input type="hidden" id="previousPage" value={{ previous_page }}> #}
 
 {% for i,product in products %}
     <!-- start single product -->
     <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
-        <div class="product-style-one no-overlay with-placeBid">
+        <div class="product-style-one no-overlay">
             <div class="card-thumbnail">
-                <a href="../pages/product-details.html"
-                >
-                    <!-- Swiper -->
-                    <div class="swiper effect-creative-swiper rounded">
-                        <div class="swiper-wrapper">
-                            {% for image in product.images %}
-                                <div class="swiper-slide">
-                                    <img src="{{ asset(image.path)|default("Not available") }}" alt="NFT_portfolio" class="fixedImagesSize4owner"/>
-                                </div>
-                            {% endfor %}
+                <a href="../pages/product-details.html">
+                    {% if product.images|length > 1 %}
+                        <!-- Swiper -->
+                        <div class="swiper effect-creative-swiper rounded">
+                            <div class="swiper-wrapper">
+                                {% for image in product.images %}
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset(image.path)|default("Not available") }}" alt="NFT_portfolio"
+                                             class="fixedImagesSize4owner"/>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-pagination"></div>
                         </div>
-                        <div class="swiper-pagination"></div>
-                    </div>
+                    {% else %}
+                        <div>
+                            <a href="product-details.html"><img src="{{ asset(product.images[0].path) }}"
+                                                                alt="NFT_portfolio"
+                                                                class="unverifiedCss"
+                                                                    >
+                            </a>
+
+                        </div>
+                    {% endif %}
                 </a>
             </div>
             <div class="product-share-wrapper">
@@ -92,21 +103,19 @@
             ><span class="product-name"><strong id="name_model">{{ product.name }}</strong></span></a
             >
             <span class="latest-bid">
-                                    <span id="quantity_model">10 Pieces/</span>
-                                    <strong
-                                            style="color: #2899d8">In Stock
-                                    </strong>
-                                <br>
-                                    <span id="category_model">
-                                        Sports
-                                    </span>
+                <span id="quantity_model">10 Pieces/</span>
+                <strong
+                        style="color: #2899d8">In Stock
+                </strong>
             </span>
+            <br>
+            <span id="category_model">Sports</span>
             <div class="bid-react-area">
                 <div class="last-bid" id="price_model">120 DT</div>
             </div>
         </div>
     </div>
-{#    {{  dump(product) }}#}
+    {#    {{  dump(product) }} #}
 
     <!-- end single product -->
 {% endfor %}
