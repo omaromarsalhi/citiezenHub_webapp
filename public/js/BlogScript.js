@@ -1,3 +1,10 @@
+var currentPage = 1;
+var isLoading = false;
+var totalPostsCount = 0;
+var allPostsLoaded = false;
+var postIdToModify = null;
+var initialCaption = null;
+
 function createPostHTML(post) {
     var imageHTML = '';
     if (post.image) {
@@ -22,12 +29,13 @@ function createPostHTML(post) {
                                 <a href="blog-details.html">Omar marrakchi</a>
                             </div>
                             <div class="meta">
-                                <select onchange="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.image}')">
-                                    <option value="" disabled selected hidden><i class="fas fa-cogs"></i>
-                                    </option>
-                                    <option value="modifier">Modifier</option>
-                                    <option value="supprimer">Supprimer</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropbtn"><i class="fas fa-cog"></i></button>
+                                    <div class="dropdown-content">
+                                        <button onclick="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.image}', 'modifier')">Modifier</button>
+                                        <button onclick="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.image}', 'supprimer')">Supprimer</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <span>${post.datePost}</span>
@@ -40,33 +48,6 @@ function createPostHTML(post) {
         </div>
     `;
 }
-
-var currentPage = 1;
-var isLoading = false;
-var totalPostsCount = 0;
-var allPostsLoaded = false;
-var postIdToModify = null;
-var initialCaption = null;
-
-function getTotalPostsCount(callback) {
-    $.ajax({
-        url: '/blog/count',
-        type: 'GET',
-        success: function(response) {
-            callback(response.count);
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    getTotalPostsCount(function(count) {
-        totalPostsCount = count;
-        loadPostsPage(currentPage);
-    });
-});
 
 function loadPostsPage(page) {
     if (isLoading || allPostsLoaded) {
@@ -98,6 +79,26 @@ function loadPostsPage(page) {
     });
 }
 
+function getTotalPostsCount(callback) {
+    $.ajax({
+        url: '/blog/count',
+        type: 'GET',
+        success: function(response) {
+            callback(response.count);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    getTotalPostsCount(function(count) {
+        totalPostsCount = count;
+        loadPostsPage(currentPage);
+    });
+});
+
 window.onscroll = function() {
     var scrollPosition = window.pageYOffset;
     var windowSize     = window.innerHeight;
@@ -123,8 +124,6 @@ window.onscroll = function() {
         loadPostsPage(currentPage);
     }
 };
-
-
 
 function addPost(event) {
     event.preventDefault();
@@ -195,12 +194,11 @@ document.addEventListener('DOMContentLoaded', function() {
     verifierEtatBoutonModifier();
 });
 
-function handleMenuAction(select, postId, caption, image) {
-    var selectedValue = select.value;
-    if (selectedValue === "modifier") {
+function handleMenuAction(button, postId, caption, image, action) {
+    if (action === "modifier") {
         postIdToModify = postId;
         showModifierPopup(caption, image);
-    } else if (selectedValue === "supprimer") {
+    } else if (action === "supprimer") {
         deletePost(postId);
     }
 }
@@ -228,10 +226,9 @@ function showModifierPopup(caption, image) {
     let imageModifier = document.getElementById("imageModifer");
     messageTextarea.value = caption;
     initialCaption = caption;
-    if (image !== "") {
+    if (image !== "null") {
         imageModifier.src = "images/blog/" + image;
-    }
-    else {
+    } else {
         imageModifier.src = "aucuneImg.png";
     }
     modal.style.display = "block";
