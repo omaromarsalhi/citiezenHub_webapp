@@ -13,7 +13,6 @@ function createPostHTML(post) {
     return `
         <div class="col-xl-8 col-lg-8" data-post-id="${post.id}">
             <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
-            ${post.id}
                 <div class="inner">
                     <div class="content mb-4">
                         <div class="category-info">
@@ -47,6 +46,7 @@ var isLoading = false;
 var totalPostsCount = 0;
 var allPostsLoaded = false;
 var postIdToModify = null;
+var initialCaption = null;
 
 function getTotalPostsCount(callback) {
     $.ajax({
@@ -73,6 +73,7 @@ function loadPostsPage(page) {
         return;
     }
     isLoading = true;
+    document.getElementById('loadingIcon').style.display = 'block';
     $.ajax({
         url: '/blog/page/' + page,
         type: 'GET',
@@ -87,10 +88,12 @@ function loadPostsPage(page) {
                 currentPage++;
             }
             isLoading = false;
+            document.getElementById('loadingIcon').style.display = 'none';
         },
         error: function(xhr, status, error) {
             console.error(error);
             isLoading = false;
+            document.getElementById('loadingIcon').style.display = 'none';
         }
     });
 }
@@ -182,13 +185,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function verifierEtatBoutonModifier() {
         var caption = textarea.value.trim();
         var image = fileInput.files.length > 0;
-        submitButton.disabled = !(caption || image);
+        var sameCaption = caption === initialCaption;
+        submitButton.disabled = !(caption || image) || sameCaption;
     }
 
     textarea.addEventListener('input', verifierEtatBoutonModifier);
     fileInput.addEventListener('change', verifierEtatBoutonModifier);
 
-    verifierEtatBoutonModifier
+    verifierEtatBoutonModifier();
 });
 
 function handleMenuAction(select, postId, caption, image) {
@@ -223,6 +227,7 @@ function showModifierPopup(caption, image) {
     let messageTextarea = document.getElementById("captionModfier");
     let imageModifier = document.getElementById("imageModifer");
     messageTextarea.value = caption;
+    initialCaption = caption;
     if (image !== "") {
         imageModifier.src = "images/blog/" + image;
     }
@@ -257,6 +262,9 @@ function submitModifierForm(event) {
             var newPostHTML = createPostHTML(response.post);
             $('#postsContainer').prepend(newPostHTML);
             closeModifierPopup();
+            $('html, body').animate({
+                scrollTop: 890
+            }, 500);
         },
         error: function (response) {
             console.log("error");

@@ -78,9 +78,9 @@
                                 <label for="contact-message" class="form-label">Write Message</label>
                                 <textarea name="contact-message" id="contact-message" rows="3"></textarea>
                             </div>
+                            <label for="contact-message" class="form-label">Add image</label>
                             <div class="button-area mb-5">
                                 <div class="collection-single-wized banner">
-                                    <label class="title">Ajouter une image</label>
                                     <div class="create-collection-input feature-image">
                                         <center>
                                             <div class="logo-c-image feature">
@@ -95,7 +95,7 @@
                                         <div class="button-area">
                                             <div class="brows-file-wrapper">
                                                 <!-- actual upload which is hidden -->
-                                                <input name="nipa" id="nipa" type="file">
+                                                <input name="nipa" id="nipa" type="file" accept="image/*,.gif">
                                                 <!-- our custom upload button -->
                                             </div>
                                         </div>
@@ -119,7 +119,11 @@
                 </div>
 
                 <!-- end single blog -->
-
+                <center>
+                <div id="loadingIcon" style="display: none;">
+                    <img src={{ asset('loading.gif')}} alt="Loading..." style="height: 150px" />
+                </div>
+                </center>
 
 
             </div>
@@ -152,7 +156,7 @@
                                         <div class="brows-file-wrapper">
                                             <!-- actual upload which is hidden -->
                                             <input name="nipaUpload" id="nipaUpload" type="file"
-                                                   onclick="changerImage()">
+                                                   onclick="changerImage()" accept="image/*,.gif">
                                             <!-- our custom upload button -->
                                         </div>
                                     </div>
