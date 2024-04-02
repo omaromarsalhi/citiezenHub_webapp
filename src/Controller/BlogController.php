@@ -137,4 +137,21 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/edit/{id}/remove-image', name: 'app_blog_remove_image', methods: ['POST'])]
+    public function removeImage(ManagerRegistry $doctrine, $id): Response
+    {
+        $post = $doctrine->getRepository(Post::class)->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
+        }
+
+        $post->setImage(null);
+
+        $em = $doctrine->getManager();
+        $em->persist($post);
+        $em->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
 }

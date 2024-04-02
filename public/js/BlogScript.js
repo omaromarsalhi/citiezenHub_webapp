@@ -149,6 +149,11 @@ function addPost(event) {
                 $('#rbtinput2').attr('src', 'aucuneImg.png');
                 $('#ajoutPost').prop('disabled', true);
                 document.getElementById("delImage").style.display = "none";
+                Swal.fire(
+                    'Ajouté!',
+                    'Votre post a été ajouté.',
+                    'success'
+                )
             } else {
                 console.error('Failed to create post: ' + response.message);
             }
@@ -204,20 +209,35 @@ function handleMenuAction(button, postId, caption, image, action) {
 }
 
 function deletePost(postId) {
-    if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?" + postId)) {
-        $.ajax({
-            url: '/blog/' + postId,
-            type: 'DELETE',
-            success: function (response) {
-                console.log(postId);
-                $("div[data-post-id='" + postId + "']").remove();
-            },
-            error: function (xhr, status, error) {
-                // Gérer les erreurs en fonction de vos besoins
-                console.error(error);
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Êtes-vous sûr?',
+        text: "Vous ne pourrez pas revenir en arrière!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimez-le!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/blog/' + postId,
+                type: 'DELETE',
+                success: function (response) {
+                    console.log(postId);
+                    $("div[data-post-id='" + postId + "']").remove();
+                    Swal.fire(
+                        'Supprimé!',
+                        'Votre post a été supprimé.',
+                        'success'
+                    )
+                },
+                error: function (xhr, status, error) {
+                    // Gérer les erreurs en fonction de vos besoins
+                    console.error(error);
+                }
+            });
+        }
+    });
 }
 
 function showModifierPopup(caption, image) {
@@ -293,6 +313,7 @@ function changerImage() {
         reader.onload = function (event) {
             var imageModifier = document.getElementById("imageModifer");
             imageModifier.src = event.target.result;
+            document.getElementById("delImageUpdate").style.display = "block";
         };
         reader.readAsDataURL(imageFile);
     });
@@ -319,9 +340,40 @@ document.getElementById("delImage").addEventListener("click", function () {
 });
 
 document.getElementById("delImageUpdate").addEventListener("click", function () {
-    var nipaInput = document.getElementById("nipaUpload");
-    nipaInput.value = null;
-    var rbtinput2 = document.getElementById("imageModifer");
-    rbtinput2.src = "aucuneImg.png";
-    this.style.display = "none";
+    Swal.fire({
+        title: 'Êtes-vous sûr?',
+        text: "Vous ne pourrez pas revenir en arrière!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimez-le!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var nipaInput = document.getElementById("nipaUpload");
+            nipaInput.value = "";
+            var rbtinput2 = document.getElementById("imageModifer");
+            rbtinput2.src = "aucuneImg.png";
+            this.style.display = "none";
+
+            // Envoyer une requête AJAX pour supprimer l'image du post
+            $.ajax({
+                url: '/edit/' + postIdToModify + '/remove-image', // Remplacez par la route appropriée
+                type: 'POST',
+                success: function(response) {
+                    // Gérer la réponse du serveur
+                    console.log(response);
+                    Swal.fire(
+                        'Supprimé!',
+                        'Votre image a été supprimée.',
+                        'success'
+                    )
+                },
+                error: function(xhr, status, error) {
+                    // Gérer les erreurs
+                    console.error(error);
+                }
+            });
+        }
+    })
 });
