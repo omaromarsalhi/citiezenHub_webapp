@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\MyHelpers\AiVerification;
 use App\MyHelpers\ImageHelper;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,13 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 #[Route('/product', name: 'app_product')]
 class ProductController extends AbstractController
 {
     #[Route('/new', name: '_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, ImageHelper $imageHelper, ProductRepository $productRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ImageHelper $imageHelper, ProductRepository $productRepository, ValidatorInterface $validator): Response
     {
 
         if ($request->isXmlHttpRequest()) {
@@ -43,39 +45,52 @@ class ProductController extends AbstractController
             $new_product->setState('unverified');
             $new_product->setType('BIEN');
 
+            $errors = $validator->validate($new_product);
+
+            if (count($errors) > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $field = $error->getPropertyPath();
+                    $errorMessages[] = $field;
+                }
+                if (sizeof($request->files->all()) == 0)
+                    $errorMessages[] = 'image';
+                return new JsonResponse(['error' => $errorMessages], Response::HTTP_BAD_REQUEST);
+            }
+
             $entityManager->persist($new_product);
             $entityManager->flush();
 
             $product = $productRepository->findOneBy([], ['idProduct' => 'DESC']);
 
             $images = $request->files->all();
-            for ($i = 0; $i < sizeof($images); $i++) {
-                $imageHelper->saveImages($images['file-' . ($i + 1)], $product);
-            }
+            $newImagesPath=$imageHelper->saveImages($images, $product);
 
-            return new JsonResponse(['state' => 'done']);
+            $aiverification=new AiVerification();
+            $desc=$aiverification->run($newImagesPath);
+//            return new JsonResponse(['state' => 'done','desc'=>$desc]);
+            return new JsonResponse(['state' => 'done'],Response::HTTP_OK);
         }
-
 
         return $this->render('market_place/create.html.twig');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     */
     #[Route('/generate_description', name: '_show', methods: ['GET', 'POST'])]
-    public function generate_description(Request $request)
+    public function generateDescription(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-        $title = $request->get("title");
-        $client = HttpClient::create();
-        $response = $client->request('POST', 'http://127.0.0.1:5000/get-descreption?title=' . $title);
-        $substringsToRemove = ['\"', '""\\', '"\n', '"', '\n'];
-        $content = str_replace($substringsToRemove, "", $response->getContent());
-        return new JsonResponse(['description' => $content]);
+            $title = $request->get("title");
+            $client = HttpClient::create();
+            $response = $client->request('POST', 'http://127.0.0.1:5000/get-descreption?title=' . $title);
+            $substringsToRemove = ['\"', '""\\', '"\n', '"', '\n'];
+            $content = str_replace($substringsToRemove, "", $response->getContent());
+            return new JsonResponse(['description' => $content]);
         }
-        return null;
+        return new Response('something went wrong', Response::HTTP_BAD_REQUEST);
     }
+
+
+
 
 
 

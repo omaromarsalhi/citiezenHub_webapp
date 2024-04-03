@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -21,18 +22,25 @@ class Product
     private ?int $idUser = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^[a-zA-Z][a-zA-Z0-9\s]*$/')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $descreption = null;
 
     #[ORM\Column(name:"isDeleted",nullable: true)]
     private ?bool $isDeleted = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/')]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/')]
     private ?float $quantity = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -48,18 +56,12 @@ class Product
     private ?string $category = null;
 
     #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product',fetch:"EAGER")]
-//    #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
     private Collection $images;
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
     }
-
-//    #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product')]
-//    #[ORM\JoinColumn(name: "productImages",referencedColumnName:"idProduct")]
-//    private Collection $productImages;
-
 
 
     public function getIdProduct(): ?int

@@ -15,9 +15,7 @@ function adjustSelection() {
 
 
 function createProduct(e) {
-    if(!check_all_inputs()){
-        console.log('error')
-    }else {
+    if(check_all_inputs()){
         loader_start()
         let name = $('#name').val();
         let description = $('#description').val();
@@ -27,6 +25,7 @@ function createProduct(e) {
 
         let form_data = new FormData();
         const list = $('#createinputfile').prop('files');
+
         for (let i = 0; i < list.length; i++) {
             form_data.append('file-' + (i + 1), list[i]);
         }
@@ -44,7 +43,7 @@ function createProduct(e) {
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log(response.state)
+                console.log(response.desc)
                 loader_stop(4000)
                 setTimeout(function (){
                     handle_success('the product has been added successfully')
@@ -57,8 +56,10 @@ function createProduct(e) {
                     $('#category').val('');
                 },4100)
             },
-            error: function (response) {
-                console.log("error oo");
+            error: function (xhr) {
+                loader_stop(1000)
+                const errorMessage = xhr.responseJSON.error;
+                check_all_inputs_with_php(errorMessage)
             },
         });
     }
@@ -113,6 +114,29 @@ function check_all_inputs(){
     }
     return true
 }
+function check_all_inputs_with_php(test_result){
+    let errors = [];
+    $('#error-message-image').html('')
+
+    if(test_result.includes('name'))
+        errors.push({text: "name", el: $('#error-message')});
+    if(test_result.includes('price'))
+        errors.push({text: "price", el: $('#error-message-price')});
+    if(test_result.includes('quantity'))
+        errors.push({text: "quantity", el: $('#error-message-quantity')});
+    if(test_result.includes('name'))
+        errors.push({text: "description", el: $('#error-message-desc')});
+    if(test_result.includes('image'))
+        errors.push({text: "image", el: $('#error-message-image')});
+
+    if (errors.length > 0) {
+        handle_errors(errors);
+        return false
+    }
+    return true
+}
+
+
 function regex() {
 
     const all_inputs = {

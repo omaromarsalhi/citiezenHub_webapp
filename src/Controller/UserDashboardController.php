@@ -38,11 +38,9 @@ class UserDashboardController extends AbstractController
             else if($movement_direction != "next" && $movement_direction != "previous")
                 $current_page = $movement_direction;
 
-
             $map[$page]->setCurrentPage($current_page);
             $map[$page]->setPreviousPage($previous_page);
             $session->set('user_products_map', $map);
-
 
             $template=$this->render('user_dashboard/sub_onsale_products.html.twig', [
                 'products' => $map[$page]->getNProducts(10)
@@ -79,6 +77,5 @@ class UserDashboardController extends AbstractController
 //            'current_page' => 1,
 //            'previous_page' => 2,
 //        ]);
-
     }
 }

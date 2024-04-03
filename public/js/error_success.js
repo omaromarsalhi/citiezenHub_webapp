@@ -18,12 +18,13 @@ const all_inputs = {
     }
 }
 function handle_errors(errs) {
-    let str = "You have errors with the following fields: ";
+    let str = "You have errors with the following fields ";
 
     errs.map((er) => {
         er.el.html(all_inputs[er.text].error_text);
-        str += er.text + ", ";
+        str += ", "+ er.text ;
     });
+    str+=' .'
 
     let error_el = document.createElement('div');
     error_el.classList.add('error');
