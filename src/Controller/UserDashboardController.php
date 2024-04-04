@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\ProductImages;
+use App\MyHelpers\PaginationHelper;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,50 +15,70 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/user/dashboard', name: 'app_user_dashboard')]
 class UserDashboardController extends AbstractController
 {
+
     #[Route('/', name: '_index')]
     public function index(ProductRepository $productRepository,Request $request): Response
     {
-
         $session = $request->getSession();
 
         if ($request->isXmlHttpRequest()) {
 
             $movement_direction = $request->get("movement_direction");
+            $page = $request->get("page");
 
-            $prods = $session->get('allProducts4Owner');
-            $nbr_pages = $session->get('nbr_pages4Owner');
-            $current_page = $session->get('current_page4Owner');
+            $map=$session->get('user_products_map');
+
+            $current_page = $map[$page]->getCurrentPage();
             $previous_page = $current_page;
 
-            if ($current_page != $nbr_pages && $movement_direction == "next")
+            if ($current_page != $map[$page]->getNbrPages() && $movement_direction == "next")
                 $current_page++;
             else if ($current_page != 1 && $movement_direction == "previous")
                 $current_page--;
-            else
+            else if($movement_direction != "next" && $movement_direction != "previous")
                 $current_page = $movement_direction;
 
-            $session->set('current_page4Owner', $current_page);
+
+            $map[$page]->setCurrentPage($current_page);
+            $map[$page]->setPreviousPage($previous_page);
+            $session->set('user_products_map', $map);
 
 
-            return $this->render('user_dashboard/sub_onsale_products.html.twig', [
-                'products' => array_slice($prods, ($current_page - 1) * 10, 10),
-                'current_page' => $current_page,
-                'previous_page' => $previous_page,
+            $template=$this->render('user_dashboard/sub_onsale_products.html.twig', [
+                'products' => $map[$page]->getNProducts(10)
             ]);
+
+            return new JsonResponse([
+                'template'=>$template->getContent(),
+                'currentPage' => $map[$page]->getCurrentPage(),
+                'previousPage' => $map[$page]->getPreviousPage(),
+                'nbrpages' => $map[$page]->getNbrPages()
+            ]);
+
         }
 
-        $session->set('allProducts4Owner', $productRepository->findBy(['isDeleted' => false]));
-        $prods = $session->get('allProducts4Owner');
-        $session->set('nbr_pages4Owner', ceil(sizeof($prods) / 10));
-        $session->set('current_page4Owner', 1);
 
+        $on_sale=$productRepository->findBy(['isDeleted' => false,'state' => 'verified']);
+        $unverified=$productRepository->findBy(['isDeleted' => false,'state' => 'unverified']);
+
+        $map=[
+            'on_sale'=>new PaginationHelper($on_sale,1,2,ceil(sizeof($on_sale) / 10)),
+            'unverified'=>new PaginationHelper($unverified,1,2,ceil(sizeof($unverified) / 10))
+        ];
+
+        $session->set('user_products_map', $map);
 
         return $this->render('user_dashboard/author.html.twig', [
-            'products' => array_slice($prods, 0, 10),
-            'nbr_pages' => ceil(sizeof($prods) / 10),
-            'current_page' => 1,
-            'previous_page' => 2,
+            'on_sale' =>$map['on_sale'],
+            'unverified' =>$map['unverified']
         ]);
+
+//        return $this->render('user_dashboard/author.html.twig', [
+//            'products' => array_slice($prods, 0, 10),
+//            'nbr_pages' => ceil(sizeof($prods) / 10),
+//            'current_page' => 1,
+//            'previous_page' => 2,
+//        ]);
 
     }
 }
