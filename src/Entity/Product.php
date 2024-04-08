@@ -22,7 +22,7 @@ class Product
     private ?int $idUser = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "aaa")]
     #[Assert\Regex('/^[a-zA-Z][a-zA-Z0-9\s]*$/')]
     private ?string $name = null;
 

@@ -66,8 +66,8 @@ class ProductController extends AbstractController
             $images = $request->files->all();
             $newImagesPath=$imageHelper->saveImages($images, $product);
 
-            $aiverification=new AiVerification();
-            $desc=$aiverification->run($newImagesPath);
+//            $aiverification=new AiVerification();
+//            $desc=$aiverification->run($newImagesPath);
 //            return new JsonResponse(['state' => 'done','desc'=>$desc]);
             return new JsonResponse(['state' => 'done'],Response::HTTP_OK);
         }
@@ -88,10 +88,6 @@ class ProductController extends AbstractController
         }
         return new Response('something went wrong', Response::HTTP_BAD_REQUEST);
     }
-
-
-
-
 
 
 //    #[Route('/{idProd}', name: '_show', methods: ['GET'])]
