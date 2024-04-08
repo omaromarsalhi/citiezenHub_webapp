@@ -78,7 +78,6 @@ class ProductController extends AbstractController
     }
 
 
-
 //    #[Route('/{idProd}', name: '_show', methods: ['GET'])]
 //    public function show(Product $product): Response
 //    {
