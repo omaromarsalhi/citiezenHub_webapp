@@ -63,9 +63,10 @@ class UserController extends AbstractController
 
     #[Route('/editProfile', name: 'editProfile',methods: ['GET', 'POST'])]
     public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req): Response
-    {
-        $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
+    {    $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
+
         if ($req->isXmlHttpRequest()) {
+
             $email =$req->get('email');
             $name =$req->get('name');
             $lastname =$req->get('lastname');
@@ -85,13 +86,26 @@ class UserController extends AbstractController
             $user->setStatus($status);
             $user->setGender($gender);
             $user->setImageFile($fichierImage);
-            var_dump($user);
+            $user->serialize();
             $em = $doc->getManager();
+
             $em->persist($user);
             $em->flush();
+            var_dump($user);
 
 
             return $this->render('user/edit_profile.html.twig', [
+                'name' =>$user->getFirstName(),
+                'lastname' =>$user->getLastName(),
+                'email' => $user->getEmail(),
+                'address' => $user->getAddress(),
+                'role' => $user->getRole(),
+                'cin' => $user->getCin(),
+                'phoneNumber'=>$user->getPhoneNumber(),
+                'age' =>$user->getAge(),
+                'status' =>$user->getStatus(),
+                'image'=>$user->getImage(),
+                'gender'=>$user->getGender(),
             ]);
         }
         return $this->render('user/edit_profile.html.twig', [

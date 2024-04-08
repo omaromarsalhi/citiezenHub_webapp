@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -77,6 +79,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     private ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
+    #@Ignore()
     private ?File $imageFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -249,9 +252,13 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     public function setImageFile($imageFile)
     {
         $this->imageFile = $imageFile;
-       if(null !==$imageFile) {
-
+        if ($imageFile) {
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
         }
+
+        return $this;
+
     }
 
     public function getRoles()
@@ -298,7 +305,16 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
 
         return $this;
     }
+    public function serialize()
+    {
+        $this->image = base64_encode($this->image);
+    }
 
+    public function unserialize($serialized)
+    {
+        $this->image = base64_decode($this->image);
+
+    }
 
 
 }

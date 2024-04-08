@@ -24,7 +24,6 @@ function editProfile(event) {
     let cin=$('#cin').val();
     let phoneNumber=$('#phoneNumber').val();
 
-    // let image=$('#image');
     formData.append('image',$('#nipa').prop('files')[0]);
     console.log($('#nipa').prop('files')[0])
     formData.append('name',name);
