@@ -665,10 +665,23 @@
                 $("#createinputfile").click();
             });
             function rbtPreview() {
+<<<<<<< HEAD
                 const [file2] = createinputfile.files
                 if (file2) {
                     createfileImage.src = URL.createObjectURL(file2)
                 }
+=======
+                // const [file2] = createinputfile.files
+                const fileList = createinputfile.files;
+                // for (let i = 0; i < fileList.length; i++) {
+                //     console.log(fileList[i])
+                    createfileImage.src = URL.createObjectURL(fileList[0])
+                // }
+                // console.log(file2)
+                // if (file2) {
+                //     createfileImage.src = URL.createObjectURL(file2)
+                // }
+>>>>>>> ee4c7d3241cec464f5c1984c3710837d756d16d0
             }
             $("#createinputfile").change(function () {
                 rbtPreview(this);

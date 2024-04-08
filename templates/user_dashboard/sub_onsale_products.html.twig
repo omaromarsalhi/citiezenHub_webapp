@@ -1,0 +1,123 @@
+{# <input type="hidden" id="currentPage" value={{ current_page }}> #}
+{# <input type="hidden" id="previousPage" value={{ previous_page }}> #}
+
+{% for i,product in products %}
+    <!-- start single product -->
+    <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
+        <div class="product-style-one no-overlay">
+            <div class="card-thumbnail">
+                <a href="../pages/product-details.html">
+                    {% if product.images|length > 1 %}
+                        <!-- Swiper -->
+                        <div class="swiper effect-creative-swiper rounded">
+                            <div class="swiper-wrapper">
+                                {% for image in product.images %}
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset(image.path)|default("Not available") }}" alt="NFT_portfolio"
+                                             class="fixedImagesSize4owner"/>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    {% else %}
+                        <div>
+                            <a href="product-details.html"><img src="{{ asset(product.images[0].path) }}"
+                                                                alt="NFT_portfolio"
+                                                                class="unverifiedCss"
+                                                                    >
+                            </a>
+
+                        </div>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="product-share-wrapper">
+                <div class="profile-share">
+                    <a
+                            href="author.html"
+                            class="avatar"
+                            data-tooltip="Buyer:No One"
+                    ><img
+                                src="{{ asset('marketPlaceImages/anonemous.png') }}"
+                                alt="Nft_Profile"
+                        />
+                    </a>
+                    <a class="more-author-text" href="#">No one bought this Product yet</a>
+                </div>
+                <div class="share-btn share-btn-activation dropdown">
+                    <button
+                            class="icon"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+                        <svg
+                                viewBox="0 0 14 4"
+                                fill="none"
+                                width="16"
+                                height="16"
+                                class="sc-bdnxRM sc-hKFxyN hOiKLt"
+                        >
+                            <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM8.5 2C8.5 2.82843 7.82843 3.5 7 3.5C6.17157 3.5 5.5 2.82843 5.5 2C5.5 1.17157 6.17157 0.5 7 0.5C7.82843 0.5 8.5 1.17157 8.5 2ZM11.999 3.5C12.8274 3.5 13.499 2.82843 13.499 2C13.499 1.17157 12.8274 0.5 11.999 0.5C11.1706 0.5 10.499 1.17157 10.499 2C10.499 2.82843 11.1706 3.5 11.999 3.5Z"
+                                    fill="currentColor"
+                            ></path>
+                        </svg>
+                    </button>
+
+                    <div
+                            class="share-btn-setting dropdown-menu dropdown-menu-end"
+                    >
+                        <button
+                                type="button"
+                                class="btn-setting-text share-text"
+                                data-bs-toggle="modal"
+                                data-bs-target="#placebidModal"
+                        >
+                            Place Bid
+                        </button>
+
+                        <button
+                                type="button"
+                                class="btn-setting-text share-text"
+                                data-bs-toggle="modal"
+                                data-bs-target="#shareModal"
+                        >
+                            Share
+                        </button>
+                        <button
+                                type="button"
+                                class="btn-setting-text report-text"
+                                data-bs-toggle="modal"
+                                data-bs-target="#reportModal"
+                        >
+                            Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <a href="../pages/product-details.html"
+            ><span class="product-name"><strong id="name_model">{{ product.name }}</strong></span></a
+            >
+            <span class="latest-bid">
+                <span id="quantity_model">10 Pieces/</span>
+                <strong
+                        style="color: #2899d8">In Stock
+                </strong>
+            </span>
+            <br>
+            <span id="category_model">Sports</span>
+            <div class="bid-react-area">
+                <div class="last-bid" id="price_model">120 DT</div>
+            </div>
+        </div>
+    </div>
+    {#    {{  dump(product) }} #}
+
+    <!-- end single product -->
+{% endfor %}
+
+
