@@ -1,0 +1,22 @@
+
+.imgTrash{
+    min-height: 297px;
+}
+
+.selectCategory{
+    min-height: 50px;
+    border-width: 2px !important;
+    justify-items: center;
+    padding-top: 3px;
+}
+
+.fixedImagesSize{
+    min-height: 390px !important;
+    min-width: 350px !important;
+}
+
+
+.fixedImagesSize4owner{
+    min-height: 251px !important;
+    min-width: 251px !important;
+}
