@@ -2,15 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Entity\ProductImages;
 use App\MyHelpers\PaginationHelper;
 use App\Repository\ProductRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/user/dashboard', name: 'app_user_dashboard')]
 class UserDashboardController extends AbstractController

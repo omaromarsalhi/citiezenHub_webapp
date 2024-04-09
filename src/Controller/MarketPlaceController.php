@@ -2,16 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Entity\ProductImages;
-use App\Form\ProductType;
-use App\MyHelpers\ImageHelper;
-use App\Repository\ProductImagesRepository;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

@@ -23,8 +23,6 @@ class ProductImages
     #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
     private ?Product $product = null;
 
-
-
     public function getIdImage(): ?int
     {
         return $this->idImage;

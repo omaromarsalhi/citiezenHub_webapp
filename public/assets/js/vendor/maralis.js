@@ -16533,7 +16533,7 @@
        * Enable single instance objects, where any local objects with the same Id
        * share the same attributes, and stay synchronized with each other.
        * This is disabled by default in server environments, since it can lead to
-       * security issues.
+       * Security issues.
        *
        * @static
        */

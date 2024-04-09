@@ -4,7 +4,6 @@ namespace App\MyHelpers;
 
 use App\Entity\Product;
 use App\Entity\ProductImages;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 
