@@ -131,7 +131,7 @@ function addPost(event) {
     formData.append('image', $('#nipa').prop('files')[0]);
     formData.append('caption', caption);
     $.ajax({
-        url: '/new',
+        url: '/newPost',
         type: "POST",
         data: formData,
         async: true,
@@ -159,7 +159,7 @@ function addPost(event) {
             }
         },
         error: function (response) {
-            console.error("error");
+            console.error(response);
         },
     });
 }

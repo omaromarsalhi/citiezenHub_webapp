@@ -53,7 +53,7 @@ class BlogController extends AbstractController
         return new JsonResponse(['count' => $count]);
     }
 
-    #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
+    #[Route('/newPost', name: 'app_blog_new', methods: ['GET', 'POST'])]
     public function new(Request $req, ManagerRegistry $doc): Response
     {
         if ($req->isXmlHttpRequest()) {
@@ -61,9 +61,7 @@ class BlogController extends AbstractController
             $caption = $req->get('caption');
             $fichierImage = $req->files->get('image');
 
-            // Contrôle de saisie
             if ((empty($caption) && empty($fichierImage)) || (ctype_space($caption) && empty($fichierImage))) {
-                // Retourner une réponse JSON indiquant l'échec de la validation
                 return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
             }
 
