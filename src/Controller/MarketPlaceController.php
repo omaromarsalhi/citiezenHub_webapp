@@ -68,4 +68,11 @@ class MarketPlaceController extends AbstractController
         ]);
     }
 
+
+    #[Route('/cart', name: 'app_market_place_cart', methods: ['GET', 'POST'])]
+    public function goToCart(Request $request): Response
+    {
+        return $this->render('market_place/cart.html.twig');
+    }
+
 }
