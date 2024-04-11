@@ -1,0 +1,10 @@
+vich_uploader:
+    db_driver: orm
+    metadata:
+        type: attribute
+
+    mappings:
+        blog:
+            uri_prefix: /images/abonnements
+            upload_destination: '%kernel.project_dir%/public/images/abonnements'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

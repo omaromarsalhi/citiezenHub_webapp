@@ -1,32 +1,34 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            <!-- CSS
-============================================ -->
-            <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick-theme.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/vendor/nice-select.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/plugins/feature.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery-ui.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}">
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#    <head>#}
+{#        <meta charset="UTF-8">#}
+{#        <title>{% block title %}Welcome!{% endblock %}</title>#}
+{#        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">#}
+{#        #}{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+{#        {% block stylesheets %}#}
+{#            <!-- CSS#}
+{#============================================ -->#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}">#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.css') }}">#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick-theme.css') }}">#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/vendor/nice-select.css') }}">#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/plugins/feature.css') }}">#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery-ui.min.css') }}">#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}">#}
 
 
 
 
-            <!-- Style css -->
-            <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+{#            <!-- Style css -->#}
+{#            <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">#}
 
 
 
-            <!-- ===============================================-->
-            <!--    Stylesheets-->
-            <!-- ===============================================-->
+
+
+{#            <!-- ===============================================-->#}
+{#            <!--    Stylesheets-->#}
+{#            <!-- ===============================================-->#}
 {#            <link href="{{ asset('assets/assetsAdmin/vendors/choices/choices.min.css')}}" rel="stylesheet">#}
 {#            <link href="{{ asset('assets/assetsAdmin/vendors/flatpickr/flatpickr.min.css')}}" rel="stylesheet">#}
 {#            <link rel="preconnect" href="https://fonts.googleapis.com/">#}
@@ -39,40 +41,40 @@
 {#            <link href="{{ asset('assets/assetsAdmin/assets/css/user-rtl.min.css')}}" type="text/css" rel="stylesheet" id="user-style-rtl">#}
 {#            <link href="{{ asset('assets/assetsAdmin/assets/css/user.min.css')}}" type="text/css" rel="stylesheet" id="user-style-default">#}
 
-        {% endblock %}
+{#        {% endblock %}#}
 
-        {% block javascripts %}
-            <!-- JS ============================================ -->
-            <script src="{{ asset('assets/js/vendor/jquery.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/jquery.nice-select.min.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/jquery-ui.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/modernizer.min.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/feather.min.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/slick.min.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/bootstrap.min.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/sal.min.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/particles.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/jquery.style.swicher.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/js.cookie.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/count-down.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/isotop.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/imageloaded.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/backtoTop.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/odometer.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/jquery-appear.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/scrolltrigger.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/jquery.custom-file-input.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/savePopup.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/vanilla.tilt.js') }}"></script>
+{#        {% block javascripts %}#}
+{#            <!-- JS ============================================ -->#}
+{#            <script src="{{ asset('assets/js/vendor/jquery.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/jquery.nice-select.min.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/jquery-ui.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/modernizer.min.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/feather.min.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/slick.min.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/bootstrap.min.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/sal.min.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/particles.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/jquery.style.swicher.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/js.cookie.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/count-down.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/isotop.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/imageloaded.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/backtoTop.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/odometer.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/jquery-appear.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/scrolltrigger.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/jquery.custom-file-input.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/savePopup.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/vanilla.tilt.js') }}"></script>#}
 
-            <!-- main JS -->
-            <script src="{{ asset('assets/js/main.js') }}"></script>
-            <!-- Meta Mask  -->
-            <script src="{{ asset('assets/js/vendor/web3.min.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/maralis.js') }}"></script>
-            <script src="{{ asset('assets/js/vendor/nft.js') }}"></script>
+{#            <!-- main JS -->#}
+{#            <script src="{{ asset('assets/js/main.js') }}"></script>#}
+{#            <!-- Meta Mask  -->#}
+{#            <script src="{{ asset('assets/js/vendor/web3.min.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/maralis.js') }}"></script>#}
+{#            <script src="{{ asset('assets/js/vendor/nft.js') }}"></script>#}
 
-            <script>  </script>
+{#            <script>  </script>#}
 
 {#            <script src="{{ asset('assets/assetsAdmin/vendors/popper/popper.min.js')}}"></script>#}
 {#            <script src="{{ asset('assets/assetsAdmin/vendors/bootstrap/bootstrap.min.js')}}"></script>#}
@@ -87,11 +89,30 @@
 {#            <script src="{{ asset('assets/assetsAdmin/vendors/choices/choices.min.js')}}"></script>#}
 {#            <script src="{{ asset('assets/assetsAdmin/vendors/sortablejs/Sortable.min.html')}}"></script>#}
 {#            <script src="{{ asset('assets/assetsAdmin/assets/js/phoenix.js')}}"></script>#}
-                {% endblock %}
-    </head>
-    <body>
+{#                {% endblock %}#}
+{#    </head>#}
+{#    <body>#}
+{#        {% block body %}{% endblock %}#}
+{#    </body>#}
+{#</html>#}
 
 
-        {% block body %}{% endblock %}
-    </body>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run composer require symfony/webpack-encore-bundle to start using Symfony UX #}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
 </html>

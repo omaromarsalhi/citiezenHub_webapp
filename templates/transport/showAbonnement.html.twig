@@ -474,7 +474,7 @@
                                 <td><span>
 
                         <div class="icon-box">
-                                  <a id="connectbtn" class="btn btn-primary-alta btn-small" onclick="showModifierPopup({{transport.Reference  }} ,{{ transport.Reference }})">
+                                  <a id="connectbtn" class="btn btn-primary-alta btn-small" onclick="showModifierPopup()">
 
                                       <svg class="feather feather-edit" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -495,6 +495,50 @@
                                     </span></td>
 
                             </tr>
+
+                    <div id="modifierModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModifierPopup()">&times;</span>
+                            <div class="login-area message-area rn-section-gapTop">
+                                <div class="container">
+                                    <div class="row g-5">
+{#                                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">#}
+                                            <div class="connect-thumbnail">
+                                                <div class="left-image">
+                                                    <img src="assets/images/contact/contact1.png" alt="Nft_Profile" id="imageModifer" style="width: 50px; height: 50px;">
+                                                </div>
+                                            </div>
+                                        </div>
+{#                                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">#}
+                                            <div class="form-wrapper-one registration-area">
+                                                <h3 class="mb--30">Modifier votre post</h3>
+                                                <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
+                                                    <div class="mb-5">
+                                                        <label for="captionModfier" class="form-label">Write Message</label>
+                                                        <textarea name="captionModfier" id="captionModfier" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="button-area mb-5">
+                                                        <div class="brows-file-wrapper">
+                                                            <label for="nipa" class="form-label">Upload an image</label>
+                                                            <!-- actual upload which is hidden -->
+                                                            <input name="nipaUpload" id="nipaUpload" type="file">
+                                                            <!-- our custom upload button -->
+                                                            <label for="nipaUpload" title="No File Choosen">
+                                                                <span class="text-center color-white">Upload Cover</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <button name="submit" type="submit" class="btn btn-primary" onclick="submitModifierForm(event)">Modifier</button>
+                                                </form>
+                                            </div>
+{#                                        </div>#}
+{#                                    </div>#}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                             {% endfor %}
 
                             </tbody>
@@ -626,51 +670,9 @@
             </div>
         </div>
     </div>
-    <!-- Modal de modification -->
-    <div id="modifierModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModifierPopup()">&times;</span>
-            <div class="login-area message-area rn-section-gapTop">
-                <div class="container">
-                    <div class="row g-5">
-                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
-                            <div class="connect-thumbnail">
-                                <div class="left-image">
-                                    <img src="assets/images/contact/contact1.png" alt="Nft_Profile" id="imageModifer">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
-                            <div class="form-wrapper-one registration-area">
-                                <h3 class="mb--30">Modifier votre post</h3>
-                                <form class="rwt-dynamic-form" id="contact-form" method="POST" action="mail.php">
-                                    <div class="mb-5">
-                                        <label for="contact-message" class="form-label">Write Message</label>
-                                        <textarea name="contact-messageUpload" id="captionModfier" rows="3"></textarea>
-                                    </div>
-                                    <div class="button-area mb-5">
-                                        <div class="brows-file-wrapper">
-                                            <label for="nipa" class="form-label">Upload an image</label>
-                                            <!-- actual upload which is hidden -->
-                                            <input name="nipaUpload" id="nipa" type="file">
-                                            <!-- our custom upload button -->
-                                            <label for="nipa" title="No File Choosen">
-                                                <span class="text-center color-white">Upload Cover</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <button name="submit" type="submit" class="btn btn-primary" onclick="submitModifierForm(event)">Modifier</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- End Footer Area -->
-    <!-- Start Footer Area -->
+
+
     <div class="copy-right-one ptb--20 bg-color--1">
         <div class="container">
             <div class="row align-items-center">
@@ -732,24 +734,14 @@
     </style>
 
     <script>
-        function handleMenuAction(select, postId, caption, image) {
-            var selectedValue = select.value;
-            if (selectedValue === "modifier") {
-                showModifierPopup(caption, image);
-            } else if (selectedValue === "supprimer") {
-                if (postId) {
-                    deletePost(postId);
-                }
-            }
-        }
-
-        function deletePost(postId) {
-            if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?" + postId)) {
+        function deletePost(abonnementId) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cet abonnement ?")) {
                 $.ajax({
-                    url: '/showAbonnement/' + postId,
+                    url: '/showAbonnement/' + abonnementId,
                     type: 'DELETE',
                     success: function(response) {
-                        location.reload();
+                        // Recharger la liste des abonnements après la suppression réussie
+                        $('#abonnements-list').load('/showAbonnement');
                     },
                     error: function(xhr, status, error) {
                         // Gérer les erreurs en fonction de vos besoins
@@ -759,17 +751,32 @@
             }
         }
 
-        function showModifierPopup(caption, image) {
+        // function deletePost(postId) {
+        //     if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?" + postId)) {
+        //         $.ajax({
+        //             url: '/showAbonnement/' + postId,
+        //             type: 'DELETE',
+        //             success: function(response) {
+        //                 location.reload();
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 // Gérer les erreurs en fonction de vos besoins
+        //                 console.error(error);
+        //             }
+        //         });
+        //     }
+        // }
+
+        function showModifierPopup( ) {
             var modal = document.getElementById("modifierModal");
-            var form = document.getElementById("modifierForm");
+
             let messageTextarea = document.getElementById("captionModfier");
             let imageModifier = document.getElementById("imageModifer");
-            messageTextarea.value = caption;
-            // imageModifier.src = "images/blog/" + image;
+              messageTextarea.value = "aaaa";
+             // imageModifier.src = "images/blog/" + image;
 
 
             modal.style.display = "block";
-
             form.reset();
         }
 
@@ -780,7 +787,6 @@
             modal.style.display = "none";
         }
 
-        // Fonction appelée lorsque l'utilisateur soumet le formulaire
         function submitModifierForm(event, idPost) {
             event.preventDefault();
             let formData = new FormData();
