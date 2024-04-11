@@ -59,6 +59,7 @@ class RegistrationController extends AbstractController
             'name' => $user ? $user->getFirstName() : '',
             'lastName' => $user ? $user->getLastName() : '',
             'email' => $user ? $user->getEmail() : '',
+            'role' => $user ? $user->getRole() : '',
             'errors' => $errors,
         ]);
     }

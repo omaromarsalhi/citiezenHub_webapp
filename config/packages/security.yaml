@@ -16,7 +16,8 @@ security:
         main:
             lazy: true
             provider:  my_custom_provider
-#            custom_authenticator: App\Security\UserAuthanticatorAuthenticator
+            custom_authenticator: App\Security\UserAuthanticatorAuthenticator
+            entry_point: security.authenticator.guard.main.0  # Référence à votre premier authenticator
             logout:
                 path: app_logout
                 # where to redirect after logout

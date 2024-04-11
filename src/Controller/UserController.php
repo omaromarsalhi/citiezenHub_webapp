@@ -34,32 +34,6 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
-//    #[Route('/login', name: 'login',methods: ['GET', 'POST'])]
-//    public function login(UserPasswordHasherInterface $passwordHasher ,UserRepository $rep, ManagerRegistry $doc, Request $req ,AuthenticationUtils $authenticationUtils): Response
-//    {
-//        $error=$authenticationUtils->getLastAuthenticationError();
-//        $lastUsername=$authenticationUtils->getLastUsername();
-//        return $this->render('user/login.html.twig',[
-//
-//        ]);
-////        $userData = $req->get('user');
-////        if ($req->isMethod('POST')  && $userData !== null ) {
-////            $email = $userData['email'];
-////            $password = $userData['password'];
-////            $user=$rep->findOneBy([ 'email' =>$userData['email'] ]);
-////            if ($user) {
-////                if ($passwordHasher->isPasswordValid($user, $password)) {
-////                    return $this->render('user/profile.html.twig', [
-////                        'name' => $user->getFirstName(),
-////                        'lastname' => $user->getLastName(),
-////                        'email' => $user->getEmail(),
-////                    ]);
-////                }
-////            }
-////        }
-////        return $this->render('user/login.html.twig', []);
-//    }
-
 
     #[Route('/editProfile', name: 'editProfile',methods: ['GET', 'POST'])]
     public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req): Response
@@ -91,8 +65,7 @@ class UserController extends AbstractController
 
             $em->persist($user);
             $em->flush();
-            var_dump($user);
-
+            $this->addFlash('success', 'Utilisateur modifié avec succès.');
 
             return $this->render('user/edit_profile.html.twig', [
                 'name' =>$user->getFirstName(),
@@ -192,29 +165,37 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/changePassword', name: 'changePassword',methods: ['GET', 'POST'])]
-    public function changePassword(UserPasswordHasherInterface $userPasswordHasher,ManagerRegistry $doctrine, UserRepository $userRepository, Request $req)
+    public function changePassword(UserPasswordHasherInterface $userPasswordHasher,ManagerRegistry $doc, UserRepository $userRepository, Request $req)
     {
         $user=$userRepository->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
         $newPassword =$req->get('newPassword');
         $confirmPassword =$req->get('confirmPassword');
-        $oldPassword = $userPasswordHasher->hashPassword(
-            $user,
-            $req->get('oldPassword')
-        );
-        if(strcmp($user->getPassword(),$oldPassword))
-        {
-          if(strcmp($newPassword,$confirmPassword))
-          {
+        $oldPassword =$req->get('oldPassword');
+//       $oldPassword = $userPasswordHasher->hashPassword(
+//            $user,
+//            $req->get('oldPassword')
+//        );
+        dump($oldPassword);
+        dump($confirmPassword);
+        if ($userPasswordHasher->isPasswordValid($user, $oldPassword))
+//        if(strcmp($user->getPassword(),$oldPassword)==0)
+        { dump("hrloS");
+          if(strcmp($newPassword,$confirmPassword)==0)
+          {dump("hrxloS");
               $hashedPassword = $userPasswordHasher->hashPassword(
                   $user,
                   $newPassword
               );
               $user->setPassword($hashedPassword);
+              $em = $doc->getManager();
+              $em->persist($user);
+              $em->flush();
 
           }
 
-        }
 
+        }
+             die();
     }
 
 

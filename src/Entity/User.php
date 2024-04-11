@@ -22,45 +22,45 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name:"idUser")]
+    private ?int $idUser = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"firstName",length: 255)]
     #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide')]
     #[Assert\Length(
         min:3, minMessage: 'le nom il faut contenir au moi 5 caractere',
     )]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"lastName",length: 255)]
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Length(
         min:5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
     )]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"cin",length: 255)]
     private ?string $cin = null;
     /**
      * @Assert\NotBlank(message="Le prénom ne peut pas être vide.")
      * @Assert\Email
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"email",length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name:"age")]
     private ?int $age = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name:"phoneNumber")]
     private ?int $phoneNumber = null;
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Length(
         min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
     )]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"address",length: 255)]
     private ?string $address = null;
 
-
+    #[ORM\Column(name:"role",length: 255)]
     private ?string $role = null;
 
     #[ORM\Column(length: 255)]
@@ -72,22 +72,22 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dob = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"status",length: 255)]
     private ?string $status = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"image",length: 255)]
     private ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
     #@Ignore()
     private ?File $imageFile = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(name:"gender",length: 255, nullable: true)]
     private ?string $gender = null;
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->idUser;
     }
 
     public function getFirstName(): ?string
