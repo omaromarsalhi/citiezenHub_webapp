@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Collection{% endblock %}
+
+{% block body %}
+<div class="creat-collection-area pt--80">
+		<div class="container">
+			<div class="row g-5 ">
+				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+					<div class="collection-single-wized banner">
+						<label class="title required">Logo image</label>
+
+						<div class="create-collection-input logo-image">
+							<div class="logo-c-image logo">
+								<img id="rbtinput1" src="{{ asset('images/reclamation/' ~ reclamation.getImagePath()) }}" alt="Profile-NFT">
+								<label for="fatima" title="No File Choosen">
+									<span class="text-center color-white">
+										<i class="feather-edit"></i>
+									</span>
+								</label>
+							</div>
+							<div class="button-area">
+								<div
+									class="brows-file-wrapper">
+									<!-- actual upload which is hidden -->
+									<input
+									name="fatima" id="fatima" type="file">
+								<!-- our custom upload button -->
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-7">
+					<div class="create-collection-form-wrapper">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="collection-single-wized">
+									<label for="name" class="title required">Private key</label>
+									<div class="create-collection-input">
+										<input id="name" class="name" type="text" value="{{ reclamation.privateKey }}" required readonly>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="collection-single-wized">
+									<label for="name" class="title required">subject</label>
+									<div class="create-collection-input">
+										<input id="name" class="name" type="text" value="{{ reclamation.subject }}" required>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="collection-single-wized">
+									<label for="description" class="title">Description</label>
+									<div class="create-collection-input">
+										<textarea id="description" class="text-area">{{ reclamation.description }}</textarea>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div
+									class="button-wrapper">
+									<form action="{{ path('reclamationsh.modifer', {'id': reclamation.id}) }}" method="post">
+										<input type="hidden" name="_method" value="PUT">
+										<button type="submit" class="btn btn-primary-alta btn-large">Update</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

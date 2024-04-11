@@ -52,6 +52,13 @@ class ReclamationType extends AbstractType
                     'class' => 'brows-file-wrapper'
                 ],
             ])
+            ->add('submit',SubmitType::class,[
+                'attr' => [
+                    'class' => 'btn btn-primary text-white w-100 py-3'
+                ],
+                'label' => "Envoyer"
+            ])
+            ->setMethod('PUT')
         
         ;
     }
