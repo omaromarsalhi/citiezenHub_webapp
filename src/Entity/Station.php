@@ -4,7 +4,12 @@ namespace App\Entity;
 
 use App\Repository\StationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\UX\Turbo\Attribute\Broadcast;
 
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: StationRepository::class)]
 class Station
 {
@@ -22,8 +27,9 @@ class Station
     #[ORM\Column(length: 255)]
     private ?string $Type_Vehicule = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Image_Station = null;
+
+    #[Vich\UploadableField(mapping: 'blog', fileNameProperty: 'image')]
+    private ?File $Image_Station = null;
 
     public function getId(): ?int
     {

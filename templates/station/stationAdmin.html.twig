@@ -1,0 +1,210 @@
+{% extends '/home/index_admin.html.twig' %}
+
+{%  block body %}
+
+<div class="d-xl-flex justify-content-between">
+    <div class="mb-3"><button class="btn btn-primary me-4" type="button" data-bs-toggle="modal" data-bs-target="#addDealModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-plus me-2"></span>Add Station</button><button class="btn btn-link text-body px-0"><span class="fa-solid fa-file-export fs-9 me-2"></span>Export</button></div>
+    <div class="d-flex mb-4">
+        <div class="search-box">
+            <form class="position-relative" data-bs-toggle="search" data-bs-display="static"><input class="form-control search-input search" type="search" placeholder="Search by name" aria-label="Search" />
+                <span class="fas fa-search search-box-icon"></span>
+            </form>
+        </div><select class="form-select w-auto mx-2" id="select-deals">
+            <option>Stations</option>
+        </select><button class="btn px-3 btn-phoenix-secondary" type="button" data-bs-toggle="modal" data-bs-target="#reportsFilterModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fa-solid fa-filter text-primary" data-fa-transform="down-3"></span></button>
+    </div>
+</div>
+
+<div class="modal fade" id="addDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addDealModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-body-highlight p-6">
+            <div class="modal-header border-0 p-0 mb-2">
+                <h3 class="mb-0">New Station</h3><button class="btn btn-sm btn-phoenix-secondary" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times text-danger"></span></button>
+            </div>
+            <div class="modal-body px-0">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Type Vehicule</label>
+                            <select class="form-select">
+                                <option>Select</option>
+                                <option>Metro</option>
+                                <option>Bus</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="text-body-highlight fw-bold mb-2">Real Address</label>
+                            <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStation" id="adressStation" />
+                        </div>
+
+                        <div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Station Name</label><input name="nomStation" id="nomStation" class="form-control input-target" type="text" placeholder="Enter contact name" /></div>
+                        <div class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-6"><label class="text-body-highlight fw-bold mb-2">Station Image</label>                             
+                                <input name="createinputfile" id="createinputfile" type="file" class="inputfile text-body-highlight fw-bold mb-2" />
+                                </div>
+
+                            </div>
+
+                            <div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer border-0 pt-6 px-0 pb-0">
+                <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button class="btn btn-primary my-0"  onclick="addStation(event)">
+                
+                Create Deal</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .input-invalid {
+        border-color: #DC143C; /* Change border color to red */
+    }
+
+    .input-typing {
+        border-color: #50C878;
+    }
+</style>
+
+<script>
+
+    
+
+        function addStation(event) {
+            event.preventDefault();
+            const selectedOption = document.querySelector('form-select select option.selected');
+            const type_text = selectedOption.textContent.trim();
+
+            let formData = new FormData();
+            let name = $('#nomStation').val();
+            let adress = $('#adressStation').val();
+            let type = type_text;
+
+
+
+            formData.append('image', $('#createinputfile').prop('files')[0]);
+            formData.append('nomStation', name);
+            formData.append('adressStation', adress);
+            formData.append('type_vehicule', type);
+
+
+        $.ajax({
+    url: '/addStation',
+    type: "POST",
+    data: formData,
+    async: true,
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+        console.log(formData);
+    },
+    success: function (response) {
+        if (response.success) {
+             console.log("added");
+        }
+        else {
+            console.error('Failed to create post: ' + response.message);
+        }
+    },
+    error: function (response) {
+        console.error("error");
+    },
+});
+
+        }
+    
+
+
+
+/*
+    const inputFields = document.querySelectorAll('.input-target');
+
+    inputFields.forEach(inputField => {
+        inputField.addEventListener('keyup', function() {
+            // Check if the input value contains a number
+            if (/\d/.test(this.value)) {
+                this.classList.add('input-modified');
+                this.classList.add('input-invalid');
+            } else {
+                this.classList.remove('input-modified');
+                this.classList.remove('input-invalid');
+                this.classList.add('input-typing');
+            }
+        });
+    });
+
+
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+
+    fileInputs.forEach(fileInput => {
+        fileInput.addEventListener('change', function() {
+            // Check if files have been selected
+            if (this.files.length > 0) {
+                console.log('No file has been selected.');
+                this.classList.remove('input-modified');
+                this.classList.remove('input-invalid');
+                this.classList.add('input-typing');
+            } else {
+                console.log('A file has been selected.');
+                this.classList.add('input-modified');
+                this.classList.add('input-invalid');
+            }
+        });
+    });
+
+    document.getElementById('createDealBtn').addEventListener('click', function() {
+        // Validate all fields
+        if (validateFields()) {
+            // All fields are valid, proceed with the action
+            console.log('All fields are valid. Proceeding with the action...');
+            // Add your code to perform the action (e.g., submit the form)
+        } else {
+            // Some fields are not valid, display an error message
+            alert('Error: Please fill out all fields correctly.');
+        }
+    });
+
+    function validateFields() {
+        // Check if all fields are valid
+        const inputFields = document.querySelectorAll('.input-target');
+        let allFieldsValid = true;
+
+        inputFields.forEach(inputField => {
+            if (inputField.value.trim() === '') {
+                // Field is empty
+                allFieldsValid = false;
+                return;
+            }
+
+            // Check if the field color is #50C878
+            if (getComputedStyle(inputField).border-color !== 'rgb(80, 200, 120)') {
+                // Field color is not #50C878
+                allFieldsValid = false;
+                return;
+            }
+                if (getComputedStyle(inputField).border-color == 'rgb(80, 200, 120)') {
+                // Field color is not #50C878
+                allFieldsValid = true;
+                return;
+            }
+        });
+
+        // Return whether all fields are valid
+        return allFieldsValid;
+    }*/
+</script>
+
+{% endblock %}

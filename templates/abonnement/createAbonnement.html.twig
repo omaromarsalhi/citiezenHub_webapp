@@ -120,7 +120,7 @@
 
         function addPost(event) {
             event.preventDefault();
-            const selectedOption = document.querySelector('.nice-select.mb--30 ul li.selected');
+            const selectedOption = document.querySelector('nice-select ul li.selected');
             const type_text = selectedOption.textContent.trim();
 
             let formData = new FormData();

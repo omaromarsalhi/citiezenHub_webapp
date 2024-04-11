@@ -31,10 +31,7 @@ class Abonnement
 
     #[ORM\Column(length: 255)]
     private ?string $TypeAbonnement = null;
-//    #[ORM\Column]
-//    private ?\DateTime $dateFin ;
-//    #[ORM\Column]
-//    private ?\DateTime $dateDebut ;
+
 
     #[Vich\UploadableField(mapping: 'blog', fileNameProperty: 'image')]
     private ?File $imageFile = null;
