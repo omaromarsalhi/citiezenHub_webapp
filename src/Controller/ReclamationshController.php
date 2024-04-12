@@ -36,33 +36,36 @@ class ReclamationshController extends AbstractController
 
 
     #[Route('/a/{id}', name: 'reclamationsh.modifer')]
-            public function show(EntityManagerInterface $entityManager, $id, Request $request): Response
-            {
-                $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
+    public function show(EntityManagerInterface $entityManager, $id, Request $request): Response
+    {
+        $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);  
     
-                if (!$reclamation) {
-                    throw $this->createNotFoundException('No reclamation found with id ' . $id);
-                }
+        if (!$reclamation) {
+            throw $this->createNotFoundException('No reclamation found with id ' . $id);
+        }
     
-                $form = $this->createForm(ReclamationType::class, $reclamation, ['method' => 'PUT']);
-                $form->handleRequest($request);
+
+        $form=$this->createForm(ReclamationType::class,$reclamation);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+           $reclamation=$form->getData();           
+           $entityManager->persist($reclamation);
+           $entityManager->flush();
+        
+           $this->addFlash('success','Votre reclamation a été envoyé avec succés');
+
+           return $this->redirectToRoute('app_reclamation');
+        }
+
+        return $this->render('reclamationsh/create-collection.html.twig', [
+            'controller_name' => 'ReclamationshController',
+             'reclamation' => $reclamation,
+            'form' => $form->createView(),
+        ]);
     
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $reclamation->setDescription($form->get('description')->getData());
-                    $entityManager->persist($reclamation);
-                    $entityManager->flush();
-    
-                    $this->addFlash('success', 'Your changes have been saved.');
-    
-                    return $this->redirectToRoute('reclamationsh.modifer', ['id' => $reclamation->getId()]);
-                }
-    
-                return $this->render('reclamationsh/create-collection.html.twig', [
-                    'controller_name' => 'ReclamationshController',
-                    'reclamation' => $reclamation,
-                    'form' => $form->createView(),
-                ]);
-            }
+        
+    }
     
 
 }

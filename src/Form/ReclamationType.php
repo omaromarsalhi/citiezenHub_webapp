@@ -57,9 +57,7 @@ class ReclamationType extends AbstractType
                     'class' => 'btn btn-primary text-white w-100 py-3'
                 ],
                 'label' => "Envoyer"
-            ])
-            ->setMethod('PUT')
-        
+            ]) 
         ;
     }
 
