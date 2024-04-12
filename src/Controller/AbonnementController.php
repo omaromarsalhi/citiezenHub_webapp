@@ -73,68 +73,8 @@ class AbonnementController extends AbstractController
     }
 
 
-//    public function addAbonnement(Request $request): Response
-//    {
-//        $abonnement = new Abonnement();
-//        $form = $this->createForm(AbonnementType::class, $abonnement);
-//        $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($abonnement);
-//            $em->flush();
-//            return $this->redirectToRoute('show_abonnement');
-//        }
-//        else{
-//            return $this->render('abonnement/createAbonnement.html.twig',['f' => $form->createView()]);
-//        }
-//
-//    }
-
-//    #[Route('/addAbonnement', name: 'addAbonnement')]
-//
-//    public function addAbonnement(Request $request): Response
-//    {
-//        $abonnement = new Abonnement();
-//        $form = $this->createForm(AbonnementType::class, $abonnement);
-//        $form->handleRequest($request);
-//        $fichierImage = $request->files->get('createinputfile');
-//
-//
-//
-//        if ($form->isSubmitted()) {
-//            if ($form->isValid()) {
-//
-//
-//                $abonnement->setImageFile($fichierImage);
-//                $em = $this->getDoctrine()->getManager();
-//                $em->persist($abonnement);
-//                $em->flush();
-//
-//                return $this->redirectToRoute('show_abonnement');
-//            } else {
-//                $errors = [];
-//                foreach ($form->getErrors(true) as $error) {
-//                    $errors[] = $error->getMessage();
-//                }
-//
-//                return $this->render('abonnement/createAbonnement.html.twig', [
-//                    'f' => $form->createView(),
-//                    'errors' => $errors,
-//                ]);
-//            }
-//        }
-//
-//        return $this->render('abonnement/createAbonnement.html.twig', [
-//            'f' => $form->createView(),
-//        ]);
-//    }
-
-
-// Your other use statements and controller class declaration
-//
-//
-//
+ 
+ 
     #[Route('/formAbonnement', name: 'app_addAbonnement')]
     public function index( ): Response
     {
@@ -155,10 +95,11 @@ class AbonnementController extends AbstractController
             $abonnement->setPrenom($Lastname);
             $abonnement->setTypeAbonnement($Type);
             $abonnement->setImageFile($Image);
-
-            $em = $doc->getManager();
             $em->persist($abonnement);
             $em->flush();
+            $em = $doc->getManager();
+          
+         
 
             return new JsonResponse(['message' => $Image], Response::HTTP_OK);
         }

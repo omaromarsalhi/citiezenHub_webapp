@@ -21,12 +21,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assetsAdmin/assets/img/favicons/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assetsAdmin/assets/img/favicons/favicon-16x16.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assetsAdmin/assets/img/favicons/favicon.ico') }}">
-    <link rel="manifest" href="assetsAdmin/assets/img/favicons/manifest.json') }}">
+    <link rel="manifest" href="{{ asset('assetsAdmin/assets/img/favicons/manifest.json') }}">
     <meta name="msapplication-TileImage" content="{{ asset('assetsAdmin/assets/img/favicons/mstile-150x150.png') }}">
     <meta name="theme-color" content="#ffffff">
     <script src="{{ asset('assetsAdmin/vendors/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
     <script src="{{ asset('assetsAdmin/vendors/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('assetsAdmin/assets/js/config.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <!-- ===============================================-->
     <!--    Stylesheets-->
@@ -37,11 +39,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
     <link href="{{ asset('assetsAdmin/vendors/simplebar/simplebar.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="../../../unicons.iconscout.com/release/v4.0.8/css/line.css">
+    
+     <!-- <link rel="stylesheet" href="../../../unicons.iconscout.com/release/v4.0.8/css/line.css">-->
     <link href="{{ asset('assetsAdmin/assets/css/theme-rtl.min.css') }}" type="text/css" rel="stylesheet" id="style-rtl">
     <link href="{{ asset('assetsAdmin/assets/css/theme.min.css') }}" type="text/css" rel="stylesheet" id="style-default">
     <link href="{{ asset('assetsAdmin/assets/css/user-rtl.min.css') }}" type="text/css" rel="stylesheet" id="user-style-rtl">
-    <link href="{{ asset('assetsAdmin/assetsAdmin/assets/css/user.min.css') }}" type="text/css" rel="stylesheet" id="user-style-default">
+    <link href="{{ asset('assetsAdmin/assets/css/user.min.css') }}" type="text/css" rel="stylesheet" id="user-style-default">
    <link href="{{ asset('assetsAdmin/vendors/leaflet/leaflet.css') }}" rel="stylesheet">
     <link href="{{ asset('assetsAdmin/vendors/leaflet.markercluster/MarkerCluster.css') }}" rel="stylesheet">
     <link href="{{ asset('assetsAdmin/vendors/leaflet.markercluster/MarkerCluster.Default.css') }}" rel="stylesheet">
@@ -5896,7 +5899,7 @@
     <script src="assetsAdmin/vendors/is/is.min.js"></script>
     <script src="assetsAdmin/vendors/fontawesome/all.min.js"></script>
     <script src="assetsAdmin/vendors/lodash/lodash.min.js"></script>
-    <script src="../../../polyfill.io/v3/polyfill.min58be.js?features=window.scroll"></script>
+   <!-- <script src="../../../polyfill.io/v3/polyfill.min58be.js?features=window.scroll"></script>-->
     <script src="assetsAdmin/vendors/list.js/list.min.js"></script>
     <script src="assetsAdmin/vendors/feather-icons/feather.min.js"></script>
     <script src="assetsAdmin/vendors/dayjs/dayjs.min.js"></script>

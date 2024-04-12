@@ -16,46 +16,59 @@ class Station
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "idStation")]
-    private ?int $idStation = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $NomStation = null;
+    private ?string $nomstation = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $AddressStation = null;
+    private ?string $addressstation = null;
 
     #[ORM\Column(length: 255)]
     private ?string $Type_Vehicule = null;
 
 
-    #[Vich\UploadableField(mapping: 'blog', fileNameProperty: 'image')]
-    private ?File $Image_Station = null;
+    #[Vich\UploadableField(mapping: 'station', fileNameProperty: 'image_station')]
+    private ?File $imageFile = null;
+   
+    #[ORM\Column(length: 255)]
+    private ?string $image_station = null;
+
+    public function getImageStation(): ?string
+    {
+        return $this->image_station;
+    }
+
+    public function setImageStation(?string $image_station): void
+    {
+        $this->image_station = $image_station;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNomStation(): ?string
+    public function getnomstation(): ?string
     {
-        return $this->NomStation;
+        return $this->nomstation;
     }
 
-    public function setNomStation(string $NomStation): static
+    public function setnomstation(string $nomstation): static
     {
-        $this->NomStation = $NomStation;
+        $this->nomstation = $nomstation;
 
         return $this;
     }
 
-    public function getAddressStation(): ?string
+    public function getaddressstation(): ?string
     {
-        return $this->AddressStation;
+        return $this->addressstation;
     }
 
-    public function setAddressStation(string $AddressStation): static
+    public function setaddressstation(string $addressstation): static
     {
-        $this->AddressStation = $AddressStation;
+        $this->addressstation = $addressstation;
 
         return $this;
     }
@@ -72,15 +85,16 @@ class Station
         return $this;
     }
 
-    public function getImageStation(): ?string
+    
+
+    public function setImageFile($imageFile)
     {
-        return $this->Image_Station;
+        $this->imageFile = $imageFile;
+        if (null !== $imageFile) {
+        }
     }
-
-    public function setImageStation(string $Image_Station): static
+    public function getImageFile(): ?File
     {
-        $this->Image_Station = $Image_Station;
-
-        return $this;
+        return $this->imageFile;
     }
 }

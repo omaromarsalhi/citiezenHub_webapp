@@ -4,7 +4,12 @@ vich_uploader:
         type: attribute
 
     mappings:
-        blog:
+       
+        abonnement:
             uri_prefix: /images/abonnements
             upload_destination: '%kernel.project_dir%/public/images/abonnements'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        station:
+            uri_prefix: /images/stations
+            upload_destination: '%kernel.project_dir%/public/images/station'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
