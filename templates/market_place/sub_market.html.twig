@@ -98,14 +98,18 @@
                             class="quickview--box"
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
-                            title="Buy">
+                            title="Buy"
+
+                    >
+
                         <a
-                                href="#"
+                                onclick="add2Card({{ product.idProduct }},{{ i+1 }})"
                                 class="yith-wcqv-button"
-                                data-product_id="793"
+                                id="product_{{ i+1 }}"
                         >
-                            <i class="mt-2 fi fi-rr-shopping-cart-add"></i>
+                                <i class="mt-2 fi fi-rr-shopping-cart-add"></i>
                         </a>
+
                     </div>
                 </div>
             </div>

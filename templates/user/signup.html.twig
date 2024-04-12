@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets_wtf %}
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
+{% endblock %}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 {% endblock %}

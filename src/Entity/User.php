@@ -18,49 +18,49 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements PasswordAuthenticatedUserInterface, UserInterface
+class User implements PasswordAuthenticatedUserInterface,UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: "idUser")]
+    #[ORM\Column(name:"idUser")]
     private ?int $idUser = null;
 
-    #[ORM\Column(length: 255,name: "firstName")]
+    #[ORM\Column(name:"firstName",length: 255)]
     #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide')]
     #[Assert\Length(
-        min: 3, minMessage: 'le nom il faut contenir au moi 5 caractere',
+        min:3, minMessage: 'le nom il faut contenir au moi 5 caractere',
     )]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 255,name: "lastName")]
+    #[ORM\Column(name:"lastName",length: 255)]
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Length(
-        min: 5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
+        min:5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
     )]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"cin",length: 255)]
     private ?string $cin = null;
     /**
      * @Assert\NotBlank(message="Le prénom ne peut pas être vide.")
      * @Assert\Email
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"email",length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name:"age")]
     private ?int $age = null;
 
-    #[ORM\Column(name: "num")]
+    #[ORM\Column(name:"phoneNumber")]
     private ?int $phoneNumber = null;
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Length(
-        min: 5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
+        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
     )]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"address",length: 255)]
     private ?string $address = null;
 
-
+    #[ORM\Column(name:"role",length: 255)]
     private ?string $role = null;
 
     #[ORM\Column(length: 255)]
@@ -72,17 +72,17 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dob = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"status",length: 255)]
     private ?string $status = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:"image",length: 255)]
     private ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
     #@Ignore()
     private ?File $imageFile = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(name:"gender",length: 255, nullable: true)]
     private ?string $gender = null;
 
     public function getId(): ?int
@@ -98,6 +98,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function setFirstName(string $firstName): static
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -121,6 +122,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function setCin(string $cin): static
     {
         $this->cin = $cin;
+
         return $this;
     }
 
@@ -132,6 +134,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -241,7 +244,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         $this->image = $image;
         return $this;
     }
-
     public function getImageFile()
     {
         return $this->imageFile;
@@ -286,7 +288,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         // TODO: Implement @method string getUserIdentifier()
     }
-
     public function getUserIdentifier(): string
     {
 
@@ -304,7 +305,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
         return $this;
     }
-
     public function serialize()
     {
         $this->image = base64_encode($this->image);

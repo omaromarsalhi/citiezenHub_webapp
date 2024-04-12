@@ -1,0 +1,317 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets_wtf %}
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/wtf.css') }}"/>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/basket.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="page-template-default page page-id-10 wp-embed-responsive theme-nuron woocommerce-cart woocommerce-page woocommerce-no-js active-scroll-to-top active-preloader  root-header-transparent  active-dark-mode cart wcfm-theme-nuron elementor-default elementor-kit-5">
+        <div class="main-page ">
+            <div class="rn-breadcrumb-inner rbt-banner--gradient ptb--30 bg_image">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <h5 class="title text-center text-md-start">Cart</h5>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+
+                            <ul id="breadcrumbs" class="page-listX breadcrumb-list">
+                                <li class="item-home item"><a class="bread-link bread-home"
+                                                              href="https://rainbowthemes.net/themes/nuron"
+                                                              title="Home">Home</a></li>
+                                <li class="separator separator-home"><i class="feather-chevron-right"></i></li>
+                                <li class="item current item-10"><span class="bread-current bread-10"> Cart</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Start Page Wrapper  -->
+            <main class="page-wrapper">
+                <div class="rn-section-gap">
+                    {% if false %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <article id="post-10" class="post-10 page type-page status-publish hentry">
+                                        <div class="entry-content">
+                                            <div class="woocommerce">
+                                                <div class="wc-empty-cart-message">
+                                                    <div class="cart-empty woocommerce-info">
+                                                        Your cart is currently empty.
+                                                    </div>
+                                                </div>
+                                                <p class="return-to-shop">
+                                                    <a class="button wc-backward"
+                                                       href="https://rainbowthemes.net/themes/nuron/shop/">
+                                                        Return to shop </a>
+                                                </p>
+                                            </div>
+                                        </div><!-- .entry-content -->
+                                        <div class="page-entry-content-footer-wrapper">
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <article id="post-10" class="post-10 page type-page status-publish hentry">
+                                        <div class="entry-content">
+                                            <div class="woocommerce">
+                                                <div class="woocommerce-notices-wrapper" id="notification_box">
+                                                </div>
+                                                <form class="woocommerce-cart-form" action="" method="post">
+
+                                                    <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents">
+                                                        <tr>
+                                                            <th class="product-remove"><span class="screen-reader-text">Remove item</span>
+                                                            </th>
+                                                            <th class="product-thumbnail"><span
+                                                                        class="screen-reader-text">Thumbnail image</span>
+                                                            </th>
+                                                            <th class="product-name">Product</th>
+                                                            <th class="product-price">Price</th>
+                                                            <th class="product-quantity">Quantity</th>
+                                                            <th class="product-subtotal">Subtotal</th>
+                                                        </tr>
+                                                        <tbody>
+                                                        {% for index,product in products %}
+{#                                                            {{  dump(product[0]) }}#}
+                                                        <tr class="woocommerce-cart-form__cart-item cart_item" id="product_in_basket_{{ index+1 }}">
+                                                            <td class="product-remove">
+                                                                <a
+                                                                   onclick="removeItem({{ basket_items[index].getId()}},{{ "'"~product[0].name~"'" }},{{ index+1 }})"
+                                                                   class="remove"
+{#                                                                   href="javascript:void(0);"#}
+                                                                   aria-label="Remove Art - The Last Suppers from cart"
+                                                                   data-product_id="176" data-product_sku="">×</a>
+                                                            </td>
+                                                            <td class="product-thumbnail">
+                                                                <a href="">
+                                                                    <img
+                                                                            width="300" height="300"
+                                                                            src="{{ asset(product[0].images[0].path()) }}"
+                                                                            class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                                                            alt=""
+                                                                            decoding="async"
+                                                                            sizes="(max-width: 300px) 100vw, 300px">
+                                                                </a>
+                                                            </td>
+                                                            <td class="product-name" data-title="Product">
+                                                                <a href="">{{ product[0].name }}</a>
+                                                                <dl class="variation">
+                                                                    <dt class="variation-Store">Owner:</dt>
+                                                                    <dd class="variation-Store"><p>
+                                                                            <a class="wcfm_dashboard_item_title"
+                                                                               target="_blank"
+                                                                               href="">{{ product[0].idUser }}</a>
+                                                                        </p>
+                                                                    </dd>
+                                                                </dl>
+                                                            </td>
+
+                                                            <td class="product-price" data-title="Price">
+                                                            <span class="woocommerce-Price-amount amount"><bdi>{{ product[0].price }}<span
+                                                                            class="woocommerce-Price-currencySymbol">Dt</span></bdi></span>
+                                                            </td>
+
+                                                            <td class="product-quantity" data-title="Quantity">
+                                                                <div class="quantity">
+                                                                    <label class="screen-reader-text"
+                                                                           for="quantity_6616faaf35cb6">Art - The Last
+                                                                        Suppers quantity</label>
+                                                                    <input type="number" id="itemQuantityInBasket"
+                                                                           class="input-text qty text"
+                                                                           value="{{ basket_items[index].quantity }}" aria-label="Product quantity"
+                                                                           size="4"
+                                                                           min="0" max="" step="1" placeholder=""
+                                                                           inputmode="numeric" autocomplete="off">
+                                                                </div>
+                                                            </td>
+
+                                                            <td class="product-subtotal" data-title="Subtotal">
+                                                            <span class="woocommerce-Price-amount amount"><bdi>{{ basket_items[index].quantity*product[0].price  }}<span
+                                                                            class="woocommerce-Price-currencySymbol">$</span></bdi></span>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        <tr>
+                                                            <td colspan="6" class="actions">
+
+                                                                <button type="submit" class="button" name="update_cart"
+                                                                        value="Update cart" disabled="">Update cart
+                                                                </button>
+
+
+                                                                <input type="hidden" id="woocommerce-cart-nonce"
+                                                                       name="woocommerce-cart-nonce"
+                                                                       value="d8662cdcc9"><input type="hidden"
+                                                                                                 name="_wp_http_referer"
+                                                                                                 value="/themes/nuron/cart/?removed_item=1">
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </form>
+
+                                                <div class="cart-collaterals">
+                                                    <div class="cart_totals calculated_shipping">
+
+
+                                                        <h2>Cart totals</h2>
+
+                                                        <table cellspacing="0" class="shop_table shop_table_responsive">
+
+                                                            <tbody>
+                                                            <tr class="cart-subtotal">
+                                                                <th>Subtotal</th>
+                                                                <td data-title="Subtotal"><span
+                                                                            class="woocommerce-Price-amount amount"><bdi><span
+                                                                                    class="woocommerce-Price-currencySymbol">$</span>1,450.00</bdi></span>
+                                                                </td>
+                                                            </tr>
+
+
+                                                            <tr class="woocommerce-shipping-totals shipping">
+                                                                <th>Shipping</th>
+                                                                <td data-title="Shipping">
+                                                                    <ul id="shipping_method"
+                                                                        class="woocommerce-shipping-methods">
+                                                                        <li>
+                                                                            <input type="hidden"
+                                                                                   name="shipping_method[0]"
+                                                                                   data-index="0"
+                                                                                   id="shipping_method_0_flat_rate1"
+                                                                                   value="flat_rate:1"
+                                                                                   class="shipping_method"><label
+                                                                                    for="shipping_method_0_flat_rate1">Flat
+                                                                                rate: <span
+                                                                                        class="woocommerce-Price-amount amount"><bdi><span
+                                                                                                class="woocommerce-Price-currencySymbol">$</span>10.00</bdi></span></label>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <p class="woocommerce-shipping-destination">
+                                                                        Shipping to <strong>tunis, tunis, 1006,
+                                                                            Tunisia</strong>. </p>
+
+                                                                    <p class="woocommerce-shipping-contents"><small>Antique
+                                                                            Maps and Globes ×1</small></p>
+
+                                                                    <form class="woocommerce-shipping-calculator"
+                                                                          action=""
+                                                                          method="post">
+
+                                                                        <a href="javascript:void(0);"
+                                                                           onclick="showFormLocation()"
+                                                                           class="shipping-calculator-button"
+                                                                           style="font-size: 20px">Change
+                                                                            Address</a>
+                                                                        <section
+                                                                                class="shipping-calculator-form form-container"
+                                                                                id="hidden_form">
+
+                                                                            <p class="form-row form-row-wide"
+                                                                               id="calc_shipping_state_field">
+                                                                                <label for="calc_shipping_state"
+                                                                                       class="screen-reader-text">State
+                                                                                    /
+                                                                                    County:</label>
+                                                                                <input type="text" class="input-text"
+                                                                                       value="tunis"
+                                                                                       placeholder="State / County"
+                                                                                       name="calc_shipping_state"
+                                                                                       id="calc_shipping_state">
+                                                                            </p>
+
+                                                                            <p class="form-row form-row-wide"
+                                                                               id="calc_shipping_city_field">
+                                                                                <label for="calc_shipping_city"
+                                                                                       class="screen-reader-text">City:</label>
+                                                                                <input type="text" class="input-text"
+                                                                                       value="tunis" placeholder="City"
+                                                                                       name="calc_shipping_city"
+                                                                                       id="calc_shipping_city">
+                                                                            </p>
+
+                                                                            <p class="form-row form-row-wide"
+                                                                               id="calc_shipping_postcode_field">
+                                                                                <label for="calc_shipping_postcode"
+                                                                                       class="screen-reader-text">Postcode
+                                                                                    /
+                                                                                    ZIP:</label>
+                                                                                <input type="text" class="input-text"
+                                                                                       value="1006"
+                                                                                       placeholder="Postcode / ZIP"
+                                                                                       name="calc_shipping_postcode"
+                                                                                       id="calc_shipping_postcode">
+                                                                            </p>
+
+                                                                            <p>
+                                                                                <button type="submit"
+                                                                                        name="calc_shipping"
+                                                                                        value="1" class="button">Update
+                                                                                </button>
+                                                                            </p>
+                                                                            <input type="hidden"
+                                                                                   id="woocommerce-shipping-calculator-nonce"
+                                                                                   name="woocommerce-shipping-calculator-nonce"
+                                                                                   value="59bd362368"><input
+                                                                                    type="hidden"
+                                                                                    name="_wp_http_referer"
+                                                                                    value="/themes/nuron/cart/?removed_item=1">
+                                                                        </section>
+                                                                    </form>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="order-total">
+                                                                <th>Total</th>
+                                                                <td data-title="Total"><strong><span
+                                                                                class="woocommerce-Price-amount amount"><bdi><span
+                                                                                        class="woocommerce-Price-currencySymbol">$</span>1,470.00</bdi></span></strong>
+                                                                </td>
+                                                            </tr>
+
+
+                                                            </tbody>
+                                                        </table>
+
+                                                        <div class="wc-proceed-to-checkout">
+
+                                                            <a href="https://rainbowthemes.net/themes/nuron/checkout/"
+                                                               class="checkout-button button alt wc-forward">
+                                                                Proceed to checkout</a>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div><!-- .entry-content -->
+                                        <div class="page-entry-content-footer-wrapper">
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+            <!-- End Page Wrapper -->
+        </div>
+    </div>
+{% endblock %}
+
