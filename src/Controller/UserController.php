@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Utils\ImageHelper;
 use Cassandra\Date;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ use App\Utils\MyTools;
 use DateTime;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 class UserController extends AbstractController
@@ -36,51 +38,54 @@ class UserController extends AbstractController
     }
 
     #[Route('/editProfile', name: 'editProfile',methods: ['GET', 'POST'])]
-    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req): Response
+    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper): Response
     {    $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
 
         if ($req->isXmlHttpRequest()) {
+            $errors = $validator->validate($user);
 
-            $email =$req->get('email');
-            $name =$req->get('name');
-            $lastname =$req->get('lastname');
-            $role =$req->get('role');
-            $age =$req->get('age');
-            $gender =$req->get('gender');
-            $status =$req->get('status');
-            $cin =$req->get('cin');
-            $phoneNumber =$req->get('phoneNumber');
-            $fichierImage = $req->files->get('image');
-            $user->setFirstName($name);
-            $user->setLastName($lastname);
-            $user->setAge($age);
-            $user->setPhoneNumber($phoneNumber);
-            $user->setCin($cin);
-            $user->setRole($role);
-            $user->setStatus($status);
-            $user->setGender($gender);
-            $user->setImageFile($fichierImage);
-            $user->serialize();
-            $em = $doc->getManager();
+                $email = $req->get('email');
+                $name = $req->get('name');
+                $lastname = $req->get('lastname');
+                $role = $req->get('role');
+                $age = $req->get('age');
+                $gender = $req->get('gender');
+                $status = $req->get('status');
+                $cin = $req->get('cin');
+                $phoneNumber = $req->get('phoneNumber');
+                $date = $req->get('date');
+                $fichierImage = $req->files->get('image');
+                $user->setFirstName($name);
+                $user->setLastName($lastname);
+                $user->setAge($age);
+                $user->setPhoneNumber($phoneNumber);
+                $user->setCin($cin);
+                $user->setRole($role);
+                $user->setStatus($status);
+                $user->setGender($gender);
+                $user->setImage($imageHelper->saveImages($fichierImage));
+                $user->setDate($date);
+//                $user->setImageFile($fichierImage);
+                $user->serialize();
+                $em = $doc->getManager();
+                $em->persist($user);
+                $em->flush();
+                $this->addFlash('success', 'Utilisateur modifié avec succès.');
+                return $this->render('user/edit_profile.html.twig', [
+                    'name' => $user->getFirstName(),
+                    'lastname' => $user->getLastName(),
+                    'email' => $user->getEmail(),
+                    'address' => $user->getAddress(),
+                    'role' => $user->getRole(),
+                    'cin' => $user->getCin(),
+                    'phoneNumber' => $user->getPhoneNumber(),
+                    'age' => $user->getAge(),
+                    'status' => $user->getStatus(),
+                    'image' => $user->getImage(),
+                    'gender' => $user->getGender(),
+                ]);
+            }
 
-            $em->persist($user);
-            $em->flush();
-            $this->addFlash('success', 'Utilisateur modifié avec succès.');
-
-            return $this->render('user/edit_profile.html.twig', [
-                'name' =>$user->getFirstName(),
-                'lastname' =>$user->getLastName(),
-                'email' => $user->getEmail(),
-                'address' => $user->getAddress(),
-                'role' => $user->getRole(),
-                'cin' => $user->getCin(),
-                'phoneNumber'=>$user->getPhoneNumber(),
-                'age' =>$user->getAge(),
-                'status' =>$user->getStatus(),
-                'image'=>$user->getImage(),
-                'gender'=>$user->getGender(),
-            ]);
-        }
         return $this->render('user/edit_profile.html.twig', [
             'name' =>$user->getFirstName(),
             'lastname' =>$user->getLastName(),

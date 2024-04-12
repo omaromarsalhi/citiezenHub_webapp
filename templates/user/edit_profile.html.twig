@@ -3,10 +3,11 @@
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.6/flatpickr.min.js"></script>
-     <script src="{{ asset('js/userScript.js') }}"></script>
+
  {% endblock %}
 
 {% block test %}
+    <script src="{{ asset('js/userScript.js') }}"></script>
     <header class="rn-header haeder-default header--sticky">
         <div class="container">
             <div class="header-inner">
@@ -303,28 +304,6 @@
                             <div class="nuron-information">
 
                                 <div class="profile-change row g-5">
-{#                                    <div class="profile-left col-lg-4">#}
-{#                                        <div class="profile-image mb--30">#}
-{#                                            <h6 class="title">Change Your Profile Picture</h6>#}
-{#                                            <img id="rbtinput1" src="" alt="Profile-NFT">#}
-{#                                        </div>#}
-{#                                        <div class="button-area">#}
-{#                                            <div class="brows-file-wrapper">#}
-{#                                                <!-- actual upload which is hidden -->#}
-{#                                                <input name="image" id="image" type="file">#}
-{#                                                <!-- our custom upload button -->#}
-{#                                                <label for="image" title="No File Choosen">#}
-{#                                                    <span class="text-center color-white">Upload Profile</span>#}
-{#                                                </label>#}
-{#                                            </div>#}
-{#                                            <div class="button-area save-btn-edit">#}
-{#                                                <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editImage(event)">Save#}
-{#                                                </button>#}
-
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                    </div>#}
-
                                     <div class="profile-left right col-lg-8">
                                         <div class="profile-image mb--30">
                                             <h6 class="title">Change Your Cover Photo</h6>
@@ -435,8 +414,9 @@
                             </form>
 
                                 <div class="button-area save-btn-edit">
-                                    <a href="#" class="btn btn-primary-alta mr--15" onclick="customAlert.alert('Cancel Edit Profile?')">Cancel</a>
-                                    <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editProfile(event)">Save</button>
+                                    <a href="{{path('editProfile')}}" class="btn btn-primary-alta mr--15" onclick="customAlert.alert('Cancel Edit Profile?')">Cancel</a>
+                                    <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editProfile(event)">Save
+                                    </button>
                                 </div>
                                 <a href="{{path('app_user_delete')}}" class="btn btn-primary-alta mr--15" >Delete</a>
 

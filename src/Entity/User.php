@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Vich\Uploadable]
+//#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -78,9 +78,9 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[ORM\Column(name:"image",length: 255)]
     private ?string $image = null;
 
-    #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
-    #@Ignore()
-    private ?File $imageFile = null;
+//    #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
+//    #@Ignore()
+//    private ?File $imageFile = null;
 
     #[ORM\Column(name:"gender",length: 255, nullable: true)]
     private ?string $gender = null;
@@ -244,22 +244,19 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
         $this->image = $image;
         return $this;
     }
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
+//
 
-    public function setImageFile($imageFile)
-    {
-        $this->imageFile = $imageFile;
-        if ($imageFile) {
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
-
-        return $this;
-
-    }
+//    public function setImageFile($imageFile)
+//    {
+//        $this->imageFile = $imageFile;
+//        if ($imageFile) {
+//            // otherwise the event listeners won't be called and the file is lost
+//            $this->updatedAt = new \DateTimeImmutable();
+//        }
+//
+//        return $this;
+//
+//    }
 
     public function getRoles()
     {

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block test %}
-    <link rel="stylesheet" href="{{ asset('css/styleUser.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- start page title area -->
     <div class="rn-breadcrumb-inner ptb--30">
         <div class="container">
@@ -56,6 +56,7 @@
                             <div class="mb-5">
                                 <label for="lastName" class="form-label">Last name</label>
                                 <input type="text" id="lastName" name="user[lastName]" value=" {{ lastName }}" >
+                                console.log({{ lastName }})
                             </div>
                             <div class="mb-5">
                                 <label for="exampleInputEmail1" class="form-label">Email address</label>

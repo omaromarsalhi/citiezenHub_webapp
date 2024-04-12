@@ -23,10 +23,8 @@ function editProfile(event) {
     let status=$('#status').val();
     let cin=$('#cin').val();
     let phoneNumber=$('#phoneNumber').val();
-    // let date=$('#date').val();
-
+    let date=$('#date').val();
     formData.append('image',$('#nipa').prop('files')[0]);
-    console.log($('#nipa').prop('files')[0])
     formData.append('name',name);
     formData.append('lastname',lastname);
     formData.append('email',email);
@@ -36,7 +34,7 @@ function editProfile(event) {
     formData.append('status',status);
     formData.append('cin',cin);
     formData.append('phoneNumber',phoneNumber);
-    // formData.append('date',date);
+    formData.append('date',date);
     $.ajax({
         url: '/editProfile',
         type: "POST",
