@@ -77,7 +77,44 @@ class StationController extends AbstractController
             return new JsonResponse(['message' => 'station non envoye'], Response::HTTP_OK);
     }
  
-
+    #[Route('/updateStation/{id}', name: 'updateStation')]
+    public function updateStation(Request $request, EntityManagerInterface $entityManager, $id): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            $station = $entityManager->getRepository(Station::class)->find($id);
+    
+            if (!$station) {
+                return new JsonResponse(['error' => 'NOT_FOUND', 'message' => 'Station not found.'], Response::HTTP_NOT_FOUND);
+            }
+    
+            // Retrieve the updated data from the request
+            $nomStation = $request->get('nomStation');
+            $adressStation = $request->get('adressStation');
+            $type = $request->get('type_vehicule');
+            $image = $request->files->get('image');
+    
+            // Update the station entity with the new data
+            $station->setNomStation($nomStation);
+            $station->setAddressStation($adressStation);
+            $station->setTypeVehicule($type);
+    
+            if ($image) {
+                $station->setImageFile($image);
+            }
+    
+            try {
+                // Persist the changes to the database
+                $entityManager->flush();
+                return new JsonResponse(['message' => 'Station updated successfully.'], Response::HTTP_OK);
+            } catch (\Exception $e) {
+                // Handle any exceptions that occur during the update process
+                return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while updating the station.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new JsonResponse(['error' => 'INVALID_REQUEST', 'message' => 'Invalid request.'], Response::HTTP_BAD_REQUEST);
+        }
+    }
+    
 
     #[Route('/station/{id}', name: 'app_station_delete', methods: ['DELETE'])]
     public function deleteStation($id, StationRepository $stationRepository, Request $request,EntityManagerInterface $entityManager): Response

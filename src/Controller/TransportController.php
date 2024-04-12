@@ -14,7 +14,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TransportController extends AbstractController
 {
-
+    #[Route('/transport', name: 'app_transport')]
+    public function contollAllStations(): Response
+    {
+     
+     
+        $transport = $this->getDoctrine()->getManager()->getRepository(transport::class)->findAll();
+        return $this->render('transport/transportAdmin.html.twig', [
+            'controller_name' => 'TransportController',
+            'transportlist' => $transport
+        ]);
+    }
 
 
 

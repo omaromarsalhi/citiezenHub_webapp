@@ -99,13 +99,14 @@
 
                              <div class="col-md-12 col-xl-4">
                                  <div class="input-box">
-                                     <button type="button" class="btn btn-primary-alta btn-large w-100" data-bs-toggle="modal" data-bs-target="#uploadModal">Preview</button>
+                                     <button type="button" class="btn btn-primary-alta btn-large w-100" data-bs-toggle="modal" data-bs-target="#uploadModal" onclick="openPopup()">Preview</button>
                                  </div>
                              </div>
 
                              <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
                                  <div class="input-box">
                                      <button class="btn btn-primary btn-large w-100" onclick="addPost(event)">Submit Item</button>
+ 
                                  </div>
                              </div>
 
@@ -115,45 +116,126 @@
              </div>
          </div>
      </div>
+     
+<div class ="popup" id="popup">
+<img src="images/404-tick.png"> 
+<h2>Thank You</h2>
+<p>Your Subbscription has been succesfully created</p>
+<button type="button" onclick="closePopup()">OK</button>
+</div>
+ 
+    <style>
+    
+ 
+
+.popup {
+width:400px;
+background:#fff;
+border-radius: 6px;
+position: absolute;
+top: 0%;
+left: 50%;
+transform: translate(-50%,-50%) scale(0.1);
+text-align: center ;
+padding: 0 30px 30px;
+color :#333;
+visibility: hidden;
+transition: transform 0.4s, top 0.4s;
+}
+.popup img{
+    width : 100px;
+    margin-top: -50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.popup h2{
+    font-size:38px;
+    font-weight : 500;
+    margin: 30px 0 10px;
+    color:#000000 ;
+}
+.open-popup{
+    visibility: visible;
+    top: 50%;
+    transform: translate(-40%,-100%) scale(1);
+
+}
+.popup button{
+    width: 100%;
+    margin-top: 50px;
+    padding : 10px 0;
+    background: #6fd649 ;
+    color: #fff;
+    border: 0;
+    outline: none;
+    font-size: 19px;
+    border-radius: 4px;
+    cursor: pointer;
+        box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+
+
+
+}
+ 
+</style>
 
     <script>
 
-        function addPost(event) {
-            event.preventDefault();
-            const selectedOption = document.querySelector('.nice-select ul li.selected');
-            const type_text = selectedOption.textContent.trim();
+        let popup=document.getElementById("popup");
+    function openPopup(){
+popup.classList.add("open-popup")
 
-            let formData = new FormData();
-            let name = $('#name').val();
-            let lastname = $('#lastname').val();
-            let type = type_text;
+    }
+    function closePopup(){
+popup.classList.remove("open-popup");
+redirectToAnotherRoute();
+
+    }
+    function addPost(event) {
+        event.preventDefault();
+        const selectedOption = document.querySelector('.nice-select ul li.selected');
+        const type_text = selectedOption.textContent.trim();
+
+        let formData = new FormData();
+        let name = $('#name').val();
+        let lastname = $('#lastname').val();
+        let type = type_text;
+
+        formData.append('image', $('#createinputfile').prop('files')[0]);
+        formData.append('name', name);
+        formData.append('lastname', lastname);
+        formData.append('type', type);
+
+        $.ajax({
+            url: '/addAbonnement',
+            type: "POST",
+            data: formData,
+            async: true,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                                  openPopup();
+
+                if (response.success) {
+                } else {
+                    console.error('Failed to create post: ' + response.message);
+                }
+            },
+            error: function (response) {
+                console.error("error");
+            },
+        });
+    }
 
 
-
-            formData.append('image', $('#createinputfile').prop('files')[0]);
-            formData.append('name', name);
-            formData.append('lastname', lastname);
-            formData.append('type', type);
-
-            $.ajax({
-                url: '/addAbonnement',
-                type: "POST",
-                data: formData,
-                async: true,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.success) {
-                         console.log(response.message);
-                    }
-                    else {
-                        console.error('Failed to create post: ' + response.message);
-                    }
-                },
-                error: function (response) {
-                    console.error("error");
-                },
-            });
+    function redirectToAnotherRoute() {
+            // Wait for 3 seconds (3000 milliseconds)
+            setTimeout(function() {
+                // Redirect to another route
+                window.location.href = '/showAbonnement'; // Replace '/your-new-route' with the actual route
+            }, 2000); // 3000 milliseconds = 3 seconds
         }
-    </script>
+
+</script>
+
 {% endblock %}

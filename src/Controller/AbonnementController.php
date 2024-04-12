@@ -50,18 +50,7 @@ class AbonnementController extends AbstractController
         return new JsonResponse('This route accepts only AJAX requests', Response::HTTP_BAD_REQUEST);
     }
 
-//    #[Route('/showAbonnement/{id}', name: 'app_transport_delete', methods: ['DELETE'])]
-//    public function delete(ManagerRegistry $doctrine, $id, AbonnementRepository $abonnementRepository, Request $req): Response
-//    {
-//        if ($req->isXmlHttpRequest()) {
-//            $auteur = $abonnementRepository->find($id);
-//            $em = $doctrine->getManager();
-//            $em->remove($auteur);
-//            $em->flush();
-//            return new Response('Transport supprimé avec succès', Response::HTTP_OK);
-//        }
-//        return $this->redirectToRoute('show_abonnement');
-//    }
+ 
 
     #[Route('/TransportAdmin', name: 'adminTransport')]
     public function afficherTransport(): Response
@@ -95,9 +84,10 @@ class AbonnementController extends AbstractController
             $abonnement->setPrenom($Lastname);
             $abonnement->setTypeAbonnement($Type);
             $abonnement->setImageFile($Image);
+            $em = $doc->getManager();
+
             $em->persist($abonnement);
             $em->flush();
-            $em = $doc->getManager();
           
          
 
@@ -106,5 +96,14 @@ class AbonnementController extends AbstractController
 
         else
             return new JsonResponse(['message' => 'Abonnement non envoye'], Response::HTTP_OK);
+    }
+
+
+    #[Route('/AbonnementAdmin', name: 'adminAbonnement')]
+    public function abonnemntAdmin(): Response
+    {
+        $abonnement = $this->getDoctrine()->getManager()->getRepository(Abonnement::class)->findAll();
+        return $this->render('abonnement/Admin/abonnementAdmin.html.twig', [
+        ]);
     }
 }

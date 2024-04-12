@@ -15,7 +15,7 @@
         </select><button class="btn px-3 btn-phoenix-secondary" type="button" data-bs-toggle="modal" data-bs-target="#reportsFilterModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fa-solid fa-filter text-primary" data-fa-transform="down-3"></span></button>
     </div>
 </div>
-<div class="modal fade" id="addDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addDealModal" aria-hidden="true">
+<div class="modal fade" id="updateDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addDealModal" aria-hidden="true">
     <form   id="contact-form" method="POST">
 
     <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -35,7 +35,7 @@
                         </div>
                         <div class="mb-4">
                             <label class="text-body-highlight fw-bold mb-2">Real Address</label>
-                            <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStation" id="adressStation" />
+                            <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStationUpd" id="adressStationUpd" />
                         </div>
 
                         <div>
@@ -43,11 +43,11 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"  id="">Station Name</label><input name="name" id="name" class="form-control input-target" type="text" placeholder="Enter contact name" /></div>
+                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"  id="">Station Name</label><input name="nameUpd" id="nameUpd" class="form-control input-target" type="text" placeholder="Enter contact name" /></div>
                         <div class="mb-4">
                             <div class="row g-3">
                                 <div class="col-6"><label class="text-body-highlight fw-bold mb-2">Station Image</label>                             
-                                <input name="createinputfile" id="createinputfile" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
+                                <input name="createinputfileUpd" id="createinputfileUpd" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
                                 </div>
 
                             </div>
@@ -62,14 +62,66 @@
 
             <div class="modal-footer border-0 pt-6 px-0 pb-0">
                 <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                <button class="btn btn-primary my-0" type="submit" onclick="addStation(event)">      
-                Create Deal</button>
+                <button class="btn btn-primary my-0" type="submit" onclick="updateStation(event)">      
+                Update Station</button>
             </div>
 
         </div>
     </div>
      </form>
 </div>
+
+<div class="modal fade" id="addDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addDealModal" aria-hidden="true">
+    <form id="contact-form" method="POST">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-body-highlight p-6">
+                <div class="modal-header border-0 p-0 mb-2">
+                    <h3 class="mb-0">New Station</h3>
+                    <button class="btn btn-sm btn-phoenix-secondary" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times text-danger"></span>
+                    </button>
+                </div>
+                <div class="modal-body px-0">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="mb-4">
+                                <label class="text-body-highlight fw-bold mb-2">Type Vehicle</label>
+                                <select class="form-select">
+                                    <option>Select</option>
+                                    <option>Metro</option>
+                                    <option>Bus</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="text-body-highlight fw-bold mb-2">Real Address</label>
+                                <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStation" id="adressStation" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-4">
+                                <label class="text-body-highlight fw-bold mb-2" id="">Station Name</label>
+                                <input name="name" id="name" class="form-control input-target" type="text" placeholder="Enter contact name" />
+                            </div>
+                            <div class="mb-4">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <label class="text-body-highlight fw-bold mb-2">Station Image</label>
+                                        <input name="createinputfile" id="createinputfile" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-6 px-0 pb-0">
+                    <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button class="btn btn-primary my-0" type="submit" onclick="addStation(event)">Create Deal</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 
 
  <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis pt-7 border-y">
@@ -107,7 +159,7 @@
                     <td class="align-middle product white-space-nowrap py-0"><a class="d-block rounded-2 border border-translucent" href="apps/e-commerce/landing/product-details.html"><img src=" assetsAdmin/assets/img/products/60x60/3.png" alt="" width="53" /></a></td>
                     <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">{{station.NomStation}}</a></td>
                     <td class="align-middle customer white-space-nowrap"><a class="d-flex align-items-center text-body" href="apps/e-commerce/landing/profile.html">
-                        <div class="avatar avatar-l"><img class="rounded-circle"  "{{ asset('/images/station/'~ station.imagestation ) }}"  alt="" /></div>
+                        <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/station/{{ station.imagestation }}"  alt="" /></div>
                         <h6 class="mb-0 ms-3 text-body"> {{station.TypeVehicule}}</h6>
                       </a></td>
                     <td class="align-middle rating white-space-nowrap fs-10"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span></td>
@@ -122,7 +174,7 @@
                     </td>
                     <td class="align-middle white-space-nowrap text-end pe-0">
                       <div class="position-relative">
-                        <div class="hover-actions"> <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick="showModifierPopup('{{ station.NomStation }}','{{ station.AddressStation }}')"></span></button><button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation({{station.id}})"><span class="fas fa-trash"></span></button></div> 
+                        <div class="hover-actions"> <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick="showModifierPopup('{{ station.id }}','{{ station.NomStation }}','{{ station.AddressStation }}','{{ station.imagestation }}','{{ station.TypeVehicule }}')"></span></button><button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation({{station.id}})"><span class="fas fa-trash"></span></button></div> 
                         </div>
                       <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
                         <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
@@ -165,6 +217,7 @@
 
 <script>
 
+var maVariableGlobale =1;
 
 
 function addStation(event) {
@@ -216,6 +269,49 @@ function addStation(event) {
 
     
 
+function updateStation(event) {
+    event.preventDefault();
+    const selectedOption = document.querySelector('.form-select option:checked');
+    const type_text = selectedOption.textContent.trim();
+    let formData = new FormData();
+    let name = $('#nameUpd').val();  
+    let address = $('#adressStationUpd').val();
+    let type = type_text;
+
+    formData.append('image', $('#createinputfileUpd').prop('files')[0]);
+    formData.append('nomStation', name);
+    formData.append('adressStation', address);
+    formData.append('type_vehicule', type);
+
+    $.ajax({
+        url: '/updateStation/' + maVariableGlobale,
+        type: "POST",
+        data: formData,
+        async: true,
+        processData: false,
+        contentType: false,
+        beforeSend: function() {
+            // Add any pre-request logic here
+        },
+        success: function(response) {
+            if (response.message == "Station updated successfully.") {
+                alert("Station updated successfully");
+                $('#updateDealModal').modal('hide');
+                $('#name').val('');
+                $('#adressStation').val('');
+                $('#createinputfile').val('');
+                $('#createinputfile').closest('form').get(0).reset();
+                fetchUpdatedStationList();
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function (response) {
+            // Handle errors here
+            console.error(response);
+        },
+    });
+}
 
 
 
@@ -372,17 +468,20 @@ function updateStationList(stationList) {
 }
 
 
-function showModifierPopup( name, address) {
-    var modal = document.getElementById("addDealModal");
-    let stationNameInput = document.getElementById("name");
-    let stationLocationInput = document.getElementById("adressStation");
+function showModifierPopup(id, name, address,image,type) {
+    maVariableGlobale=id;
+    var modal = document.getElementById("updateDealModal");
+    let stationNameInput = document.getElementById("nameUpd");
+    let stationLocationInput = document.getElementById("adressStationUpd");
+    let stationImageInput =document.getElementById("createinputfileUpd");
 
 console.log(name);
     // Assuming stationData is an object with properties like name, location, capacity
     stationNameInput.value = name;
     stationLocationInput.value = address;
+//    stationImageInput.value=image;
 
-    $('#addDealModal').modal('show');
+    $('#updateDealModal').modal('show');
 }
 
  
