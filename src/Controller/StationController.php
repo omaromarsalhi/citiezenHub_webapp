@@ -101,11 +101,8 @@ class StationController extends AbstractController
     {
         // Fetch the updated list of stations from the database
         $stations = $this->getDoctrine()->getRepository(Station::class)->findAll();
-
-        // Serialize the list of stations to JSON and return as a JsonResponse
         $jsonData = $serializer->serialize($stations, 'json', ['groups' => 'station_data']);
 
-        return $this->json($jsonData, 200, [], ['groups' => 'station_data']);
-    }
+        return new JsonResponse($jsonData, 200, [], true);}
 
 }

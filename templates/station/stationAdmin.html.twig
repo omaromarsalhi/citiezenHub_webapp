@@ -122,8 +122,8 @@
                     </td>
                     <td class="align-middle white-space-nowrap text-end pe-0">
                       <div class="position-relative">
-                        <div class="hover-actions"><button class="btn btn-sm btn-phoenix-secondary me-1 fs-10"><span class="fas fa-check"></span></button><button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation({{station.id}})"><span class="fas fa-trash"></span></button></div>
-                      </div>
+                        <div class="hover-actions"> <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick="showModifierPopup('{{ station.NomStation }}','{{ station.AddressStation }}')"></span></button><button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation({{station.id}})"><span class="fas fa-trash"></span></button></div> 
+                        </div>
                       <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
                         <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
                           <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
@@ -372,19 +372,19 @@ function updateStationList(stationList) {
 }
 
 
-/*function showModifierPopup(stationData) {
-    var modal = document.getElementById("modifierModal");
-    let stationNameInput = document.getElementById("stationNameInput");
-    let stationLocationInput = document.getElementById("stationLocationInput");
-    let stationCapacityInput = document.getElementById("stationCapacityInput");
+function showModifierPopup( name, address) {
+    var modal = document.getElementById("addDealModal");
+    let stationNameInput = document.getElementById("name");
+    let stationLocationInput = document.getElementById("adressStation");
 
+console.log(name);
     // Assuming stationData is an object with properties like name, location, capacity
-    stationNameInput.value = stationData.name;
-    stationLocationInput.value = stationData.location;
-    stationCapacityInput.value = stationData.capacity;
+    stationNameInput.value = name;
+    stationLocationInput.value = address;
 
-    modal.style.display = "block";
-}*/
+    $('#addDealModal').modal('show');
+}
 
+ 
 </script>
 {% endblock %}

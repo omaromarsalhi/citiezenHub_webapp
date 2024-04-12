@@ -204,17 +204,14 @@ function updateStationList(stationList) {
     });
 }
 
-
-/*function showModifierPopup(stationData) {
-    var modal = document.getElementById("modifierModal");
-    let stationNameInput = document.getElementById("stationNameInput");
-    let stationLocationInput = document.getElementById("stationLocationInput");
-    let stationCapacityInput = document.getElementById("stationCapacityInput");
+function showModifierPopup(stationData) {
+    var modal = document.getElementById("addDealModal");
+    let stationNameInput = document.getElementById("name");
+    let stationLocationInput = document.getElementById("adressStation");
 
     // Assuming stationData is an object with properties like name, location, capacity
-    stationNameInput.value = stationData.name;
-    stationLocationInput.value = stationData.location;
-    stationCapacityInput.value = stationData.capacity;
+    stationNameInput.value = stationData.NomStation;
+    stationLocationInput.value = stationData.AddressStation;
 
     modal.style.display = "block";
-}*/
+}
