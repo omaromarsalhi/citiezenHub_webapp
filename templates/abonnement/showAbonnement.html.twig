@@ -120,11 +120,22 @@
 
 {% block body %}
 
+   <div class="rn-breadcrumb-inner ptb--30">
+         <div class="container">
+             <div class="row align-items-center">
+                 <div class="col-lg-6 col-md-6 col-12">
+                     <h5 class="title text-center text-md-start">My Subscriptions</h5>
+                 </div>
+
+             </div>
+         </div>
+     </div>
+
     <div class="rn-banner-area">
         <div class="slider-activation-banner-4 game-banner-short-slick-wrapper slick-arrow-style-one rn-slick-dot-style">
 {#            <div id="abonnements-list"> #}{# Ajout de l'ID abonnements-list #}
                 {% for abonnement in l %}
-                    <div class="slider-style-7 border-radious-none bg_image--22 pt--150 pb--190 pt_sm--70 pb_sm--70 bg_image" data-black-overlay="6">
+                    <div class="slider-style-7 border-radious-none bg_image--2 pt--150 pb--190 pt_sm--70 pb_sm--70 bg_image" data-black-overlay="6">
                         <div class="rn-banner-wrapper g-5 row">
                             <div class="col-xl-4 col-lg-12 col-12 order-3 order-xl-1 order-sm-1">
                                 <a href="product-details.html">
@@ -154,7 +165,7 @@
                                             <a class="more-author-text" href="#">2+ </a>
                                         </div>
                                         <!-- Start Countdown area -->
-                                        <div class="countdown" data-date="2023-12-02" >
+                                        <div class="countdown" data-date="2025-10-09" >
                                             <div class="countdown-container days">
                                                 <span class="countdown-value days-bottom">285</span>
                                                 <span class="countdown-heading days-top">Day</span>
@@ -189,7 +200,14 @@
 {#            </div>#}
         </div>
     </div>
+<style>
+.bg_image--2 {
+    background-image: url('/images/trans.gif');
+    background-size: cover; 
+    background-position: center;
+}
 
+</style>
     <script>
         function deletePost(abonnementId) {
             if (confirm("Êtes-vous sûr de vouloir supprimer cet abonnement ?")) {
