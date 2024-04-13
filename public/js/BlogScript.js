@@ -4,16 +4,20 @@ var totalPostsCount = 0;
 var allPostsLoaded = false;
 var postIdToModify = null;
 var initialCaption = null;
+var currentImageIndices = {};
+var posts = [];
 
 function createPostHTML(post) {
     var imageHTML = '';
-    if (post.image) {
+    if (post.images.length > 0) {
         imageHTML = `
             <div class="thumbnail">
                 <a href="blog-details.html">
-                    <img src="images/blog/${post.image}"
+                    <img id="post-image-${post.id}" src="images/blog/${post.images[0]}" 
                          alt="Personal Portfolio Images">
                 </a>
+                <button onclick="changeImage(${post.id}, -1)">Précédent</button>
+                <button onclick="changeImage(${post.id}, 1)">Suivant</button>
             </div>
         `;
     }
@@ -43,10 +47,25 @@ function createPostHTML(post) {
                                     class="feather-arrow-up-right"></i></a></h4>
                     </div>
                     ${imageHTML}
+                    ${post.nbReactions} Reactions
                 </div>
             </div>
         </div>
     `;
+}
+
+function changeImage(postId, direction) {
+    var images = posts.find(post => post.id === postId).images;
+    if (!currentImageIndices[postId]) {
+        currentImageIndices[postId] = 0;
+    }
+    currentImageIndices[postId] += direction;
+    if (currentImageIndices[postId] < 0) {
+        currentImageIndices[postId] = images.length - 1;
+    } else if (currentImageIndices[postId] >= images.length) {
+        currentImageIndices[postId] = 0;
+    }
+    document.getElementById(`post-image-${postId}`).src = `images/blog/${images[currentImageIndices[postId]]}`;
 }
 
 function loadPostsPage(page) {
@@ -62,6 +81,7 @@ function loadPostsPage(page) {
             response.posts.forEach(function(post) {
                 var newPostHTML = createPostHTML(post);
                 $('#postsContainer').append(newPostHTML);
+                posts.push(post);
             });
             if (response.posts.length < 5) {
                 allPostsLoaded = true;
@@ -72,7 +92,7 @@ function loadPostsPage(page) {
             document.getElementById('loadingIcon').style.display = 'none';
         },
         error: function(xhr, status, error) {
-            console.error(error);
+            console.error(response.message);
             isLoading = false;
             document.getElementById('loadingIcon').style.display = 'none';
         }
@@ -128,7 +148,10 @@ function addPost(event) {
     event.preventDefault();
     let formData = new FormData();
     let caption = $('#contact-message').val();
-    formData.append('image', $('#nipa').prop('files')[0]);
+    let files = $('#nipa')[0].files;
+    for (let i = 0; i < files.length; i++) {
+        formData.append('images[]', files[i]);
+    }
     formData.append('caption', caption);
     $.ajax({
         url: '/new',
@@ -141,6 +164,7 @@ function addPost(event) {
             if (response.success) {
                 var newPostHTML = createPostHTML(response.post);
                 $('#postsContainer').prepend(newPostHTML);
+                posts.unshift(response.post);
                 $('html, body').animate({
                     scrollTop: 950
                 }, 300);
@@ -320,14 +344,46 @@ function changerImage() {
 }
 
 function afficherIconDelImage() {
-    document.getElementById("nipa").addEventListener("change", function () {
-        var delImageLabel = document.getElementById("delImage");
-        if (this.files.length > 0) {
-            delImageLabel.style.display = "block";
-        } else {
-            delImageLabel.style.display = "none";
+    var nipaInput = document.getElementById("nipa");
+    nipaInput.addEventListener("change", function () {
+        var files = this.files;
+        selectedImages = [];
+        currentImageIndex = 0;
+        for (var i = 0; i < files.length; i++) {
+            var reader = new FileReader(); // Créer un nouveau FileReader pour chaque fichier
+            reader.onload = function (event) {
+                selectedImages.push(event.target.result);
+                if (selectedImages.length === files.length) {
+                    document.getElementById("rbtinput2").src = selectedImages[currentImageIndex];
+                    // Afficher les boutons si nécessaire
+                    if (selectedImages.length >= 2) {
+                        document.getElementById("previousImage").style.display = "block";
+                        document.getElementById("nextImage").style.display = "block";
+                    } else {
+                        document.getElementById("previousImage").style.display = "none";
+                        document.getElementById("nextImage").style.display = "none";
+                    }
+                }
+            };
+            reader.readAsDataURL(files[i]);
         }
     });
+}
+
+function changeImageUpload(direction) {
+    // Vérifier si des images ont été sélectionnées
+    if (selectedImages.length > 0) {
+        // Mettre à jour l'index de l'image actuelle
+        currentImageIndex += direction;
+        // S'assurer que l'index reste dans la plage valide
+        if (currentImageIndex < 0) {
+            currentImageIndex = selectedImages.length - 1;
+        } else if (currentImageIndex >= selectedImages.length) {
+            currentImageIndex = 0;
+        }
+        // Mettre à jour la source de l'image
+        document.getElementById("rbtinput2").src = selectedImages[currentImageIndex];
+    }
 }
 
 document.getElementById("delImage").addEventListener("click", function () {

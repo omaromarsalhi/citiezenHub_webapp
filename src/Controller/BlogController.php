@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\ImagePsot;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +19,7 @@ class BlogController extends AbstractController
     #[Route('/blog', name: 'app_blog')]
     public function index(PostRepository $postRepository): Response
     {
-        $posts = $postRepository->findBy([], ['datePost' => 'DESC']);
+        $posts = $postRepository->findBy([], ['date_post' => 'DESC']);
 
         return $this->render('blog/index.html.twig', [
             'posts' => $posts,
@@ -31,14 +32,20 @@ class BlogController extends AbstractController
         $postsPerPage = 5;
         $offset = ($page - 1) * $postsPerPage;
 
-        $posts = $postRepository->findBy([], ['datePost' => 'DESC'], $postsPerPage, $offset);
+        $posts = $postRepository->findBy([], ['date_post' => 'DESC'], $postsPerPage, $offset);
 
         $postsArray = array_map(function ($post) {
+            $images = $post->getImages();
+            $imagesArray = array_map(function ($image) {
+                return $image->getPath();
+            }, $images);
+
             return [
                 'id' => $post->getId(),
                 'caption' => $post->getCaption(),
-                'image' => $post->getImage(),
                 'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+                'nbReactions' => $post->getNbReactions(),
+                'images' => $imagesArray,
             ];
         }, $posts);
 
@@ -49,7 +56,6 @@ class BlogController extends AbstractController
     public function count(PostRepository $postRepository): Response
     {
         $count = $postRepository->count([]);
-
         return new JsonResponse(['count' => $count]);
     }
 
@@ -59,28 +65,35 @@ class BlogController extends AbstractController
         if ($req->isXmlHttpRequest()) {
             $post = new Post();
             $caption = $req->get('caption');
-            $fichierImage = $req->files->get('image');
-
-            // Contrôle de saisie
-            if ((empty($caption) && empty($fichierImage)) || (ctype_space($caption) && empty($fichierImage))) {
-                // Retourner une réponse JSON indiquant l'échec de la validation
-                return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
-            }
+            $imageFiles = $req->files->get('images');
 
             $post->setCaption($caption);
-            $post->setImageFile($fichierImage);
             $post->setDatePost(new DateTime());
+            $post->setNbReactions(0);
 
             $em = $doc->getManager();
             $em->persist($post);
+
+            $imagesArray = [];
+            if ($imageFiles) { // Vérifier si des images ont été fournies
+                foreach ($imageFiles as $imageFile) {
+                    $postImage = new ImagePsot();
+                    $postImage->setImageFile($imageFile);
+                    $postImage->setPost($post);
+                    $em->persist($postImage);
+                    $imagesArray[] = $postImage->getPath();
+                }
+            }
+
             $em->flush();
             return new JsonResponse([
                 'success' => true,
                 'post' => [
                     'id' => $post->getId(),
                     'caption' => $post->getCaption(),
-                    'image' => $post->getImage(),
                     'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+                    'nbReactions' => $post->getNbReactions(),
+                    'images' => $imagesArray,
                 ]
             ]);
         }
@@ -131,8 +144,8 @@ class BlogController extends AbstractController
             'post' => [
                 'id' => $post->getId(),
                 'caption' => $post->getCaption(),
-                'image' => $post->getImage(),
                 'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+                'nbReactions' => $post->getNbReactions(),
             ]
         ]);
     }

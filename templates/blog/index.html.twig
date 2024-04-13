@@ -98,11 +98,13 @@
                                         <div class="button-area">
                                             <div class="brows-file-wrapper">
                                                 <!-- actual upload which is hidden -->
-                                                <input name="nipa" id="nipa" type="file" accept="image/*,.gif" onclick="afficherIconDelImage()">
+                                                <input name="nipa[]" id="nipa" type="file" accept="image/*,.gif" multiple onclick="afficherIconDelImage()">
                                                 <!-- our custom upload button -->
                                             </div>
                                         </div>
                                     </div>
+                                    <button id="previousImage" onclick="changeImageUpload(-1)" style="display: none;">Précédent</button>
+                                    <button id="nextImage" onclick="changeImageUpload(1)" style="display: none;">Suivant</button>
                                 </div>
                             </div>
                             <button name="submit" id="ajoutPost" type="submit" class="btn btn-primary"
@@ -174,8 +176,7 @@
                              data-sal-duration="800">
                             <div class="form-wrapper-one registration-area">
                                 <h3 class="mb--30">Modifier votre post</h3>
-                                <form class="rwt-dynamic-form" id="contact-form" method="POST"
-                                      action="mail.php">
+                                <form class="rwt-dynamic-form" id="contact-form" method="POST">
                                     <div class="mb-5">
                                         <label for="captionModfier" class="form-label">Exprimer vous!</label>
                                         <textarea name="captionModfier" id="captionModfier"
