@@ -104,6 +104,8 @@ class AbonnementController extends AbstractController
     {
         $abonnement = $this->getDoctrine()->getManager()->getRepository(Abonnement::class)->findAll();
         return $this->render('abonnement/Admin/abonnementAdmin.html.twig', [
+            'list' => $abonnement
+
         ]);
     }
 }

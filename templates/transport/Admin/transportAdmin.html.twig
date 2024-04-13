@@ -1,0 +1,281 @@
+{% extends '/home/index_admin.html.twig' %}
+ {% block body  %}
+
+
+<div class="d-xl-flex justify-content-between">
+    <div class="mb-3"><button class="btn btn-primary me-4" onclick="{{ path('app_addTransport') }}" type="button" data-bs-toggle="modal" data-bs-target="#addDealModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-plus me-2"></span>Add Transport</button></div>
+    <div class="d-flex mb-4">
+        <div class="search-box">
+            <form class="position-relative" data-bs-toggle="search" data-bs-display="static"><input class="form-control search-input search" type="search" placeholder="Search by name" aria-label="Search" />
+                <span class="fas fa-search search-box-icon"></span>
+            </form>
+        </div><select class="form-select w-auto mx-2" id="select-deals">
+            <option>Sort</option>
+        </select><button class="btn px-3 btn-phoenix-secondary" type="button" data-bs-toggle="modal" data-bs-target="#reportsFilterModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fa-solid fa-filter text-primary" data-fa-transform="down-3"></span></button>
+    </div>
+</div>
+
+         <div class="row gx-6">
+          <div class="col-12 col-xl-6">
+            <div data-list='{"valueNames":["country","users","transactions","revenue","conv-rate"],"page":5}'>
+              <div class="mb-5 mt-7">
+                <h3>Our Transports </h3>
+                <p class="text-body-tertiary">Tous les Transports sont affiche ici</p>
+              </div>
+              <div class="table-responsive scrollbar">
+                <table class="table fs-10 mb-0">
+                  <thead>
+                    <tr>
+                      <th class="sort border-top border-translucent ps-0 align-middle" scope="col" data-sort="country" style="width:32%">Depart</th>
+                      <th class="sort border-top border-translucent align-middle" scope="col" data-sort="users" style="width:17%">Arrive</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">TRANSACTIONS</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="revenue" style="width:20%">REVENUE</th>
+                          <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">TRANSACTIONS</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="revenue" style="width:20%">REVENUE</th>
+                          <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">TRANSACTIONS</th>
+                   
+                    </tr>
+                  </thead>
+                
+                  <tbody class="list" id="table-regions-by-revenue">
+                    <tr>
+                      <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                       <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                      <td class="align-middle users" style="width:17%">
+                        <h6 class="mb-0">92896<span class="text-body-tertiary fw-semibold ms-2">(41.6%)</span></h6>
+                      </td>
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                 
+                    </tr>
+                       <tr>
+                      <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                       <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                      <td class="align-middle users" style="width:17%">
+                        <h6 class="mb-0">92896<span class="text-body-tertiary fw-semibold ms-2">(41.6%)</span></h6>
+                      </td>
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                 
+                    </tr>
+                       <tr>
+                      <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                       <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                      <td class="align-middle users" style="width:17%">
+                        <h6 class="mb-0">92896<span class="text-body-tertiary fw-semibold ms-2">(41.6%)</span></h6>
+                      </td>
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                 
+                    </tr>
+                       <tr>
+                      <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                       <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                      <td class="align-middle users" style="width:17%">
+                        <h6 class="mb-0">92896<span class="text-body-tertiary fw-semibold ms-2">(41.6%)</span></h6>
+                      </td>
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                 
+                    </tr>
+                       <tr>
+                      <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                       <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                      <td class="align-middle users" style="width:17%">
+                        <h6 class="mb-0">92896<span class="text-body-tertiary fw-semibold ms-2">(41.6%)</span></h6>
+                      </td>
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67<span class="text-body-tertiary fw-semibold ms-2">(34.3%)</span></h6>
+                      </td>
+                 
+                    </tr>
+                       <tr>
+                      <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                       <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="#!">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >India</p>
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                      <td class="align-middle users" style="width:17%">
+                        <h6 class="mb-0">92896 </h6>
+                      </td>
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67 </h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67 </h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67 </h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">67 </h6>
+                      </td>
+                 
+                    </tr>
+                   
+            
+                  </tbody>
+                </table>
+              </div>
+              <div class="row align-items-center py-1">
+                <div class="pagination d-none"></div>
+                <div class="col d-flex fs-9">
+                  <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p>
+                </div>
+                <div class="col-auto d-flex">
+                  <button class="btn btn-link px-1 me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left me-2"></span>Previous</button><button class="btn btn-link px-1 ms-1" type="button" title="Next" data-list-pagination="next">Next<span class="fas fa-chevron-right ms-2"></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-xl-6">
+            <div class="mx-n4 mx-lg-n6 ms-xl-0 h-100">
+              <div class="h-100 w-100">
+                <div class="h-100 bg-body-emphasis" id="map" style="min-height: 300px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}

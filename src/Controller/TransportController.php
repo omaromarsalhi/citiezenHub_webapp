@@ -20,10 +20,17 @@ class TransportController extends AbstractController
      
      
         $transport = $this->getDoctrine()->getManager()->getRepository(transport::class)->findAll();
-        return $this->render('transport/transportAdmin.html.twig', [
+        return $this->render('transport/Admin/transportAdmin.html.twig', [
             'controller_name' => 'TransportController',
             'transportlist' => $transport
         ]);
+    }
+
+    #[Route('/formTransport', name: 'app_addTransport')]
+    public function index( ): Response
+    {
+
+        return $this->render('transport/Admin/AddTransport.html.twig');
     }
 
 

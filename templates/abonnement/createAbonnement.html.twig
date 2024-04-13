@@ -200,12 +200,15 @@ redirectToAnotherRoute();
         let name = $('#name').val();
         let lastname = $('#lastname').val();
         let type = type_text;
+        const isNameValid = validateName();
+        const isLastNameValid = validateLastName();
+
+    if (isNameValid || isLastNameValid) {
 
         formData.append('image', $('#createinputfile').prop('files')[0]);
         formData.append('name', name);
         formData.append('lastname', lastname);
         formData.append('type', type);
-
         $.ajax({
             url: '/addAbonnement',
             type: "POST",
@@ -225,6 +228,10 @@ redirectToAnotherRoute();
                 console.error("error");
             },
         });
+      }
+      else {
+        alert("fields arent write §§§§§§§§!");
+      }
     }
 
 
@@ -235,6 +242,36 @@ redirectToAnotherRoute();
                 window.location.href = '/showAbonnement'; // Replace '/your-new-route' with the actual route
             }, 2000); // 3000 milliseconds = 3 seconds
         }
+
+const nameRegex = /^[A-Za-z\s]+$/;  
+const lastNameRegex = /^[A-Za-z\s]+$/; 
+
+
+function validateName() {
+    const nameInput = document.getElementById('name');
+    const name = nameInput.value.trim();
+    if (nameRegex.test(name)) {
+        nameInput.style.borderColor = 'green';
+        return true;
+    } else {
+        nameInput.style.borderColor = 'red';
+        return false;
+    }
+}
+
+function validateLastName() {
+    const lastNameInput = document.getElementById('lastname');
+    const lastName = lastNameInput.value.trim();
+    if (lastNameRegex.test(lastName)) {
+        lastNameInput.style.borderColor = 'green';
+        return true;
+    } else {
+        lastNameInput.style.borderColor = 'red';
+        return false;
+    }
+}// Add event listeners for input fields
+document.getElementById('name').addEventListener('input', validateName);
+document.getElementById('lastname').addEventListener('input', validateLastName);
 
 </script>
 
