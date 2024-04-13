@@ -9,7 +9,6 @@ var posts = [];
 var currentImageIndexUpload = 0;
 
 function createPostHTML(post) {
-    console.log(post.images);
     var imageHTML = '';
     if (post.images.length > 0) {
         imageHTML = `
@@ -249,7 +248,6 @@ function deletePost(postId) {
                 url: '/blog/' + postId,
                 type: 'DELETE',
                 success: function (response) {
-                    console.log(postId);
                     $("div[data-post-id='" + postId + "']").remove();
                     Swal.fire(
                         'Supprimé!',
@@ -321,25 +319,30 @@ function submitModifierForm(event) {
     event.preventDefault();
     let formData = new FormData();
     let caption = $('#captionModfier').val();
+    let files = $('#nipaUpload')[0].files; // Récupérez les fichiers d'image
+    for (let i = 0; i < files.length; i++) {
+        formData.append('images[]', files[i]); // Ajoutez chaque fichier d'image à formData
+    }
     formData.append('caption', caption);
-    formData.append('image', $('#nipaUpload').prop('files')[0]);
-    console.log($('#nipaUpload').prop('files')[0]);
-
 
     $.ajax({
         url: '/edit/' + postIdToModify,
         type: "POST",
         data: formData,
-
         async: true,
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response);
+
             $("div[data-post-id='" + postIdToModify + "']").remove();
             var newPostHTML = createPostHTML(response.post);
             $('#postsContainer').prepend(newPostHTML);
             closeModifierPopup();
+
+            // Supprimez l'ancienne version du post du tableau posts
+            posts = posts.filter(post => post.id !== postIdToModify);
+            // Ajoutez la nouvelle version du post au début du tableau posts
+            posts.unshift(response.post);
 
             $('html, body').animate({
                 scrollTop: 890
@@ -452,8 +455,6 @@ document.getElementById("delImageUpdate").addEventListener("click", function () 
                 url: '/edit/' + postIdToModify + '/remove-image', // Remplacez par la route appropriée
                 type: 'POST',
                 success: function(response) {
-                    // Gérer la réponse du serveur
-                    console.log(response);
                     Swal.fire(
                         'Supprimé!',
                         'Votre image a été supprimée.',

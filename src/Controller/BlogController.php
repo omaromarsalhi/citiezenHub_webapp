@@ -115,40 +115,57 @@ class BlogController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'app_blog_update', methods: ['POST'])]
-    public function update(ManagerRegistry $doctrine, $id, Request $req): Response
-    {
-        $post = $doctrine->getRepository(Post::class)->find($id);
+public function update(ManagerRegistry $doctrine, $id, Request $req): Response
+{
+    $post = $doctrine->getRepository(Post::class)->find($id);
 
-        if (!$post) {
-            throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
-        }
-        $caption = $req->get('caption');
-        $fichierImage = $req->files->get('image');
-
-        $post->setDatePost(new DateTime());
-        $post->setCaption($caption);
-        $post->setImageFile($fichierImage);
-
-        if ((empty($caption) && empty($fichierImage)) || (ctype_space($caption) && empty($fichierImage))) {
-            return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
-        }
-
-        $em = $doctrine->getManager();
-        $em->persist($post);
-        $em->flush();
-
-        $this->addFlash('success', 'Le post a bien été modifié.');
-
-        return new JsonResponse([
-            'success' => true,
-            'post' => [
-                'id' => $post->getId(),
-                'caption' => $post->getCaption(),
-                'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
-                'nbReactions' => $post->getNbReactions(),
-            ]
-        ]);
+    if (!$post) {
+        throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
     }
+    $caption = $req->get('caption');
+    $imageFiles = $req->files->get('images'); // Récupérez les fichiers d'image
+
+    $post->setDatePost(new DateTime());
+    $post->setCaption($caption);
+
+    if ((empty($caption) && empty($imageFiles)) || (ctype_space($caption) && empty($imageFiles))) {
+        return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
+    }
+
+    $em = $doctrine->getManager();
+
+    $imagesArray = [];
+    if ($imageFiles) { // Vérifiez si des images ont été fournies
+        foreach ($imageFiles as $imageFile) {
+            $postImage = new ImagePsot();
+            $postImage->setImageFile($imageFile);
+            $postImage->setPost($post);
+            $em->persist($postImage);
+            $imagesArray[] = $postImage->getPath();
+        }
+    }
+
+    // Ajoutez les images déjà présentes dans le post
+    foreach ($post->getImages() as $image) {
+        $imagesArray[] = $image->getPath();
+    }
+
+    $em->persist($post);
+    $em->flush();
+
+    $this->addFlash('success', 'Le post a bien été modifié.');
+
+    return new JsonResponse([
+        'success' => true,
+        'post' => [
+            'id' => $post->getId(),
+            'caption' => $post->getCaption(),
+            'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+            'nbReactions' => $post->getNbReactions(),
+            'images' => $imagesArray,
+        ]
+    ]);
+}
 
     #[Route('/edit/{id}/remove-image', name: 'app_blog_remove_image', methods: ['POST'])]
     public function removeImage(ManagerRegistry $doctrine, $id): Response
