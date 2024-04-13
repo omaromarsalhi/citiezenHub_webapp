@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Basket;
+use App\Entity\Contract;
+use App\Entity\Transaction;
 use App\Repository\BasketRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,6 +69,66 @@ class BasketController extends AbstractController
             $entityManager->flush();
 
             return new Response(sizeof($basketRepository->findBy(['user'=>$this->getUser()])), Response::HTTP_OK);
+        }
+        return $this->render('market_place/basket.html.twig');
+    }
+
+
+    #[Route('/update', name: '_update')]
+    public function update(BasketRepository $basketRepository, Request $request,EntityManagerInterface $entityManager): Response
+    {
+        if($request->isXmlHttpRequest()){
+            $new_quantities =$request->get("new_quantities") ;
+            $basket_items = $basketRepository->findBy(['user' => $this->getUser()]);
+            for($i=0;$i<sizeof($basket_items);$i++){
+                $basket_items[$i]->setQuantity($new_quantities[$i]);
+                $entityManager->flush();
+            }
+
+            return new Response('success', Response::HTTP_OK);
+        }
+        return $this->render('market_place/basket.html.twig');
+    }
+
+    #[Route('/proceedCheckOut', name: '_proceedCheckOut')]
+    public function proceedCheckOut(BasketRepository $basketRepository, Request $request,EntityManagerInterface $entityManager): Response
+    {
+        if($request->isXmlHttpRequest()){
+
+            $dateTime = $this->container->get('datetime');
+            $address=$request->get("address");
+            /** @var UserInterface $user */
+            $user = $this->getUser();
+            $userId = $user->getId();
+
+            $basket_items = $basketRepository->findBy(['user' => $this->getUser()]);
+
+            for($i=0;$i<sizeof($basket_items);$i++){
+                $new_contract= new Contract();
+                $new_contract->setTitle("Contrat of selling".$basket_items[$i]->getProduct()->getName() );
+                $new_contract->setTerminationDate($dateTime->format('Y-m-d H:i:s'));
+                $new_contract->setPurpose("Buying this Item");
+                $new_contract->setTermsAndConditions("title");
+                $new_contract->setTitle("title");
+                $new_contract->setPaymentMethod("title");
+                $new_contract->setRecivingLocation($address);
+
+                $entityManager->persist($new_contract);
+                $entityManager->flush();
+
+                $new_transaction= new Transaction();
+                $new_transaction->setProduct($basket_items[$i]->getProduct());
+                $new_transaction->setContract($new_contract);
+                $new_transaction->setIdSeller($basket_items[$i]->getProduct()->getIdUser());
+                $new_transaction->setIdBuyer($userId);
+                $new_transaction->setPricePerUnit($basket_items[$i]->getProduct()->getPrice());
+                $new_transaction->setQuantity($basket_items[$i]->getQuantity());
+                $new_transaction->setTransactionMode("SELL");
+            }
+
+
+
+            return new Response('success', Response::HTTP_OK);
         }
         return $this->render('market_place/basket.html.twig');
     }

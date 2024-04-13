@@ -3,10 +3,15 @@
 // });
 
 
-setTimeout(function () {
+// setTimeout(function () {
+//     adjustSelection();
+//     regex();
+// }, 1000);
+
+window.onload = function() {
     adjustSelection();
     regex();
-}, 1000);
+}
 
 function adjustSelection() {
     var element = document.getElementsByClassName("nice-select").item(0);

@@ -58,9 +58,13 @@ class Product
     #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product',fetch:"EAGER")]
     private Collection $images;
 
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'product')]
+    private Collection $transactions;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
 
@@ -213,6 +217,36 @@ class Product
             // set the owning side to null (unless already changed)
             if ($image->getProduct() === $this) {
                 $image->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): static
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): static
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getProduct() === $this) {
+                $transaction->setProduct(null);
             }
         }
 

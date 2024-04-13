@@ -1,4 +1,10 @@
 {% extends 'base.html.twig' %}
+
+{% block stylesheets_wtf %}
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
+
+{% endblock %}
+
  {% block javascripts %}
      <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.6/flatpickr.min.js"></script>
      <script src="{{ asset('js/userScript.js') }}"></script>
@@ -158,7 +164,7 @@
                                          </div>
                                          <div class="last-name half-wid">
                                              <label class="dob" for="datepicker">Date of birth</label>
-                                             <input class="form-control datetimepicker" id="date" type="date" placeholder="dd/mm/yyyy" data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}' />
+                                             <input class="form-control datetimepicker" id="date" type="date" placeholder="dd/mm/yyyy" data-options='{"disableMobile":true,"dateFormat":"d/m/Y hh:MM"}' />
                                          </div>
                                      </div>
                                  </div>
