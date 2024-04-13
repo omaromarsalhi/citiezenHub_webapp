@@ -6,15 +6,15 @@ use App\Entity\Basket;
 use App\Entity\Contract;
 use App\Entity\Transaction;
 use App\Repository\BasketRepository;
+use App\Repository\ContractRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 
 
 #[Route('/basket', name: 'app_basket')]
@@ -90,12 +90,12 @@ class BasketController extends AbstractController
         return $this->render('market_place/basket.html.twig');
     }
 
+
     #[Route('/proceedCheckOut', name: '_proceedCheckOut')]
-    public function proceedCheckOut(BasketRepository $basketRepository, Request $request,EntityManagerInterface $entityManager): Response
+    public function proceedCheckOut(ContractRepository $contractRepository,BasketRepository $basketRepository, Request $request,EntityManagerInterface $entityManager): Response
     {
         if($request->isXmlHttpRequest()){
 
-            $dateTime = $this->container->get('datetime');
             $address=$request->get("address");
             /** @var UserInterface $user */
             $user = $this->getUser();
@@ -105,28 +105,30 @@ class BasketController extends AbstractController
 
             for($i=0;$i<sizeof($basket_items);$i++){
                 $new_contract= new Contract();
-                $new_contract->setTitle("Contrat of selling".$basket_items[$i]->getProduct()->getName() );
-                $new_contract->setTerminationDate($dateTime->format('Y-m-d H:i:s'));
+                $new_contract->setTitle("Contrat of selling ".$basket_items[$i]->getProduct()->getName() );
+                $new_contract->setTerminationDate(new \DateTime());
                 $new_contract->setPurpose("Buying this Item");
                 $new_contract->setTermsAndConditions("title");
-                $new_contract->setTitle("title");
                 $new_contract->setPaymentMethod("title");
                 $new_contract->setRecivingLocation($address);
 
                 $entityManager->persist($new_contract);
                 $entityManager->flush();
 
+                $contract = $contractRepository->findOneBy([], ['idContract' => 'DESC']);
+
                 $new_transaction= new Transaction();
                 $new_transaction->setProduct($basket_items[$i]->getProduct());
-                $new_transaction->setContract($new_contract);
+                $new_transaction->setContract($contract);
                 $new_transaction->setIdSeller($basket_items[$i]->getProduct()->getIdUser());
                 $new_transaction->setIdBuyer($userId);
                 $new_transaction->setPricePerUnit($basket_items[$i]->getProduct()->getPrice());
                 $new_transaction->setQuantity($basket_items[$i]->getQuantity());
                 $new_transaction->setTransactionMode("SELL");
+
+                $entityManager->persist($new_transaction);
+                $entityManager->flush();
             }
-
-
 
             return new Response('success', Response::HTTP_OK);
         }

@@ -17,22 +17,22 @@ class Contract
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(nullable: true ,name:'effectiveDate')]
+    #[ORM\Column(name: 'effectiveDate', nullable: true)]
     private ?\DateTimeImmutable $effectiveDate = null;
 
-    #[ORM\Column(nullable: true ,name:'terminationDate')]
-    private ?\DateTimeImmutable $terminationDate = null;
+    #[ORM\Column(name: 'terminationDate', nullable: true)]
+    private ?\DateTime $terminationDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $purpose = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true ,name:'termsAndConditions')]
+    #[ORM\Column(name: 'termsAndConditions', type: Types::TEXT, nullable: true)]
     private ?string $termsAndConditions = null;
 
-    #[ORM\Column(length: 255,name:'paymentMethod')]
+    #[ORM\Column(name: 'paymentMethod', length: 255)]
     private ?string $paymentMethod = null;
 
-    #[ORM\Column(length: 255, nullable: true ,name:'recivingLocation')]
+    #[ORM\Column(name: 'recivingLocation', length: 255, nullable: true)]
     private ?string $recivingLocation = null;
 
     #[ORM\OneToOne(mappedBy: 'contract', cascade: ['persist', 'remove'])]
@@ -67,12 +67,12 @@ class Contract
         return $this;
     }
 
-    public function getTerminationDate(): ?\DateTimeImmutable
+    public function getTerminationDate(): ?\DateTime
     {
         return $this->terminationDate;
     }
 
-    public function setTerminationDate(?\DateTimeImmutable $terminationDate): static
+    public function setTerminationDate(?\DateTime $terminationDate): static
     {
         $this->terminationDate = $terminationDate;
 

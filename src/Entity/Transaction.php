@@ -14,6 +14,7 @@ class Transaction
     private ?int $idTransaction = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
+    #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
     private ?Product $product = null;
 
     #[ORM\Column(nullable: true,name:'idSeller')]
@@ -35,6 +36,7 @@ class Transaction
     private ?\DateTimeImmutable $timestamp = null;
 
     #[ORM\OneToOne(inversedBy: 'transaction', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "idContract",referencedColumnName:"idContract")]
     private ?Contract $contract = null;
 
     public function getId(): ?int

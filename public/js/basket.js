@@ -14,18 +14,20 @@ function checkOut() {
         },
         async: true,
         success: function (response) {
+            console.log(response)
 
-            $('#itmesNumber').html(0)
-            $('#product_in_basket_' + product_index).remove()
-            $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
-                '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  “' + product_name + '” removed.\n' +
-                '<a href=""\n' +
-                '   class="restore-item">Undo?</a>\n' +
-                '</div>')
-
-            $('#notifDiv').on('click', function () {
-                $('#notifDiv').remove()
-            });
+            //
+            // $('#itmesNumber').html(0)
+            // $('#product_in_basket_' + product_index).remove()
+            // $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
+            //     '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  “' + product_name + '” removed.\n' +
+            //     '<a href=""\n' +
+            //     '   class="restore-item">Undo?</a>\n' +
+            //     '</div>')
+            //
+            // $('#notifDiv').on('click', function () {
+            //     $('#notifDiv').remove()
+            // });
 
         },
     });
