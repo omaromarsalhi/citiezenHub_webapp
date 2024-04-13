@@ -41,28 +41,16 @@
 				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
 					<form id="form" name="reclamation" method="post" enctype="multipart/form-data">
 						<div class="upload-area">
-							<div class="upload-formate mb--30">
-								<h6 class="title">
-									Upload file
-								</h6>
-								<p class="formate">
-									Drag or choose your  ygzguzjf ffile to upload
-								</p>
-							</div>
 							<div class="brows-file-wrapper">
 								<input type="file" name="reclamation[imageFile]" id="reclamation_imageFile_file"  accept="image/*" class="inputfile"/>
-								<img id="createfileImage" src="{{ asset('images/reclamation/' ~ reclamation.getImagePath()) }}" alt data-black-overlay="6">
+								<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImageFile()) }}" alt data-black-overlay="6">
 								<label for="reclamation_imageFile_file" title="No File Choosen">
-									<i class="feather-upload"></i>
-									<span class="text-center">Choose a File</span>
-									<p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3.
-										<br>
-										Max 1Gb.</p>
+									<span class="text-center color-white">
+								<i class="feather-edit"></i>
+							</span>
 								</label>
 							</div>
 						</div>
-						
-
 						<script>
 							const input = document.getElementById('reclamation_imageFile_file');
 const img = document.getElementById('createfileImage');

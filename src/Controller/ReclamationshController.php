@@ -57,6 +57,10 @@ class ReclamationshController extends AbstractController
 
            return $this->redirectToRoute('app_reclamation');
         }
+        else
+        {
+            $reclamation=$form->getData();
+        }
 
         return $this->render('reclamationsh/create-collection.html.twig', [
             'controller_name' => 'ReclamationshController',
@@ -66,6 +70,24 @@ class ReclamationshController extends AbstractController
     
         
     }
+    #[Route('/b/{id}', name: 'reclamationsh.del')]
+        public function delete(EntityManagerInterface $entityManager, $id): Response
+        {
+            $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
+    
+            if (!$reclamation) {
+                throw $this->createNotFoundException('No reclamation found with id ' . $id);
+            }
+    
+            $entityManager->remove($reclamation);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Reclamation supprimée avec succès');
+    
+            return $this->render('reclamationsh/index.html.twig', [
+                'controller_name' => 'ReclamationshController'
+            ]);
+        }
     
 
 }
