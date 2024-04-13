@@ -130,7 +130,36 @@ reader.readAsDataURL(input.files[0]);
 		</div>
 		<input type="hidden" id="reclamation__token" name="reclamation[_token]" value="edfefdd8a408443a012c.c_gIArByPEgON4s4Sv8_WXHe6FRKy7Ah9XqrA6GoLmk.PcxBY9cWTX9gBthxC8tSCQHp0SAsifMRmBvTNtDwTCA3sHt7xB9lJUF23g"/>
 	</form>
-
+<script>
+	const nameRegex = /^[A-Za-z\s]+$/;  
+	const lastNameRegex = /^[A-Za-z\s]+$/; 
+	
+	
+	function validateName() {
+		const nameInput = document.getElementById('reclamation_privateKey');
+		const name = nameInput.value.trim();
+		if (nameRegex.test(name)) {
+			nameInput.style.borderColor = 'green';
+			return true;
+		} else {
+			nameInput.style.borderColor = 'red';
+			return false;
+		}
+	}
+	function validateLastName() {
+		const lastNameInput = document.getElementById('reclamation_privateKey');
+		const lastName = lastNameInput.value.trim();
+		if (lastNameRegex.test(lastName)) {
+			lastNameInput.style.borderColor = 'green';
+			return true;
+		} else {
+			lastNameInput.style.borderColor = 'red';
+			return false;
+		}
+	}// Add event listeners for input fields
+	document.getElementById('reclamation_privateKey').addEventListener('input', validateName);
+	document.getElementById('reclamation_privateKey').addEventListener('input', validateLastName);
+</script>
 
 	<!-- create new product area -->
 
