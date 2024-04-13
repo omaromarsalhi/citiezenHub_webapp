@@ -78,16 +78,16 @@ class ReclamationshController extends AbstractController
             if (!$reclamation) {
                 throw $this->createNotFoundException('No reclamation found with id ' . $id);
             }
-    
+            
             $entityManager->remove($reclamation);
             $entityManager->flush();
-    
+            
             $this->addFlash('success', 'Reclamation supprimée avec succès');
-    
+            
             return $this->render('reclamationsh/index.html.twig', [
-                'controller_name' => 'ReclamationshController'
-            ]);
+                'controller_name' => 'ReclamationshController',
+                
+            ]); // return an empty response with a 200 status code // replace 'reclamationsh_index' with the name of the route you want to redirect to
         }
-    
 
 }
