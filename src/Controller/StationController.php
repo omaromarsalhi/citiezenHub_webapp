@@ -134,12 +134,12 @@ class StationController extends AbstractController
    /**
      * @Route("/stations", name="fetch_stations", methods={"GET"})
      */
-    public function fetchStations(SerializerInterface $serializer): JsonResponse
+ /*   public function fetchStations(SerializerInterface $serializer): JsonResponse
     {
         // Fetch the updated list of stations from the database
         $stations = $this->getDoctrine()->getRepository(Station::class)->findAll();
         $jsonData = $serializer->serialize($stations, 'json', ['groups' => 'station_data']);
 
         return new JsonResponse($jsonData, 200, [], true);}
-
+*/
 }
