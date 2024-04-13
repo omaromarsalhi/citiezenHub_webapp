@@ -6,8 +6,10 @@ var postIdToModify = null;
 var initialCaption = null;
 var currentImageIndices = {};
 var posts = [];
+var currentImageIndexUpload = 0;
 
 function createPostHTML(post) {
+    console.log(post.images);
     var imageHTML = '';
     if (post.images.length > 0) {
         imageHTML = `
@@ -36,8 +38,8 @@ function createPostHTML(post) {
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fas fa-cog"></i></button>
                                     <div class="dropdown-content">
-                                        <button onclick="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.image}', 'modifier')">Modifier</button>
-                                        <button onclick="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.image}', 'supprimer')">Supprimer</button>
+                                        <button onclick="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.images}', 'modifier')">Modifier</button>
+                                        <button onclick="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.images}', 'supprimer')">Supprimer</button>
                                     </div>
                                 </div>
                             </div>
@@ -264,17 +266,47 @@ function deletePost(postId) {
     });
 }
 
-function showModifierPopup(caption, image) {
+function showModifierPopup(caption, images) {
     var modal = document.getElementById("modifierModal");
     let messageTextarea = document.getElementById("captionModfier");
     let imageModifier = document.getElementById("imageModifer");
+    let nextButton = document.getElementById("nextImageUload"); // Assurez-vous d'avoir un bouton avec cet id dans votre HTML
+    let prevButton = document.getElementById("previousImageUpload"); // Assurez-vous d'avoir un bouton avec cet id dans votre HTML
+
     messageTextarea.value = caption;
     initialCaption = caption;
-    if (image !== "null") {
-        imageModifier.src = "images/blog/" + image;
+
+
+    if (images !== "") {
+        let imageArray = images.split(','); // Divisez la chaîne d'images en un tableau
+        imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload]; // Utilisez l'index pour accéder à l'image
+
+        // Vérifiez si le post a une seule image ou aucune image
+        if (imageArray.length <= 1) {
+            // Cachez les boutons si le post a une seule image ou aucune image
+            nextButton.style.display = "none";
+            prevButton.style.display = "none";
+        } else {
+            // Sinon, affichez les boutons et ajoutez des écouteurs d'événements pour naviguer entre les images
+            nextButton.style.display = "block";
+            prevButton.style.display = "block";
+
+            nextButton.onclick = function() {
+                currentImageIndexUpload = (currentImageIndexUpload + 1) % imageArray.length; // Utilisez le modulo pour boucler à travers les images
+                imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload];
+            }
+
+            prevButton.onclick = function() {
+                currentImageIndexUpload = (currentImageIndexUpload - 1 + imageArray.length) % imageArray.length; // Ajoutez la longueur avant le modulo pour éviter les indices négatifs
+                imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload];
+            }
+        }
+
         document.getElementById("delImageUpdate").style.display = "block";
     } else {
         imageModifier.src = "aucuneImg.png";
+        nextButton.style.display = "none";
+        prevButton.style.display = "none";
         document.getElementById("delImageUpdate").style.display = "none";
     }
     modal.style.display = "block";
@@ -345,6 +377,7 @@ function changerImage() {
 
 function afficherIconDelImage() {
     var nipaInput = document.getElementById("nipa");
+    document.getElementById("delImage").style.display = "block";
     nipaInput.addEventListener("change", function () {
         var files = this.files;
         selectedImages = [];
@@ -392,6 +425,8 @@ document.getElementById("delImage").addEventListener("click", function () {
     var rbtinput2 = document.getElementById("rbtinput2");
     rbtinput2.src = "aucuneImg.png";
     this.style.display = "none";
+    document.getElementById("previousImage").style.display = "none";
+    document.getElementById("nextImage").style.display = "none";
     $('#ajoutPost').prop('disabled', true);
 });
 
