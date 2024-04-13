@@ -70,6 +70,8 @@ class ReclamationshController extends AbstractController
     
         
     }
+
+    
     #[Route('/b/{id}', name: 'reclamationsh.del')]
         public function delete(EntityManagerInterface $entityManager, $id): Response
         {

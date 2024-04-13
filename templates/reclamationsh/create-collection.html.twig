@@ -42,8 +42,10 @@
 					<form id="form" name="reclamation" method="post" enctype="multipart/form-data">
 						<div class="upload-area">
 							<div class="brows-file-wrapper">
+							<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImagePath()) }}" alt data-black-overlay="6">
 								<input type="file" name="reclamation[imageFile]" id="reclamation_imageFile_file"  accept="image/*" class="inputfile"/>
-								<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImageFile()) }}" alt data-black-overlay="6">
+								<!--{{ dump('images/reclamation/'~reclamation.getImageFile()) }}-->
+
 								<label for="reclamation_imageFile_file" title="No File Choosen">
 									<span class="text-center color-white">
 								<i class="feather-edit"></i>

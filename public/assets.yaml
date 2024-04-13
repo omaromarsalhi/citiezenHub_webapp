@@ -1,0 +1,19 @@
+# assets.yaml
+
+assets:
+    filters:
+        cssrewrite: ~
+        lessphp:
+            apply_to: "\\.less$"
+            formatter: "Leafo\\Lessphp\\Formatter\\Css"
+            preserve_comments: false
+
+    collections:
+        app:
+            inputs:
+                - '%kernel.project_dir%/assets/css/app.less'
+            outputs:
+                - '%kernel.project_dir%/public/build/css/app.css'
+            filters:
+                - lessphp
+                - cssrewrite
