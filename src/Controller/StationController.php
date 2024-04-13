@@ -129,7 +129,7 @@ class StationController extends AbstractController
 
         return new JsonResponse('This route accepts only AJAX requests', Response::HTTP_BAD_REQUEST);
     }
- 
+ /******qqqqqqqqqqqqqqqqqqqqqqq */
 
    /**
      * @Route("/stations", name="fetch_stations", methods={"GET"})
