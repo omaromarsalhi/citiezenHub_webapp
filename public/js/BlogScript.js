@@ -170,6 +170,8 @@ function addPost(event) {
                 }, 300);
                 $('#contact-message').val('');
                 $('#nipa').val('');
+                document.getElementById("previousImage").style.display = "none";
+                document.getElementById("nextImage").style.display = "none";
                 $('#rbtinput2').attr('src', 'aucuneImg.png');
                 $('#ajoutPost').prop('disabled', true);
                 document.getElementById("delImage").style.display = "none";
