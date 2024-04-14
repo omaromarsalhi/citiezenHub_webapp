@@ -25,6 +25,7 @@ class Reeclamation
 
     #[ORM\Column(length: 255)]
     private ?string $imagePath = null;
+
     #[Vich\UploadableField(mapping: 'user_images', fileNameProperty: 'imagePath' ,)]
     private ?File $imageFile = null;
 

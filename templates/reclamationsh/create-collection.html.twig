@@ -40,11 +40,11 @@
 			<div class="row g-5">
 				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
 					<form id="form" name="reclamation" method="post" enctype="multipart/form-data">
-						<div class="upload-area">
+						<!--<div class="upload-area">
 							<div class="brows-file-wrapper">
 							<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImagePath()) }}" alt data-black-overlay="6">
 								<input type="file" name="reclamation[imageFile]" id="reclamation_imageFile_file"  accept="image/*" class="inputfile"/>
-								<!--{{ dump('images/reclamation/'~reclamation.getImageFile()) }}-->
+								<!--{{ dump('images/reclamation/'~reclamation.getImageFile()) }}
 
 								<label for="reclamation_imageFile_file" title="No File Choosen">
 									<span class="text-center color-white">
@@ -52,7 +52,8 @@
 							</span>
 								</label>
 							</div>
-						</div>
+						</div>-->
+						
 						<script>
 							const input = document.getElementById('reclamation_imageFile_file');
 const img = document.getElementById('createfileImage');

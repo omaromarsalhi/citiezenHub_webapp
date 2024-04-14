@@ -94,8 +94,12 @@ reader.readAsDataURL(input.files[0]);
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_privateKey" class="required">Private Key</label>
-										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" required pattern="^[0-9]+$"/>
-
+										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" />
+										<span class="error-message">{{ form_errors(form.privateKey) }}</span>
+										<div class="tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltiptext">Must be a number</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -103,7 +107,12 @@ reader.readAsDataURL(input.files[0]);
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_subject" class="required">Subject</label>
-										<input type="text" id="reclamation_subject" name="reclamation[subject]" required pattern="^[a-zA-Z]+$"/>
+										<input type="text" id="reclamation_subject" name="reclamation[subject]" />
+										<span class="error-message">{{ form_errors(form.subject) }}</span>
+										<div class="tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltiptext">Must be a string</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -111,8 +120,12 @@ reader.readAsDataURL(input.files[0]);
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_description" class="required">Description</label>
-										<textarea id="reclamation_description" name="reclamation[description]" required></textarea>
-
+										<textarea id="reclamation_description" name="reclamation[description]" ></textarea>
+										<span class="error-message">{{ form_errors(form.description) }}</span>
+										<div class="tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltiptext">Must be a string</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -144,6 +157,7 @@ reader.readAsDataURL(input.files[0]);
 			return true;
 		} else {
 			nameInput.style.borderColor = 'red';
+			nameInput.setCustomValidity('Subject is not valid');
 			return false;
 		}
 	}
@@ -155,6 +169,7 @@ reader.readAsDataURL(input.files[0]);
 			return true;
 		} else {
 			lastNameInput.style.borderColor = 'red';
+			
 			return false;
 		}
 	}
@@ -166,16 +181,27 @@ reader.readAsDataURL(input.files[0]);
 			return true;
 		} else {
 			primaryKeyInput.style.borderColor = 'red';
+			
 			return false;
 		}
 	}
 	// Add event listeners for input fields
-	document.getElementById('reclamation_privateKey').addEventListener('input', validateName);
-	document.getElementById('reclamation_privateKey').addEventListener('input', validateLastName);
+	document.getElementById('reclamation_subject').addEventListener('input', validateName);
+	document.getElementById('reclamation_description').addEventListener('input', validateLastName);
 	document.getElementById('reclamation_privateKey').addEventListener('input', validatePrimaryKey);
+	
+	// Add tooltips to input fields
+	const tooltips = document.querySelectorAll('.tooltip');
+	tooltips.forEach(tooltip => {
+		tooltip.addEventListener('mouseover', () => {
+			tooltip.querySelector('.tooltiptext').style.display = 'block';
+		});
+		tooltip.addEventListener('mouseout', () => {
+			tooltip.querySelector('.tooltiptext').style.display = 'none';
+		});
+	});
 </script>
 
-
-	<!-- create new product area -->
-
 {% endblock %}
+
+

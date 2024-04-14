@@ -93,7 +93,8 @@ fetch('/reclamation', {
 method: 'POST',
 body: formData
 }).then(response => response.text()).then(data => {
-Swal.fire({title: 'Success!', text: 'Your reclamation has been submitted.', icon: 'success', confirmButtonText: 'Cool'}).then(() => { // Clear all the form fields
+Swal.fire({title: 'Success!', text: 'Your reclamation has been submitted.', icon: 'success', confirmButtonText: 'Thank You'}).then(() => {
+	 // Clear all the form fields
 const inputs = form.querySelectorAll('input, textarea');
 inputs.forEach(input => {
 input.value = '';
