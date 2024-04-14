@@ -184,4 +184,10 @@ public function update(ManagerRegistry $doctrine, $id, Request $req): Response
 
         return new JsonResponse(['success' => true]);
     }
+
+    #[Route('/blogAdmin', name: 'app_blogAdmin')]
+    public function indexAdmin(PostRepository $postRepository): Response
+    {
+        return $this->render('blog/blogAdmin.html.twig');
+    }
 }

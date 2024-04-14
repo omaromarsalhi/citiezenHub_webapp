@@ -12,13 +12,11 @@ function createPostHTML(post) {
     var imageHTML = '';
     if (post.images.length > 0) {
         imageHTML = `
-            <div class="thumbnail">
-                <a href="blog-details.html">
-                    <img id="post-image-${post.id}" src="images/blog/${post.images[0]}" 
-                         alt="Personal Portfolio Images">
-                </a>
-                <button onclick="changeImage(${post.id}, -1)">Précédent</button>
-                <button onclick="changeImage(${post.id}, 1)">Suivant</button>
+            <div class="thumbnail" style="position: relative;">
+                <img id="post-image-${post.id}" src="images/blog/${post.images[0]}"
+                     alt="Personal Portfolio Images" style="width: 100%;">
+                <button class="image-nav" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px" onclick="changeImage(${post.id}, -1)">&#8592;</button>
+                <button class="image-nav" style="position: absolute; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px"" onclick="changeImage(${post.id}, 1)">&#8594;</button>
             </div>
         `;
     }

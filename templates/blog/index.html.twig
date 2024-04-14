@@ -96,15 +96,19 @@
                                             </div>
                                         </center>
                                         <div class="button-area">
-                                            <div class="brows-file-wrapper">
+                                            <div class="brows-file-wrapper" style="position: relative;">
                                                 <!-- actual upload which is hidden -->
                                                 <input name="nipa[]" id="nipa" type="file" accept="image/*,.gif" multiple onclick="afficherIconDelImage()">
                                                 <!-- our custom upload button -->
+                                                <button class="image-nav" id="previousImage" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px; display: none;" onclick="changeImageUpload(-1)">Précédent</button>
+                                                <button class="image-nav" id="nextImage" style="position: absolute; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px; display: none;" onclick="changeImageUpload(1)">Suivant</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <button id="previousImage" onclick="changeImageUpload(-1)" style="display: none;">Précédent</button>
-                                    <button id="nextImage" onclick="changeImageUpload(1)" style="display: none;">Suivant</button>
+
+
+
+
                                 </div>
                             </div>
                             <button name="submit" id="ajoutPost" type="submit" class="btn btn-primary"
