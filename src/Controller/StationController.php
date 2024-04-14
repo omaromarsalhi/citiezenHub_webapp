@@ -124,22 +124,25 @@ class StationController extends AbstractController
             $entityManager->remove($station);
             $entityManager->flush();
 
-            return new JsonResponse('Abonnement supprimé avec succès', Response::HTTP_OK);
-        }
+            $posts = $stationRepository->findAll();
+
+            $postsArray = array_map(function ($post) {
+                return [
+                    'id' => $post->getId(),
+                    'nomstation' => $post->getnomstation(),
+                    'addressstation' => $post->getaddressstation(),
+                    'Type_Vehicule' => $post->getTypeVehicule(),
+                    'image_station' => $post->getImageStation(),
+
+                ];
+            }, $posts);
+        
+            return new JsonResponse(['posts' => $postsArray]);
+
+             }
 
         return new JsonResponse('This route accepts only AJAX requests', Response::HTTP_BAD_REQUEST);
     }
- /******qqqqqqqqqqqqqqqqqqqqqqq */
 
-   /**
-     * @Route("/stations", name="fetch_stations", methods={"GET"})
-     */
- /*   public function fetchStations(SerializerInterface $serializer): JsonResponse
-    {
-        // Fetch the updated list of stations from the database
-        $stations = $this->getDoctrine()->getRepository(Station::class)->findAll();
-        $jsonData = $serializer->serialize($stations, 'json', ['groups' => 'station_data']);
 
-        return new JsonResponse($jsonData, 200, [], true);}
-*/
 }
