@@ -8,6 +8,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: StationRepository::class)]
@@ -19,9 +20,12 @@ class Station
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Nom Station is required")]
     private ?string $nomstation = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Address Station is required")]
+
     private ?string $addressstation = null;
 
     #[ORM\Column(length: 255)]

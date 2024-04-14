@@ -219,7 +219,6 @@
 
 var maVariableGlobale =1;
 
-
 function addStation(event) {
     event.preventDefault();
     const selectedOption = document.querySelector('.form-select option:checked');
@@ -233,7 +232,7 @@ function addStation(event) {
     formData.append('nomStation', name);
     formData.append('adressStation', adress);
     formData.append('type_vehicule', type);
-    console.log( $('#createinputfile').prop('files')[0]);
+
     $.ajax({
         url: '/addStation',
         type: "POST",
@@ -242,30 +241,37 @@ function addStation(event) {
         processData: false,
         contentType: false,
         beforeSend: function() {
+            // You can add any pre-processing logic here
         },
-    
-    success: function(response) {
-
-    if (response.message == "Station added successfully .") {
-        alert("added successfully");
-        $('#addDealModal').modal('hide');
-        $('#name').val('');
-        $('#adressStation').val('');
-        $('#createinputfile').val('');
-        $('#createinputfile').closest('form').get(0).reset();
-        fetchUpdatedStationList();
-
- 
-    } else if (response.errorCode === 'DUPLICATE_ENTRY') {
-        alert(response.message);
-    }
-}
-    ,
-        error: function (response) {
-            
+        success: function(response) {
+              if (response.message === "Station added successfully.") {
+                // Handle success
+                alert("Added successfully");
+                $('#addDealModal').modal('hide');
+                $('#name').val('');
+                $('#adressStation').val('');
+                $('#createinputfile').val('');
+                $('#createinputfile').closest('form').get(0).reset();
+                updateStationList(response.stations); 
+            } else {
+                // Handle other errors
+                alert("An error occurred: " + response.message);
+            }
+        },
+        error: function(response) {
+             if (response.error === 'VALIDATION_ERROR') {
+                // Handle validation errors
+                alert("Validation failed: " + response.messages.join(', '));
+            }
+           else  if (response.error === 'DUPLICATE_ENTRY') {
+                // Handle duplicate entry error
+                alert("Error: " + response.message);
+            } 
+            // Handle AJAX errors
         },
     });
 }
+
 
     
 
@@ -302,7 +308,7 @@ function updateStation(event) {
                 $('#adressStation').val('');
                 $('#createinputfile').val('');
                 $('#createinputfile').closest('form').get(0).reset();
-                fetchUpdatedStationList();
+                updateStationList(response.stations); 
             } else {
                 alert(response.message);
             }
@@ -401,8 +407,7 @@ function deleteStation(stationId) {
             url: '/station/' + stationId,
             type: 'DELETE',
             success: function(response) {
-              //  console.log(response.posts);
-                updateStationList(response.posts); 
+                updateStationList(response.stations); 
 
             },
             error: function(xhr, status, error) {

@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class StationController extends AbstractController
 {
@@ -32,10 +34,10 @@ class StationController extends AbstractController
         ]);
     }
 
-  
+  /*
 
     #[Route('/addStation', name: 'addStation')]
-    public function addStation(Request $request,ManagerRegistry $doc): Response
+    public function addStation(Request $request,ManagerRegistry $doc,StationRepository $stationRepository,ValidatorInterface $validator): Response
     {
         if ($request->isXmlHttpRequest()) {
     
@@ -54,11 +56,45 @@ class StationController extends AbstractController
             $em = $doc->getManager();
        
             try {     
+                $errors = $validator->validate($station);
+                if (count($errors) > 0) {
+
+                    $errorMessages = [];
+                    foreach ($errors as $error) {
+                        $errorMessages[] = $error->getMessage();
+                    }
+            
+                    // Return an error response with custom message
+                    return new Response('Validation failed: ' . print_r($errors, true));
+                } else {
+
                 $em->persist($station);
                 $em->flush();
+            
+                $stations = $stationRepository->findAll();
+            
+                $stationsArray = array_map(function ($station) {
+                    return [
+                        'id' => $station->getId(),
+                        'nomstation' => $station->getnomstation(),
+                        'addressstation' => $station->getaddressstation(),
+                        'Type_Vehicule' => $station->getTypeVehicule(),
+                        'image_station' => $station->getImageStation(),
+                    ];
+                }, $stations);
+            
+                // Prepare all the JSON responses in an array
+                $responses = [
+                    'stations' => $stationsArray,
+                    'message' => 'Station updated successfully.'
 
-                
-            } catch (\PDOException $e) {
+
+                ];
+            
+                return new JsonResponse($responses);
+                    }
+            }
+             catch (\PDOException $e) {
                 // Check if the exception indicates a duplicate entry error
                 if ($e->getCode() === '23000' && strpos($e->getMessage(), 'Duplicate entry') !== false) {
                     // Return a custom error response indicating the duplicate entry
@@ -76,9 +112,73 @@ class StationController extends AbstractController
         else
             return new JsonResponse(['message' => 'station non envoye'], Response::HTTP_OK);
     }
+ */
+
+
+
+ #[Route('/addStation', name: 'addStation')]
+ public function addStation(Request $request, ManagerRegistry $doc, StationRepository $stationRepository, ValidatorInterface $validator): Response
+ {
+     if ($request->isXmlHttpRequest()) {
+         $station = new Station();
+         $station->setNomStation($request->get('nomStation'));
+         $station->setAddressStation($request->get('adressStation'));
+         $station->setTypeVehicule($request->get('type_vehicule'));
+         $station->setImageFile($request->files->get('image'));
  
+         // Validate the station entity using Symfony Validator
+         $errors = $validator->validate($station);
+ 
+         if (count($errors) > 0) {
+             // If validation fails, return the validation errors
+             $validationMessages = [];
+             foreach ($errors as $error) {
+                 $validationMessages[] = $error->getMessage();
+             }
+             return new JsonResponse(['error' => 'VALIDATION_ERROR', 'messages' => $validationMessages], Response::HTTP_BAD_REQUEST);
+         }
+ 
+         $em = $doc->getManager();
+ 
+         try {
+             $em->persist($station);
+             $em->flush();
+ 
+             $stations = $stationRepository->findAll();
+ 
+             $stationsArray = array_map(function ($station) {
+                 return [
+                     'id' => $station->getId(),
+                     'nomstation' => $station->getNomStation(),
+                     'addressstation' => $station->getAddressStation(),
+                     'Type_Vehicule' => $station->getTypeVehicule(),
+                     'image_station' => $station->getImageStation(),
+                 ];
+             }, $stations);
+ 
+             // Prepare all the JSON responses in an array
+             $responses = [
+                 'stations' => $stationsArray,
+                 'message' => 'Station added successfully.'
+             ];
+ 
+             return new JsonResponse($responses);
+         } catch (\PDOException $e) {
+             // Handle database errors
+             if ($e->getCode() === '23000' && strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                 return new JsonResponse(['error' => 'DUPLICATE_ENTRY', 'message' => 'A subscription with the same name already exists. Please choose a different name.'], Response::HTTP_BAD_REQUEST);
+             } else {
+                 return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while inserting the subscription.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+             }
+         }
+     } else {
+         return new JsonResponse(['message' => 'Station non envoyé'], Response::HTTP_OK);
+     }
+ }
+
+
     #[Route('/updateStation/{id}', name: 'updateStation')]
-    public function updateStation(Request $request, EntityManagerInterface $entityManager, $id): Response
+    public function updateStation(Request $request, EntityManagerInterface $entityManager, $id,StationRepository $stationRepository): Response
     {
         if ($request->isXmlHttpRequest()) {
             $station = $entityManager->getRepository(Station::class)->find($id);
@@ -105,11 +205,32 @@ class StationController extends AbstractController
             try {
                 // Persist the changes to the database
                 $entityManager->flush();
-                return new JsonResponse(['message' => 'Station updated successfully.'], Response::HTTP_OK);
+            
+                $stations = $stationRepository->findAll();
+            
+                $stationsArray = array_map(function ($station) {
+                    return [
+                        'id' => $station->getId(),
+                        'nomstation' => $station->getnomstation(),
+                        'addressstation' => $station->getaddressstation(),
+                        'Type_Vehicule' => $station->getTypeVehicule(),
+                        'image_station' => $station->getImageStation(),
+                    ];
+                }, $stations);
+            
+                // Prepare all the JSON responses in an array
+                $responses = [
+                    'stations' => $stationsArray,
+                    'message' => 'Station updated successfully.'
+                ];
+            
+                return new JsonResponse($responses, Response::HTTP_OK);
             } catch (\Exception $e) {
                 // Handle any exceptions that occur during the update process
                 return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while updating the station.'], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
+            
+        
         } else {
             return new JsonResponse(['error' => 'INVALID_REQUEST', 'message' => 'Invalid request.'], Response::HTTP_BAD_REQUEST);
         }
@@ -124,20 +245,20 @@ class StationController extends AbstractController
             $entityManager->remove($station);
             $entityManager->flush();
 
-            $posts = $stationRepository->findAll();
+            $stations = $stationRepository->findAll();
 
-            $postsArray = array_map(function ($post) {
+            $stationsArray = array_map(function ($station) {
                 return [
-                    'id' => $post->getId(),
-                    'nomstation' => $post->getnomstation(),
-                    'addressstation' => $post->getaddressstation(),
-                    'Type_Vehicule' => $post->getTypeVehicule(),
-                    'image_station' => $post->getImageStation(),
+                    'id' => $station->getId(),
+                    'nomstation' => $station->getnomstation(),
+                    'addressstation' => $station->getaddressstation(),
+                    'Type_Vehicule' => $station->getTypeVehicule(),
+                    'image_station' => $station->getImageStation(),
 
                 ];
-            }, $posts);
+            }, $stations);
         
-            return new JsonResponse(['posts' => $postsArray]);
+            return new JsonResponse(['stations' => $stationsArray]);
 
              }
 
