@@ -131,12 +131,13 @@ reader.readAsDataURL(input.files[0]);
 		<input type="hidden" id="reclamation__token" name="reclamation[_token]" value="edfefdd8a408443a012c.c_gIArByPEgON4s4Sv8_WXHe6FRKy7Ah9XqrA6GoLmk.PcxBY9cWTX9gBthxC8tSCQHp0SAsifMRmBvTNtDwTCA3sHt7xB9lJUF23g"/>
 	</form>
 <script>
+	const primarykey = /^[0-9]+$/; 
 	const nameRegex = /^[A-Za-z\s]+$/;  
 	const lastNameRegex = /^[A-Za-z\s]+$/; 
 	
 	
 	function validateName() {
-		const nameInput = document.getElementById('reclamation_privateKey');
+		const nameInput = document.getElementById('reclamation_subject');
 		const name = nameInput.value.trim();
 		if (nameRegex.test(name)) {
 			nameInput.style.borderColor = 'green';
@@ -147,7 +148,7 @@ reader.readAsDataURL(input.files[0]);
 		}
 	}
 	function validateLastName() {
-		const lastNameInput = document.getElementById('reclamation_privateKey');
+		const lastNameInput = document.getElementById('reclamation_description');
 		const lastName = lastNameInput.value.trim();
 		if (lastNameRegex.test(lastName)) {
 			lastNameInput.style.borderColor = 'green';
@@ -156,10 +157,24 @@ reader.readAsDataURL(input.files[0]);
 			lastNameInput.style.borderColor = 'red';
 			return false;
 		}
-	}// Add event listeners for input fields
+	}
+	function validatePrimaryKey() {
+		const primaryKeyInput = document.getElementById('reclamation_privateKey');
+		const primaryKey = primaryKeyInput.value.trim();
+		if (primarykey.test(primaryKey)) {
+			primaryKeyInput.style.borderColor = 'green';
+			return true;
+		} else {
+			primaryKeyInput.style.borderColor = 'red';
+			return false;
+		}
+	}
+	// Add event listeners for input fields
 	document.getElementById('reclamation_privateKey').addEventListener('input', validateName);
 	document.getElementById('reclamation_privateKey').addEventListener('input', validateLastName);
+	document.getElementById('reclamation_privateKey').addEventListener('input', validatePrimaryKey);
 </script>
+
 
 	<!-- create new product area -->
 
