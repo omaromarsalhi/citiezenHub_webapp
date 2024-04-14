@@ -8,15 +8,15 @@ var currentImageIndices = {};
 var posts = [];
 var currentImageIndexUpload = 0;
 
-function createPostHTML(post) {
+function createPostHTML(post, postUrl) {
     var imageHTML = '';
     if (post.images.length > 0) {
         imageHTML = `
             <div class="thumbnail" style="position: relative;">
                 <img id="post-image-${post.id}" src="images/blog/${post.images[0]}"
-                     alt="Personal Portfolio Images" style="width: 100%;">
-                <button class="image-nav" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px" onclick="changeImage(${post.id}, -1)">&#8592;</button>
-                <button class="image-nav" style="position: absolute; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px"" onclick="changeImage(${post.id}, 1)">&#8594;</button>
+                     alt="Personal Portfolio Images" style="width: 1000px; height: 500px; object-fit: contain;">
+                <button class="image-nav" style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 30px; width: 10px" onclick="changeImage(${post.id}, -1)">&#8592;</button>
+                <button class="image-nav" style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 30px; width: 10px"" onclick="changeImage(${post.id}, 1)">&#8594;</button>
             </div>
         `;
     }
@@ -30,7 +30,8 @@ function createPostHTML(post) {
                                 <img src="assets/images/activity/activity-01.jpg" height="50"
                                      width="50" style="margin-right: 10px">
                                 <a href="blog-details.html">Omar marrakchi</a>
-                            </div>
+                            </div>                         
+                            
                             <div class="meta">
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fas fa-cog"></i></button>
@@ -42,7 +43,7 @@ function createPostHTML(post) {
                             </div>
                         </div>
                         <span>${post.datePost}</span>
-                        <h4 class="title"><a href="blog-details.html">${post.caption} <i
+                        <h4 class="title"><a href="${postUrl}">${post.caption} <i
                                     class="feather-arrow-up-right"></i></a></h4>
                     </div>
                     ${imageHTML}
@@ -79,7 +80,7 @@ function loadPostsPage(page) {
         type: 'GET',
         success: function(response) {
             response.posts.forEach(function(post) {
-                var newPostHTML = createPostHTML(post);
+                var newPostHTML = createPostHTML(post, post.url);
                 $('#postsContainer').append(newPostHTML);
                 posts.push(post);
             });
@@ -162,7 +163,7 @@ function addPost(event) {
         contentType: false,
         success: function (response) {
             if (response.success) {
-                var newPostHTML = createPostHTML(response.post);
+                var newPostHTML = createPostHTML(response.post, response.post.url);
                 $('#postsContainer').prepend(newPostHTML);
                 posts.unshift(response.post);
                 $('html, body').animate({
@@ -336,7 +337,7 @@ function submitModifierForm(event) {
         success: function (response) {
 
             $("div[data-post-id='" + postIdToModify + "']").remove();
-            var newPostHTML = createPostHTML(response.post);
+            var newPostHTML = createPostHTML(response.post, response.post.url);
             $('#postsContainer').prepend(newPostHTML);
             closeModifierPopup();
 
@@ -411,15 +412,15 @@ function changeImageUpload(direction) {
     // Vérifier si des images ont été sélectionnées
     if (selectedImages.length > 0) {
         // Mettre à jour l'index de l'image actuelle
-        currentImageIndex += direction;
+        currentImageIndexUpload += direction;
         // S'assurer que l'index reste dans la plage valide
         if (currentImageIndex < 0) {
-            currentImageIndex = selectedImages.length - 1;
+            currentImageIndexUpload = selectedImages.length - 1;
         } else if (currentImageIndex >= selectedImages.length) {
-            currentImageIndex = 0;
+            currentImageIndexUpload = 0;
         }
         // Mettre à jour la source de l'image
-        document.getElementById("rbtinput2").src = selectedImages[currentImageIndex];
+        document.getElementById("rbtinput2").src = selectedImages[currentImageIndexUpload];
     }
 }
 

@@ -34,11 +34,14 @@ class BlogController extends AbstractController
 
         $posts = $postRepository->findBy([], ['date_post' => 'DESC'], $postsPerPage, $offset);
 
+
         $postsArray = array_map(function ($post) {
             $images = $post->getImages();
             $imagesArray = array_map(function ($image) {
                 return $image->getPath();
             }, $images);
+
+            $postUrl = $this->generateUrl('app_PostDetail', ['id' => $post->getId()]);
 
             return [
                 'id' => $post->getId(),
@@ -46,6 +49,7 @@ class BlogController extends AbstractController
                 'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
                 'nbReactions' => $post->getNbReactions(),
                 'images' => $imagesArray,
+                'url' => $postUrl,
             ];
         }, $posts);
 
@@ -86,6 +90,9 @@ class BlogController extends AbstractController
             }
 
             $em->flush();
+
+            $postUrl = $this->generateUrl('app_PostDetail', ['id' => $post->getId()]);
+
             return new JsonResponse([
                 'success' => true,
                 'post' => [
@@ -94,6 +101,7 @@ class BlogController extends AbstractController
                     'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
                     'nbReactions' => $post->getNbReactions(),
                     'images' => $imagesArray,
+                    'url' => $postUrl,
                 ]
             ]);
         }
@@ -115,57 +123,60 @@ class BlogController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'app_blog_update', methods: ['POST'])]
-public function update(ManagerRegistry $doctrine, $id, Request $req): Response
-{
-    $post = $doctrine->getRepository(Post::class)->find($id);
+    public function update(ManagerRegistry $doctrine, $id, Request $req): Response
+    {
+        $post = $doctrine->getRepository(Post::class)->find($id);
 
-    if (!$post) {
-        throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
-    }
-    $caption = $req->get('caption');
-    $imageFiles = $req->files->get('images'); // Récupérez les fichiers d'image
-
-    $post->setDatePost(new DateTime());
-    $post->setCaption($caption);
-
-    if ((empty($caption) && empty($imageFiles)) || (ctype_space($caption) && empty($imageFiles))) {
-        return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
-    }
-
-    $em = $doctrine->getManager();
-
-    $imagesArray = [];
-    if ($imageFiles) { // Vérifiez si des images ont été fournies
-        foreach ($imageFiles as $imageFile) {
-            $postImage = new ImagePsot();
-            $postImage->setImageFile($imageFile);
-            $postImage->setPost($post);
-            $em->persist($postImage);
-            $imagesArray[] = $postImage->getPath();
+        if (!$post) {
+            throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
         }
+        $caption = $req->get('caption');
+        $imageFiles = $req->files->get('images'); // Récupérez les fichiers d'image
+
+        $post->setDatePost(new DateTime());
+        $post->setCaption($caption);
+
+        if ((empty($caption) && empty($imageFiles)) || (ctype_space($caption) && empty($imageFiles))) {
+            return new JsonResponse(['success' => false, 'message' => 'Le caption ne peut pas être vide si aucune image n\'est fournie, et vice versa.']);
+        }
+
+        $em = $doctrine->getManager();
+
+        $imagesArray = [];
+        if ($imageFiles) { // Vérifiez si des images ont été fournies
+            foreach ($imageFiles as $imageFile) {
+                $postImage = new ImagePsot();
+                $postImage->setImageFile($imageFile);
+                $postImage->setPost($post);
+                $em->persist($postImage);
+                $imagesArray[] = $postImage->getPath();
+            }
+        }
+
+        // Ajoutez les images déjà présentes dans le post
+        foreach ($post->getImages() as $image) {
+            $imagesArray[] = $image->getPath();
+        }
+
+        $em->persist($post);
+        $em->flush();
+
+        $postUrl = $this->generateUrl('app_PostDetail', ['id' => $post->getId()]);
+
+        $this->addFlash('success', 'Le post a bien été modifié.');
+
+        return new JsonResponse([
+            'success' => true,
+            'post' => [
+                'id' => $post->getId(),
+                'caption' => $post->getCaption(),
+                'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+                'nbReactions' => $post->getNbReactions(),
+                'images' => $imagesArray,
+                'url' => $postUrl,
+            ]
+        ]);
     }
-
-    // Ajoutez les images déjà présentes dans le post
-    foreach ($post->getImages() as $image) {
-        $imagesArray[] = $image->getPath();
-    }
-
-    $em->persist($post);
-    $em->flush();
-
-    $this->addFlash('success', 'Le post a bien été modifié.');
-
-    return new JsonResponse([
-        'success' => true,
-        'post' => [
-            'id' => $post->getId(),
-            'caption' => $post->getCaption(),
-            'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
-            'nbReactions' => $post->getNbReactions(),
-            'images' => $imagesArray,
-        ]
-    ]);
-}
 
     #[Route('/edit/{id}/remove-image', name: 'app_blog_remove_image', methods: ['POST'])]
     public function removeImage(ManagerRegistry $doctrine, $id): Response
@@ -192,6 +203,26 @@ public function update(ManagerRegistry $doctrine, $id, Request $req): Response
 
         return $this->render('blog/blogAdmin.html.twig', [
             'posts' => $posts,
+        ]);
+    }
+
+    #[Route('/PostDetail/{id}', name: 'app_PostDetail')]
+    public function indexPostDetail($id, PostRepository $postRepository): Response
+    {
+        $post = $postRepository->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
+        }
+
+        $images = $post->getImages();
+        $imagesArray = array_map(function ($image) {
+            return $image->getPath();
+        }, $images);
+
+        return $this->render('blog/postDetails.html.twig', [
+            'post' => $post,
+            'images' => $imagesArray,
         ]);
     }
 }
