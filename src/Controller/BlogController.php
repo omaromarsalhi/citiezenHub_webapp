@@ -188,6 +188,10 @@ public function update(ManagerRegistry $doctrine, $id, Request $req): Response
     #[Route('/blogAdmin', name: 'app_blogAdmin')]
     public function indexAdmin(PostRepository $postRepository): Response
     {
-        return $this->render('blog/blogAdmin.html.twig');
+        $posts = $postRepository->findBy([], ['date_post' => 'DESC']);
+
+        return $this->render('blog/blogAdmin.html.twig', [
+            'posts' => $posts,
+        ]);
     }
 }
