@@ -39,12 +39,11 @@
 		<div class="container">
 			<div class="row g-5">
 				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
-					<form id="form" name="reclamation" method="post" enctype="multipart/form-data">
-						<div class="upload-area">
+				<form id="form" name="reclamation" method="post" enctype="multipart/form-data" action="{{ path('reclamationsh.modifer', {'id': reclamation.id}) }}">
+				<div class="upload-area">
 							<div class="brows-file-wrapper">
 							<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImagePath()) }}" alt data-black-overlay="6">
-								<input type="file" name="reclamation[imageFile]" id="reclamation_imageFile_file"  accept="image/*" class="inputfile"/>
-
+								<input type="file"  id="reclamation_imageFile_file"  accept="image/*" class="inputfile"/>
 
 								<label for="reclamation_imageFile_file" title="No File Choosen">
 									<span class="text-center color-white">
@@ -85,42 +84,39 @@ reader.readAsDataURL(input.files[0]);
 							<div class="col-md-12">
 								<div class="input-box pb--20">
 									<div>
-										<label for="reclamation_privateKey" class="required">Private Key</label>
-										<input type="text" value="{{ reclamation.privateKey }}" id="reclamation_privateKey" name="reclamation[privateKey]" required pattern="^[0-9]+$"/>
-
+									<label for="privateKey" class="required">Private Key</label>
+									<input type="text" id="privateKey" name="privateKey" required pattern="^[0-9]+$" value="{{ reclamation.privateKey }}"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="input-box pb--20">
 									<div>
-										<label for="reclamation_subject" class="required">Subject</label>
-										<input type="text" value="{{ reclamation.subject }}" id="reclamation_subject" name="reclamation[subject]" />
+									<label for="subject" class="required">Subject</label>
+									<input type="text" id="subject" name="subject" value="{{ reclamation.subject }}" />
 									</div>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="input-box pb--20">
 									<div>
-										<label for="reclamation_description" class="required">Description</label>
-										<textarea id="reclamation_description" name="reclamation[description]"  required>{{ reclamation.description }} </textarea>
-
+									<label for="description" class="required">Description</label>
+								<textarea id="description" name="description" required>{{ reclamation.description }}</textarea>
 									</div>
 								</div>
 							</div>
 							<span></span>
 							<span></span>
 							<div class="col-md-12">
-								<div class="input-box">
-									<button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
-								</div>
+							<div class="input-box">
+						<button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+					</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<input type="hidden" id="reclamation__token" name="reclamation[_token]" value="edfefdd8a408443a012c.c_gIArByPEgON4s4Sv8_WXHe6FRKy7Ah9XqrA6GoLmk.PcxBY9cWTX9gBthxC8tSCQHp0SAsifMRmBvTNtDwTCA3sHt7xB9lJUF23g"/>
 	</form>
 
 
