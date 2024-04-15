@@ -9,14 +9,20 @@ var posts = [];
 var currentImageIndexUpload = 0;
 
 function createPostHTML(post, postUrl) {
+    var bouttonImg = '';
+    if (post.images.length > 1) {
+        bouttonImg = `
+            <button class="image-nav" style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 30px; width: 10px" onclick="changeImage(${post.id}, -1)">&#8592;</button>
+            <button class="image-nav" style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 30px; width: 10px"" onclick="changeImage(${post.id}, 1)">&#8594;</button>
+        `;
+    }
     var imageHTML = '';
     if (post.images.length > 0) {
         imageHTML = `
             <div class="thumbnail" style="position: relative;">
                 <img id="post-image-${post.id}" src="images/blog/${post.images[0]}"
                      alt="Personal Portfolio Images" style="width: 1000px; height: 500px; object-fit: contain;">
-                <button class="image-nav" style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 30px; width: 10px" onclick="changeImage(${post.id}, -1)">&#8592;</button>
-                <button class="image-nav" style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 30px; width: 10px"" onclick="changeImage(${post.id}, 1)">&#8594;</button>
+                ${bouttonImg}
             </div>
         `;
     }
@@ -25,13 +31,12 @@ function createPostHTML(post, postUrl) {
             <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
                 <div class="inner">
                     <div class="content mb-4">
-                        <div class="category-info">
+                        <div class="category-info">                                                                                                                                  
                             <div class="category-list">
                                 <img src="assets/images/activity/activity-01.jpg" height="50"
                                      width="50" style="margin-right: 10px">
                                 <a href="blog-details.html">Omar marrakchi</a>
-                            </div>                         
-                            
+                            </div>
                             <div class="meta">
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fas fa-cog"></i></button>
@@ -78,8 +83,8 @@ function loadPostsPage(page) {
     $.ajax({
         url: '/blog/page/' + page,
         type: 'GET',
-        success: function(response) {
-            response.posts.forEach(function(post) {
+        success: function (response) {
+            response.posts.forEach(function (post) {
                 var newPostHTML = createPostHTML(post, post.url);
                 $('#postsContainer').append(newPostHTML);
                 posts.push(post);
@@ -92,7 +97,7 @@ function loadPostsPage(page) {
             isLoading = false;
             document.getElementById('loadingIcon').style.display = 'none';
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(response.message);
             isLoading = false;
             document.getElementById('loadingIcon').style.display = 'none';
@@ -104,26 +109,26 @@ function getTotalPostsCount(callback) {
     $.ajax({
         url: '/blog/count',
         type: 'GET',
-        success: function(response) {
+        success: function (response) {
             callback(response.count);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    getTotalPostsCount(function(count) {
+document.addEventListener('DOMContentLoaded', function () {
+    getTotalPostsCount(function (count) {
         totalPostsCount = count;
         loadPostsPage(currentPage);
     });
 });
 
-window.onscroll = function() {
+window.onscroll = function () {
     var scrollPosition = window.pageYOffset;
-    var windowSize     = window.innerHeight;
-    var bodyHeight     = document.body.offsetHeight;
+    var windowSize = window.innerHeight;
+    var bodyHeight = document.body.offsetHeight;
 
     // Charger plus de posts 500px avant d'arriver au bas de la page
     if (Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
@@ -131,20 +136,21 @@ window.onscroll = function() {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadPostsPage(currentPage);
 });
 
-window.onscroll = function() {
+window.onscroll = function () {
     var scrollPosition = window.pageYOffset;
-    var windowSize     = window.innerHeight;
-    var bodyHeight     = document.body.offsetHeight;
+    var windowSize = window.innerHeight;
+    var bodyHeight = document.body.offsetHeight;
 
     // Charger plus de posts 500px avant d'arriver au bas de la page
     if (Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
         loadPostsPage(currentPage);
     }
 };
+
 function addPost(event) {
     event.preventDefault();
     let formData = new FormData();
@@ -191,7 +197,7 @@ function addPost(event) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var textarea = document.getElementById('contact-message');
     var fileInput = document.getElementById('nipa');
     var submitButton = document.getElementById('ajoutPost');
@@ -208,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
     verifierEtatBouton();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var textarea = document.getElementById('captionModfier');
     var fileInput = document.getElementById('nipaUpload');
     var submitButton = document.getElementById('modifierButton');
@@ -291,12 +297,12 @@ function showModifierPopup(caption, images) {
             nextButton.style.display = "block";
             prevButton.style.display = "block";
 
-            nextButton.onclick = function() {
+            nextButton.onclick = function () {
                 currentImageIndexUpload = (currentImageIndexUpload + 1) % imageArray.length; // Utilisez le modulo pour boucler à travers les images
                 imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload];
             }
 
-            prevButton.onclick = function() {
+            prevButton.onclick = function () {
                 currentImageIndexUpload = (currentImageIndexUpload - 1 + imageArray.length) % imageArray.length; // Ajoutez la longueur avant le modulo pour éviter les indices négatifs
                 imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload];
             }
@@ -362,6 +368,7 @@ function windowOnClick(event) {
         closeModifierPopup();
     }
 }
+
 document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('click', windowOnClick);
 });
@@ -413,12 +420,8 @@ function changeImageUpload(direction) {
     if (selectedImages.length > 0) {
         // Mettre à jour l'index de l'image actuelle
         currentImageIndexUpload += direction;
-        // S'assurer que l'index reste dans la plage valide
-        if (currentImageIndex < 0) {
-            currentImageIndexUpload = selectedImages.length - 1;
-        } else if (currentImageIndex >= selectedImages.length) {
-            currentImageIndexUpload = 0;
-        }
+        // Utiliser l'opérateur modulo pour créer un effet de boucle
+        currentImageIndexUpload = (currentImageIndexUpload + selectedImages.length) % selectedImages.length;
         // Mettre à jour la source de l'image
         document.getElementById("rbtinput2").src = selectedImages[currentImageIndexUpload];
     }
@@ -456,14 +459,14 @@ document.getElementById("delImageUpdate").addEventListener("click", function () 
             $.ajax({
                 url: '/edit/' + postIdToModify + '/remove-image', // Remplacez par la route appropriée
                 type: 'POST',
-                success: function(response) {
+                success: function (response) {
                     Swal.fire(
                         'Supprimé!',
                         'Votre image a été supprimée.',
                         'success'
                     )
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     // Gérer les erreurs
                     console.error(error);
                 }

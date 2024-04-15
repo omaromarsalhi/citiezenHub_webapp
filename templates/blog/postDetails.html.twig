@@ -37,7 +37,7 @@
                                             style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px;">
                                         &#8592;
                                     </button>
-                                    <img id="post-image" class="w-100" src="{{ asset('images/blog/' ~ images[0]) }}" alt="Blog Images">
+                                    <img id="post-image" class="w-100" src="{{ asset('images/blog/' ~ images[0]) }}" alt="Blog Images" style="width: 1000px; height: 500px; object-fit: contain;">
                                     <button id="next-button" class="nav-button next-button"
                                             style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px;">
                                         &#8594;
@@ -63,8 +63,10 @@
                                             <div class="single-comment">
                                                 <div class="comment-author comment-img">
                                                     <img class="comment-avatar"
-                                                         src="assets/images/blog/comment/comment-01.png"
-                                                         alt="Comment Image">
+                                                         src="{{ asset('images/blog/ddbdd0d4-9b35-48a7-af56-9170ec809c04-1-661abe8155a9f401920793.jpg') }}"
+                                                         alt="Comment Image"
+                                                         style="width: 50px; height: 50px;"
+                                                    >
                                                     <div class="m-b-20">
                                                         <div class="commenter">Parent</div>
                                                         <div class="time-spent"> August 20, at 8:44
