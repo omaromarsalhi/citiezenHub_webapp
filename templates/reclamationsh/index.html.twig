@@ -10,9 +10,15 @@
     <div class="container">
       <div class="row mb--50 align-items-center">
         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-          <h1>Here you can find all your reclamation hope you find it good</h1>
+          <h5>Here you can find all your reclamation hope you find it good</h5>
         </div>
+        
       </div>
+      {% for message in app.flashes('success') %}
+							<div class="alert alert-success">
+								{{message}}
+							</div>
+						{% endfor %}
       <div class="row g-5 d-flex flex-wrap">
         <!-- [:4] -->
         {% for recll in recc %}

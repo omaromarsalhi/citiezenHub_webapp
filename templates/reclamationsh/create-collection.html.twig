@@ -21,11 +21,7 @@
 							<i class="feather-chevron-right"></i>
 						</li>
 						<li class="item current">Reclamation</li>
-						{% for message in app.flashes('success') %}
-							<div class="alert alert-success">
-								{{message}}
-							</div>
-						{% endfor %}
+						
 
 					</ul>
 				</div>
@@ -39,7 +35,7 @@
 		<div class="container">
 			<div class="row g-5">
 				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
-				<form id="form" name="reclamation" method="post" enctype="multipart/form-data" action="{{ path('reclamationsh.modifer', {'id': reclamation.id}) }}">
+				<form id="formm" name="reclamation" method="post" enctype="multipart/form-data" action="{{ path('reclamationsh.modifer', {'id': reclamation.id}) }}">
 				<div class="upload-area">
 							<div class="brows-file-wrapper">
 							<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImagePath()) }}" alt data-black-overlay="6">
