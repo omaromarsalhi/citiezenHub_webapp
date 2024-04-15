@@ -30,9 +30,13 @@ class Post
     #[ORM\OneToMany(targetEntity: ImagePsot::class, mappedBy: "post")]
     private Collection $images;
 
+    #[ORM\OneToMany(targetEntity: CommentPost::class, mappedBy: "post")]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,6 +107,33 @@ class Post
             // set the owning side to null (unless already changed)
             if ($image->getPost() === $this) {
                 $image->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(CommentPost $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(CommentPost $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getPost() === $this) {
+                $comment->setPost(null);
             }
         }
 

@@ -1,5 +1,48 @@
 {% extends 'home/index.html.twig' %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/feature.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}">
+    <!-- Style css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('blogStyle.css') }}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{ asset('js/BlogScript.js') }}"></script>
+    <script src={{ asset('assets/js/vendor/jquery.js') }}></script>
+    <script src={{ asset('assets/js/vendor/jquery.nice-select.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/jquery-ui.js') }}></script>
+    <script src={{ asset('assets/js/vendor/modernizer.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/feather.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/slick.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/bootstrap.min.js') }}></script>
+    <script src="assets/js/vendor/sal.min.js"></script>
+    <script src="assets/js/vendor/particles.js"></script>
+    <script src="assets/js/vendor/jquery.style.swicher.js"></script>
+    <script src="assets/js/vendor/js.cookie.js"></script>
+    <script src="assets/js/vendor/count-down.js"></script>
+    <script src="assets/js/vendor/isotop.js"></script>
+    <script src="assets/js/vendor/imageloaded.js"></script>
+    <script src="assets/js/vendor/backtoTop.js"></script>
+    <script src="assets/js/vendor/odometer.js"></script>
+    <script src="assets/js/vendor/jquery-appear.js"></script>
+    <script src="assets/js/vendor/scrolltrigger.js"></script>
+    <script src="assets/js/vendor/jquery.custom-file-input.js"></script>
+    <script src="assets/js/vendor/savePopup.js"></script>
+    <script src="assets/js/vendor/vanilla.tilt.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- main JS -->
+    <script src="assets/js/main.js"></script>
+{% endblock %}
+
+
 {% block body %}
 
     <div class="rn-breadcrumb-inner ptb--30">
@@ -105,15 +148,16 @@
                                     <span class="subtitle">Have a Comment?</span>
                                     <h2 class="title">Leave a Reply</h2>
                                 </div>
-                                <form class="mt--40" action="#">
+                                <form class="mt--40" method="POST">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-12">
-                                            <div class="rnform-group"><textarea placeholder="Comment"></textarea>
+                                            <div class="rnform-group" id="contact-message"><textarea placeholder="Comment"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
+                                            <input type="hidden" name="post_id" id="post_id" value="{{ post.id }}" />
                                             <div class="blog-btn">
-                                                <a class="btn btn-primary-alta btn-large w-100" href="#"><span>SEND
+                                                <a class="btn btn-primary-alta btn-large w-100" type="submit" onclick="addComment(event)"><span>SEND
                                                         MESSAGE</span></a>
                                             </div>
                                         </div>
@@ -155,6 +199,40 @@
             // Mettre à jour l'image
             document.getElementById('post-image').src = '/images/blog/' + images[currentIndex];
         });
+
+
+        function addComment(event) {
+            event.preventDefault();
+
+            // Récupérer les données du formulaire
+            let caption = document.querySelector('#contact-message textarea').value;
+            let postId = document.querySelector('#post_id').value;
+
+            // Créer un objet FormData pour stocker les données du formulaire
+            let formData = new FormData();
+            formData.append('caption', caption);
+            formData.append('post_id', postId);
+
+            // Envoyer une requête AJAX à la route /newComment
+            $.ajax({
+                url: '/newComment',
+                type: 'POST',
+                data: formData,
+                processData: false,  // Indique à jQuery de ne pas traiter les données
+                contentType: false,  // Indique à jQuery de ne pas définir le type de contenu
+                success: function(response) {
+                    // Gérer la réponse du serveur
+                    if (response.success) {
+                        console.log('Commentaire ajouté avec succès !');
+                    } else {
+                        console.error('Une erreur est survenue lors de l\'ajout du commentaire.');
+                    }
+                },
+                error: function() {
+                    console.error('Une erreur est survenue lors de l\'envoi de la requête AJAX.');
+                }
+            });
+        }
     </script>
 
 {% endblock %}

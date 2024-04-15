@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\CommentPost;
 use App\Entity\ImagePsot;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -224,5 +225,39 @@ class BlogController extends AbstractController
             'post' => $post,
             'images' => $imagesArray,
         ]);
+    }
+
+    #[Route('/newComment', name: 'new_comment', methods: ['POST'])]
+    public function newComment(Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        // Récupérer les données du formulaire
+        $caption = $request->request->get('caption');
+        $postId = $request->request->get('post_id');
+
+        // Trouver le post correspondant
+        $post = $entityManager->getRepository(Post::class)->find($postId);
+
+        if (!$post) {
+            throw $this->createNotFoundException(
+                'No post found for id '.$postId
+            );
+        }
+
+        // Créer une nouvelle instance de CommentPost
+        $comment = new CommentPost();
+
+        // Remplir l'instance avec les données du formulaire
+        $comment->setCaption($caption);
+        $comment->setPost($post);
+        $comment->setDateComment(new \DateTime());
+
+        // Sauvegarder le commentaire dans la base de données
+        $entityManager->persist($comment);
+        $entityManager->flush();
+
+        // Retourner une réponse
+        return new Response('Saved new comment with id '.$comment->getIdComment());
     }
 }
