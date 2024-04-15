@@ -81,7 +81,7 @@
               if (response.ok) {
                 document.getElementById(`reclamation-${reclamationId}`).remove();
               } else {
-                alert('Could not delete the reclamation.');
+                //alert('Could not delete the reclamation.');
               }
             }).catch(error => console.error('Error:', error));
           }
@@ -102,8 +102,9 @@
       <div class="modal-body">
         <img id="modalReclamationImage" src="" alt="Reclamation Image" class="img-fluid mb-2">
         <h3 id="modalReclamationSubject"></h3>
-        <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
-        <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>
+      <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>  
+      <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -127,15 +128,18 @@
         fetch(`/reclamation/details/${id}`)
           .then(response => response.json())
           .then(data => {
+            
             // Set the image path
             document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
             // Set the subject as the title of the modal
             const modalTitle = document.getElementById('reclamationModalLabel');
             modalTitle.textContent = data.subject;
-            // Populate the description
-            document.getElementById('modalReclamationDescription').textContent = data.description;
             // Format and populate the creation date
             document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
+
+            // Populate the description
+            document.getElementById('modalReclamationDescription').textContent = data.description;
+
 
             // Show the modal
             new bootstrap.Modal(document.getElementById('reclamationModal')).show();
@@ -150,7 +154,32 @@
 </script>
 
   
+<style>
+  .modal-content {
+    background-color: #2c3034; /* Dark background */
+    color: #ffffff; /* White text */
+    border: none;
+}
 
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.btn-close {
+    filter: invert(1); /* Make the close button white */
+}
+
+/* Match the font styles from your site */
+.modal-title, .modal-body, .modal-footer {
+    font-family: 'Your Font Family', sans-serif;
+    /* Your font styles here */
+}
+
+</style>
   
 
   

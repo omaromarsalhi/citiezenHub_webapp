@@ -94,8 +94,8 @@ reader.readAsDataURL(input.files[0]);
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_privateKey" class="required">Private Key</label>
-										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]" />
-										<span class="error-message">{{ form_errors(form.privateKey) }}</span>
+										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]"/>
+									<span class="error-message" style="display: none;"></span>
 										<div class="tooltip">
 											<i class="fas fa-info-circle"></i>
 											<span class="tooltiptext">Must be a number</span>
@@ -107,8 +107,8 @@ reader.readAsDataURL(input.files[0]);
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_subject" class="required">Subject</label>
-										<input type="text" id="reclamation_subject" name="reclamation[subject]" />
-										<span class="error-message">{{ form_errors(form.subject) }}</span>
+										<input type="text" id="reclamation_subject" name="reclamation[subject]"/>
+									<span class="error-message" style="display: none;"></span>
 										<div class="tooltip">
 											<i class="fas fa-info-circle"></i>
 											<span class="tooltiptext">Must be a string</span>
@@ -120,8 +120,8 @@ reader.readAsDataURL(input.files[0]);
 								<div class="input-box pb--20">
 									<div>
 										<label for="reclamation_description" class="required">Description</label>
-										<textarea id="reclamation_description" name="reclamation[description]" ></textarea>
-										<span class="error-message">{{ form_errors(form.description) }}</span>
+										<textarea id="reclamation_description" name="reclamation[description]"></textarea>
+									<span class="error-message" style="display: none;"></span>
 										<div class="tooltip">
 											<i class="fas fa-info-circle"></i>
 											<span class="tooltiptext">Must be a string</span>
@@ -145,102 +145,122 @@ reader.readAsDataURL(input.files[0]);
 	</form>
 	<script>
 		(function () {
-const form = document.getElementById('form');
-const submitButton = document.getElementById('submit-button1');
-// Add a submit event listener to the form element
-form.addEventListener('submit', function (event) {
-event.preventDefault();
-// Check if the form is valid
-if (form.checkValidity()) {
-const formData = new FormData(form);
-fetch('/reclamation', {
-method: 'POST',
-body: formData
-}).then(response => response.text()).then(data => {
-Swal.fire({title: 'Success!', text: 'Your reclamation has been submitted.', icon: 'success', confirmButtonText: 'Thank You'}).then(() => {
- // Clear all the form fields
-const inputs = form.querySelectorAll('input, textarea');
-inputs.forEach(input => {
-input.value = '';
-});
-
-form.reset();
-});
+		  const form = document.getElementById('form');
+		  const submitButton = document.getElementById('submit-button1');
+	  
+		  // Add a submit event listener to the form element
+		  form.addEventListener('submit', function (event) {
+			event.preventDefault(); // Prevent the default form submit action
+			
+			// Check if the form is valid
+			if (form.checkValidity()) {
+			  const formData = new FormData(form);
+			  fetch('/reclamation', {
+  method: 'POST',
+  body: formData,
+  headers: {
+    'Accept': 'application/json',
+  }
+}).then(response => response.json())
+.then(data => {
+  if (data.success) {
+    Swal.fire({
+      title: 'Success!',
+      text: 'Your reclamation has been submitted.',
+      icon: 'success',
+      confirmButtonText: 'Thank You'
+    }).then(() => {
+      form.reset();
+    });
+  } else {
+    // Display field-specific errors
+    Object.keys(data.errors).forEach(function (key) {
+      const input = document.querySelector('[name="reclamation[' + key + ']"]');
+      const errorSpan = input.nextElementSibling; // Assuming the error span is the very next sibling of the input
+      errorSpan.textContent = data.errors[key];
+      errorSpan.style.display = 'block'; // Make sure the error is visible
+      input.style.borderColor = 'red'; // Highlight the input field with an error
+    });
+  }
 }).catch(error => {
-
-console.error(error);
-Swal.fire({title: 'Error!', text: error.message, icon: 'error', confirmButtonText: 'OK'});
+  console.error('Submission error:', error);
+  Swal.fire({
+    title: 'Error!',
+    text: 'There was an error submitting your reclamation.',
+    icon: 'error',
+    confirmButtonText: 'OK'
+  });
 });
+
+	  
+		  // This click event listener seems unnecessary as the submit event above already handles the form submission
+		  submitButton.addEventListener('click', function (event) {
+			if (!form.checkValidity()) {
+			  form.reportValidity(); // This will display the browser's default validation messages
+			}
+		  });
+		})();
+	  </script>
+	  
+	<script>
+const primaryKeyRegex = /^[0-9]+$/; // Matches a string of one or more digits
+const subjectRegex = /^[A-Za-z\s]+$/; // Matches a string of letters (both cases) and spaces
+const descriptionRegex = /^[A-Za-z0-9\s.,!?()-]+$/;
+// Matches letters, numbers, spaces, and some punctuation
+
+// Update your validation functions accordingly
+function validateSubject() {
+const subjectInput = document.getElementById('reclamation_subject');
+const subject = subjectInput.value.trim();
+if (subjectRegex.test(subject)) {
+subjectInput.style.borderColor = 'green';
+subjectInput.setCustomValidity('');
+return true;
+} else {
+subjectInput.style.borderColor = 'red';
+subjectInput.setCustomValidity('Subject is not valid');
+return false;
 }
-});
-submitButton.addEventListener('click', function (event) {
-
-if (form.checkValidity()) {
-form.reportValidity();
 }
-});
-})();
 
+function validateDescription() {
+const descriptionInput = document.getElementById('reclamation_description');
+const description = descriptionInput.value.trim();
+if (descriptionRegex.test(description)) {
+descriptionInput.style.borderColor = 'green';
+descriptionInput.setCustomValidity('');
+return true;
+} else {
+descriptionInput.style.borderColor = 'red';
+descriptionInput.setCustomValidity('Description is not valid');
+return false;
+}
+}
+
+function validatePrivateKey() {
+const privateKeyInput = document.getElementById('reclamation_privateKey');
+const privateKey = privateKeyInput.value.trim();
+if (primaryKeyRegex.test(privateKey)) {
+privateKeyInput.style.borderColor = 'green';
+privateKeyInput.setCustomValidity('');
+return true;
+} else {
+privateKeyInput.style.borderColor = 'red';
+privateKeyInput.setCustomValidity('Private key is not valid');
+return false;
+}
+}
+
+// Add tooltips to input fields
+const tooltips = document.querySelectorAll('.tooltip');
+tooltips.forEach(tooltip => {
+tooltip.addEventListener('mouseover', () => {
+tooltip.querySelector('.tooltiptext').style.display = 'block';
+});
+tooltip.addEventListener('mouseout', () => {
+tooltip.querySelector('.tooltiptext').style.display = 'none';
+});
+});
 	</script>
-<script>
-	const primarykey = /^[0-9]+$/; 
-	const nameRegex = /^[A-Za-z\s]+$/;  
-	const lastNameRegex = /^[A-Za-z\s]+$/; 
-	
-	
-	function validateName() {
-		const nameInput = document.getElementById('reclamation_subject');
-		const name = nameInput.value.trim();
-		if (nameRegex.test(name)) {
-			nameInput.style.borderColor = 'green';
-			return true;
-		} else {
-			nameInput.style.borderColor = 'red';
-			nameInput.setCustomValidity('Subject is not valid');
-			return false;
-		}
-	}
-	function validateLastName() {
-		const lastNameInput = document.getElementById('reclamation_description');
-		const lastName = lastNameInput.value.trim();
-		if (lastNameRegex.test(lastName)) {
-			lastNameInput.style.borderColor = 'green';
-			return true;
-		} else {
-			lastNameInput.style.borderColor = 'red';
-			
-			return false;
-		}
-	}
-	function validatePrimaryKey() {
-		const primaryKeyInput = document.getElementById('reclamation_privateKey');
-		const primaryKey = primaryKeyInput.value.trim();
-		if (primarykey.test(primaryKey)) {
-			primaryKeyInput.style.borderColor = 'green';
-			return true;
-		} else {
-			primaryKeyInput.style.borderColor = 'red';
-			
-			return false;
-		}
-	}
-	// Add event listeners for input fields
-	document.getElementById('reclamation_subject').addEventListener('input', validateName);
-	document.getElementById('reclamation_description').addEventListener('input', validateLastName);
-	document.getElementById('reclamation_privateKey').addEventListener('input', validatePrimaryKey);
-	
-	// Add tooltips to input fields
-	const tooltips = document.querySelectorAll('.tooltip');
-	tooltips.forEach(tooltip => {
-		tooltip.addEventListener('mouseover', () => {
-			tooltip.querySelector('.tooltiptext').style.display = 'block';
-		});
-		tooltip.addEventListener('mouseout', () => {
-			tooltip.querySelector('.tooltiptext').style.display = 'none';
-		});
-	});
-</script>
 
 {% endblock %}
-
-
