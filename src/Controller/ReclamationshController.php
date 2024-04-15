@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -19,7 +20,7 @@ class ReclamationshController extends AbstractController
     {
         $recc = $entityManager->getRepository(Reeclamation::class)->findBy([], ['createdAt' => 'DESC']);
         $last_reclamations = [];
-
+        $rec = [];
         foreach ($recc as $reclamation) {
             $subject = $reclamation->getSubject();
 
@@ -30,7 +31,7 @@ class ReclamationshController extends AbstractController
 
         return $this->render('reclamationsh/index.html.twig', [
             'controller_name' => 'ReclamationshController',
-            'rec' => $rec
+            'recc' => $rec
         ]);
     }
 
@@ -101,24 +102,20 @@ class ReclamationshController extends AbstractController
 
 
     
-    #[Route('/b/{id}', name: 'reclamationsh.del')]
-        public function delete(EntityManagerInterface $entityManager, $id): Response
-        {
-            $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
+#[Route('/b/{id}', name: 'reclamationsh.del', methods: ['POST'])]
+public function delete(EntityManagerInterface $entityManager, $id): JsonResponse
+{
+    $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
+
+    if (!$reclamation) {
+        return $this->json(['success' => false, 'message' => 'Reclamation not found.'], 404);
+    }
     
-            if (!$reclamation) {
-                throw $this->createNotFoundException('No reclamation found with id ' . $id);
-            }
-            
-            $entityManager->remove($reclamation);
-            $entityManager->flush();
-            
-            $this->addFlash('success', 'Reclamation supprimée avec succès');
-            
-            return $this->render('reclamationsh/index.html.twig', [
-                'controller_name' => 'ReclamationshController',
-                
-            ]); // return an empty response with a 200 status code // replace 'reclamationsh_index' with the name of the route you want to redirect to
-        }
+    $entityManager->remove($reclamation);
+    $entityManager->flush();
+    
+    return $this->json(['success' => true, 'message' => 'Reclamation deleted successfully.']);
+}
+
 
 }

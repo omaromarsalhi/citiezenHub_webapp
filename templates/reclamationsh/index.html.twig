@@ -15,32 +15,32 @@
       </div>
       <div class="row g-5 d-flex flex-wrap">
         <!-- [:4] -->
-        {% for recl in rec %}
+        {% for recll in recc %}
           <div class="inner flex-grow-1" style="max-width: 300px; overflow-wrap: break-word;">
             <div class="thumbnail">
-              <a href="{{ path('reclamationsh.modifer', { id: recl.id }) }}"><img src="{{ asset('images/reclamation/' ~ recl.getImagePath()) }}" alt="Personal Portfolio Images" /><span class="text-center color-white"><i class="feather-edit"></i></span></a>
+              <a href="{{ path('reclamationsh.modifer', { id: recll.id }) }}"><img src="{{ asset('images/reclamation/' ~ recll.getImagePath()) }}" alt="Personal Portfolio Images" /><span class="text-center color-white"><i class="feather-edit"></i></span></a>
             </div>
             <div class="content">
               <div class="category-info">
                 <div class="category-list">
-                  <a href="blog-details.html">{{ recl.subject }}</a>
+                  <a href="blog-details.html">{{ recll.subject }}</a>
                 </div>
                 <div class="meta">
                   <span>
                     <i class="feather-clock"></i>
-                    {{ recl.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
+                    {{ recll.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
                   </span>
                 </div>
               </div>
               <h4 class="title">
-                            <form action="{{ path('reclamationsh.del', { id: recl.id }) }}" method="post" onsubmit="return confirm('Are you sure?');">
-                              {% if (recl.description|length) > 10 %}
-                                {{ recl.description|slice(0, 10) }}...
+                           
+                              {% if (recll.description|length) > 10 %}
+                                {{ recll.description|slice(0, 10) }}...
                               {% else %}
-                                {{ recl.description }}
+                                {{ recll.description }}
                               {% endif %}
-                              <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            <button class="btn btn-danger delete-reclamation" data-id="{{ recll.id }}">Delete</button>
+                          
                           </h4>
             </div>
           </div>
@@ -58,4 +58,30 @@
       <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
     </svg>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const deleteButtons = document.querySelectorAll('.delete-reclamation');
+    
+      deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          const reclamationId = this.getAttribute('data-id');
+          
+          if (confirm('Are you sure?')) {
+            fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
+              method: 'POST',
+              // Include any necessary headers, CSRF tokens, etc.
+            }).then(response => {
+              if (response.ok) {
+                document.getElementById(`reclamation-${reclamationId}`).remove();
+              } else {
+                alert('Could not delete the reclamation.');
+              }
+            }).catch(error => console.error('Error:', error));
+          }
+        });
+      });
+    });
+    </script>
+    
 {% endblock %}
