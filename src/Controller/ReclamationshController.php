@@ -118,4 +118,29 @@ public function delete(EntityManagerInterface $entityManager, $id): JsonResponse
 }
 
 
+
+
+#[Route('/reclamation/details/{id}', name: 'reclamation_details')]
+public function getReclamationDetails(EntityManagerInterface $entityManager, $id): JsonResponse
+{
+    $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
+
+    if (!$reclamation) {
+        return $this->json(['error' => 'Reclamation not found'], 404);
+    }
+
+    // Only return the image file name if `getImagePath` includes the full path.
+    // Adjust as needed if `getImagePath` includes the full path.
+    $imageFileName = basename($reclamation->getImagePath());
+
+    return $this->json([
+        'subject' => $reclamation->getSubject(),
+        'description' => $reclamation->getDescription(),
+        'createdAt' => $reclamation->getCreatedAt()->format('Y-m-d H:i:s'),
+        'imagePath' => $imageFileName, // Ensure this is just the file name.
+        // Add other fields as needed
+    ]);
+}
+
+
 }

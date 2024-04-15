@@ -29,7 +29,7 @@
             <div class="content">
               <div class="category-info">
                 <div class="category-list">
-                  <a href="blog-details.html">{{ recll.subject }}</a>
+              <a href="javascript:void(0);" class="reclamation-subject" data-id="{{ recll.id }}">{{ recll.subject }}</a>
                 </div>
                 <div class="meta">
                   <span>
@@ -64,7 +64,7 @@
       <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
     </svg>
   </div>
-  <script>
+<script>
     document.addEventListener('DOMContentLoaded', function () {
       const deleteButtons = document.querySelectorAll('.delete-reclamation');
     
@@ -89,5 +89,72 @@
       });
     });
     </script>
+
+
+<!-- Modal Structure -->
+<div class="modal fade" id="reclamationModal" tabindex="-1" aria-labelledby="reclamationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reclamationModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img id="modalReclamationImage" src="" alt="Reclamation Image" class="img-fluid mb-2">
+        <h3 id="modalReclamationSubject"></h3>
+        <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
+        <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const subjectLinks = document.querySelectorAll('.reclamation-subject');
+
+    subjectLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+
+        // Fetch reclamation details using the ID
+        fetch(`/reclamation/details/${id}`)
+          .then(response => response.json())
+          .then(data => {
+            // Set the image path
+            document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
+            // Set the subject as the title of the modal
+            const modalTitle = document.getElementById('reclamationModalLabel');
+            modalTitle.textContent = data.subject;
+            // Populate the description
+            document.getElementById('modalReclamationDescription').textContent = data.description;
+            // Format and populate the creation date
+            document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
+
+            // Show the modal
+            new bootstrap.Modal(document.getElementById('reclamationModal')).show();
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching the reclamation details.');
+          });
+      });
+    });
+  });
+</script>
+
+  
+
+  
+
+  
+  
+  
     
 {% endblock %}

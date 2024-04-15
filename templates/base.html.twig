@@ -19,6 +19,8 @@
 			<link rel="stylesheet" href="{{asset('/assets/css/plugins/feature.css')}}">
 			<link rel="stylesheet" href="{{asset('/assets/css/plugins/jquery-ui.min.css')}}">
 			<link rel="stylesheet" href="{{asset('/assets/css/vendor/odometer.css')}}">
+			<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
 			<!-- Style css -->
 			<link rel="stylesheet" href="{{asset('/assets/css/style.css')}}">
 		{% endblock %}
@@ -79,7 +81,8 @@
 	{% include 'parts/header.html.twig' %}
 	<body>
 		{% block body %}{% endblock %}
-		
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 	</body>
 	{% include 'parts/footer.html.twig' %}
 </html>
