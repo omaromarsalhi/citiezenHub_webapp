@@ -62,3 +62,13 @@
     padding-bottom: 0;
     margin-bottom: -40px;
 }
+
+.fixedImagesSize4Details{
+    height: 553px !important;
+    width: 553px !important;
+}
+.fixedSubImagesSize4Details{
+    height: 165px !important;
+    width: 165px !important;
+}
+

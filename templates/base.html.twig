@@ -39,9 +39,15 @@
     <link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}"/>
 
     <!-- Style css -->
-    {% block stylesheets_wtf %}
+    {% block stylesheets_wtf1 %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
+    {% block stylesheets_wtf2 %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+
     <link rel="stylesheet" href="{{ asset('css/market.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/product.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/error_success.css') }}"/>

@@ -40,8 +40,11 @@ class UserDashboardController extends AbstractController
             $map[$page]->setPreviousPage($previous_page);
             $session->set('user_products_map', $map);
 
+            $underverif= $page=='unverified';
+
             $template=$this->render('user_dashboard/sub_onsale_products.html.twig', [
-                'products' => $map[$page]->getNProducts(10)
+                'products' => $map[$page]->getNProducts(10),
+                'underverif'=>$underverif
             ]);
 
             return new JsonResponse([

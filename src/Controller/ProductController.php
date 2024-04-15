@@ -62,12 +62,12 @@ class ProductController extends AbstractController
             $product = $productRepository->findOneBy([], ['idProduct' => 'DESC']);
 
             $images = $request->files->all();
-            $newImagesPath=$imageHelper->saveImages($images, $product);
+            $newImagesPath = $imageHelper->saveImages($images, $product);
 
 //            $aiverification=new AiVerification();
 //            $desc=$aiverification->run($newImagesPath);
 //            return new JsonResponse(['state' => 'done','desc'=>$desc]);
-            return new JsonResponse(['state' => 'done'],Response::HTTP_OK);
+            return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
         return $this->render('market_place/create.html.twig');
@@ -88,14 +88,14 @@ class ProductController extends AbstractController
     }
 
 
-//    #[Route('/{idProd}', name: '_show', methods: ['GET'])]
-//    public function show(Product $product): Response
-//    {
-//
-//        return $this->render('market_place/show.html.twig', [
-//            'product' => $product,
-//        ]);
-//    }
+    #[Route('/details/{index}', name: '_product_details', methods: ['POST'])]
+    public function details(Request $request, ProductRepository $productRepository, int $index): Response
+    {
+        return $this->render('market_place/product-details.html.twig', [
+            'product' => $productRepository->findOneBy(['idProduct' => $request->get('_token_' . $index)])
+        ]);
+    }
+
 
     #[Route('/{idProd}/edit', name: '_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
@@ -115,14 +115,36 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{idProd}', name: '_delete', methods: ['POST'])]
-    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    #[Route('/delete', name: '_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $entityManager,ProductRepository $productRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $product->getIdProd(), $request->request->get('_token'))) {
-            $entityManager->remove($product);
-            $entityManager->flush();
-        }
+        $session = $request->getSession();
+        if ($request->isXmlHttpRequest()) {
+            $prod2Remove=$productRepository->findOneBy(['idProduct' => $request->get('id')]);
 
-        return $this->redirectToRoute('app_market_place_index', [], Response::HTTP_SEE_OTHER);
+            $entityManager->remove($prod2Remove);
+            $entityManager->flush();
+
+            $prods = $session->get('allProducts');
+            $prods=array_splice($prods, array_search($prod2Remove, $prods), 1);
+            $session->set('allProducts', $prods);
+
+            $nbr_pages = $session->get('nbr_pages');
+            $nbr_pages-=1;
+            $session->set('nbr_pages', $nbr_pages);
+
+            $template=$this->render('user_dashboard/sub_onsale_products.html.twig', [
+                'products' => array_slice($prods, 0, 10),
+                'underverif'=>false
+            ]);
+
+            return new JsonResponse([
+                'template'=>$template->getContent(),
+                'currentPage' => 1,
+                'previousPage' => 2,
+                'nbrpages' => ceil(sizeof($prods) / 10)
+            ]);
+        }
+        return new Response('something went wrong', Response::HTTP_BAD_REQUEST);
     }
 }

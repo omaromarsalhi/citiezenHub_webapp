@@ -9,14 +9,41 @@
 // }, 1000);
 
 window.onload = function() {
-    adjustSelection();
+    // adjustSelection();
     regex();
 }
 
-function adjustSelection() {
-    var element = document.getElementsByClassName("nice-select").item(0);
-    element.classList.add("selectCategory");
+
+
+function deleteProduct(id){
+    console.log(id)
+    $.ajax({
+        url: '/product/delete',
+        type: "POST",
+        data: {
+            id:id
+        },
+        async: true,
+        success: function (response) {
+            console.log(response)
+            $("#sub-1-block").html(response.template);
+            setTimeout(function() {
+                launchSwiper();
+            }, 1000);
+
+
+            $("#1-page-"+response.previousPage).removeClass("active")
+            $("#1-page-"+response.currentPage).addClass("active")
+        }
+    });
 }
+
+
+
+// function adjustSelection() {
+//     var element = document.getElementsByClassName("nice-select").item(0);
+//     element.classList.add("selectCategory");
+// }
 
 
 function createProduct(e) {
