@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\CommentPost;
 use App\Entity\ImagePsot;
+use App\Repository\CommentPostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -208,7 +209,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/PostDetail/{id}', name: 'app_PostDetail')]
-    public function indexPostDetail($id, PostRepository $postRepository): Response
+    public function indexPostDetail($id, PostRepository $postRepository, CommentPostRepository $commentPostRepository): Response
     {
         $post = $postRepository->find($id);
 
@@ -221,9 +222,21 @@ class BlogController extends AbstractController
             return $image->getPath();
         }, $images);
 
+        $comments = $commentPostRepository->findBy(['post' => $post->getId()], ['dateComment' => 'DESC']);
+
+        // Transformer chaque commentaire en tableau
+        $commentsArray = array_map(function ($comment) {
+            return [
+                'id' => $comment->getIdComment(),
+                'caption' => $comment->getCaption(),
+                'dateComment' => $comment->getDateComment()->format('Y-m-d H:i:s'),
+            ];
+        }, $comments);
+
         return $this->render('blog/postDetails.html.twig', [
             'post' => $post,
             'images' => $imagesArray,
+            'comments' => $commentsArray,
         ]);
     }
 
@@ -257,7 +270,13 @@ class BlogController extends AbstractController
         $entityManager->persist($comment);
         $entityManager->flush();
 
-        // Retourner une réponse
-        return new Response('Saved new comment with id '.$comment->getIdComment());
+        return new JsonResponse([
+            'success' => true,
+            'comment' => [
+                'id' => $comment->getIdComment(),
+                'caption' => $comment->getCaption(),
+                'dateComment' => $comment->getDateComment()->format('Y-m-d H:i:s'),
+            ]
+        ]);
     }
 }

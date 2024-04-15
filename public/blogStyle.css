@@ -66,6 +66,14 @@ button.dropbtn .fas.fa-cog {
     font-size: 21px;
 }
 
+button.dropbtnComment .fas.fa-cog {
+    font-size: 17px;
+}
+
+.dropbtnComment {
+    border: none;
+}
+
 .dropbtn {
     border: none;
 }

@@ -21,7 +21,7 @@ function createPostHTML(post, postUrl) {
         imageHTML = `
             <div class="thumbnail" style="position: relative;">
                 <img id="post-image-${post.id}" src="images/blog/${post.images[0]}"
-                     alt="Personal Portfolio Images" style="width: 1000px; height: 500px; object-fit: contain;">
+                     alt="Personal Portfolio Images" style="width: 800px; height: 500px; object-fit: contain;">
                 ${bouttonImg}
             </div>
         `;

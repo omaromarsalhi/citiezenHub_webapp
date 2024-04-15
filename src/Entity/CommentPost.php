@@ -10,7 +10,7 @@ class CommentPost
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(name: "idComment" ,type: "integer")]
     private ?int $idComment = null;
 
     #[ORM\Column(type: "string", length: 255)]

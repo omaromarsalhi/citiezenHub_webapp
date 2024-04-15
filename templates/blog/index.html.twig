@@ -25,23 +25,23 @@
     <script src={{ asset('assets/js/vendor/feather.min.js') }}></script>
     <script src={{ asset('assets/js/vendor/slick.min.js') }}></script>
     <script src={{ asset('assets/js/vendor/bootstrap.min.js') }}></script>
-    <script src="assets/js/vendor/sal.min.js"></script>
-    <script src="assets/js/vendor/particles.js"></script>
-    <script src="assets/js/vendor/jquery.style.swicher.js"></script>
-    <script src="assets/js/vendor/js.cookie.js"></script>
-    <script src="assets/js/vendor/count-down.js"></script>
-    <script src="assets/js/vendor/isotop.js"></script>
-    <script src="assets/js/vendor/imageloaded.js"></script>
-    <script src="assets/js/vendor/backtoTop.js"></script>
-    <script src="assets/js/vendor/odometer.js"></script>
-    <script src="assets/js/vendor/jquery-appear.js"></script>
-    <script src="assets/js/vendor/scrolltrigger.js"></script>
-    <script src="assets/js/vendor/jquery.custom-file-input.js"></script>
-    <script src="assets/js/vendor/savePopup.js"></script>
-    <script src="assets/js/vendor/vanilla.tilt.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src={{ asset('assets/js/vendor/sal.min.js') }}></script>
+    <script src={{ asset('assets/js/vendor/particles.js') }}></script>
+    <script src={{ asset('assets/js/vendor/jquery.style.swicher.js') }}></script>
+    <script src={{ asset('assets/js/vendor/js.cookie.js') }}></script>
+    <script src={{ asset('assets/js/vendor/count-down.js') }}></script>
+    <script src={{ asset('assets/js/vendor/isotop.js') }}></script>
+    <script src={{ asset('assets/js/vendor/imageloaded.js') }}></script>
+    <script src={{ asset('assets/js/vendor/backtoTop.js') }}></script>
+    <script src={{ asset('assets/js/vendor/odometer.js') }}></script>
+    <script src={{ asset('assets/js/vendor/jquery-appear.js') }}></script>
+    <script src={{ asset('assets/js/vendor/scrolltrigger.js') }}></script>
+    <script src={{ asset('assets/js/vendor/jquery.custom-file-input.js') }}></script>
+    <script src={{ asset('assets/js/vendor/savePopup.js') }}></script>
+    <script src={{ asset('assets/js/vendor/vanilla.tilt.js') }}></script>
+    <script src={{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11') }}></script>
     <!-- main JS -->
-    <script src="assets/js/main.js"></script>
+    <script src={{ asset('assets/js/main.js') }}></script>
 {% endblock %}
 
 {% block body %}
@@ -84,7 +84,7 @@
                                         <center>
                                             <div class="logo-c-image feature" style="position:relative;">
                                                 <img id="rbtinput2" src="{{ asset('aucuneImg.png') }}"
-                                                     alt="Profile-NFT" style="width: 1000px; height: 500px; object-fit: contain;">
+                                                     alt="Profile-NFT" style="width: 700px; height: 400px; object-fit: contain;">
                                                 <label for="nipa" title="No File Choosen">
                                                     <span class="text-center color-white"><i
                                                                 class="feather-edit"></i></span>
@@ -151,8 +151,8 @@
                                 <label class="title required">Modifier votre image</label>
                                 <div class="create-collection-input logo-image" style="margin-top: 80px">
                                     <center>
-                                        <div class="logo-c-image logo" style="position: relative">
-                                            <img id="imageModifer" src="{{ asset('aucuneImg.png') }}" alt="Profile-NFT" style="width: 1000px; height: 500px; object-fit: contain;">
+                                        <div class="logo-c-image logo" style="position: relative;">
+                                            <img id="imageModifer" src="{{ asset('aucuneImg.png') }}" alt="Profile-NFT" style="width: 620px; height: 300px; object-fit: contain;">
                                             <label for="nipaUpload" title="No File Choosen" style="position: absolute; top: 0; right: -8px;">
                                                 <span class="text-center color-white"><i
                                                             class="feather-edit"></i></span>
@@ -183,7 +183,7 @@
                                     <div class="mb-5">
                                         <label for="captionModfier" class="form-label">Exprimer vous!</label>
                                         <textarea name="captionModfier" id="captionModfier"
-                                                  rows="5" style="height: 307px"></textarea>
+                                                  rows="5" style="height: 270px"></textarea>
                                     </div>
                                     <button name="submit" id="modifierButton" type="submit" class="btn btn-primary"
                                             onclick="submitModifierForm(event)">Save
