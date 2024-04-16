@@ -21,12 +21,13 @@ class ReclamationController extends AbstractController
 
         $form=$this->createForm(ReclamationType::class,$reclamation);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
            $reclamation=$form->getData();           
            $manager->persist($reclamation);
            $manager->flush();
-        
+        dump($reclamation);
+        die;
            $this->addFlash('success','Votre reclamation a été envoyé avec succés');
 
            return $this->redirectToRoute('app_reclamation');
