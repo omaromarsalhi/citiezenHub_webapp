@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{{ asset('js/BlogScript.js') }}"></script>
     <script src={{ asset('assets/js/vendor/jquery.js') }}></script>
     <script src={{ asset('assets/js/vendor/jquery.nice-select.min.js') }}></script>
     <script src={{ asset('assets/js/vendor/jquery-ui.js') }}></script>
@@ -108,7 +107,8 @@
                                         </div>
 
                                         {% for comment in comments %}
-                                            <li class="comment parent" style="position: relative;">
+                                            <li class="comment parent" id="comment-{{ comment.id }}"
+                                                style="position: relative;">
                                                 <div class="single-comment">
                                                     <div class="comment-author comment-img">
                                                         <img class="comment-avatar"
@@ -118,19 +118,25 @@
                                                         >
                                                         <div class="m-b-20">
                                                             <div class="commenter">Omar marrakchi</div>
-                                                            <div class="time-spent">{{comment.dateComment}}</div>
+                                                            <div class="time-spent">{{ comment.dateComment }}</div>
                                                         </div>
                                                     </div>
                                                     <div class="comment-text">
-                                                        <p>{{comment.caption}}</p>
+                                                        <p>{{ comment.caption }}</p>
                                                     </div>
                                                 </div>
-                                                <div class="meta" style="position: absolute; right: 15px; top: 32%; transform: translateY(-50%);">
+                                                <div class="meta"
+                                                     style="position: absolute; right: 15px; top: 32%; transform: translateY(-50%);">
                                                     <div class="dropdown">
-                                                        <button class="dropbtnComment"><i class="fas fa-cog"></i></button>
+                                                        <button class="dropbtnComment"><i class="fas fa-cog"></i>
+                                                        </button>
                                                         <div class="dropdown-content">
-                                                            <button>Modifier</button>
-                                                            <button>Supprimer</button>
+                                                            <button onclick="handleMenuAction(this, {{ comment.id }}, '{{ comment.caption }}',  {{ comment.idPost }}, 'modifier')">
+                                                                Modifier
+                                                            </button>
+                                                            <button onclick="handleMenuAction(this, {{ comment.id }}, '{{ comment.caption }}',  {{ comment.idPost }}, 'supprimer')">
+                                                                supprimer
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -186,14 +192,14 @@
 
         // Ajouter des écouteurs d'événements aux boutons
         document.getElementById('prev-button').addEventListener('click', function () {
-            console.log(images);
+
             // Décrémenter l'index
             currentIndex--;
             if (currentIndex < 0) {
                 currentIndex = images.length - 1; // Aller à la dernière image
             }
             // Mettre à jour l'image
-            document.getElementById('post-image').src = 'images/blog/' + images[currentIndex];
+            document.getElementById('post-image').src = '/images/blog/' + images[currentIndex];
         });
 
         document.getElementById('next-button').addEventListener('click', function () {
@@ -254,7 +260,7 @@
 
         function createCommentHTML(comment) {
             return `
-        <li class="comment parent">
+        <li class="comment parent" id="comment-${comment.id}" style="position: relative;">
             <div class="single-comment">
                 <div class="comment-author comment-img">
                     <img class="comment-avatar"
@@ -275,13 +281,55 @@
                     <div class="dropdown">
                         <button class="dropbtnComment"><i class="fas fa-cog"></i></button>
                             <div class="dropdown-content">
-                                <button>Modifier</button>
-                                <button>Supprimer</button>
+                                <button onclick="handleMenuAction(this, ${comment.id}, '${comment.caption}', '${comment.idPost}', 'modifier')">Modifier</button>
+                                <button onclick="handleMenuAction(this, ${comment.id}, '${comment.caption}', '${comment.idPost}', 'supprimer')">Supprimer</button>
                             </div>
                         </div>
                     </div>
         </li>
     `;
+        }
+
+        function handleMenuAction(button, id, caption, postId, action) {
+            if (action === "modifier") {
+                console.log('modifier');
+            } else if (action === "supprimer") {
+                deleteComment(id);
+            }
+        }
+
+        function deleteComment(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Vous ne pourrez pas revenir en arrière!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimez-le!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/deleteComment/' + id,
+                        type: 'DELETE',
+                        success: function (response) {
+                            if (response.success) {
+                                document.getElementById('comment-' + id).remove();
+                                Swal.fire(
+                                    'Supprimé!',
+                                    'Votre commentaire a été supprimé.',
+                                    'success'
+                                )
+                            } else {
+                                console.error('Une erreur est survenue lors de la suppression du commentaire.');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
         }
 
 

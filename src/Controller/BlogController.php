@@ -228,6 +228,7 @@ class BlogController extends AbstractController
         $commentsArray = array_map(function ($comment) {
             return [
                 'id' => $comment->getIdComment(),
+                'idPost' => $comment->getPost()->getId(),
                 'caption' => $comment->getCaption(),
                 'dateComment' => $comment->getDateComment()->format('Y-m-d H:i:s'),
             ];
@@ -254,7 +255,7 @@ class BlogController extends AbstractController
 
         if (!$post) {
             throw $this->createNotFoundException(
-                'No post found for id '.$postId
+                'No post found for id ' . $postId
             );
         }
 
@@ -274,9 +275,30 @@ class BlogController extends AbstractController
             'success' => true,
             'comment' => [
                 'id' => $comment->getIdComment(),
+                'idPost' => $comment->getPost()->getId(),
                 'caption' => $comment->getCaption(),
                 'dateComment' => $comment->getDateComment()->format('Y-m-d H:i:s'),
             ]
         ]);
+    }
+
+
+    #[Route('/deleteComment/{id}', name: 'delete_comment', methods: ['DELETE'])]
+    public function deleteComment($id): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository(CommentPost::class)->find($id);
+
+        if (!$comment) {
+            return new JsonResponse(['success' => false, 'message' => 'Commentaire non trouvé.']);
+        }
+
+        try {
+            $em->remove($comment);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['success' => false, 'message' => 'Une erreur est survenue lors de la suppression du commentaire.']);
+        }
     }
 }
