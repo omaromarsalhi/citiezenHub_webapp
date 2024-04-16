@@ -95,7 +95,7 @@ reader.readAsDataURL(input.files[0]);
 									<div>
 										<label for="reclamation_privateKey" class="required">Private Key</label>
 										<input type="text" id="reclamation_privateKey" name="reclamation[privateKey]"/>
-									<span class="error-message" style="display: none;"></span>
+									<span class="error-message"></span>
 										<div class="tooltip">
 											<i class="fas fa-info-circle"></i>
 											<span class="tooltiptext">Must be a number</span>
@@ -108,7 +108,7 @@ reader.readAsDataURL(input.files[0]);
 									<div>
 										<label for="reclamation_subject" class="required">Subject</label>
 										<input type="text" id="reclamation_subject" name="reclamation[subject]"/>
-									<span class="error-message" style="display: none;"></span>
+									<span class="error-message"></span>
 										<div class="tooltip">
 											<i class="fas fa-info-circle"></i>
 											<span class="tooltiptext">Must be a string</span>
@@ -121,7 +121,7 @@ reader.readAsDataURL(input.files[0]);
 									<div>
 										<label for="reclamation_description" class="required">Description</label>
 										<textarea id="reclamation_description" name="reclamation[description]"></textarea>
-									<span class="error-message" style="display: none;"></span>
+									<span class="error-message"></span>
 										<div class="tooltip">
 											<i class="fas fa-info-circle"></i>
 											<span class="tooltiptext">Must be a string</span>
@@ -143,6 +143,7 @@ reader.readAsDataURL(input.files[0]);
 		</div>
 		<input type="hidden" id="reclamation__token" name="reclamation[_token]" value="edfefdd8a408443a012c.c_gIArByPEgON4s4Sv8_WXHe6FRKy7Ah9XqrA6GoLmk.PcxBY9cWTX9gBthxC8tSCQHp0SAsifMRmBvTNtDwTCA3sHt7xB9lJUF23g"/>
 	</form>
+
 	<script>
 		(function () {
 		  const form = document.getElementById('form');
@@ -156,42 +157,36 @@ reader.readAsDataURL(input.files[0]);
 			if (form.checkValidity()) {
 			  const formData = new FormData(form);
 			  fetch('/reclamation', {
-  method: 'POST',
-  body: formData,
-  headers: {
-    'Accept': 'application/json',
-  }
-}).then(response => response.json())
-.then(data => {
-  if (data.success) {
-    Swal.fire({
-      title: 'Success!',
-      text: 'Your reclamation has been submitted.',
-      icon: 'success',
-      confirmButtonText: 'Thank You'
-    }).then(() => {
-      form.reset();
-    });
-  } else {
-    // Display field-specific errors
-    Object.keys(data.errors).forEach(function (key) {
-      const input = document.querySelector('[name="reclamation[' + key + ']"]');
-      const errorSpan = input.nextElementSibling; // Assuming the error span is the very next sibling of the input
-      errorSpan.textContent = data.errors[key];
-      errorSpan.style.display = 'block'; // Make sure the error is visible
-      input.style.borderColor = 'red'; // Highlight the input field with an error
-    });
-  }
-}).catch(error => {
-  console.error('Submission error:', error);
-  Swal.fire({
-    title: 'Error!',
-    text: 'There was an error submitting your reclamation.',
-    icon: 'error',
-    confirmButtonText: 'OK'
-  });
-});
-
+				method: 'POST',
+				body: formData
+			  }).then(response => {
+				if (response.ok) { // Check if the response status is OK
+				  return response.text();
+				} else {
+				  throw new Error('Server responded with a status: ' + response.status);
+				}
+			  }).then(data => {
+				// If we get here, the submission was successful
+				Swal.fire({
+				  title: 'Success!',
+				  text: 'Your reclamation has been submitted.',
+				  icon: 'success',
+				  confirmButtonText: 'Thank You'
+				}).then(() => {
+				  form.reset(); // Clear all the form fields after successful submission
+				});
+			  }).catch(error => {
+				// If we get here, there was an error with the submission
+				console.error('Submission error:', error);
+				Swal.fire({
+				  title: 'Error!',
+				  text: 'There was an error submitting your reclamation.',
+				  icon: 'error',
+				  confirmButtonText: 'OK'
+				});
+			  });
+			}
+		  });
 	  
 		  // This click event listener seems unnecessary as the submit event above already handles the form submission
 		  submitButton.addEventListener('click', function (event) {
@@ -201,6 +196,7 @@ reader.readAsDataURL(input.files[0]);
 		  });
 		})();
 	  </script>
+	  
 	  
 	<script>
 const primaryKeyRegex = /^[0-9]+$/; // Matches a string of one or more digits
@@ -250,17 +246,10 @@ privateKeyInput.setCustomValidity('Private key is not valid');
 return false;
 }
 }
+document.getElementById('reclamation_privateKey').addEventListener('input', primaryKeyRegex);
+document.getElementById('reclamation_subject').addEventListener('input', subjectRegex);
+document.getElementById('reclamation_description').addEventListener('input', descriptionRegex);
 
-// Add tooltips to input fields
-const tooltips = document.querySelectorAll('.tooltip');
-tooltips.forEach(tooltip => {
-tooltip.addEventListener('mouseover', () => {
-tooltip.querySelector('.tooltiptext').style.display = 'block';
-});
-tooltip.addEventListener('mouseout', () => {
-tooltip.querySelector('.tooltiptext').style.display = 'none';
-});
-});
 	</script>
 
 {% endblock %}
