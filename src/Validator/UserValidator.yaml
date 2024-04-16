@@ -1,0 +1,24 @@
+App\Entity\User:
+  firstName:
+    - NotBlank:
+        message: "Le prénom ne peut pas être vide."
+  lastName:
+    - NotBlank:
+        message: "Le nom de famille ne peut pas être vide."
+  email:
+    - NotBlank:
+        message: "L'adresse email ne peut pas être vide."
+    - Email:
+        message: ""
+  address:
+    - NotBlank:
+        message: "L'adresse ne peut pas être vide."
+  password:
+    - NotBlank:
+        message: "Le mot de passe ne peut pas être vide."
+  password1:
+     - NotBlank:
+        message: "La confirmation du mot de passe ne peut pas être vide."
+  agreeTerms:
+    - IsTrue:
+          message: 'You must agree to our terms and conditions'
