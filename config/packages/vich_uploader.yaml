@@ -13,3 +13,7 @@ vich_uploader:
             uri_prefix: /images/stations
             upload_destination: '%kernel.project_dir%/public/images/station'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        transport:
+            uri_prefix: /images/transports
+            upload_destination: '%kernel.project_dir%/public/images/transports'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

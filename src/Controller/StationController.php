@@ -33,88 +33,7 @@ class StationController extends AbstractController
             'stationlist' => $station
         ]);
     }
-
-  /*
-
-    #[Route('/addStation', name: 'addStation')]
-    public function addStation(Request $request,ManagerRegistry $doc,StationRepository $stationRepository,ValidatorInterface $validator): Response
-    {
-        if ($request->isXmlHttpRequest()) {
-    
-
-            $station = new Station();
-            $nomStation=$request->get('nomStation');
-            $adressStation=$request->get('adressStation');
-            $Type=$request->get('type_vehicule');
-            $Image=$request->files->get('image');
-
-            $station->setNomStation($nomStation);
-            $station->setAddressStation($adressStation);
-            $station->setTypeVehicule($Type);
-            $station->setImageFile($Image);
-
-            $em = $doc->getManager();
-       
-            try {     
-                $errors = $validator->validate($station);
-                if (count($errors) > 0) {
-
-                    $errorMessages = [];
-                    foreach ($errors as $error) {
-                        $errorMessages[] = $error->getMessage();
-                    }
-            
-                    // Return an error response with custom message
-                    return new Response('Validation failed: ' . print_r($errors, true));
-                } else {
-
-                $em->persist($station);
-                $em->flush();
-            
-                $stations = $stationRepository->findAll();
-            
-                $stationsArray = array_map(function ($station) {
-                    return [
-                        'id' => $station->getId(),
-                        'nomstation' => $station->getnomstation(),
-                        'addressstation' => $station->getaddressstation(),
-                        'Type_Vehicule' => $station->getTypeVehicule(),
-                        'image_station' => $station->getImageStation(),
-                    ];
-                }, $stations);
-            
-                // Prepare all the JSON responses in an array
-                $responses = [
-                    'stations' => $stationsArray,
-                    'message' => 'Station updated successfully.'
-
-
-                ];
-            
-                return new JsonResponse($responses);
-                    }
-            }
-             catch (\PDOException $e) {
-                // Check if the exception indicates a duplicate entry error
-                if ($e->getCode() === '23000' && strpos($e->getMessage(), 'Duplicate entry') !== false) {
-                    // Return a custom error response indicating the duplicate entry
-                    return new JsonResponse(['error' => 'DUPLICATE_ENTRY', 'message' => 'A subscription with the same name already exists. Please choose a different name.'], Response::HTTP_BAD_REQUEST);
-                } else {
-                    // Return a generic error response for other database errors
-                    return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while inserting the subscription.'], Response::HTTP_INTERNAL_SERVER_ERROR);
-                }
-
-            }
-                return new JsonResponse([ 'message' => 'Station added successfully .' ], Response::HTTP_OK);
-
-        }
-
-        else
-            return new JsonResponse(['message' => 'station non envoye'], Response::HTTP_OK);
-    }
- */
-
-
+ 
 
  #[Route('/addStation', name: 'addStation')]
  public function addStation(Request $request, ManagerRegistry $doc, StationRepository $stationRepository, ValidatorInterface $validator): Response
@@ -135,7 +54,12 @@ class StationController extends AbstractController
              foreach ($errors as $error) {
                  $validationMessages[] = $error->getMessage();
              }
-             return new JsonResponse(['error' => 'VALIDATION_ERROR', 'messages' => $validationMessages], Response::HTTP_BAD_REQUEST);
+             $responses = [
+                'messages' => $validationMessages,
+                'error' => 'VALIDATION_ERROR'            
+            ];
+             
+             return new JsonResponse($responses, Response::HTTP_BAD_REQUEST);
          }
  
          $em = $doc->getManager();

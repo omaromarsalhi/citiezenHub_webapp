@@ -1,4 +1,6 @@
 
+var maVariableGlobale =1;
+
 function addStation(event) {
     event.preventDefault();
     const selectedOption = document.querySelector('.form-select option:checked');
@@ -12,7 +14,7 @@ function addStation(event) {
     formData.append('nomStation', name);
     formData.append('adressStation', adress);
     formData.append('type_vehicule', type);
-    console.log( $('#createinputfile').prop('files')[0]);
+
     $.ajax({
         url: '/addStation',
         type: "POST",
@@ -21,37 +23,90 @@ function addStation(event) {
         processData: false,
         contentType: false,
         beforeSend: function() {
+            // You can add any pre-processing logic here
         },
-    
-    success: function(response) {
-
-    if (response.message == "Station added successfully .") {
-        alert("added successfully");
-        fetchUpdatedStationList();
-        $('#addDealModal').modal('hide');
-        $('#name').val('');
-        $('#adressStation').val('');
-        $('#createinputfile').val('');
-        $('#createinputfile').closest('form').get(0).reset();
-
- 
-    } else if (response.errorCode === 'DUPLICATE_ENTRY') {
-        alert(response.message);
-    }
-}
-    ,
-        error: function (response) {
-            
+        success: function(response) {
+                  /*if (response.error == 'VALIDATION_ERROR') {
+                // Handle validation errors
+                alert("Validation failed: " + response.messages.join(', '));
+                console.log("c bon")
+            }
+           else  if (response.error === 'DUPLICATE_ENTRY') {
+                // Handle duplicate entry error
+                alert("Error: " + response.message);
+            } 
+             else */ 
+              if (response.message === "Station added successfully.") {
+                // Handle success
+                alert("Added successfully");
+                $('#addDealModal').modal('hide');
+                $('#name').val('');
+                $('#adressStation').val('');
+                $('#createinputfile').val('');
+                $('#createinputfile').closest('form').get(0).reset();
+                updateStationList(response.stations); 
+            } 
+        },
+        error: function(response) {
+       alert(response.error);
+       console.log(response.error);
+            // Handle AJAX errors
         },
     });
 }
 
+
     
 
+function updateStation(event) {
+    event.preventDefault();
+    const selectedOption = document.querySelector('.form-select option:checked');
+    const type_text = selectedOption.textContent.trim();
+    let formData = new FormData();
+    let name = $('#nameUpd').val();  
+    let address = $('#adressStationUpd').val();
+    let type = type_text;
+    var listStation;
+
+    formData.append('image', $('#createinputfileUpd').prop('files')[0]);
+    formData.append('nomStation', name);
+    formData.append('adressStation', address);
+    formData.append('type_vehicule', type);
+
+    $.ajax({
+        url: '/updateStation/' + maVariableGlobale,
+        type: "POST",
+        data: formData,
+        async: true,
+        processData: false,
+        contentType: false,
+        beforeSend: function() {
+            // Add any pre-request logic here
+        },
+        success: function(response) {
+            if (response.message == "Station updated successfully.") {
+                alert("Station updated successfully");
+                $('#updateDealModal').modal('hide');
+                $('#name').val('');
+                $('#adressStation').val('');
+                $('#createinputfile').val('');
+                $('#createinputfile').closest('form').get(0).reset();
+                updateStationList(response.stations); 
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function (response) {
+            // Handle errors here
+            console.error(response);
+        },
+    });
+}
 
 
 
     const inputFields = document.querySelectorAll('.input-target');
+    
 
     inputFields.forEach(inputField => {
         inputField.addEventListener('keyup', function() {
@@ -135,51 +190,45 @@ function deleteStation(stationId) {
             url: '/station/' + stationId,
             type: 'DELETE',
             success: function(response) {
-                // Once the station is deleted successfully, fetch the updated station list
-                fetchUpdatedStationList();
+                updateStationList(response.stations); 
+
             },
             error: function(xhr, status, error) {
                 console.error(error);
             }
         });
+        
     }
 }
 
+
+
 function fetchUpdatedStationList() {
-    $.ajax({
-        url: '/stations', // Endpoint to fetch the updated station list
-        type: 'GET',
-        success: function(updatedStationList) {
-            updateStationList(updatedStationList);console.log("aaaaaa");
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
+            updateStationList(listStation); 
 }
 
 function updateStationList(stationList) {
+    console.log(stationList);
     // Clear the existing station list
     $('#table-latest-review-body').empty();
 
     // Append the new station list
     stationList.forEach(function(station) {
-        console.log(station.NomStation);
         // Generate HTML for each station and append it to the list
-        let stationHTML = `           
+        let stationHTML = `   
     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                     <td class="fs-9 align-middle ps-0">
                       <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"product":"Apple MacBook Pro 13 inch-M1-8/256GB-space","productImage":"/products/60x60/3.png","customer":{"name":"Woodrow Burton","avatar":"/team/40x40/58.webp"},"rating":4.5,"review":"It&#39;s a Mac, after all. Once you&#39;ve gone Mac, there&#39;s no going back. My first Mac lasted over nine years, and this is my second.","status":{"title":"Pending","badge":"warning","icon":"clock"},"time":"Just now"}' /></div>
                     </td>
                     <td class="align-middle product white-space-nowrap py-0"><a class="d-block rounded-2 border border-translucent" href="apps/e-commerce/landing/product-details.html"><img src=" assetsAdmin/assets/img/products/60x60/3.png" alt="" width="53" /></a></td>
-                    <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">${station.NomStation}</a></td>
+                    <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">${station.nomstation}</a></td>
                     <td class="align-middle customer white-space-nowrap"><a class="d-flex align-items-center text-body" href="apps/e-commerce/landing/profile.html">
-                        <div class="avatar avatar-l"><img class="rounded-circle"  "/images/station/thumbku-66193aabca6b6654721467.png"   alt="" /></div>
-                        <h6 class="mb-0 ms-3 text-body"> ${station.TypeVehicule}</h6>
+                        {# <div class="avatar avatar-l"><img class="rounded-circle"  "/images/station/~${ station.imagestation }"   alt="" /></div> #}
+                        <h6 class="mb-0 ms-3 text-body"> ${station.Type_Vehicule}</h6>
                       </a></td>
                     <td class="align-middle rating white-space-nowrap fs-10"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span></td>
                     <td class="align-middle review" style="min-width:350px;">
-                      <p class="fs-9 fw-semibold text-body-highlight mb-0">${station.AddressStation}</p>
+                      <p class="fs-9 fw-semibold text-body-highlight mb-0">${station.addressstation}</p>
                     </td>
                     <td class="align-middle text-start ps-5 status"><span class="badge badge-phoenix fs-10 badge-phoenix-warning"><span class="badge-label">Pending</span><span class="ms-1" data-feather="clock" style="height:12.8px;width:12.8px;"></span></span></td>
                     <td class="align-middle text-end time white-space-nowrap">
@@ -204,14 +253,19 @@ function updateStationList(stationList) {
     });
 }
 
-function showModifierPopup(stationData) {
-    var modal = document.getElementById("addDealModal");
-    let stationNameInput = document.getElementById("name");
-    let stationLocationInput = document.getElementById("adressStation");
 
+function showModifierPopup(id, name, address,image,type) {
+    maVariableGlobale=id;
+    var modal = document.getElementById("updateDealModal");
+    let stationNameInput = document.getElementById("nameUpd");
+    let stationLocationInput = document.getElementById("adressStationUpd");
+    let stationImageInput =document.getElementById("createinputfileUpd");
+
+console.log(name);
     // Assuming stationData is an object with properties like name, location, capacity
-    stationNameInput.value = stationData.NomStation;
-    stationLocationInput.value = stationData.AddressStation;
+    stationNameInput.value = name;
+    stationLocationInput.value = address;
+//    stationImageInput.value=image;
 
-    modal.style.display = "block";
+    $('#updateDealModal').modal('show');
 }

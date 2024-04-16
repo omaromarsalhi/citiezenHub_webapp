@@ -5,6 +5,11 @@ namespace App\Entity;
 use App\Repository\TransportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\UX\Turbo\Attribute\Broadcast;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: TransportRepository::class)]
 class Transport
@@ -21,7 +26,9 @@ class Transport
     private ?string $Reference = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $VehiculeImage = null;
+    private ?string $Vehiculeimage = null;
+    #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'Vehiculeimage')]
+    private ?File $imageFile = null;
 
     #[ORM\Column]
     private ?float $Prix = null;
@@ -67,12 +74,12 @@ class Transport
 
     public function getVehiculeImage(): ?string
     {
-        return $this->VehiculeImage;
+        return $this->Vehiculeimage;
     }
 
     public function setVehiculeImage(string $VehiculeImage): static
     {
-        $this->VehiculeImage = $VehiculeImage;
+        $this->Vehiculeimage = $VehiculeImage;
 
         return $this;
     }
@@ -123,5 +130,15 @@ class Transport
         $this->Station_arrive = $Station_arrive;
 
         return $this;
+    }
+    public function setImageFile($imageFile)
+    {
+        $this->imageFile = $imageFile;
+        if (null !== $imageFile) {
+        }
+    }
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
     }
 }
