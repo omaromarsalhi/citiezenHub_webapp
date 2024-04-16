@@ -45,12 +45,12 @@ class TransportController extends AbstractController
     {
         if ($request->isXmlHttpRequest()) {
             $transport = new Transport();
-            $transport->setReference($request->get('nomtransport'));
-            $transport->setPrix($request->get('adresstransport'));
+            $transport->setReference($request->get('reference'));
+            $transport->setPrix($request->get('prix'));
             $transport->setTypeVehicule($request->get('type_vehicule'));
-            $transport->setHeure($request->get('type_vehicule'));
-            $transport->setStationDepart($request->get('type_vehicule'));
-            $transport->setStationArrive($request->get('type_vehicule'));
+            $transport->setHeure($request->get('time'));
+            $transport->setStationDepart($request->get('depart'));
+            $transport->setStationArrive($request->get('arrive'));
 
             $transport->setImageFile($request->files->get('image'));
     

@@ -8,6 +8,8 @@ function addTransport(event) {
     let Time = $('#Time').val();
     let type = type_text;
     let prix = $('#Prix').val();
+    depart =23;
+    arrive=24;
      
 
     formData.append('image', $('#createinputfile').prop('files')[0]);
@@ -15,10 +17,11 @@ function addTransport(event) {
     formData.append('time', Time);
     formData.append('type_vehicule', type);
     formData.append('prix', prix);
-    formData.append('adressStation', adress);
-    formData.append('type_vehicule', type);
+    formData.append('depart', depart);
+    formData.append('arrive', arrive);
+
     $.ajax({
-        url: '/addStation',
+        url: '/addTransport',
         type: "POST",
         data: formData,
         async: true,

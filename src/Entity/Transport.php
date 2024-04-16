@@ -10,7 +10,7 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: TransportRepository::class)]
 class Transport
 {
@@ -25,7 +25,7 @@ class Transport
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Reference = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, name: "vehicule_image")]
     private ?string $Vehiculeimage = null;
     #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'Vehiculeimage')]
     private ?File $imageFile = null;
