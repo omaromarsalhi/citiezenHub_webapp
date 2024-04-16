@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\Utils\ImageHelper;
 use Cassandra\Date;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -33,7 +34,6 @@ class UserController extends AbstractController
          $errors = [];
          $errorMessages = [];
         if ($req->isXmlHttpRequest()) {
-
             $email = $req->get('email');
             $name = $req->get('name');
             $lastname = $req->get('lastname');
@@ -53,11 +53,11 @@ class UserController extends AbstractController
             $user->setRole($role);
             $user->setStatus($status);
             $user->setGender($gender);
+            if($fichierImage!=null)
             $user->setImage($imageHelper->saveImages($fichierImage));
             $datee = date_create($date);
-            $user->setDob($datee);;
-            $user->serialize();
-            $errors = $validator->validate($user);
+            $user->setDob($datee);
+            $errors = $validator->validate($user, null, 'creation');
             foreach ($errors as $error) {
                 $field = $error->getPropertyPath();
                 $errorMessages[$field] = $error->getMessage();
@@ -67,23 +67,45 @@ class UserController extends AbstractController
                 $em = $doc->getManager();
                 $em->persist($user);
                 $em->flush();
-            }
-
-            return $this->render('user/edit_profile.html.twig', [
-                    'name' => $user->getFirstName(),
-                    'lastname' => $user->getLastName(),
-                    'email' => $user->getEmail(),
-                    'address' => $user->getAddress(),
-                    'role' => $user->getRole(),
-                    'cin' => $user->getCin(),
-                    'phoneNumber' => $user->getPhoneNumber(),
-                    'age' => $user->getAge(),
-                    'status' => $user->getStatus(),
-                    'image' => $user->getImage(),
-                    'gender' => $user->getGender(),
-                    'dob' => $user->getDob(),
-                    'errors' => $errorMessages,
+                return new JsonResponse([
+                    'success' => true,
+                    'user' => [
+                        'name' => $user->getFirstName(),
+                        'lastname' => $user->getLastName(),
+                        'email' => $user->getEmail(),
+                        'address' => $user->getAddress(),
+                        'role' => $user->getRole(),
+                        'cin' => $user->getCin(),
+                        'phoneNumber' => $user->getPhoneNumber(),
+                        'age' => $user->getAge(),
+                        'status' => $user->getStatus(),
+                        'image' => $user->getImage(),
+                        'gender' => $user->getGender(),
+                        'dob' => $user->getDob(),
+                    ]
                 ]);
+            }
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorMessages,
+            ],422);
+
+
+//
+//            return $this->render('user/edit_profile.html.twig', [
+//                    'name' => $user->getFirstName(),
+//                    'lastname' => $user->getLastName(),
+//                    'email' => $user->getEmail(),
+//                    'address' => $user->getAddress(),
+//                    'role' => $user->getRole(),
+//                    'cin' => $user->getCin(),
+//                    'phoneNumber' => $user->getPhoneNumber(),
+//                    'age' => $user->getAge(),
+//                    'status' => $user->getStatus(),
+//                    'image' => $user->getImage(),
+//                    'gender' => $user->getGender(),
+//                    'dob' => $user->getDob(),
+//                ]);
         }
 
         return $this->render('user/edit_profile.html.twig', [

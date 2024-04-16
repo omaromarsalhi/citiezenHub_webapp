@@ -11,6 +11,39 @@
 //         });
 //     }
 // }
+function parserMessagesErreur(reponseTexte) {
+    // Rechercher la partie JSON contenant les messages d'erreur
+    const startIndex = reponseTexte.indexOf('{"success":false,"errors":');
+    if (startIndex === -1) {
+        console.error("Format de réponse d'erreur invalide.");
+        return {}; // Renvoyer un objet vide si le format est invalide
+    }
+    const erreurJSON = reponseTexte.substring(startIndex);
+    try {
+        const errorObj = JSON.parse(erreurJSON);
+        return errorObj.errors || {}; // Retourner les messages d'erreur ou un objet vide
+    } catch (error) {
+        console.error("Erreur d'analyse JSON :", error);
+        return {}; // Renvoyer un objet vi`de si l'analyse JSON échoue
+    }
+}
+function afficherMessagesErreur(erreurs) {
+
+    if (Object.keys(erreurs).length === 0) {
+        return;
+    }
+    console.log(erreurs.length)
+    for (const champ in erreurs) {
+        const conteneurErreurs = document.getElementById(champ);
+        const messageErreur = erreurs[champ];
+        const elementErreur = document.createElement('div');
+        conteneurErreurs.classList.add('test');
+        elementErreur.textContent = messageErreur;
+        conteneurErreurs.appendChild(elementErreur);
+    }
+
+
+}
 function editProfile(event) {
     event.preventDefault();
     let formData = new FormData();
@@ -18,11 +51,11 @@ function editProfile(event) {
     let lastname=$('#lastname').val();
     let email=$('#email').val();
     let role=$('#role').val();
-    let age=$('#age').val();
+    let age=$('#agee').val();
     let gender=$('#gender').val();
     let status=$('#status').val();
     let cin=$('#cin').val();
-    let phoneNumber=$('#phoneNumber').val();
+    let phoneNumber=$('#phoneNumberr').val();
     let date=$('#date').val();
     formData.append('image',$('#nipa').prop('files')[0]);
     formData.append('name',name);
@@ -43,16 +76,34 @@ function editProfile(event) {
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response.state);
-            setTimeout(function (){
-                handle_success('the product has been added successfully')
-            },4100)
+            if (response.success) {
+                let user = response.user;
+                console.log(user)
+                alert('Profil mis à jour avec succès!');
+            } else  {
+                let errors = response.errors;
+                console.log(errors);
+                alert('Il y a des erreurs dans le formulaire. Veuillez corriger et réessayer.');
+            }
+
         },
         error: function (response) {
-            console.log("error");
+            const messagesErreur = parserMessagesErreur(response.responseText);
+            console.log(messagesErreur);
+            afficherMessagesErreur(messagesErreur);
+            const conteneurErreurs = document.getElementById('mesaage');
+            const elementErreur = document.createElement('div');
+            conteneurErreurs.classList.add('message-container');
+            elementErreur.classList.add('error');
+            elementErreur.textContent="you should fixed your errors";
+            conteneurErreurs.appendChild(elementErreur);
+
+
+
         },
     });
 }
+
 function editImage(event) {
     event.preventDefault();
     let formData = new FormData();

@@ -7,6 +7,7 @@
  {% endblock %}
 
 {% block test %}
+
     <script src="{{ asset('js/userScript.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <header class="rn-header haeder-default header--sticky">
@@ -327,17 +328,16 @@
                         </div>
                         <!-- End single tabv content -->
                         <!-- sigle tab content -->
+                        <div id ="test" >
+
+                        </div>
                         <div class="tab-pane fade" id="nav-homes" role="tabpanel" aria-labelledby="nav-home-tab">
-                            {% if errors is not empty %}
-                                <div class="message-container">
-                                    <div class="error">fixed your error </div>
+
+
+                                <div  id="mesaage">
+
                                 </div>
-                            {% endif %}
-                            {% if errors is  empty %}
-                                <div class="message-container">
-                                    <div class="success">fixed your errorseeeeeeeeeeeeeeeee </div>
-                                </div>
-                            {% endif %}
+
                             <!-- start personal information -->
                             <form>
                              <div class="nuron-information">
@@ -395,17 +395,17 @@
                                      <div class="input-two-wrapper mt--15">
                                          <div class="first-name half-wid">
                                              <label for="Age" class="form-label mb--10">Your Age</label>
-                                             <input name="user[age]" id="age" type="text" value={{age}} >
+                                             <input name="user[age]" id="agee" type="text" value={{age}} >
+                                             <div id="age">
+                                             </div>
                                          </div>
                                          <div class="last-name half-wid">
 
                                              <label for="PhoneNumber" class="form-label">Phone Number</label>
-                                             <input name="phoneNumber" id="phoneNumber" type="text" value={{phoneNumber}} >
-                                             <div >
-                                                 {% if errors['phoneNumber'] is defined %}
-                                                     <div class="test">{{ errors['phoneNumber'] }}</div>
-                                                 {% endif %}
+                                             <input name="phoneNumber" id="phoneNumberr" type="text" value={{phoneNumber}} >
+                                             <div id="phoneNumber">
                                              </div>
+
                                              <style>
                                                  .test {
                                                      color: red;

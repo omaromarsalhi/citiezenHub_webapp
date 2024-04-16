@@ -60,14 +60,23 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     private ?string $email = null;
 
     #[ORM\Column(name:"age")]
+    #[Assert\GreaterThanOrEqual(
+        value: 18,
+        message: "age should superieur of 18",
+        groups: ['creation'],
+
+    )]
     private ?int $age = null;
 
 
-    #[Assert\NotBlank(message: 'Lemail ne pas etre vide ')]
+    #[Assert\NotBlank(message: 'phone number ')]
     #[Assert\Regex(
         pattern: '/^\d{1,8}$/',
-        message: "Le numéro de téléphone doit contenir entre 1 et 8 chiffres et aucun autre caractère."
+        message: "Le numéro de téléphone doit contenir entre 1 et 8 chiffres et aucun autre caractère.",
+groups: ['creation'],
+
     )]
+//    #[Assert\Email(groups: ['creation'])]
     #[ORM\Column(name:"phoneNumber")]
     private ?int $phoneNumber = null;
 
