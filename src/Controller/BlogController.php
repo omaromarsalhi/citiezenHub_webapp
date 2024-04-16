@@ -301,4 +301,42 @@ class BlogController extends AbstractController
             return new JsonResponse(['success' => false, 'message' => 'Une erreur est survenue lors de la suppression du commentaire.']);
         }
     }
+
+    #[Route('/updateComment/{id}', name: 'update_comment', methods: ['POST'])]
+    public function updateComment($id, Request $request)
+    {
+        // Récupérer le repository des commentaires
+        $repository = $this->getDoctrine()->getRepository(CommentPost::class);
+
+        // Récupérer le commentaire correspondant à l'ID
+        $comment = $repository->find($id);
+
+        if (!$comment) {
+            // Si le commentaire n'existe pas, retourner une erreur
+            return new JsonResponse(['success' => false, 'message' => 'Comment not found']);
+        }
+
+        // Récupérer le nouveau texte du commentaire à partir de la requête
+        $newCaption = $request->request->get('caption');
+
+        // Mettre à jour le texte du commentaire
+        $comment->setCaption($newCaption);
+        $comment->setDateComment(new \DateTime());
+
+        // Sauvegarder le commentaire modifié dans la base de données
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($comment);
+        $entityManager->flush();
+
+        // Retourner une réponse indiquant que l'opération a réussi
+        return new JsonResponse([
+            'success' => true,
+            'comment' => [
+                'id' => $comment->getIdComment(),
+                'idPost' => $comment->getPost()->getId(),
+                'caption' => $comment->getCaption(),
+                'dateComment' => $comment->getDateComment()->format('Y-m-d H:i:s'),
+            ]
+        ]);
+    }
 }

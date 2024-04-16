@@ -121,7 +121,7 @@
                                                             <div class="time-spent">{{ comment.dateComment }}</div>
                                                         </div>
                                                     </div>
-                                                    <div class="comment-text">
+                                                    <div class="comment-text" id="caption-{{ comment.id }}">
                                                         <p>{{ comment.caption }}</p>
                                                     </div>
                                                 </div>
@@ -292,7 +292,19 @@
 
         function handleMenuAction(button, id, caption, postId, action) {
             if (action === "modifier") {
-                console.log('modifier');
+                var commentElement = document.getElementById('caption-' + id);
+                commentElement.contentEditable = "true";
+
+                // Focus the element
+                commentElement.focus();
+
+                // Add blur event listener
+                commentElement.addEventListener('blur', function () {
+                    // Save changes here
+                    var newCaption = commentElement.textContent;
+                    // You can call a function to save the new caption to the server
+                    // saveCommentCaption(id, newCaption);
+                });
             } else if (action === "supprimer") {
                 deleteComment(id);
             }
