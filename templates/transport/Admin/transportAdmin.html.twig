@@ -217,13 +217,13 @@
                    
                         <div class="mb-4">
                             <label class="text-body-highlight fw-bold mb-2">Reference</label>
-                            <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStationUpd" id="adressStationUpd" />
+                            <input class="form-control input-target" type="text" placeholder="Enter deal name" name="Reference" id="Reference" />
                         </div>
 
                     
                     </div>
                     <div class="col-lg-6">
-                    <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Start Time</label><input class="form-control datetimepicker" type="text" placeholder="H:i" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' /></div>
+                    <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Start Time</label><input class="form-control datetimepicker" type="text" name="Time" id="Time" placeholder="H:i" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' /></div>
                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Arrive</label>
                           <select class="form-select">
                             {% for station in stations %}
@@ -231,7 +231,7 @@
                              {% endfor %}
                             </select>
                         </div>
-                                                <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"  id="">Prix</label><input name="nameUpd" id="nameUpd" class="form-control input-target" type="text" placeholder="Enter contact name" /></div>
+                                                <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"  id="">Prix</label><input name="Prix" id="Prix" class="form-control input-target" type="text" placeholder="Enter contact name" /></div>
 
                         <div class="mb-4">
                             <div class="row g-3">
@@ -252,7 +252,7 @@
 
             <div class="modal-footer border-0 pt-6 px-0 pb-0">
                 <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                <button class="btn btn-primary my-0" type="submit" onclick="updateStation(event)">      
+                <button class="btn btn-primary my-0" type="submit" onclick="addTransport(event)">      
                 Update Station</button>
             </div>
 
