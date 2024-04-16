@@ -121,9 +121,17 @@
                                                             <div class="time-spent">{{ comment.dateComment }}</div>
                                                         </div>
                                                     </div>
-                                                    <div class="comment-text" id="caption-{{ comment.id }}">
-                                                        <p>{{ comment.caption }}</p>
+                                                    <div class="comment-text">
+                                                        <input id="caption-{{ comment.id }}" type="text"
+                                                               value="{{ comment.caption }}" disabled>
                                                     </div>
+
+
+                                                    <div id="updateBtn-{{ comment.id }}">
+
+                                                    </div>
+
+
                                                 </div>
                                                 <div class="meta"
                                                      style="position: absolute; right: 15px; top: 32%; transform: translateY(-50%);">
@@ -258,6 +266,29 @@
             });
         }
 
+        function createUpdateBtn(id) {
+            // Créer un nouvel élément div
+            var updateBtn = document.createElement('div');
+            updateBtn.className = 'reply-edit';
+
+            // Créer le contenu interne du bouton
+            var replyDiv = document.createElement('div');
+            replyDiv.className = 'reply';
+            var link = document.createElement('a');
+            link.className = 'comment-reply-link';
+            link.style.cursor = 'pointer';
+            var icon = document.createElement('i');
+            icon.className = 'rbt feather-corner-down-right';
+            link.appendChild(icon);
+            link.appendChild(document.createTextNode('Update'));
+            replyDiv.appendChild(link);
+
+            // Ajouter le contenu interne au bouton
+            updateBtn.appendChild(replyDiv);
+
+            return updateBtn;
+        }
+
         function createCommentHTML(comment) {
             return `
         <li class="comment parent" id="comment-${comment.id}" style="position: relative;">
@@ -291,19 +322,34 @@
         }
 
         function handleMenuAction(button, id, caption, postId, action) {
+            var captionElement = document.getElementById('caption-' + id);
             if (action === "modifier") {
-                var commentElement = document.getElementById('caption-' + id);
-                commentElement.contentEditable = "true";
+                captionElement.disabled = false;
+                captionElement.style.border = "1px solid #fff";
+                captionElement.style.borderRadius = "5px";
+                captionElement.style.cursor = "text";
+                captionElement.style.whiteSpace = "pre-wrap";
 
-                // Focus the element
-                commentElement.focus();
+                var updateBtn = createUpdateBtn(id);
+                document.getElementById('updateBtn-' + id).appendChild(updateBtn);
 
-                // Add blur event listener
-                commentElement.addEventListener('blur', function () {
-                    // Save changes here
-                    var newCaption = commentElement.textContent;
-                    // You can call a function to save the new caption to the server
-                    // saveCommentCaption(id, newCaption);
+                updateBtn.addEventListener('click', function () {
+                    $.ajax({
+                        url: '/updateComment/' + id,
+                        type: 'POST',
+                        data: {
+                            caption: captionElement.value,
+                            post_id: postId
+                        },
+                        success: function (response) {
+                            document.getElementById('comment-' + id).remove();
+                            var newCommentHTML = createCommentHTML(response.comment);
+                            $('#commentContainer').prepend(newCommentHTML);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
                 });
             } else if (action === "supprimer") {
                 deleteComment(id);

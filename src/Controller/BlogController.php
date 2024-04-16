@@ -303,7 +303,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/updateComment/{id}', name: 'update_comment', methods: ['POST'])]
-    public function updateComment($id, Request $request)
+    public function updateComment($id, Request $request): Response
     {
         // Récupérer le repository des commentaires
         $repository = $this->getDoctrine()->getRepository(CommentPost::class);
