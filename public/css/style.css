@@ -14,7 +14,7 @@
     font-size: 14px;
     pointer-events: all;
     margin-bottom: 10px;
-    opacity: 1; /* Réglage de l'opacité à 1 pour les rendre initialement visibles */
+    opacity: 1;
     animation-fill-mode: forwards;
 }
 
@@ -55,4 +55,9 @@
     to {
         opacity: 0;
     }
+}
+.error {
+    color: red;
+    font-weight: bold;
+
 }

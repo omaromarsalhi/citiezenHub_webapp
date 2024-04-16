@@ -27,32 +27,51 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
 
     #[ORM\Column(name:"firstName",length: 255)]
     #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide')]
-    #[Assert\Length(
-        min:3, minMessage: 'le nom il faut contenir au moi 5 caractere',
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]{3,}$/',
+        message: "Le nom contient que des alphabet "
     )]
     private ?string $firstName = null;
 
     #[ORM\Column(name:"lastName",length: 255)]
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
-    #[Assert\Length(
-        min:5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]{3,}$/',
+        message: "Le nom contient que des alphabet "
     )]
     private ?string $lastName = null;
 
     #[ORM\Column(name:"cin",length: 255)]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{8}$/',
+        message: "Le cin contient que des numeros "
+    )]
     private ?string $cin = null;
-    /**
-     * @Assert\NotBlank(message="Le prénom ne peut pas être vide.")
-     * @Assert\Email
-     */
+//    /**
+//      @Assert\NotBlank(message="Le prénom ne peut pas être vide.")
+//      @Assert\Email
+//     */
     #[ORM\Column(name:"email",length: 255)]
+    #[Assert\NotBlank(message: 'Lemail ne pas etre vide ')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+        message: "To ensure that your email address is valid, it must be in the following format:user@example.com"
+    )]
     private ?string $email = null;
 
     #[ORM\Column(name:"age")]
     private ?int $age = null;
 
+
+    #[Assert\NotBlank(message: 'Lemail ne pas etre vide ')]
+    #[Assert\Regex(
+        pattern: '/^\d{1,8}$/',
+        message: "Le numéro de téléphone doit contenir entre 1 et 8 chiffres et aucun autre caractère."
+    )]
     #[ORM\Column(name:"phoneNumber")]
     private ?int $phoneNumber = null;
+
+
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Length(
         min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
@@ -64,6 +83,11 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     private ?string $role = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le password ne peut pas être vide')]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+        message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial, avec une longueur minimale de 8 caractères"
+    )]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -312,6 +336,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
         $this->image = base64_decode($this->image);
 
     }
+
 
 
 }

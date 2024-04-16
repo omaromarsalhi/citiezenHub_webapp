@@ -44,7 +44,9 @@ function editProfile(event) {
         contentType: false,
         success: function (response) {
             console.log(response.state);
-
+            setTimeout(function (){
+                handle_success('the product has been added successfully')
+            },4100)
         },
         error: function (response) {
             console.log("error");
@@ -102,56 +104,57 @@ function editPassword(event) {
     });
 }
 function DeleteCustomer(event) {
-
+    //
+    // // const button = event.target;
+    // // const email = button.dataset.email;
+    // // console.log(email);
+    // // // event.preventDefault();
+    // // let formData = new FormData();
+    // // formData.append('email',email);
+    // // $.ajax({
+    // //
+    // //     url: '/Delete/'+ email,
+    // //     type: "POST",
+    // //     data:formData,
+    // //     async: true,
+    // //     processData: false,
+    // //     contentType: false,
+    // //     success: function (response) {
+    // //         console.log(response.state);
+    // //
+    // //     },
+    // //     error: function (response) {
+    // //         console.log("error");
+    // //     },
+    // // });
     // const button = event.target;
     // const email = button.dataset.email;
     // console.log(email);
-    // // event.preventDefault();
+    //
+    // // event.preventDefault(); // Empêche le comportement par défaut du bouton (par exemple, soumettre un formulaire)
+    //
     // let formData = new FormData();
-    // formData.append('email',email);
-    // $.ajax({
+    // formData.append('email', email);
     //
-    //     url: '/Delete/'+ email,
-    //     type: "POST",
-    //     data:formData,
-    //     async: true,
-    //     processData: false,
-    //     contentType: false,
-    //     success: function (response) {
-    //         console.log(response.state);
+    // // Configuration de la requête fetch
+    // fetch('/Delete/' + email, {
+    //     method: 'POST',
+    //     body: formData,
+    // })
+    //     .then(response => {
+    //         if (response.ok) {
     //
-    //     },
-    //     error: function (response) {
-    //         console.log("error");
-    //     },
-    // });
-    const button = event.target;
-    const email = button.dataset.email;
-    console.log(email);
-
-    // event.preventDefault(); // Empêche le comportement par défaut du bouton (par exemple, soumettre un formulaire)
-
-    let formData = new FormData();
-    formData.append('email', email);
-
-    // Configuration de la requête fetch
-    fetch('/Delete/' + email, {
-        method: 'POST',
-        body: formData,
-    })
-        .then(response => {
-            if (response.ok) {
-
-                button.closest('.customer-row').remove();
-
-                console.log('Utilisateur supprimé avec succès');
-
-            } else {
-                throw new Error('Erreur lors de la suppression du client');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-
-        });
+    //             button.closest('.customer-row').remove();
+    //
+    //             console.log('Utilisateur supprimé avec succès');
+    //
+    //         } else {
+    //             throw new Error('Erreur lors de la suppression du client');
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Erreur:', error);
+    //
+    //     });
 }
+

@@ -30,38 +30,46 @@ class UserController extends AbstractController
     #[Route('/editProfile', name: 'editProfile',methods: ['GET', 'POST'])]
     public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper): Response
     {    $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
-
+         $errors = [];
+         $errorMessages = [];
         if ($req->isXmlHttpRequest()) {
-            $errors = $validator->validate($user);
 
-                $email = $req->get('email');
-                $name = $req->get('name');
-                $lastname = $req->get('lastname');
-                $role = $req->get('role');
-                $age = $req->get('age');
-                $gender = $req->get('gender');
-                $status = $req->get('status');
-                $cin = $req->get('cin');
-                $phoneNumber = $req->get('phoneNumber');
-                $date = $req->get('date');
-                $fichierImage = $req->files->get('image');
-                $user->setFirstName($name);
-                $user->setLastName($lastname);
-                $user->setAge($age);
-                $user->setPhoneNumber($phoneNumber);
-                $user->setCin($cin);
-                $user->setRole($role);
-                $user->setStatus($status);
-                $user->setGender($gender);
-                $user->setImage($imageHelper->saveImages($fichierImage));
-                $user->setDate($date);
-//                $user->setImageFile($fichierImage);
-                $user->serialize();
+            $email = $req->get('email');
+            $name = $req->get('name');
+            $lastname = $req->get('lastname');
+            $role = $req->get('role');
+            $age = $req->get('age');
+            $gender = $req->get('gender');
+            $status = $req->get('status');
+            $cin = $req->get('cin');
+            $phoneNumber = $req->get('phoneNumber');
+            $date = $req->get('date');
+            $fichierImage = $req->files->get('image');
+            $user->setFirstName($name);
+            $user->setLastName($lastname);
+            $user->setAge($age);
+            $user->setPhoneNumber($phoneNumber);
+            $user->setCin($cin);
+            $user->setRole($role);
+            $user->setStatus($status);
+            $user->setGender($gender);
+            $user->setImage($imageHelper->saveImages($fichierImage));
+            $datee = date_create($date);
+            $user->setDob($datee);;
+            $user->serialize();
+            $errors = $validator->validate($user);
+            foreach ($errors as $error) {
+                $field = $error->getPropertyPath();
+                $errorMessages[$field] = $error->getMessage();
+                var_dump($field);
+            }
+            if (count($errors) === 0) {
                 $em = $doc->getManager();
                 $em->persist($user);
                 $em->flush();
-                $this->addFlash('success', 'Utilisateur modifié avec succès.');
-                return $this->render('user/edit_profile.html.twig', [
+            }
+
+            return $this->render('user/edit_profile.html.twig', [
                     'name' => $user->getFirstName(),
                     'lastname' => $user->getLastName(),
                     'email' => $user->getEmail(),
@@ -73,8 +81,10 @@ class UserController extends AbstractController
                     'status' => $user->getStatus(),
                     'image' => $user->getImage(),
                     'gender' => $user->getGender(),
+                    'dob' => $user->getDob(),
+                    'errors' => $errorMessages,
                 ]);
-            }
+        }
 
         return $this->render('user/edit_profile.html.twig', [
             'name' =>$user->getFirstName(),
@@ -88,6 +98,8 @@ class UserController extends AbstractController
             'status' =>$user->getStatus(),
             'image'=>$user->getImage(),
             'gender'=>$user->getGender(),
+            'dob'=>$user->getDob(),
+            'errors' => $errorMessages,
         ]);
 
 

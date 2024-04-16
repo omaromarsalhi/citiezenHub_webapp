@@ -22,19 +22,9 @@
 
     {% if errors is not empty %}
         <div class="message-container">
-            {% for error in errors %}
-                <div class="error">{{ error.message }}</div>
-            {% endfor %}
+            <div class="error">fixed your errors </div>
         </div>
     {% endif %}
-{#    {% if errors is empty %}#}
-{#        <div class="message-container">#}
-{#            {% for error in errors %}#}
-{#                <div class="success">{{ error.message }}</div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#    {% endif %}#}
-
 
     <!-- login form -->
     <div class="login-area rn-section-gapTop">
@@ -47,28 +37,59 @@
                             <div class="mb-5">
                                 <label for="firstName" class="form-label">First name</label>
                                 <input type="text" id="firstName" name="user[firstName]" value=" {{ name }}" >
-{#                                {% for error in errors %}#}
-{#                                    {% if error.propertyPath == 'firstName' %}#}
-{#                                        <div class="error">{{ error.message }}</div>#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
+                                <div >
+                                {% if errors['firstName'] is defined %}
+                                    <div class="test">{{ errors['firstName'] }}</div>
+                                {% endif %}
+                                </div>
+                                <style>
+                                    .test {
+                                        color: red;
+                                        font-weight: bold;
+
+                                    }
+                                </style>
+
+
+{#                            <div id="error-message-image" class="message-container">{{ errors['firstName'] }}#}
+{#                            </div>#}
+
                             </div>
                             <div class="mb-5">
                                 <label for="lastName" class="form-label">Last name</label>
                                 <input type="text" id="lastName" name="user[lastName]" value=" {{ lastName }}" >
-                                console.log({{ lastName }})
+                                <div >
+                                    {% if errors['lastName'] is defined %}
+                                        <div class="test">{{ errors['lastName'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" id="exampleInputEmail1" name="user[email]" value=" {{ email }}">
+                                <input  id="exampleInputEmail1" name="user[email]" value=" {{ email }}">
+                                <div >
+                                    {% if errors['email'] is defined %}
+                                        <div class="test">{{ errors['email'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="Address" class="form-label">Address</label>
                                 <input type="address" id="Address" name="user[address]" >
+                                <div >
+                                    {% if errors['address'] is defined %}
+                                        <div class="test">{{ errors['address'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="newPassword" class="form-label">Create Password</label>
                                 <input type="password" id="newPassword" name="user[password]">
+                                <div >
+                                    {% if errors['password'] is defined %}
+                                        <div class="test">{{ errors['password'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="exampleInputPassword1" class="form-label">Re Password</label>
