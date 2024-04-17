@@ -21,10 +21,10 @@ function parserMessagesErreur(reponseTexte) {
     const erreurJSON = reponseTexte.substring(startIndex);
     try {
         const errorObj = JSON.parse(erreurJSON);
-        return errorObj.errors || {}; // Retourner les messages d'erreur ou un objet vide
+        return errorObj.errors || {};
     } catch (error) {
         console.error("Erreur d'analyse JSON :", error);
-        return {}; // Renvoyer un objet vi`de si l'analyse JSON échoue
+        return {};
     }
 }
 function afficherMessagesErreur(erreurs) {
@@ -32,14 +32,11 @@ function afficherMessagesErreur(erreurs) {
     if (Object.keys(erreurs).length === 0) {
         return;
     }
-    console.log(erreurs.length)
     for (const champ in erreurs) {
         const conteneurErreurs = document.getElementById(champ);
-        const messageErreur = erreurs[champ];
-        const elementErreur = document.createElement('div');
-        conteneurErreurs.classList.add('test');
-        elementErreur.textContent = messageErreur;
-        conteneurErreurs.appendChild(elementErreur);
+        const contientTexte = conteneurErreurs.textContent.trim().length > 0;
+      console.log("hyhyhyhy");
+
     }
 
 
@@ -89,14 +86,13 @@ function editProfile(event) {
         },
         error: function (response) {
             const messagesErreur = parserMessagesErreur(response.responseText);
-            console.log(messagesErreur);
             afficherMessagesErreur(messagesErreur);
-            const conteneurErreurs = document.getElementById('mesaage');
-            const elementErreur = document.createElement('div');
-            conteneurErreurs.classList.add('message-container');
-            elementErreur.classList.add('error');
-            elementErreur.textContent="you should fixed your errors";
-            conteneurErreurs.appendChild(elementErreur);
+            // const conteneurErreurs = document.getElementById('mesaage');
+            // const elementErreur = document.createElement('div');
+            // conteneurErreurs.classList.add('message-container');
+            // elementErreur.classList.add('error');
+            // elementErreur.textContent="you should fixed your errors";
+            // conteneurErreurs.appendChild(elementErreur);
 
 
 
