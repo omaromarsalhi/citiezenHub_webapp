@@ -3,47 +3,124 @@
 {% block title %}Add Reclamation{% endblock %}
 
 {% block body %}
-<!-- Start page title area -->
-<div class="rn-breadcrumb-inner ptb--30">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6 col-12">
-                <h5 class="title text-center text-md-start">Add Reclamation</h5>
-            </div>
-            <div class="col-lg-6 col-md-6 col-12">
-                <ul class="breadcrumb-list">
-                    <li class="item"><a href="index.html">Home</a></li>
-                    <li class="separator"><i class="feather-chevron-right"></i></li>
-                    <li class="item current">Reclamation</li>
-                </ul>
+    <!-- Start page title area -->
+    <div class="rn-breadcrumb-inner ptb--30">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <h5 class="title text-center text-md-start">Add Reclamation</h5>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-list">
+                        <li class="item"><a href="index.html">Home</a></li>
+                        <li class="separator"><i class="feather-chevron-right"></i></li>
+                        <li class="item current">Add Reclamation</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- End page title area -->
+    <!-- End page title area -->
 
-<!-- Create new product area -->
-<div class="create-area rn-section-gapTop">
-    <div class="container">
-	{% for message in app.flashes('success') %}
-							<div class="alert alert-success">
-								{{message}}
-							</div>
-						{% endfor %}
-        <div class="row g-5">
-            {{ form_start(form, {'attr': {'id': 'form', 'name': 'reclamation', 'enctype': 'multipart/form-data'}}) }}
+    <!-- Create new reclamation area -->
+    <div class="create-area rn-section-gapTop">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Display errors, if any -->
+                {% if errors is defined %}
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            {% for errorMessages in errors %}
+                {% for errorMessage in errorMessages %}
+                    <li>{{ errorMessage }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+                <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+                    <form id="formm" name="reclamation" method="post" enctype="multipart/form-data" action="{{ path('app_reclamation') }}">
+                    
+                        <!-- Upload area -->
+                        <div class="upload-area">
+                        <div class="upload-formate mb--30">
+                            <h6 class="title">
+                                Upload file
+                            </h6>
+                            <p class="formate">
+                                Drag or choose your file to upload
+                            </p>
+                        </div>
+                        <div class="brows-file-wrapper">
+                            <input type="file" name="reclamation[imageFile][file]" id="reclamation_imageFile_file" required="required" accept="image/*" class="inputfile"/>
+                            <img id="createfileImage" src="{{ asset('/assets/images/portfolio/1.jpeg') }}" alt data-black-overlay="6">
+                            <label for="reclamation_imageFile_file" title="No File Choosen">
+                                <i class="feather-upload"></i>
+                                <span class="text-center">Choose a File</span>
+                                <p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3.
+                                    <br>
+                                    Max 1Gb.</p>
+                            </label>
+                        </div>
+                    </div>
+                        <div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
+                            <h5>Note:
+                            </h5>
+                            <span>enjoy our Service
+                            </span>
+                            <br>
+                            <span>You will receive our reponse soon
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <!-- Form content -->
+                        <div class="form-wrapper-one">
+                            <!-- Private Key Input -->
+                            <div class="input-box pb--20">
+                                <label for="privateKey" class="required">Private Key</label>
+                                <input type="text" id="privateKey" name="privateKey" pattern="^[0-9]+$">
+                                <small id="privateKeyHelp" class="form-text text-muted">Enter a numeric private key.</small>
+                            </div>
+                            
+                            <!-- Subject Input -->
+                            <div class="input-box pb--20">
+                                <label for="subject" class="required">Subject</label>
+                                <input type="text" id="subject" name="subject">
+                            </div>
 
-            <!-- Field with automatic error display -->
-            <div class="col-lg-12">
-                {{ form_row(form.imageFile) }}
-                {{ form_row(form.privateKey) }}
-                {{ form_row(form.subject) }}
-                {{ form_row(form.description) }}
+                            <!-- Description Input -->
+                            <div class="input-box pb--20">
+                                <label for="description" class="required">Description</label>
+                                <textarea id="description" name="description" required></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="input-box">
+                                <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-
-            {{ form_end(form) }}
         </div>
     </div>
-</div>
+
+    <!-- Script for image preview -->
+    <script>
+        const input = document.getElementById('reclamation_imageFile_file');
+        const img = document.getElementById('createfileImage');
+        
+        input.addEventListener('change', function () {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    img.setAttribute('src', e.target.result);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    </script>
 {% endblock %}

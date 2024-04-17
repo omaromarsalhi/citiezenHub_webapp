@@ -33,8 +33,8 @@ class Reeclamation
         minMessage: "The description must be at least {{ limit }} characters long."
     )]
     #[Assert\Regex(
-        pattern: '/^[a-zA-Z]+$/',
-        message: "The description must only contain letters."
+        pattern: '/^[a-zA-Z\s,.]+$/',
+        message: "The description must only contain letters, commas, periods, and spaces."
     )]
     private ?string $description = null;
 
