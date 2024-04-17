@@ -52,7 +52,7 @@
 		</tbody>
 
 	</table>
-	<div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true">  
+	<div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true"> 
 	  <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -78,70 +78,73 @@
 </div>
 
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
-    // Initialize lastReclamationId with the ID of the most recent reclamation rendered by the server
-    let lastReclamationId = {{ reclamations|length > 0 ? reclamations|first.id : 0 }};
+    document.addEventListener('DOMContentLoaded', function () {
+        let lastReclamationId = {{ reclamations|length > 0 ? reclamations|first.id : 0 }};
 
-    function pollForNewReclamations() {
-        fetch('/get-latest-reclamations')
-            .then(response => response.json())
-            .then(data => {
-                if (data.reclamations && data.reclamations.length > 0) {
-                    const newReclamations = data.reclamations.filter(reclamation => reclamation.id > lastReclamationId);
-                    if (newReclamations.length > 0) {
-                        lastReclamationId = newReclamations[0].id; // Update with the highest ID received
-                        updateTable(newReclamations);
+        function pollForNewReclamations() {
+            fetch('/get-latest-reclamations')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.reclamations && data.reclamations.length > 0) {
+                        const newReclamations = data.reclamations.filter(reclamation => reclamation.id > lastReclamationId);
+                        if (newReclamations.length > 0) {
+                            lastReclamationId = newReclamations[0].id; // Update with the highest ID received
+                            updateTable(newReclamations);
+                        }
                     }
-                }
-            })
-            .catch(error => console.error('Error fetching latest reclamations:', error));
-    }
+                })
+                .catch(error => console.error('Error fetching latest reclamations:', error));
+        }
 
-    function updateTable(reclamations) {
-    const tableBody = document.getElementById('products-table-body');
-    reclamations.sort((a, b) => b.id - a.id).forEach(reclamation => {
-        const row = document.createElement('tr');
-        row.className = 'position-static';
-        row.innerHTML = `
-            <td class="align-middle ps-4">
-                <img src="/images/reclamation/${reclamation.imagePath}" alt="Reclamation Image" width="200" height="200"/>
-            </td>
-            <td class="align-middle ps-4">${reclamation.privateKey}</td>
-            <td class="align-middle ps-4">${reclamation.createdAt}</td>
-            <td class="align-middle ps-4">${reclamation.subject}</td>
-            <td class="align-middle ps-4">${reclamation.description}</td>
-            <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
-                <div class="btn-reveal-trigger position-static">
-                    <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
-                        <span class="fas fa-ellipsis-h fs-10"></span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end py-2">
-                        <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="${reclamation.id}" data-reclamation-subject="${reclamation.subject}" data-reclamation-description="${reclamation.description}">Add Response</a>
-                        <a class="dropdown-item" href="#">Reclamation</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="#">Delete Reclamation</a>
-                    </div>
-                </div>
-            </td>
-        `;
-        tableBody.prepend(row);
+        function updateTable(reclamations) {
+            const tableBody = document.getElementById('products-table-body');
+            reclamations.sort((a, b) => b.id - a.id).forEach(reclamation => {
+                const row = document.createElement('tr');
+                row.className = 'position-static';
+                row.innerHTML = `
+                    <td class="align-middle ps-4">
+                        <img src="/images/reclamation/${reclamation.imagePath}" + reclamation.imagePath alt="Reclamation Image" width="200" height="200"/>
+                    </td>
+                    <td class="align-middle ps-4">${reclamation.privateKey}</td>
+                    <td class="align-middle ps-4">${reclamation.createdAt}</td>
+                    <td class="align-middle ps-4">${reclamation.subject}</td>
+                    <td class="align-middle ps-4">${reclamation.description}</td>
+                    <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
+                        <div class="btn-reveal-trigger position-static">
+                            <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fas fa-ellipsis-h fs-10"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end py-2">
+                                <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="${reclamation.id}" data-reclamation-subject="${reclamation.subject}" data-reclamation-description="${reclamation.description}">Add Response</a>
+                                <a class="dropdown-item" href="#">Reclamation</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#">Delete Reclamation</a>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tableBody.prepend(row);
+            });
+        }
+
+        // Delegate click event for dynamically added content
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.add-response')) {
+                const reclamationId = event.target.getAttribute('data-reclamation-id');
+                const reclamationSubject = event.target.getAttribute('data-reclamation-subject');
+                const reclamationDescription = event.target.getAttribute('data-reclamation-description');
+
+                document.getElementById('reclamationSubject').textContent = reclamationSubject;
+                document.getElementById('reclamationDescription').textContent = reclamationDescription;
+                document.getElementById('reclamationId').value = reclamationId;
+                // Show the modal if it's not automatically triggered by the Bootstrap data attributes
+                $('#addResponseModal').modal('show');
+            }
+        });
+
+        setInterval(pollForNewReclamations, 10000); // Poll every 10 seconds
     });
-}
-document.addEventListener('click', function(event) {
-    if (event.target.matches('.add-response')) {
-        event.preventDefault();
-        const reclamationId = event.target.getAttribute('data-reclamation-id');
-        const reclamationSubject = event.target.getAttribute('data-reclamation-subject');
-        const reclamationDescription = event.target.getAttribute('data-reclamation-description');
-        // Use these values to do something, like populate a modal form
-    }
-});
-
-
-    setInterval(pollForNewReclamations, 10000); // Poll every 10 seconds
-});
-
-	</script>
+</script>
 	
 
 	<!-- ===============================================-->
