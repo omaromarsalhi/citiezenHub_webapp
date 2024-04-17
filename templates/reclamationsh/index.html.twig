@@ -81,7 +81,7 @@
               if (response.ok) {
                 document.getElementById(`reclamation-${reclamationId}`).remove();
               } else {
-                //alert('Could not delete the reclamation.');
+                window.location.reload();
               }
             }).catch(error => console.error('Error:', error));
           }

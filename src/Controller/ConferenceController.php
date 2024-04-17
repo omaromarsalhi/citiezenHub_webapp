@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Reponse;
 use App\Entity\Reeclamation;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,4 +59,36 @@ class ConferenceController extends AbstractController
     
         return new JsonResponse(['reclamations' => $data]);
     }
+
+
+    
+    #[Route('/reclamation/{id}/add-response', name: 'add_response_to_reclamation', methods: ['POST'])]
+public function addResponseToReclamation(int $id, Request $request, EntityManagerInterface $entityManager): JsonResponse
+{
+    // Retrieve the specific reclamation
+    $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
+
+    if (!$reclamation) {
+        // If the reclamation is not found, return an error message
+        return $this->json(['error' => 'Reclamation not found'], Response::HTTP_NOT_FOUND);
+    }
+
+    // Create and set the response
+    $responseText = $request->request->get('response', ''); // You might want to validate this
+    if (empty($responseText)) {
+        // If the response text is empty, return an error message
+        return $this->json(['error' => 'Response text is required'], Response::HTTP_BAD_REQUEST);
+    }
+
+    $response = new Reponse();
+    $response->setRepReclamation($responseText);
+    $response->setReclamation($reclamation);
+
+    // Persist the response
+    $entityManager->persist($response);
+    $entityManager->flush();
+
+    // Return a success message
+    return $this->json(['message' => 'Response added successfully']);
+}
 }
