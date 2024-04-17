@@ -61,7 +61,7 @@ class ConferenceController extends AbstractController
     }
 
 
-    
+
     #[Route('/reclamation/{id}/add-response', name: 'add_response_to_reclamation', methods: ['POST'])]
 public function addResponseToReclamation(int $id, Request $request, EntityManagerInterface $entityManager): JsonResponse
 {
@@ -70,14 +70,14 @@ public function addResponseToReclamation(int $id, Request $request, EntityManage
 
     if (!$reclamation) {
         // If the reclamation is not found, return an error message
-        return $this->json(['error' => 'Reclamation not found'], Response::HTTP_NOT_FOUND);
+        return new JsonResponse(['error' => 'Reclamation not found'], JsonResponse::HTTP_NOT_FOUND);
     }
 
     // Create and set the response
     $responseText = $request->request->get('response', ''); // You might want to validate this
     if (empty($responseText)) {
         // If the response text is empty, return an error message
-        return $this->json(['error' => 'Response text is required'], Response::HTTP_BAD_REQUEST);
+        return new JsonResponse(['error' => 'Response text is required'], JsonResponse::HTTP_BAD_REQUEST);
     }
 
     $response = new Reponse();
@@ -89,6 +89,6 @@ public function addResponseToReclamation(int $id, Request $request, EntityManage
     $entityManager->flush();
 
     // Return a success message
-    return $this->json(['message' => 'Response added successfully']);
+    return new JsonResponse(['message' => 'Response added successfully']);
 }
 }

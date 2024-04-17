@@ -1,83 +1,114 @@
 {% extends 'index_admin.html.twig' %}
 {% block body  %}
 
-	<table class="table fs-9 mb-0">
-		<thead>
-			<tr>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">IMAGE</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;" data-sort="product">PRIVATE KEY</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;" data-sort="product">PUBLISH
-				</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" data-sort="price" style="width:150px;">SUBJECT</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" data-sort="category" style="width:350px;">DESCRIPTION</th>
-				<th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
-			</tr>
-		</thead>
-		<tbody class="list" id="products-table-body">
-			{% for reclamation in reclamations %}
-				<tr class="position-static">
-
-					<td
-						class="align-middle ps-4">
-						<!-- If you have an image or other content to display here -->
-						<img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image" width="200" height="200"/>
-					</td>
-					<td class="align-middle ps-4">
-						{{ reclamation.privateKey }}
-					</td>
-					<td class="align-middle ps-4">
-						{{ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
-					</td>
-					<td class="align-middle  ps-4">
-						{{ reclamation.subject }}
-					</td>
-					<td class="align-middle ps-4">
-						{{ reclamation.description }}
-					</td>
-					<td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
-						<div class="btn-reveal-trigger position-static">
-							<button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
-								<span class="fas fa-ellipsis-h fs-10"></span>
-							</button>
-							<div class="dropdown-menu dropdown-menu-end py-2">
-						<a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
-					<a class="dropdown-item" href="#!">Reclamation</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item text-danger" href="#!">Delete Reclamation</a>
-							</div>
-						</div>
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-
-	</table>
-	<div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true"> 
-	  <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addResponseModalLabel">Add Response to Reclamation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Placeholders for reclamation details -->
-                <p><strong>Subject:</strong> <span id="reclamationSubject"></span></p>
-                <p><strong>Description:</strong> <span id="reclamationDescription"></span></p>
-                <!-- Form for submitting a response -->
-                <form id="responseForm">
-                    <div class="mb-3">
-                        <label for="responseText" class="form-label">Your Response</label>
-                        <textarea class="form-control" id="responseText" rows="3" required></textarea>
+<table class="table fs-9 mb-0">
+<thead>
+    <tr>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">IMAGE</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;" data-sort="product">PRIVATE KEY</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;" data-sort="product">PUBLISH
+        </th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" data-sort="price" style="width:150px;">SUBJECT</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" data-sort="category" style="width:350px;">DESCRIPTION</th>
+        <th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
+    </tr>
+</thead>
+<tbody class="list" id="products-table-body">
+    {% for reclamation in reclamations %}
+        <tr class="position-static">
+            <td class="align-middle ps-4">
+                <!-- If you have an image or other content to display here -->
+                <img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image" width="200" height="200"/>
+            </td>
+            <td class="align-middle ps-4">
+                {{ reclamation.privateKey }}
+            </td>
+            <td class="align-middle ps-4">
+                {{ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
+            </td>
+            <td class="align-middle  ps-4">
+                {{ reclamation.subject }}
+            </td>
+            <td class="align-middle ps-4">
+                {{ reclamation.description }}
+            </td>
+            <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
+                <div class="btn-reveal-trigger position-static">
+                    <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                        <span class="fas fa-ellipsis-h fs-10"></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end py-2">
+                        <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
+                        <a class="dropdown-item" href="#!">Reclamation</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="#!">Delete Reclamation</a>
                     </div>
-                    <input type="hidden" id="reclamationId">
-                    <button type="submit" class="btn btn-primary">Submit Response</button>
-                </form>
-            </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true"> 
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addResponseModalLabel">Add Response to Reclamation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <!-- Placeholders for reclamation details -->
+            <p><strong>Subject:</strong> <span id="reclamationSubject"></span></p>
+            <p><strong>Description:</strong> <span id="reclamationDescription"></span></p>
+            <!-- Form for submitting a response -->
+            <form id="responseForm">
+                <div class="mb-3">
+                    <label for="responseText" class="form-label">Your Response</label>
+                    <textarea class="form-control" id="responseText" rows="3" required></textarea>
+                </div>
+                <input type="hidden" id="reclamationId">
+                <button type="submit" class="btn btn-primary">Submit Response</button>
+            </form>
         </div>
     </div>
 </div>
+</div>
 
 <script>
+
+  
+    $(document).ready(function() {
+        $('#responseForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Retrieve response text and reclamation ID
+            var responseText = $('#responseText').val().trim();
+            var reclamationId = $('#reclamationId').val();
+
+            // Send AJAX request
+            $.ajax({
+                url: '/reclamation/' + reclamationId + '/add-response',
+                method: 'POST',
+                data: {
+                    response: responseText
+                },
+                success: function(response) {
+                    // Handle success response
+                    alert('Response added successfully');
+                    // You can redirect to another page or update UI as needed
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred';
+                    alert(errorMessage);
+                }
+            });
+        });
+    });
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         let lastReclamationId = {{ reclamations|length > 0 ? reclamations|first.id : 0 }};
 
