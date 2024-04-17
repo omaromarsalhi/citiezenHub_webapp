@@ -31,10 +31,6 @@ class ReclamationController extends AbstractController
 
            return $this->redirectToRoute('app_reclamation');
         }
-        
-
-
-    
         return $this->render('reclamation/index.html.twig', [
             'form' => $form->createView(),
            // 'user' => $this->getUser(), 
