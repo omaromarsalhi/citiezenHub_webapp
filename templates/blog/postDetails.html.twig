@@ -304,9 +304,15 @@
                                 <div class="time-spent">${comment.dateComment}</div>
                             </div>
                         </div>
+
                         <div class="comment-text">
-                            <p>${comment.caption}</p>
-                        </div>
+                            <input id="caption-${comment.id}" type="text"
+                                value="${comment.caption}" disabled>
+                            </div>
+
+                        <div id="updateBtn-${comment.id}">
+
+                         </div>
                 </div>
                 <div class="meta" style="position: absolute; right: 15px; top: 32%; transform: translateY(-50%);">
                     <div class="dropdown">
