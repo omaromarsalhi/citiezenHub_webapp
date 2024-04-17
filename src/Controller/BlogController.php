@@ -76,9 +76,13 @@ class BlogController extends AbstractController
             $caption = $req->get('caption');
             $imageFiles = $req->files->get('images');
 
+            $user = $this->getUser();
+
             $post->setCaption($caption);
             $post->setDatePost(new DateTime());
             $post->setNbReactions(0);
+
+            $post->setUser($user);
 
             $em = $doc->getManager();
             $em->persist($post);

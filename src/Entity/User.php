@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Serializable;
@@ -78,6 +80,9 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[ORM\Column(name:"role",length: 255)]
     private ?string $role = null;
 
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: "user")]
+    private $posts;
+
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le password ne peut pas être vide')]
     #[Assert\Regex(
@@ -105,6 +110,11 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[ORM\Column(name:"gender",length: 255, nullable: true)]
     private ?string $gender = null;
 
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->idUser;
@@ -262,6 +272,33 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     public function setImage(string $image): static
     {
         $this->image = $image;
+        return $this;
+    }
+
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
+            }
+        }
+
         return $this;
     }
 //
