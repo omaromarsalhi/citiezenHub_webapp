@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReeclamationRepository;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ReeclamationRepository::class)]
 #[Vich\Uploadable]
 class Reeclamation
@@ -18,9 +18,24 @@ class Reeclamation
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "The private key cannot be null.")]
+    #[Assert\Positive(message: "The private key must be positive.")]
+    #[Assert\GreaterThanOrEqual(
+        value: 1000,
+        message: "The private key must be at least 4 digits long."
+    )]
     private ?int $privateKey = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The description cannot be blank.")]
+    #[Assert\Length(
+        min: 4,
+        minMessage: "The description must be at least {{ limit }} characters long."
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: "The description must only contain letters."
+    )]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
@@ -41,9 +56,19 @@ class Reeclamation
 
         return $this;
     }
-
+     
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The subject cannot be blank.")]
+    #[Assert\Length(
+        min: 4,
+        minMessage: "The subject must be at least {{ limit }} characters long."
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: "The subject must only contain letters."
+    )]
     private ?string $subject = null;
+    
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
