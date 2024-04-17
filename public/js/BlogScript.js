@@ -71,7 +71,6 @@ function createPostHTML(post, postUrl) {
 }
 
 function changeImage(postId, direction) {
-    console.log("aloioa")
     var images = posts.find(post => post.id === postId).images;
     if (!currentImageIndices[postId]) {
         currentImageIndices[postId] = 0;

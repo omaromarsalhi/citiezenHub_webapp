@@ -97,16 +97,16 @@
                             data-sort="email" style="width:40%;">
                             <div class="d-inline-flex flex-center">
                                 <div class="d-flex align-items-center px-1 py-1 bg-success-subtle rounded me-2"><span
-                                            class="text-success-dark" data-feather="mail"></span></div>
-                                <span>Email</span>
+                                            class="text-success-dark" data-feather="image"></span></div>
+                                <span>Caption</span>
                             </div>
                         </th>
                         <th class="sort align-middle ps-4 pe-5 text-uppercase border-end border-translucent" scope="col"
                             data-sort="phone" style="width:30%; min-width: 180px;">
                             <div class="d-inline-flex flex-center">
                                 <div class="d-flex align-items-center px-1 py-1 bg-primary-subtle rounded me-2"><span
-                                            class="text-primary-dark" data-feather="phone"></span></div>
-                                <span>Phone</span>
+                                            class="text-primary-dark" data-feather="image"></span></div>
+                                <span>Images</span>
                             </div>
                         </th>
 
@@ -118,7 +118,7 @@
                     </thead>
                     <tbody class="list" id="leal-tables-body">
                     {% for i in posts %}
-                        <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                        <tr id="tabPost-{{ i.id }}" class="hover-actions-trigger btn-reveal-trigger position-static">
                             <td class="fs-9 align-middle">
                                 <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox"
                                                                          data-bulk-select-row='{"customer":{"avatar":"/team/75.webp","name":"Roy Anderson","designation":"System Admin","status":{"label":"Canceled","type":"badge-phoenix-secondary"}},"email":"andersonroy@netflix.chill","phone":"+1-613-555-0109","contact":"Jim Aldridge","company":"Google.inc","date":"Dec 24, 09:52 PM"}'/>
@@ -130,33 +130,44 @@
                                                                                 src="../../assets/img/team/75.webp"
                                                                                 alt=""/></div>
                                     </a>
-                                    <div><a class="fs-8 fw-bold" data-bs-toggle="modal" data-bs-target="#addDealModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">Roy Anderson</a>
+                                    <div><a class="fs-8 fw-bold" data-bs-toggle="modal"
+                                            data-bs-target="#addDealModal"
+                                            aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">Roy
+                                            Anderson</a>
                                         <div class="d-flex align-items-center">
-                                            <p class="mb-0 text-body-highlight fw-semibold fs-9 me-2">System Admin</p>
+                                            <p class="mb-0 text-body-highlight fw-semibold fs-9 me-2">System
+                                                Admin</p>
                                             <span class="badge badge-phoenix badge-phoenix-secondary">Canceled</span>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td class="email align-middle white-space-nowrap fw-semibold ps-4 border-end border-translucent">
-                                <a class="text-body-highlight">{{i.caption}}</a>
+                                <a class="text-body-highlight">{{ i.caption }}</a>
                             </td>
                             <td class="phone align-middle white-space-nowrap fw-semibold ps-4 border-end border-translucent">
-                                asba
+                                {% if i.images|length > 0 %}
+                                    <img src="{{ asset('images/blog/' ~ i.images[0]) }}"
+                                         style="width: 200px; height: 200px; object-fit: contain;">
+                                {% else %}
+                                    No images
+                                {% endif %}
                             <td class="date align-middle white-space-nowrap text-body-tertiary text-opacity-85 ps-4 text-body-tertiary">
-                                {{ i.datepost|date('Y-m-d H:i:s') }}
+                                {{ i.datePost|date('Y-m-d H:i:s') }}
                             </td>
+                            <td style="display: none;">{{ i.id }}</td>
                             <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
                                 <div class="btn-reveal-trigger position-static">
                                     <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10"
                                             type="button" data-bs-toggle="dropdown" data-boundary="window"
-                                            aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span
+                                            aria-haspopup="true" aria-expanded="false"
+                                            data-bs-reference="parent"><span
                                                 class="fas fa-ellipsis-h fs-10"></span></button>
                                     <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item"
                                                                                          href="#!">View</a><a
                                                 class="dropdown-item" href="#!">Export</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-danger" href="#!">Remove</a>
+                                        <a class="removeBtn dropdown-item text-danger" data-id="{{ i.id }}">Remove</a>
                                     </div>
                                 </div>
                             </td>
@@ -185,7 +196,8 @@
     </div>
 
 
-    <div class="modal fade" id="addDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addDealModal" aria-hidden="true">
+    <div class="modal fade" id="addDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="addDealModal" aria-hidden="true">
         <form id="contact-form" method="POST">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content bg-body-highlight p-6">
@@ -208,19 +220,22 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="text-body-highlight fw-bold mb-2">Real Address</label>
-                                    <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStation" id="adressStation" />
+                                    <input class="form-control input-target" type="text" placeholder="Enter deal name"
+                                           name="adressStation" id="adressStation"/>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-4">
                                     <label class="text-body-highlight fw-bold mb-2" id="">Station Name</label>
-                                    <input name="name" id="name" class="form-control input-target" type="text" placeholder="Enter contact name" />
+                                    <input name="name" id="name" class="form-control input-target" type="text"
+                                           placeholder="Enter contact name"/>
                                 </div>
                                 <div class="mb-4">
                                     <div class="row g-3">
                                         <div class="col-6">
                                             <label class="text-body-highlight fw-bold mb-2">Station Image</label>
-                                            <input name="createinputfile" id="createinputfile" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
+                                            <input name="createinputfile" id="createinputfile" type="file"
+                                                   class="form-control input-target  text-body-highlight fw-bold mb-2"/>
                                         </div>
                                     </div>
                                 </div>
@@ -228,13 +243,50 @@
                         </div>
                     </div>
                     <div class="modal-footer border-0 pt-6 px-0 pb-0">
-                        <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                        <button class="btn btn-primary my-0" type="submit" onclick="addStation(event)">Create Deal</button>
+                        <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">
+                            Cancel
+                        </button>
+                        <button class="btn btn-primary my-0" type="submit" onclick="addStation(event)">Create Deal
+                        </button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+    <script>
+        $(document).on('click', '.removeBtn', function () {
+            var postId = $(this).data('id');
 
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Vous ne pourrez pas revenir en arrière!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimez-le!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/blog/' + postId,
+                        type: 'DELETE',
+                        success: function (response) {
+                            Swal.fire(
+                                'Supprimé!',
+                                'Votre post a été supprimé.',
+                                'success'
+                            )
+                            $('#tabPost-' + postId).remove();
+                        },
+                        error: function (xhr, status, error) {
+                            // Gérer les erreurs en fonction de vos besoins
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
 
 {% endblock %}

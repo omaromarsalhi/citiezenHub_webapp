@@ -209,13 +209,28 @@ class BlogController extends AbstractController
 
     #[Route('/blogAdmin', name: 'app_blogAdmin')]
     public function indexAdmin(PostRepository $postRepository): Response
-    {
-        $posts = $postRepository->findBy([], ['date_post' => 'DESC']);
+{
+    $posts = $postRepository->findBy([], ['date_post' => 'DESC']);
 
-        return $this->render('blog/blogAdmin.html.twig', [
-            'posts' => $posts,
-        ]);
-    }
+    $postsArray = array_map(function ($post) {
+        $images = $post->getImages();
+        $imagesArray = array_map(function ($image) {
+            return $image->getPath();
+        }, $images);
+
+        return [
+            'id' => $post->getId(),
+            'caption' => $post->getCaption(),
+            'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+            'nbReactions' => $post->getNbReactions(),
+            'images' => $imagesArray, // Ajouter cette ligne
+        ];
+    }, $posts);
+
+    return $this->render('blog/blogAdmin.html.twig', [
+        'posts' => $postsArray,
+    ]);
+}
 
     #[Route('/PostDetail/{id}', name: 'app_PostDetail')]
     public function indexPostDetail($id, PostRepository $postRepository, CommentPostRepository $commentPostRepository): Response
