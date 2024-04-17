@@ -45,6 +45,8 @@ class BlogController extends AbstractController
 
             $postUrl = $this->generateUrl('app_PostDetail', ['id' => $post->getId()]);
 
+            $nbComments = count($post->getComments());
+
             return [
                 'id' => $post->getId(),
                 'caption' => $post->getCaption(),
@@ -52,6 +54,7 @@ class BlogController extends AbstractController
                 'nbReactions' => $post->getNbReactions(),
                 'images' => $imagesArray,
                 'url' => $postUrl,
+                'nbComments' => $nbComments,
             ];
         }, $posts);
 
@@ -80,6 +83,8 @@ class BlogController extends AbstractController
             $em = $doc->getManager();
             $em->persist($post);
 
+            $nbComments = 0;
+
             $imagesArray = [];
             if ($imageFiles) { // Vérifier si des images ont été fournies
                 foreach ($imageFiles as $imageFile) {
@@ -104,6 +109,7 @@ class BlogController extends AbstractController
                     'nbReactions' => $post->getNbReactions(),
                     'images' => $imagesArray,
                     'url' => $postUrl,
+                    'nbComments' => $nbComments,
                 ]
             ]);
         }
@@ -160,6 +166,8 @@ class BlogController extends AbstractController
             $imagesArray[] = $image->getPath();
         }
 
+        $nbComments = count($post->getComments());
+
         $em->persist($post);
         $em->flush();
 
@@ -176,6 +184,7 @@ class BlogController extends AbstractController
                 'nbReactions' => $post->getNbReactions(),
                 'images' => $imagesArray,
                 'url' => $postUrl,
+                'nbComments' => $nbComments,
             ]
         ]);
     }

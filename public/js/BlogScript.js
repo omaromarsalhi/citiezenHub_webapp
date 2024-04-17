@@ -52,9 +52,20 @@ function createPostHTML(post, postUrl) {
                                     class="feather-arrow-up-right"></i></a></h4>
                     </div>
                     ${imageHTML}
-                    ${post.nbReactions} Reactions
+                    
+                    
+                    <div class="meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px">
+        <div>${post.nbReactions} Reactions</div>
+        <div>${post.nbComments} Comments</div>
+    </div>
+                    
+            
                 </div>
             </div>
+            
+            
+            
+            
         </div>
     `;
 }
