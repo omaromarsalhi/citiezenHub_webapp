@@ -28,7 +28,7 @@
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Type Vehicule</label>
-                            <select class="form-select">
+                            <select class="form-select" id="typeSelectUpd">
                                 <option>Select</option>
                                 <option>Metro</option>
                                 <option>Bus</option>
@@ -38,6 +38,7 @@
                             <label class="text-body-highlight fw-bold mb-2">Real Address</label>
                             <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStationUpd" id="adressStationUpd" />
                         </div>
+                                        <div class="mb-4"><label class=" fw-bold mb-2 error-label" id ="error-label"></label> </div>
 
                         <div>
 
@@ -87,8 +88,7 @@
                         <div class="col-lg-6">
                             <div class="mb-4">
                                 <label class="text-body-highlight fw-bold mb-2">Type Vehicle</label>
-                                <select class="form-select">
-                                    <option>Select</option>
+                                <select class="form-select" id="typeSelect">
                                     <option>Metro</option>
                                     <option>Bus</option>
                                 </select>
@@ -97,6 +97,8 @@
                                 <label class="text-body-highlight fw-bold mb-2">Real Address</label>
                                 <input class="form-control input-target" type="text" placeholder="Enter deal name" name="adressStation" id="adressStation" />
                             </div>
+                             <div class="mb-4"><label class=" fw-bold mb-2 error-label" id ="error-label"></label> </div>
+
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-4">
@@ -175,7 +177,8 @@
                     </td>
                     <td class="align-middle white-space-nowrap text-end pe-0">
                       <div class="position-relative">
-                        <div class="hover-actions"> <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick="showModifierPopup('{{ station.id }}','{{ station.NomStation }}','{{ station.AddressStation }}','{{ station.imagestation }}','{{ station.TypeVehicule }}')"></span></button><button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation({{station.id}})"><span class="fas fa-trash"></span></button></div> 
+                        <div class="hover-actions"> <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick="showModifierPopup('{{ station.id }}','{{ station.NomStation }}','{{ station.AddressStation }}','{{ station.imagestation }}','{{ station.TypeVehicule }}')"></span></button>
+                        <button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation({{station.id}})"><span class="fas fa-trash"></span></button></div> 
                         </div>
                       <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
                         <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Update</a>
@@ -212,6 +215,9 @@
 
     .input-typing {
         border-color: #50C878;
+    }
+     .error-label {
+        color: red;
     }
 </style>
 

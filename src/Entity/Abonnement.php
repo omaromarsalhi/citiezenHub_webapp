@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: AbonnementRepository::class)]
@@ -21,6 +22,7 @@ class Abonnement
 
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Your image is required")]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]

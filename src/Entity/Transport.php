@@ -17,21 +17,29 @@ class Transport
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "idTransport")]
-    private ?int $idTransport = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $TypeVehicule = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message:"Refrence  is required")]
+    #[Assert\Regex(pattern:"/^[A-Za-z]+$/",message:"Nom Station should contain only letters")]
+
     private ?string $Reference = null;
 
     #[ORM\Column(length: 255, name: "vehicule_image")]
+
     private ?string $Vehiculeimage = null;
     #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'Vehiculeimage')]
+    #[Assert\NotBlank(message:"Image can't be null ")]
+
     private ?File $imageFile = null;
 
     #[ORM\Column]
-    private ?float $Prix = null;
+    #[Assert\Regex(pattern:"/^(\d+(\.\d+)?|\.\d+)$/",message:"Prix Transport should contain only numbers and points")]
+    #[Assert\NotBlank(message:"Price is required")]
+    private ?float $Prix = 0;
 
     // Heure property with string type
     #[ORM\Column(length: 255, nullable: true)]
@@ -45,7 +53,7 @@ class Transport
 
     public function getIdTransport(): ?int
     {
-        return $this->idTransport;
+        return $this->id;
     }
 
     public function getTypeVehicule(): ?string
@@ -91,7 +99,10 @@ class Transport
 
     public function setPrix(float $Prix): static
     {
+        if($Prix!=null)
         $this->Prix = $Prix;
+    else
+    $Prix=0;
 
         return $this;
     }

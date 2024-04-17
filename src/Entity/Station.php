@@ -21,11 +21,12 @@ class Station
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Nom Station is required")]
+    #[Assert\Regex(pattern:"/^[A-Za-z,]+$/",message:"Nom Station should contain only letters")]
+
     private ?string $nomstation = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Address Station is required")]
-
     private ?string $addressstation = null;
 
     #[ORM\Column(length: 255)]
@@ -33,6 +34,8 @@ class Station
 
 
     #[Vich\UploadableField(mapping: 'station', fileNameProperty: 'image_station')]
+    #[Assert\NotBlank(message:"Image Station is required")]
+
     private ?File $imageFile = null;
    
     #[ORM\Column(length: 255)]

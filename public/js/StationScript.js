@@ -3,17 +3,14 @@ var maVariableGlobale =1;
 
 function addStation(event) {
     event.preventDefault();
-    const selectedOption = document.querySelector('.form-select option:checked');
-    const type_text = selectedOption.textContent.trim();
+    const TypeVehicule = document.getElementById("typeSelect").value;
     let formData = new FormData();
     let name = $('#name').val();  
     let adress = $('#adressStation').val();
-    let type = type_text;
-
     formData.append('image', $('#createinputfile').prop('files')[0]);
     formData.append('nomStation', name);
     formData.append('adressStation', adress);
-    formData.append('type_vehicule', type);
+    formData.append('type_vehicule', TypeVehicule);
 
     $.ajax({
         url: '/addStation',
@@ -26,16 +23,7 @@ function addStation(event) {
             // You can add any pre-processing logic here
         },
         success: function(response) {
-                  /*if (response.error == 'VALIDATION_ERROR') {
-                // Handle validation errors
-                alert("Validation failed: " + response.messages.join(', '));
-                console.log("c bon")
-            }
-           else  if (response.error === 'DUPLICATE_ENTRY') {
-                // Handle duplicate entry error
-                alert("Error: " + response.message);
-            } 
-             else */ 
+          
               if (response.message === "Station added successfully.") {
                 // Handle success
                 alert("Added successfully");
@@ -48,8 +36,26 @@ function addStation(event) {
             } 
         },
         error: function(response) {
-       alert(response.error);
-       console.log(response.error);
+            if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
+                const errorMessage = response.responseJSON.messages.join(', '); // Join error messages with ','
+                const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
+                let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
+        
+                // Loop through each error message and create HTML for it
+                errorMessagesArray.forEach((message) => {
+                    errorMessagesHTML += `<div>${message.trim()}</div>`; // Trim whitespace and wrap each message in a <div>
+                });
+                $('.error-label').html(errorMessagesHTML);
+            }
+            else if (response.responseJSON && response.responseJSON.error === 'DUPLICATE_ENTRY') {
+                // Handle duplicate entry error
+                alert("Error: " + response.responseJSON.message);
+                console.log("Duplicate entry");
+            } else {
+                // Handle other errors
+                alert("An error occurred while inserting the subscription: " + response.responseJSON.message);
+                console.log("Database error");
+            } 
             // Handle AJAX errors
         },
     });
@@ -60,12 +66,10 @@ function addStation(event) {
 
 function updateStation(event) {
     event.preventDefault();
-    const selectedOption = document.querySelector('.form-select option:checked');
-    const type_text = selectedOption.textContent.trim();
+    const TypeVehicule = document.getElementById("typeSelectUpd").value;
     let formData = new FormData();
     let name = $('#nameUpd').val();  
     let address = $('#adressStationUpd').val();
-    let type = type_text;
     var listStation;
 
     formData.append('image', $('#createinputfileUpd').prop('files')[0]);
@@ -111,10 +115,11 @@ function updateStation(event) {
     inputFields.forEach(inputField => {
         inputField.addEventListener('keyup', function() {
             // Check if the input value contains a number
-            if (/\d/.test(this.value)) {
+            if (/^[A-Za-z,]+$/.test(this.value)) {
                 this.classList.add('input-modified');
                 this.classList.add('input-invalid');
-            } else {
+            } 
+            else {
                 this.classList.remove('input-modified');
                 this.classList.remove('input-invalid');
                 this.classList.add('input-typing');
@@ -166,12 +171,12 @@ function updateStation(event) {
             }
 
             // Check if the field color is #50C878
-            if (getComputedStyle(inputField).border-color !== 'rgb(80, 200, 120)') {
+            if (getComputedStyle(inputField).border-color !== 'green') {
                 // Field color is not #50C878
                 allFieldsValid = false;
                 return;
             }
-                if (getComputedStyle(inputField).border-color == 'rgb(80, 200, 120)') {
+                if (getComputedStyle(inputField).border-color == 'red') {
                 // Field color is not #50C878
                 allFieldsValid = true;
                 return;

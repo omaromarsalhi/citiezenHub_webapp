@@ -39,7 +39,8 @@
                 
                   <tbody class="list" id="table-regions-by-revenue">
               
-         
+                                            {% for transport in transports %}
+
                     <tr>
                       <td class="white-space-nowrap ps-0 country" style="width:32%">
                         <div class="d-flex align-items-center">
@@ -80,13 +81,13 @@
                         </div>
                       <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
                         <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Update</a>
-                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger"  onclick="deleteTransport({{transport.idTransport}})">Remove</a>
                         </div>
                       </div>
                     </td>
                  
                     </tr>
-
+                       {% endfor %}
         
                    
             
@@ -200,7 +201,7 @@
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Type Vehicule</label>
-                            <select class="form-select">
+                            <select class="form-select" id="typeSelect">
                                 <option>Select</option>
                                 <option>Metro</option>
                                 <option>Bus</option>
@@ -208,9 +209,9 @@
                         </div>
 
                          <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"> Depart</label>
-                         <select class="form-select">
+                         <select class="form-select" id="station-depart">
                             {% for station in stations %}
-                                <option>{{station.nomstation}}</option>
+                                <option value="{{ station.id }}">{{station.nomstation}}</option>
                              {% endfor %}
                             </select>
                         </div>
@@ -225,9 +226,9 @@
                     <div class="col-lg-6">
                     <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Start Time</label><input class="form-control datetimepicker" type="text" name="Time" id="Time" placeholder="H:i" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' /></div>
                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Arrive</label>
-                          <select class="form-select">
+                          <select class="form-select" id="station-arrive">
                             {% for station in stations %}
-                                <option>{{station.id}}</option>
+                                <option value="{{ station.id }}">{{station.nomstation}}</option>
                              {% endfor %}
                             </select>
                         </div>
@@ -236,7 +237,7 @@
                         <div class="mb-4">
                             <div class="row g-3">
                                 <div class="col-6"><label class="text-body-highlight fw-bold mb-2">Station Image</label>                             
-                                <input name="createinputfileUpd" id="createinputfileUpd" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
+                                <input name="createinputfile" id="createinputfile" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
                                 </div>
 
                             </div>
@@ -247,17 +248,26 @@
                             </div>
                         </div>
                     </div>
+                                        <div class="mb-4"><label class=" fw-bold mb-2 error-label" id ="error-label">Regex error</label> </div>
+
                 </div>
             </div>
 
             <div class="modal-footer border-0 pt-6 px-0 pb-0">
                 <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
                 <button class="btn btn-primary my-0" type="submit" onclick="addTransport(event)">      
-                Update Station</button>
+                Add Transport</button>
             </div>
 
         </div>
     </div>  
     </form>
 </div>
+
+
+<style>
+  .error-label {
+        color: red;
+    }
+</style>
 {% endblock %}
