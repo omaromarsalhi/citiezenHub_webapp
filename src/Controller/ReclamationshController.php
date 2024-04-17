@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -39,11 +40,8 @@ class ReclamationshController extends AbstractController
 
 
     #[Route('/a/{id}', name: 'reclamationsh.modifer')]
-    public function show(EntityManagerInterface $entityManager, $id, Request $request): Response
+    public function show(EntityManagerInterface $entityManager, $id, Request $request, ValidatorInterface $validator): Response
     {
-        // Dumping request data for debugging
-        
-    
         $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
     
         if (!$reclamation) {
@@ -57,7 +55,8 @@ class ReclamationshController extends AbstractController
     
             // Handle the file upload field directly
             $file = $request->files->get('reclamation_imageFile_file');
-    
+         
+
             if ($subject !== null) {
                 $reclamation->setSubject($subject);
             }
@@ -71,18 +70,35 @@ class ReclamationshController extends AbstractController
                 $reclamation->setImagePath($imagePath);
             }
     
+            // Validate the $reclamation object
+            $errors = $validator->validate($reclamation);
+            
+            if (count($errors) > 0) {
+                $errorsString = (string) $errors;
+                
+                $this->addFlash('error', 'Validation failed: ' . $errorsString);
+    
+                // Optionally, return to the form page again if there are errors
+                return $this->render('reclamationsh/create-collection.html.twig', [
+                    'controller_name' => 'ReclamationshController',
+                    'reclamation' => $reclamation,
+                    // Pass errors to the template if you want to display them there
+                    'errors' => $errors,
+                ]);
+            }
+    
             $entityManager->flush();
             $this->addFlash('success', 'Reclamation updated successfully.');
     
             return $this->redirectToRoute('reclamationsh');
         }
-        
     
         return $this->render('reclamationsh/create-collection.html.twig', [
             'controller_name' => 'ReclamationshController',
             'reclamation' => $reclamation,
         ]);
     }
+    
     
     private function handleFileUpload(UploadedFile $file): string
 {

@@ -21,7 +21,7 @@
 							<i class="feather-chevron-right"></i>
 						</li>
 						<li class="item current">Reclamation</li>
-						
+
 
 					</ul>
 				</div>
@@ -33,38 +33,32 @@
 	<!-- create new product area -->
 	<div class="create-area rn-section-gapTop">
 		<div class="container">
-			<div class="row g-5">
+			<div
+				class="row g-5">
+				<!-- Errors display area -->
+				{% if errors|default(false) %}
+					<div class="alert alert-danger" role="alert">
+						<ul>
+							{% for error in errors %}
+								<li>{{ error.message }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
 				<div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
-				<form id="formm" name="reclamation" method="post" enctype="multipart/form-data" action="{{ path('reclamationsh.modifer', {'id': reclamation.id}) }}">
-				<div class="upload-area">
+					<form id="formm" name="reclamation" method="post" enctype="multipart/form-data" action="{{ path('reclamationsh.modifer', {'id': reclamation.id}) }}">
+						<div class="upload-area">
 							<div class="brows-file-wrapper">
-							<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImagePath()) }}" alt data-black-overlay="6">
-								<input type="file"  id="reclamation_imageFile_file"  accept="image/*" class="inputfile"/>
+								<img id="createfileImage" src="{{ asset('images/reclamation/'~reclamation.getImagePath()) }}" alt data-black-overlay="6">
+								<input type="file" id="reclamation_imageFile_file" accept="image/*" class="inputfile"/>
 
 								<label for="reclamation_imageFile_file" title="No File Choosen">
 									<span class="text-center color-white">
-								<i class="feather-edit"></i>
-							</span>
+										<i class="feather-edit"></i>
+									</span>
 								</label>
 							</div>
 						</div>
-						
-						<script>
-							const input = document.getElementById('reclamation_imageFile_file');
-const img = document.getElementById('createfileImage');
-
-input.addEventListener('change', function () {
-if (input.files && input.files[0]) {
-const reader = new FileReader();
-
-reader.onload = function (e) {
-img.setAttribute('src', e.target.result);
-}
-
-reader.readAsDataURL(input.files[0]);
-}
-});
-						</script>
 						<div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
 							<h5>Note:
 							</h5>
@@ -78,35 +72,37 @@ reader.readAsDataURL(input.files[0]);
 					<div class="col-lg-7">
 						<div class="form-wrapper-one">
 							<div class="col-md-12">
+
 								<div class="input-box pb--20">
-									<div>
 									<label for="privateKey" class="required">Private Key</label>
-									<input type="text" id="privateKey" name="privateKey" required pattern="^[0-9]+$" value="{{ reclamation.privateKey }}"/>
+									<input type="text" id="privateKey" name="privateKey" value="{{ reclamation.privateKey }}" readonly>
+									<small id="privateKeyHelp" class="form-text text-muted">You can't edit this field.</small>
+								</div>
+
+
+							</div>
+							<div class="col-md-12">
+								<div class="input-box pb--20">
+									<div>
+										<label for="subject" class="required">Subject</label>
+										<input type="text" id="subject" name="subject" value="{{ reclamation.subject }}"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="input-box pb--20">
 									<div>
-									<label for="subject" class="required">Subject</label>
-									<input type="text" id="subject" name="subject" value="{{ reclamation.subject }}" />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="input-box pb--20">
-									<div>
-									<label for="description" class="required">Description</label>
-								<textarea id="description" name="description" required>{{ reclamation.description }}</textarea>
+										<label for="description" class="required">Description</label>
+										<textarea id="description" name="description" required>{{ reclamation.description }}</textarea>
 									</div>
 								</div>
 							</div>
 							<span></span>
 							<span></span>
 							<div class="col-md-12">
-							<div class="input-box">
-						<button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
-					</div>
+								<div class="input-box">
+									<button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -117,5 +113,20 @@ reader.readAsDataURL(input.files[0]);
 
 
 	<!-- create new product area -->
+	<script>
+		const input = document.getElementById('reclamation_imageFile_file');
+const img = document.getElementById('createfileImage');
 
+input.addEventListener('change', function () {
+if (input.files && input.files[0]) {
+const reader = new FileReader();
+
+reader.onload = function (e) {
+img.setAttribute('src', e.target.result);
+}
+
+reader.readAsDataURL(input.files[0]);
+}
+});
+	</script>
 {% endblock %}
