@@ -9,7 +9,7 @@ function addTransport(event) {
     let Time = $('#Time').val();
     let prix = $('#Prix').val();
  
-     
+
 
     formData.append('image', $('#createinputfile').prop('files')[0]);
     formData.append('reference', reference);
@@ -28,13 +28,14 @@ function addTransport(event) {
         processData: false,
         contentType: false,
         beforeSend: function() {
-            // You can add any pre-processing logic here
+            alert("Added successfully");
+
         },
         success: function(response) {
           
-              
+            alert("Added successfully");
+
               if (response.message === "Transport added successfully.") {
-                alert("Added successfully");
                 $('#addDealModal').modal('hide');
                 $('#name').val('');
                 $('#adressStation').val('');

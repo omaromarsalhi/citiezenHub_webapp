@@ -22,19 +22,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TransportController extends AbstractController
 {
     #[Route('/transport', name: 'app_transport')]
-    public function contollAllStations(StationRepository $StationRep): Response
+    public function listAllStationsAndTransports(StationRepository $StationRep): Response
     {
-     
-     
-        $transport = $this->getDoctrine()->getManager()->getRepository(transport::class)->findAll();
-        $station = $StationRep->findAll();
-
-        return $this->render('transport/Admin/transportAdmin.html.twig', [
-            'stations' => $station,
-            'transports'=>$transport
-        ]);
+      $stations = $StationRep->findAll();
+      $transports = $this->getDoctrine()->getManager()->getRepository(transport::class)->findAll();
+    
+      return $this->render('transport/Admin/transportAdmin.html.twig', [
+          'stations' => $stations,
+          'transports' => $transports,
+      ]);
     }
-
+    
     #[Route('/formTransport', name: 'app_addTransport')]
     public function index( ): Response
     {
@@ -43,7 +41,7 @@ class TransportController extends AbstractController
 
 
     #[Route('/addTransport', name: 'addTransport')]
-    public function addTransport(Request $request, ManagerRegistry $doc, StationRepository $stationRepository, ValidatorInterface $validator): Response
+    public function addTransport(Request $request, ManagerRegistry $doc, StationRepository $stationRepository,TransportRepository $transportRepository, ValidatorInterface $validator): Response
     {
         if ($request->isXmlHttpRequest()) {
             $transport = new Transport();
@@ -53,26 +51,27 @@ class TransportController extends AbstractController
             $transport->setHeure($request->get('time'));
             $transport->setStationDepart($request->get('depart'));
             $transport->setStationArrive($request->get('arrive'));
-
-            $transport->setImageFile($request->files->get('image'));
+            $image = $request->files->get('image');    
+            if ($image) {
+                $transport->setImageFile($image);
+            }
     
-            // Validate the transport entity using Symfony Validator
-            $errors = $validator->validate($transport);
-    
-            if (count($errors) > 0) {
-                // If validation fails, return the validation errors
-                $validationMessages = [];
-                foreach ($errors as $error) {
-                    // You can customize the error messages here as needed
-                    $validationMessages[] = $error->getMessage();
-                }
-                $responses = [
+             // Validate the station entity using Symfony Validator
+             $errors = $validator->validate($transport);
+ 
+             if (count($errors) > 0) {
+                 // If validation fails, return the validation errors
+                 $validationMessages = [];
+                 foreach ($errors as $error) {
+                     $validationMessages[] = $error->getMessage();
+                 }
+                 $responses = [
                     'messages' => $validationMessages,
                     'error' => 'VALIDATION_ERROR'            
                 ];
-                
-                return new JsonResponse($responses, Response::HTTP_BAD_REQUEST);
-            }
+                 
+                 return new JsonResponse($responses, Response::HTTP_BAD_REQUEST);
+             }
             
     
             $em = $doc->getManager();
@@ -81,23 +80,23 @@ class TransportController extends AbstractController
                 $em->persist($transport);
                 $em->flush();
     
-               /* $transports = $transportRepository->findAll();
+                /*
+                $transports = $transportRepository->findAll();
     
                 $transportsArray = array_map(function ($transport) {
                     return [
-                        'id' => $transport->getId(),
-                        'nomstation' => $station->getNomStation(),
-                        'addressstation' => $station->getAddressStation(),
-                        'Type_Vehicule' => $station->getTypeVehicule(),
-                        'image_station' => $station->getImageStation(),
-                    ];
-                }, $stations);
-    
-                // Prepare all the JSON responses in an array
-    */            $responses = [
-                    //'stations' => $stationsArray,
-                    'message' => 'Station added successfully.'
-                ];
+                       /* 'id' => $transport->getId(),
+                        'nomstation' => $transport->getNomStation(),
+                        'addressstation' => $transport->getAddressStation(),
+                        'Type_Vehicule' => $transport->getTypeVehicule(),
+                        'image_station' => $transport->getImageStation(),*/
+                 /*   ];
+                }, $transports);
+    */
+                $responses = [
+                
+                    'message' => 'Transport added successfully.'
+                ];        
     
                 return new JsonResponse($responses);
             }
@@ -108,18 +107,19 @@ class TransportController extends AbstractController
                 } else {
                     return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while inserting the subscription.'], Response::HTTP_INTERNAL_SERVER_ERROR);
                 } 
-        } 
-       
-    }
-   
+           } 
 
-}
+         }
+       else {
+        return new JsonResponse(['message' => 'Station non envoyé'], Response::HTTP_OK);
+      }
+   }
 
 #[Route('/updateTransport/{id}', name: 'updateTransport')]
-public function updatetransport(Request $request, EntityManagerInterface $entityManager, $id,transportRepository $transportRepository): Response
+public function updatetransport(Request $request, EntityManagerInterface $entityManager, $id,TransportRepository $transportRepository,ValidatorInterface $validator): Response
 {
     if ($request->isXmlHttpRequest()) {
-        $transport = $entityManager->getRepository(transport::class)->find($id);
+        $transport = $entityManager->getRepository(Transport::class)->find($id);
 
         if (!$transport) {
             return new JsonResponse(['error' => 'NOT_FOUND', 'message' => 'transport not found.'], Response::HTTP_NOT_FOUND);
@@ -132,43 +132,50 @@ public function updatetransport(Request $request, EntityManagerInterface $entity
             $transport->setHeure($request->get('time'));
             $transport->setStationDepart($request->get('depart'));
             $transport->setStationArrive($request->get('arrive'));
-            $transport->setImageFile($request->files->get('image'));
+            $image = $request->files->get('image');    
+            if ($image) {
+                $transport->setImageFile($image);
+            }
+
+
+             // Validate the station entity using Symfony Validator
+         /*    $errors = $validator->validate($transport);
+ 
+             if (count($errors) > 0) {
+                 // If validation fails, return the validation errors
+                 $validationMessages = [];
+                 foreach ($errors as $error) {
+                     $validationMessages[] = $error->getMessage();
+                 }
+                 $responses = [
+                    'messages' => $validationMessages,
+                    'error' => 'VALIDATION_ERROR'            
+                ];
+                 
+                 return new JsonResponse($responses, Response::HTTP_BAD_REQUEST);
+             }*/
 
         try {
-            // Persist the changes to the database
+
             $entityManager->flush();
         
-            $transports = $transportRepository->findAll();
-        
-            $transportsArray = array_map(function ($transport) {
-                return [
-                    'id' => $transport->getId(),
-                    'reference' => $transport->getReference(),
-                    'prix' => $transport->getPrix(),
-                    'yype_Vehicule' =>  $transport->getTypeVehicule(),
-                    'station_Depart' =>  $transport->getStationDepart(),
-                    'station_Arrive' =>  $transport->getStationArrive(),
-                    'heure' =>  $transport->getHeure(),
-                    'image_Vicule' =>  $transport->getImageFile()
-
-                ];
-            }, $transports);
-        
-            // Prepare all the JSON responses in an array
             $responses = [
-                'transports' => $transportsArray,
-                'message' => 'transport updated successfully.'
-            ];
-        
-            return new JsonResponse($responses, Response::HTTP_OK);
+                
+                'message' => 'Transport added successfully.'
+            ];        
+
+            return new JsonResponse($responses);
         } catch (\Exception $e) {
-            // Handle any exceptions that occur during the update process
-            return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while updating the transport.'], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+            if ($e->getCode() === '23000' && strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                return new JsonResponse(['error' => 'DUPLICATE_ENTRY', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            } else {
+                return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while updating the subscription.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+              }
         
     
     } else {
-        return new JsonResponse(['error' => 'INVALID_REQUEST', 'message' => 'Invalid request.'], Response::HTTP_BAD_REQUEST);
+        return new JsonResponse(['message' => 'Station non envoyé'], Response::HTTP_OK);
     }
 }
 
@@ -188,11 +195,11 @@ public function deletetransport($id, transportRepository $transportRepository, R
                     'id' => $transport->getId(),
                     'reference' => $transport->getReference(),
                     'prix' => $transport->getPrix(),
-                    'yype_Vehicule' =>  $transport->getTypeVehicule(),
+                    'type_Vehicule' =>  $transport->getTypeVehicule(),
                     'station_Depart' =>  $transport->getStationDepart(),
                     'station_Arrive' =>  $transport->getStationArrive(),
                     'heure' =>  $transport->getHeure(),
-                    'image_Vicule' =>  $transport->getImageFile()
+                    'vehiculeimage' =>  $transport->getVehiculeImage()
 
                 ];
             }, $transports);

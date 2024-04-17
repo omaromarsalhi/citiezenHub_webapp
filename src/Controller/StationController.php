@@ -127,7 +127,6 @@ class StationController extends AbstractController
             }
     
             try {
-                // Persist the changes to the database
                 $entityManager->flush();
             
                 $stations = $stationRepository->findAll();

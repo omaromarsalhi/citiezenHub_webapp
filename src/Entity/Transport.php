@@ -25,13 +25,12 @@ class Transport
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank(message:"Refrence  is required")]
     #[Assert\Regex(pattern:"/^[A-Za-z]+$/",message:"Nom Station should contain only letters")]
-
     private ?string $Reference = null;
 
     #[ORM\Column(length: 255, name: "vehicule_image")]
-
-    private ?string $Vehiculeimage = null;
-    #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'Vehiculeimage')]
+    private ?string $vehiculeimage = null;
+    
+    #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'vehiculeimage')]
     #[Assert\NotBlank(message:"Image can't be null ")]
 
     private ?File $imageFile = null;
@@ -82,12 +81,12 @@ class Transport
 
     public function getVehiculeImage(): ?string
     {
-        return $this->Vehiculeimage;
+        return $this->vehiculeimage;
     }
 
     public function setVehiculeImage(string $VehiculeImage): static
     {
-        $this->Vehiculeimage = $VehiculeImage;
+        $this->vehiculeimage = $VehiculeImage;
 
         return $this;
     }

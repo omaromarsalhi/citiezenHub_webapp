@@ -7,6 +7,7 @@ function addStation(event) {
     let formData = new FormData();
     let name = $('#name').val();  
     let adress = $('#adressStation').val();
+    
     formData.append('image', $('#createinputfile').prop('files')[0]);
     formData.append('nomStation', name);
     formData.append('adressStation', adress);
@@ -75,7 +76,7 @@ function updateStation(event) {
     formData.append('image', $('#createinputfileUpd').prop('files')[0]);
     formData.append('nomStation', name);
     formData.append('adressStation', address);
-    formData.append('type_vehicule', type);
+    formData.append('type_vehicule', TypeVehicule);
 
     $.ajax({
         url: '/updateStation/' + maVariableGlobale,
@@ -100,9 +101,28 @@ function updateStation(event) {
                 alert(response.message);
             }
         },
-        error: function (response) {
-            // Handle errors here
-            console.error(response);
+        error: function(response) {
+            if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
+                const errorMessage = response.responseJSON.messages.join(', '); // Join error messages with ','
+                const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
+                let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
+        
+                // Loop through each error message and create HTML for it
+                errorMessagesArray.forEach((message) => {
+                    errorMessagesHTML += `<div>${message.trim()}</div>`; // Trim whitespace and wrap each message in a <div>
+                });
+                $('.error-label').html(errorMessagesHTML);
+            }
+            else if (response.responseJSON && response.responseJSON.error === 'DUPLICATE_ENTRY') {
+                // Handle duplicate entry error
+                alert("Error: " + response.responseJSON.message);
+                console.log("Duplicate entry");
+            } else {
+                // Handle other errors
+                alert("An error occurred while inserting the subscription: " + response.responseJSON.message);
+                console.log("Database error");
+            } 
+            // Handle AJAX errors
         },
     });
 }
@@ -117,7 +137,7 @@ function updateStation(event) {
             // Check if the input value contains a number
             if (/^[A-Za-z,]+$/.test(this.value)) {
                 this.classList.add('input-modified');
-                this.classList.add('input-invalid');
+                this.classList.add('input-valid');
             } 
             else {
                 this.classList.remove('input-modified');
@@ -228,7 +248,7 @@ function updateStationList(stationList) {
                     <td class="align-middle product white-space-nowrap py-0"><a class="d-block rounded-2 border border-translucent" href="apps/e-commerce/landing/product-details.html"><img src=" assetsAdmin/assets/img/products/60x60/3.png" alt="" width="53" /></a></td>
                     <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">${station.nomstation}</a></td>
                     <td class="align-middle customer white-space-nowrap"><a class="d-flex align-items-center text-body" href="apps/e-commerce/landing/profile.html">
-                        {# <div class="avatar avatar-l"><img class="rounded-circle"  "/images/station/~${ station.imagestation }"   alt="" /></div> #}
+                        {# <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/station/$'{station.imagestation}'"   alt="" /></div> #}
                         <h6 class="mb-0 ms-3 text-body"> ${station.Type_Vehicule}</h6>
                       </a></td>
                     <td class="align-middle rating white-space-nowrap fs-10"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span></td>
@@ -245,8 +265,9 @@ function updateStationList(stationList) {
                       <div class="position-relative">
                         <div class="hover-actions"><button class="btn btn-sm btn-phoenix-secondary me-1 fs-10"><span class="fas fa-check"></span></button><button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation(${station.id})"><span class="fas fa-trash"></span></button></div>
                       </div>
-                      <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
+                      <div class="btn-reveal-trigger position-static"> 
+                      <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick="showModifierPopup(${station.id}, ${station.NomStation}, ${station.AddressStation}, ${station.imagestation}, ${station.TypeVehicule})"></button>
+                      <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
                           <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
                         </div>
                       </div>
