@@ -29,22 +29,25 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide')]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z]{3,}$/',
-        message: "Le nom contient que des alphabet "
-    )]
+        message: "Le nom contient que des alphabet ",
+        groups: ['creation'],
+)]
     private ?string $firstName = null;
 
     #[ORM\Column(name:"lastName",length: 255)]
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z]{3,}$/',
-        message: "Le nom contient que des alphabet "
-    )]
+        message: "Le nom contient que des alphabet ",
+        groups: ['creation'],
+)]
     private ?string $lastName = null;
 
     #[ORM\Column(name:"cin",length: 255)]
     #[Assert\Regex(
         pattern: '/^[0-9]{8}$/',
-        message: "Le cin contient que des numeros "
+        message: "Le cin contient que des numeros ",
+        groups: ['creation'],
     )]
     private ?string $cin = null;
 //    /**
@@ -81,7 +84,7 @@ groups: ['creation'],
     private ?int $phoneNumber = null;
 
 
-    #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
+    #[Assert\NotBlank(message: 'Ladresse ne peut pas être vide')]
     #[Assert\Length(
         min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
     )]
@@ -95,7 +98,8 @@ groups: ['creation'],
     #[Assert\NotBlank(message: 'Le password ne peut pas être vide')]
     #[Assert\Regex(
         pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
-        message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial, avec une longueur minimale de 8 caractères"
+        message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial, avec une longueur minimale de 8 caractères",
+        groups: ['editPassword'],
     )]
     private ?string $password = null;
 

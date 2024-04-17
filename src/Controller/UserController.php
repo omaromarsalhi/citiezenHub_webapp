@@ -90,22 +90,6 @@ class UserController extends AbstractController
                 'errors' => $errorMessages,
             ],422);
 
-
-//
-//            return $this->render('user/edit_profile.html.twig', [
-//                    'name' => $user->getFirstName(),
-//                    'lastname' => $user->getLastName(),
-//                    'email' => $user->getEmail(),
-//                    'address' => $user->getAddress(),
-//                    'role' => $user->getRole(),
-//                    'cin' => $user->getCin(),
-//                    'phoneNumber' => $user->getPhoneNumber(),
-//                    'age' => $user->getAge(),
-//                    'status' => $user->getStatus(),
-//                    'image' => $user->getImage(),
-//                    'gender' => $user->getGender(),
-//                    'dob' => $user->getDob(),
-//                ]);
         }
 
         return $this->render('user/edit_profile.html.twig', [
@@ -135,19 +119,6 @@ class UserController extends AbstractController
             $em = $doc->getManager();
             $em->persist($user);
             $em->flush();
-//            return $this->render('user/edit_profile.html.twig', [
-//                'name' =>$user->getFirstName(),
-//                'lastname' =>$user->getLastName(),
-//                'email' => $user->getEmail(),
-//                'address' => $user->getEmail(),
-//                'role' => $user->getRole(),
-//                'cin' => $user->getCin(),
-//                'phoneNumber'=>$user->getPhoneNumber(),
-//                'age' =>$user->getAge(),
-//                'status' =>$user->getStatus(),
-//                'gender' =>$user->getGender(),
-//                'image'=>$user->getImage(),
-//            ]);
             return new Response(' supprimé avec succès false ', Response::HTTP_OK);
         }
         return $this->render('user/edit_profile.html.twig', [
@@ -183,9 +154,13 @@ class UserController extends AbstractController
     public function consulterProfile( Request $req): Response
     {
         $name =$req->get('name');
+        dump($name);
         $lastname =$req->get('lastname');
+        dump($lastname);
         $email =$req->get('email');
+        dump($email);
         $image =$req->get('image');
+        dump($image);
         return $this->render('user/profile.html.twig', [
             'name' =>$name ,
             'lastname' =>$lastname ,
@@ -194,37 +169,54 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/changePassword', name: 'changePassword',methods: ['GET', 'POST'])]
-    public function changePassword(UserPasswordHasherInterface $userPasswordHasher,ManagerRegistry $doc, UserRepository $userRepository, Request $req)
+    public function changePassword(UserPasswordHasherInterface $userPasswordHasher,ManagerRegistry $doc, UserRepository $userRepository, Request $req,ValidatorInterface $validator)
     {
+        $errorMessages = [];
+        $Messages ='';
         $user=$userRepository->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
         $newPassword =$req->get('newPassword');
         $confirmPassword =$req->get('confirmPassword');
         $oldPassword =$req->get('oldPassword');
-//       $oldPassword = $userPasswordHasher->hashPassword(
-//            $user,
-//            $req->get('oldPassword')
-//        );
+        $hashedPassword = $userPasswordHasher->hashPassword(
+            $user,
+            $newPassword
+        );
+        $user->setPassword($newPassword);
+
+        $errors = $validator->validate($user, null, 'editPassword');
+        $user->setPassword($hashedPassword);
+        foreach ($errors as $error) {
+            $field = $error->getPropertyPath();
+            $errorMessages[$field] = $error->getMessage();
+            dump($field);
+        }
         dump($oldPassword);
         dump($confirmPassword);
-        if ($userPasswordHasher->isPasswordValid($user, $oldPassword))
-//        if(strcmp($user->getPassword(),$oldPassword)==0)
-        { dump("hrloS");
-          if(strcmp($newPassword,$confirmPassword)==0)
-          {dump("hrxloS");
-              $hashedPassword = $userPasswordHasher->hashPassword(
-                  $user,
-                  $newPassword
-              );
-              $user->setPassword($hashedPassword);
-              $em = $doc->getManager();
-              $em->persist($user);
-              $em->flush();
+        if ($userPasswordHasher->isPasswordValid($user, $oldPassword))//password nafssou
+        {
+          if(strcmp($newPassword,$confirmPassword)==0) {
+              if (count($errors) === 0) {//mot de passe valider par le validtor
+                  $user->setPassword($hashedPassword);
+                  $em = $doc->getManager();
+                  $em->persist($user);
+                  $em->flush();
+                  return new JsonResponse([
+                      'success' => true,
+                  ]);
 
+              }
           }
 
-
         }
-             die();
+//        else
+//        {
+//            $errorMessages['other'] = "Invalid credentials.";
+//        }
+        return new JsonResponse([
+            'success' => false,
+            'errors' => $errorMessages,
+//            'otherErrors' => $Messages,
+        ],422);
     }
 
 

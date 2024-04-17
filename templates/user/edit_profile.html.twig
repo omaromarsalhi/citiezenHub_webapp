@@ -281,7 +281,7 @@
             <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
                 <div class="col-12 d-flex justify-content-between mb--30 align-items-center">
                     <h4 class="title-left">Edit Your Profile</h4>
-                    <a  href="" class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
+                    <a  href="{{path('profile',{image:image,name:name,lastname:lastname,email:email})}}" class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
                 </div>
             </div>
             <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
@@ -345,11 +345,15 @@
                                     <div class="input-two-wrapper mb--15">
                                         <div class="first-name half-wid">
                                             <label for="contact-name" class="form-label">First Name</label>
-                                            <input  name="name" id="firstname" type="text" value={{ name }}>
+                                            <input  name="name" id="firstnamee" type="text" value={{ name }}>
+                                            <div id="firstName">
+                                            </div>
                                         </div>
                                         <div class="last-name half-wid">
                                             <label for="contact-name-last" class="form-label">Last Name</label>
-                                            <input name="lastname" id="lastname" type="text" value={{ lastname }}>
+                                            <input name="lastname" id="lastnamee" type="text" value={{ lastname }}>
+                                            <div id="lastName">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="email-area">
@@ -405,14 +409,6 @@
                                              <input name="phoneNumber" id="phoneNumberr" type="text" value={{phoneNumber}} >
                                              <div id="phoneNumber">
                                              </div>
-
-                                             <style>
-                                                 .test {
-                                                     color: red;
-                                                     font-weight: bold;
-
-                                                 }
-                                             </style>
                                          </div>
                                      </div>
                                  </div>
@@ -421,7 +417,9 @@
                                      <div class="input-two-wrapper mt--15">
                                          <div class="first-name half-wid">
                                              <label for="cin" class="form-label">Your Cin Number</label>
-                                             <input  name="cin" id="cin" type="text" value={{ cin }}>
+                                             <input  name="cin" id="cinn" type="text" value={{ cin }}>
+                                             <div id="cin">
+                                             </div>
                                          </div>
                                          <div class="last-name half-wid">
                                              <label class="dob" for="datepicker">Date of brith</label>
@@ -467,10 +465,14 @@
                                     <div class="old-password half-wid">
                                         <label for="oldPass" class="form-label">Enter Old Password</label>
                                         <input name="pass" id="oldPass" type="password">
+                                        <div id="other">
+                                        </div>
                                     </div>
                                     <div class="new-password half-wid">
                                         <label for="NewPass" class="form-label">Create New Password</label>
                                         <input name="password" id="NewPass" type="password">
+                                        <div id="password">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="email-area mt--15">

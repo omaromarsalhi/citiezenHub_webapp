@@ -32,26 +32,37 @@ function afficherMessagesErreur(erreurs) {
     if (Object.keys(erreurs).length === 0) {
         return;
     }
+    removeInputs();
     for (const champ in erreurs) {
+        console.log(champ);
         const conteneurErreurs = document.getElementById(champ);
         const contientTexte = conteneurErreurs.textContent.trim().length > 0;
-      console.log("hyhyhyhy");
+        const messageErreur = erreurs[champ];
+        conteneurErreurs.classList.add('test');
+        conteneurErreurs.textContent = messageErreur;
 
     }
 
 
 }
+function removeInputs() {
+    const elementsSansStyle = document.querySelectorAll('.test');
+    elementsSansStyle.forEach(element => {
+        element.innerHTML='';
+    });
+}
 function editProfile(event) {
+
     event.preventDefault();
     let formData = new FormData();
-    let name=$('#firstname').val();
-    let lastname=$('#lastname').val();
+    let name=$('#firstnamee').val();
+    let lastname=$('#lastnamee').val();
     let email=$('#email').val();
     let role=$('#role').val();
     let age=$('#agee').val();
     let gender=$('#gender').val();
     let status=$('#status').val();
-    let cin=$('#cin').val();
+    let cin=$('#cinn').val();
     let phoneNumber=$('#phoneNumberr').val();
     let date=$('#date').val();
     formData.append('image',$('#nipa').prop('files')[0]);
@@ -76,7 +87,10 @@ function editProfile(event) {
             if (response.success) {
                 let user = response.user;
                 console.log(user)
-                alert('Profil mis à jour avec succès!');
+                removeInputs();
+                customAlert.alert('Successfully saved Your Notificationm setting');
+                // addErrorMessage(" Profile edited with sucess",'success');
+
             } else  {
                 let errors = response.errors;
                 console.log(errors);
@@ -86,13 +100,10 @@ function editProfile(event) {
         },
         error: function (response) {
             const messagesErreur = parserMessagesErreur(response.responseText);
+            console.log(messagesErreur);
             afficherMessagesErreur(messagesErreur);
-            // const conteneurErreurs = document.getElementById('mesaage');
-            // const elementErreur = document.createElement('div');
-            // conteneurErreurs.classList.add('message-container');
-            // elementErreur.classList.add('error');
-            // elementErreur.textContent="you should fixed your errors";
-            // conteneurErreurs.appendChild(elementErreur);
+            addErrorMessage("you should fixed your errors",'error','message');
+
 
 
 
@@ -100,6 +111,17 @@ function editProfile(event) {
     });
 }
 
+
+function addErrorMessage(message,classeStyle,inputId) {
+    const conteneurErreurs = document.getElementById(inputId);
+    console.log("ghhhhhhhhh");
+    const elementErreur = document.createElement('div');
+    conteneurErreurs.classList.add('message-container');
+    elementErreur.classList.add(classeStyle);
+    elementErreur.textContent=message;
+    conteneurErreurs.appendChild(elementErreur);
+
+}
 function editImage(event) {
     event.preventDefault();
     let formData = new FormData();
@@ -123,9 +145,21 @@ function editImage(event) {
         },
     });
 }
+const customAlert = {
+    alertWithPromise: function (message) {
+        return new Promise(function (resolve, reject) {
+            if (confirm(message)) {
+                resolve(); // Confirmer la promesse si l'utilisateur clique sur OK
+            } else {
+                reject(); // Rejeter la promesse si l'utilisateur annule
+            }
+        });
+    }
+};
 function editPassword(event) {
     event.preventDefault();
     let formData = new FormData();
+    let email=$('#email').val();
     let oldPass=$('#oldPass').val();
     let NewPass=$('#NewPass').val();
     let rePass=$('#rePass').val();
@@ -143,10 +177,32 @@ function editPassword(event) {
         contentType: false,
         success: function (response) {
             console.log(response.state);
+            customAlert.alertWithPromise('Votre mot de passe a été modifié avec succès. Vous devez vous déconnecter et saisir vos nouvelles informations.')
+                .then(function () {
 
+                    $('#email').val('');
+                    $('#oldPass').val('');
+                    $('#NewPass').val('');
+                    $('#rePass').val('');
+
+                    window.location.href = '/logout';
+                })
+                .catch(function () {
+                    console.log("L'utilisateur a annulé l'action.");
+                });
         },
         error: function (response) {
-            console.log("error");
+            const messagesErreur = parserMessagesErreur(response.responseText);
+            console.log(messagesErreur);
+            afficherMessagesErreur(messagesErreur);
+            // for (const champ in messagesErreur) {
+            //     console.log(champ);
+            //     const messageErreur = messagesErreur[champ];
+            //   afficherMessagesErreur()
+            //
+            // }
+
+
         },
     });
 }
