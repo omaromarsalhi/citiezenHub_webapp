@@ -106,7 +106,7 @@
                         <img src="/images/reclamation/${reclamation.imagePath}" + reclamation.imagePath alt="Reclamation Image" width="200" height="200"/>
                     </td>
                     <td class="align-middle ps-4">${reclamation.privateKey}</td>
-                    <td class="align-middle ps-4">${reclamation.createdAt}</td>
+                    <td class="align-middle ps-4">${ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }</td>
                     <td class="align-middle ps-4">${reclamation.subject}</td>
                     <td class="align-middle ps-4">${reclamation.description}</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
