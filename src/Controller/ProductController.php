@@ -35,7 +35,7 @@ class ProductController extends AbstractController
 
             $new_product->setIdUser(1);
             $new_product->setName($name);
-            $new_product->setDescreption($description);
+            $new_product->setDescription($description);
             $new_product->setPrice(floatval($price));
             $new_product->setQuantity(floatval($quantity));
             $new_product->setCategory($category);
@@ -70,7 +70,7 @@ class ProductController extends AbstractController
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
-        return $this->render('market_place/create.html.twig');
+        return $this->render('market_place/create.html.twig',['update'=>false]);
     }
 
     #[Route('/generate_description', name: '_show', methods: ['GET', 'POST'])]
@@ -97,22 +97,36 @@ class ProductController extends AbstractController
     }
 
 
-    #[Route('/{idProd}/edit', name: '_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    #[Route('/{index}/edit', name: '_edit', methods: ['POST'])]
+    public function edit(Request $request,ProductRepository $productRepository, EntityManagerInterface $entityManager, int $index): Response
     {
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
+//        $form = $this->createForm(ProductType::class, $product);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_market_place_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->renderForm('market_place/edit.html.twig', [
+//            'product' => $product,
+//            'form' => $form,
+//        ]);
+        if ($request->isXmlHttpRequest()) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            $product=$productRepository->findOneBy(['idProduct' => $request->get('index')]);
+
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_market_place_index', [], Response::HTTP_SEE_OTHER);
+            return new JsonResponse([]);
         }
 
-        return $this->renderForm('market_place/edit.html.twig', [
+        $product=$productRepository->findOneBy(['idProduct' => $request->get('_token_' . $index)]);
+
+        return $this->render('market_place/create.html.twig',[
             'product' => $product,
-            'form' => $form,
-        ]);
+            'update'=>true]);
     }
 
     #[Route('/delete', name: '_delete', methods: ['POST'])]
@@ -120,30 +134,25 @@ class ProductController extends AbstractController
     {
         $session = $request->getSession();
         if ($request->isXmlHttpRequest()) {
+
             $prod2Remove=$productRepository->findOneBy(['idProduct' => $request->get('id')]);
 
             $entityManager->remove($prod2Remove);
             $entityManager->flush();
 
-            $prods = $session->get('allProducts');
-            $prods=array_splice($prods, array_search($prod2Remove, $prods), 1);
-            $session->set('allProducts', $prods);
+            $page = $request->get("type");
+            $map=$session->get('user_products_map');
 
-            $nbr_pages = $session->get('nbr_pages');
-            $nbr_pages-=1;
-            $session->set('nbr_pages', $nbr_pages);
+            if($page=='on_sale')
+                $state='verified';
+            else
+                $state='unverified';
 
-            $template=$this->render('user_dashboard/sub_onsale_products.html.twig', [
-                'products' => array_slice($prods, 0, 10),
-                'underverif'=>false
-            ]);
+            $map[$page]->setProducts($productRepository->findBy(['isDeleted' => false,'state' => $state]));
 
-            return new JsonResponse([
-                'template'=>$template->getContent(),
-                'currentPage' => 1,
-                'previousPage' => 2,
-                'nbrpages' => ceil(sizeof($prods) / 10)
-            ]);
+            $session->set('user_products_map', $map);
+
+            return new JsonResponse(['page'=>$map[$page]->getCurrentPage()]);
         }
         return new Response('something went wrong', Response::HTTP_BAD_REQUEST);
     }

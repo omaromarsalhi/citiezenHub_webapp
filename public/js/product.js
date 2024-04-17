@@ -8,15 +8,13 @@
 //     regex();
 // }, 1000);
 
+
+
 window.onload = function() {
-    // adjustSelection();
     regex();
 }
 
-
-
-function deleteProduct(id){
-    console.log(id)
+function updateProduct(id){
     $.ajax({
         url: '/product/delete',
         type: "POST",
@@ -25,25 +23,61 @@ function deleteProduct(id){
         },
         async: true,
         success: function (response) {
-            console.log(response)
-            $("#sub-1-block").html(response.template);
-            setTimeout(function() {
-                launchSwiper();
-            }, 1000);
+
+            DisplayListProducts4Owner(response.page,type);
+
+            $('#notification_box').html('<div class="woocommerce-message notifDiv" id="notifDiv" role="alert">\n' +
+                '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  “ Product has been Deleted ”\n' +
+                '<a href=""\n' +
+                '   class="restore-item">Undo?</a>\n' +
+                '</div>')
+
+            $('#notifDiv').on('click', function () {
+                $('#notifDiv').remove()
+            });
+        }
+    });
+}
+
+function initializeUpdate(product){
+    regex();
+    $('#name').val(product.name);
+    $('#description').val(product.description);
+    $('#price').val(product.price);
+    $('#quantity').val(product.quantity);
+    $('#category').val(product.category);
+}
 
 
-            $("#1-page-"+response.previousPage).removeClass("active")
-            $("#1-page-"+response.currentPage).addClass("active")
+function deleteProduct(id,index,type){
+    console.log(id)
+    console.log(type)
+    $.ajax({
+        url: '/product/delete',
+        type: "POST",
+        data: {
+            id:id,
+            type:type
+        },
+        async: true,
+        success: function (response) {
+
+            DisplayListProducts4Owner(response.page,type);
+
+            $('#notification_box').html('<div class="woocommerce-message notifDiv" id="notifDiv" role="alert">\n' +
+                '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  “ Product has been Deleted ”\n' +
+                '<a href=""\n' +
+                '   class="restore-item">Undo?</a>\n' +
+                '</div>')
+
+            $('#notifDiv').on('click', function () {
+                $('#notifDiv').remove()
+            });
         }
     });
 }
 
 
-
-// function adjustSelection() {
-//     var element = document.getElementsByClassName("nice-select").item(0);
-//     element.classList.add("selectCategory");
-// }
 
 
 function createProduct(e) {
@@ -242,6 +276,33 @@ function generateDescreption() {
 }
 
 
+function DisplayListProducts4Owner(movement_direction, page) {
+    $.ajax({
+        url: '/user/dashboard/',
+        type: "post",
+        data: {
+            movement_direction: movement_direction,
+            page:page
+        },
+        async: true,
+        success: function (response) {
+
+            console.log(response)
+
+            $("#sub-"+page+"-block").html(response.template);
+            setTimeout(function() {
+                launchSwiper();
+            }, 1000);
+
+
+            $("#"+page+"-page-"+response.previousPage).removeClass("active")
+            $("#"+page+"-page-"+response.currentPage).addClass("active")
+        },
+        error: function (response) {
+            console.log(response);
+        },
+    });
+}
 
 
 

@@ -28,7 +28,7 @@ class Product
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]
-    private ?string $descreption = null;
+    private ?string $description = null;
 
     #[ORM\Column(name:"isDeleted",nullable: true)]
     private ?bool $isDeleted = null;
@@ -97,14 +97,14 @@ class Product
         return $this;
     }
 
-    public function getDescreption(): ?string
+    public function getDescription(): ?string
     {
-        return $this->descreption;
+        return $this->description;
     }
 
-    public function setDescreption(?string $descreption): static
+    public function setDescription(?string $description): static
     {
-        $this->descreption = $descreption;
+        $this->$description = $description;
 
         return $this;
     }

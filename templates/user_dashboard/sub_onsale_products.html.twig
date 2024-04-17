@@ -1,7 +1,7 @@
 
 {% for i,product in products %}
     <!-- start single product -->
-    <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
+    <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" id="product_at_index_{{ i }}">
         <div class="product-style-one no-overlay">
             <div class="card-thumbnail">
                 <a href="../pages/product-details.html">
@@ -48,6 +48,7 @@
                             title="Contact Seller">
                         <a
                                 href="#"
+                                onclick="document.getElementById('form_update_{{ i }}').submit(); return false;"
                                 class="yith-wcqv-button"
                                 data-product_id="793"
                         >
@@ -63,10 +64,10 @@
                     >
 
                         <a
-                                onclick="deleteProduct({{ product.idProduct }})"
+                                onclick="deleteProduct({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
                                 class="yith-wcqv-button"
                         >
-                            <i class="fa-solid fa-trash"></i>
+                            <i class="fa-regular fa-trash-can"></i>
                         </a>
 
                     </div>
@@ -146,6 +147,12 @@
         </div>
         <form id="form_details_{{ i }}" method="post"
               action="{{ path('app_product_product_details',{'index': i }) }}">
+            <input type="hidden" name="_token_{{ i }}"
+                   value="{{ product.idProduct }}">
+        </form>
+
+        <form id="form_update_{{ i }}" method="post"
+              action="{{ path('app_product_edit',{'index': i }) }}">
             <input type="hidden" name="_token_{{ i }}"
                    value="{{ product.idProduct }}">
         </form>

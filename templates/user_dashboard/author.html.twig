@@ -3,6 +3,7 @@
 
 {% block stylesheets_wtf1 %}
     <link rel="stylesheet" href="{{ asset('css/wtf.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}"/>
 {% endblock %}
 
 {% block javascripts %}
@@ -178,11 +179,14 @@
 
                 <div class="tab-pane row g-5 d-flex fade show active" id="nav-home" role="tabpanel"
                      aria-labelledby="nav-home-tab">
-                    <div class="rn-new-items rn-section-gapTop">
-                        <div class="container">
+                    <div class="rn-new-items ">
+                        <div class="container " style="margin-top: 10px" >
+                            <div class="woocommerce-notices-wrapper" id="notification_box">
+
+                            </div>
                             <div id="sub-on_sale-block" class="row g-5">
                                 <!-- start single product -->
-                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': on_sale.getNProducts(10),'underverif': false} %}
+                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': on_sale.getNProducts(10),'underverif': false,'type':'on_sale'} %}
                                 <!-- end single product -->
                             </div>
                         </div>
@@ -225,7 +229,7 @@
                         <div class="container">
                             <div id="sub-unverified-block" class="row g-5">
                                 <!-- start single product -->
-                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': unverified.getNProducts(10),'underverif':true} %}
+                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': unverified.getNProducts(10),'underverif':true,'type':'unverified'} %}
                                 <!-- end single product -->
                             </div>
                         </div>

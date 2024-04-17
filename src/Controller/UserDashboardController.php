@@ -44,7 +44,8 @@ class UserDashboardController extends AbstractController
 
             $template=$this->render('user_dashboard/sub_onsale_products.html.twig', [
                 'products' => $map[$page]->getNProducts(10),
-                'underverif'=>$underverif
+                'underverif'=>$underverif,
+                'type'=>$page
             ]);
 
             return new JsonResponse([

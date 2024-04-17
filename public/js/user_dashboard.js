@@ -6,7 +6,8 @@
 
 
 
-function DisplayListProducts4Owner(movement_direction,page) {
+
+function DisplayListProducts4Owner(movement_direction, page) {
     $.ajax({
         url: '/user/dashboard/',
         type: "post",
@@ -16,6 +17,8 @@ function DisplayListProducts4Owner(movement_direction,page) {
         },
         async: true,
         success: function (response) {
+
+            console.log(response)
 
             $("#sub-"+page+"-block").html(response.template);
             setTimeout(function() {

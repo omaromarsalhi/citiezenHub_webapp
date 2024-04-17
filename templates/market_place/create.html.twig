@@ -42,43 +42,96 @@
                 <div class="container">
                     <div class="row g-5">
                         <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
-                            <!-- file upload area -->
-                            <div class="upload-area">
-                                <div class="upload-formate mb--30">
-                                    <h6 class="title">Upload file</h6>
-                                    <p class="formate">Drag or choose your file to upload</p>
-                                </div>
+                            {% if update == false %}
+                                <!-- file upload area -->
+                                <div class="upload-area">
+                                    <div class="upload-formate mb--30">
+                                        <h6 class="title">Upload file</h6>
+                                        <p class="formate">Drag or choose your file to upload</p>
+                                    </div>
 
-                                <div class="brows-file-wrapper">
-                                    <!-- actual upload which is hidden -->
-                                    <input
-                                            name="createinputfile"
-                                            id="createinputfile"
-                                            type="file"
-                                            class="inputfile"
-                                            multiple
-                                    />
-                                    <img
-                                            id="createfileImage"
-                                            src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
-                                            alt=""
-                                            data-black-overlay="6"
-                                    />
+                                    <div class="brows-file-wrapper">
+                                        <!-- actual upload which is hidden -->
+                                        <input
+                                                name="createinputfile"
+                                                id="createinputfile"
+                                                type="file"
+                                                class="inputfile"
+                                                multiple
+                                        />
+                                        <img
+                                                id="createfileImage"
+                                                src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                                alt=""
+                                                data-black-overlay="6"
+                                        />
 
-                                    <!-- our custom upload button -->
-                                    <label for="createinputfile" title="No File Choosen">
-                                        <i class="feather-upload"></i>
-                                        <span class="text-center">Choose a File</span>
-                                        <p class="text-center mt&#45;&#45;10">
-                                            PNG, GIF, WEBP, MP4 or MP3. <br/>
-                                            Max 1Gb.
-                                        </p>
-                                    </label>
+                                        <!-- our custom upload button -->
+                                        <label for="createinputfile" title="No File Choosen">
+                                            <i class="feather-upload"></i>
+                                            <span class="text-center">Choose a File</span>
+                                            <p class="text-center mt&#45;&#45;10">
+                                                PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                                Max 1Gb.
+                                            </p>
+                                        </label>
 
+                                    </div>
+                                    <div id="error-message-image" class="error">
+                                    </div>
                                 </div>
-                                <div id="error-message-image" class="error">
+                            {% else %}
+                                <!-- file upload area -->
+                                <div class="upload-area">
+                                    <div class="upload-formate mb--30">
+                                        <h6 class="title">Upload file</h6>
+                                        <p class="formate">Drag or choose your file to upload</p>
+                                    </div>
+
+                                    <div class="brows-file-wrapper">
+                                        <!-- actual upload which is hidden -->
+                                        <input
+                                                name="createinputfile"
+                                                id="createinputfile"
+                                                type="file"
+                                                class="inputfile"
+                                                multiple
+                                        />
+                                        <!--{#<img
+                                                id="createfileImage"
+                                                src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                                alt=""
+                                                data-black-overlay="6"
+                                        />#}-->
+                                        <div class="swiper rounded effect-creative-swiper">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide">
+                                                    <img
+                                                            id="createfileImage"
+                                                            src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                                            alt=""
+                                                            data-black-overlay="6"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="swiper-pagination"></div>
+                                        </div>
+
+                                        <!-- our custom upload button -->
+                                        <!--{#<label for="createinputfile" title="No File Choosen">
+                                            <i class="feather-upload"></i>
+                                            <span class="text-center">Choose a File</span>
+                                            <p class="text-center mt&#45;&#45;10">
+                                                PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                                Max 1Gb.
+                                            </p>
+                                        </label>#}-->
+
+                                    </div>
+                                    <div id="error-message-image" class="error">
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                             <!-- end upoad file area -->
 
                             <div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
@@ -147,9 +200,9 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <div class="input-box pb--20 ">
+                                        <!--{# <div class="input-box pb&#45;&#45;20 collection-single-wized">
                                             <label for="category" class="form-label">Category</label>
-                                            <!--{#                                        <input id="Propertie" placeholder="e. g. `Sport`"/> #}-->
+                                            &lt;!&ndash; #}{#         <input id="Propertie" placeholder="e. g. `Sport`"/> #}{# &ndash;&gt;
                                             <select id="category">
                                                 <option value="food" selected>Food</option>
                                                 <option value="sports">Sports</option>
@@ -157,6 +210,18 @@
                                                 <option value="realestate">RealEstate</option>
                                                 <option value="vehicul">Vehicul</option>
                                             </select>
+                                        </div> #}-->
+                                        <div class="collection-single-wized " style="margin-top: -20px !important;">
+                                            <label for="category" class="title">Category</label>
+                                            <div class="create-collection-input">
+                                                <select id="category">
+                                                    <option value="food" selected>Food</option>
+                                                    <option value="sports">Sports</option>
+                                                    <option value="entertainment">Entertainment</option>
+                                                    <option value="realestate">RealEstate</option>
+                                                    <option value="vehicul">Vehicul</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -301,7 +366,7 @@
                                     </div>
                                 </div>
                                 <a href="../pages/product-details.html"
-                                ><span class="product-name" ><strong id="name_model">Banana</strong></span></a
+                                ><span class="product-name"><strong id="name_model">Banana</strong></span></a
                                 >
                                 <span class="latest-bid">
                                     <span id="quantity_model">10 Pieces/</span>
@@ -323,5 +388,22 @@
             </div>
         </div>
     </div>
+
+
+    {% if update == true %}
+
+        {% set myProduct = { 'name':product.name,
+            'description':product.description,
+            'price':product.price,
+            'quantity':product.quantity,
+            'category':product.category } %}
+
+        <script>
+            window.onload = function () {
+                var myData = {{ myProduct|json_encode|raw }};
+                initializeUpdate(myData);
+            }
+        </script>
+    {% endif %}
 
 {% endblock %}

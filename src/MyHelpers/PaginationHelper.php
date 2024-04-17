@@ -4,6 +4,8 @@ namespace App\MyHelpers;
 
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class PaginationHelper
 {
     private  $products;
@@ -27,12 +29,16 @@ class PaginationHelper
 
     public function getProducts()
     {
-        return $this->products;
+        return new ArrayCollection($this->products);
     }
     public function getNProducts(int $number)
     {
+        if ($this->products instanceof ArrayCollection) {
+            $this->toArray();
+        }
         return array_slice($this->products, ($this->current_page - 1) * $number, $number);
     }
+
 
     public function setProducts($products): void
     {
@@ -67,6 +73,15 @@ class PaginationHelper
     public function setNbrPages(int $nbr_pages): void
     {
         $this->nbr_pages = $nbr_pages;
+    }
+
+    public function toArray()
+    {
+        $result = [];
+        foreach ($this->products as $element) {
+            $result[] = $element; // Assuming related entities have a similar method
+        }
+        $this->products=$result ;
     }
 
 }
