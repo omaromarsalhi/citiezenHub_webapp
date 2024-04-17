@@ -132,7 +132,8 @@
                                     </a>
                                     <div><a class="fs-8 fw-bold" data-bs-toggle="modal"
                                             data-bs-target="#addDealModal"
-                                            aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">Omar Marrakchi</a>
+                                            aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"
+                                            data-id="{{ i.id }}">Omar Marrakchi</a>
                                         <div class="d-flex align-items-center">
                                             <p class="mb-0 text-body-highlight fw-semibold fs-9 me-2">System
                                                 Admin</p>
@@ -146,8 +147,36 @@
                             </td>
                             <td class="phone align-middle white-space-nowrap fw-semibold ps-4 border-end border-translucent">
                                 {% if i.images|length > 0 %}
-                                    <img src="{{ asset('images/blog/' ~ i.images[0]) }}"
-                                         style="width: 200px; height: 200px; object-fit: contain;">
+                                    <center>
+                                        <div class="carousel slide carousel-fade" id="carouselExampleControls">
+                                            <div class="carousel-indicators">
+                                                {% for j in 0..(i.images|length - 1) %}
+                                                    <button type="button" data-bs-target="#carouselExampleControls"
+                                                            data-bs-slide-to="{{ j }}" {% if j == 0 %}class="active"
+                                                            aria-current="true"{% endif %}
+                                                            aria-label="Slide {{ j + 1 }}"></button>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="carousel-inner rounded">
+                                                {% for j in i.images %}
+                                                    <div class="carousel-item active">
+                                                        <img class="d-block w-100" src="{{ asset('images/blog/' ~ j) }}"
+                                                             alt="First slide"/>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <button class="carousel-control-prev" type="button"
+                                                    data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button"
+                                                    data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </button>
+                                        </div>
+                                    </center>
                                 {% else %}
                                     No images
                                 {% endif %}
@@ -201,7 +230,7 @@
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content bg-body-highlight p-6">
                     <div class="modal-header border-0 p-0 mb-2">
-                        <h3 class="mb-0">New Station</h3>
+                        <h3 class="mb-0">Omar marrakchi Post</h3>
                         <button class="btn btn-sm btn-phoenix-secondary" data-bs-dismiss="modal" aria-label="Close">
                             <span class="fas fa-times text-danger"></span>
                         </button>
@@ -210,33 +239,19 @@
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label class="text-body-highlight fw-bold mb-2">Type Vehicle</label>
-                                    <select class="form-select">
-                                        <option>Select</option>
-                                        <option>Metro</option>
-                                        <option>Bus</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="text-body-highlight fw-bold mb-2">Real Address</label>
-                                    <input class="form-control input-target" type="text" placeholder="Enter deal name"
-                                           name="adressStation" id="adressStation"/>
+                                    <label class="text-body-highlight fw-bold mb-2">Images</label>
+
+
+
+
+
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label class="text-body-highlight fw-bold mb-2" id="">Station Name</label>
+                                    <label class="text-body-highlight fw-bold mb-2" id="">Caption</label>
                                     <input name="name" id="name" class="form-control input-target" type="text"
                                            placeholder="Enter contact name"/>
-                                </div>
-                                <div class="mb-4">
-                                    <div class="row g-3">
-                                        <div class="col-6">
-                                            <label class="text-body-highlight fw-bold mb-2">Station Image</label>
-                                            <input name="createinputfile" id="createinputfile" type="file"
-                                                   class="form-control input-target  text-body-highlight fw-bold mb-2"/>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -284,6 +299,11 @@
                     });
                 }
             });
+        });
+
+        $('a[data-bs-toggle="modal"]').on('click', function() {
+            var postId = $(this).data('id');
+            console.log(postId);
         });
 
     </script>

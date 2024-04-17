@@ -211,30 +211,46 @@ class BlogController extends AbstractController
         return new JsonResponse(['success' => true]);
     }
 
-    #[Route('/blogAdmin', name: 'app_blogAdmin')]
+    #[Route('/blogAdmin2', name: 'app_blogAdmin')]
     public function indexAdmin(PostRepository $postRepository): Response
-{
-    $posts = $postRepository->findBy([], ['date_post' => 'DESC']);
+    {
+        $posts = $postRepository->findBy([], ['date_post' => 'DESC']);
 
-    $postsArray = array_map(function ($post) {
-        $images = $post->getImages();
-        $imagesArray = array_map(function ($image) {
-            return $image->getPath();
-        }, $images);
+        $postsArray = array_map(function ($post) {
+            $images = $post->getImages();
+            $imagesArray = array_map(function ($image) {
+                $imagePath = $this->getParameter('images_directory') . '/' . $image->getPath();
+                list($width, $height) = getimagesize($imagePath);
+                $imageSize = $width > $height ? 'large' : 'small';
+                return [
+                    'path' => $image->getPath(),
+                    'size' => $imageSize,
+                ];
+            }, $images);
 
-        return [
-            'id' => $post->getId(),
-            'caption' => $post->getCaption(),
-            'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
-            'nbReactions' => $post->getNbReactions(),
-            'images' => $imagesArray, // Ajouter cette ligne
-        ];
-    }, $posts);
+            $comments = $post->getComments()->toArray();
+            $commentsArray = array_map(function ($comment) {
+                return [
+                    'id' => $comment->getIdComment(),
+                    'caption' => $comment->getCaption(),
+                    'dateComment' => $comment->getDateComment()->format('Y-m-d H:i:s'),
+                ];
+            }, $comments);
 
-    return $this->render('blog/blogAdmin.html.twig', [
-        'posts' => $postsArray,
-    ]);
-}
+            return [
+                'id' => $post->getId(),
+                'caption' => $post->getCaption(),
+                'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+                'nbReactions' => $post->getNbReactions(),
+                'images' => $imagesArray,
+                'comments' => $commentsArray,
+            ];
+        }, $posts);
+
+        return $this->render('blog/blogAdmin2.html.twig', [
+            'posts' => $postsArray,
+        ]);
+    }
 
     #[Route('/PostDetail/{id}', name: 'app_PostDetail')]
     public function indexPostDetail($id, PostRepository $postRepository, CommentPostRepository $commentPostRepository): Response
