@@ -104,8 +104,7 @@ class Product
 
     public function setDescription(?string $description): static
     {
-        $this->$description = $description;
-
+        $this->description = $description;
         return $this;
     }
 

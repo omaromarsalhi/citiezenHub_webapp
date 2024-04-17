@@ -98,7 +98,7 @@ class ProductController extends AbstractController
 
 
     #[Route('/{index}/edit', name: '_edit', methods: ['POST'])]
-    public function edit(Request $request,ProductRepository $productRepository, EntityManagerInterface $entityManager, int $index): Response
+    public function edit(ImageHelper $imageHelper,Request $request,ProductRepository $productRepository, EntityManagerInterface $entityManager, int $index): Response
     {
 //        $form = $this->createForm(ProductType::class, $product);
 //        $form->handleRequest($request);
@@ -115,11 +115,41 @@ class ProductController extends AbstractController
 //        ]);
         if ($request->isXmlHttpRequest()) {
 
-            $product=$productRepository->findOneBy(['idProduct' => $request->get('index')]);
+            $product=$productRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
+            $name = $request->get("name");
+            $description = $request->get("description");
+            $price = $request->get("price");
+            $quantity = $request->get("quantity");
+            $category = $request->get("category");
+
+
+            $product->setName($name);
+            $product->setDescription($description);
+            $product->setPrice(floatval($price));
+            $product->setQuantity(floatval($quantity));
+            $product->setCategory($category);
+         /*   $errors = $validator->validate($updated_product);
+
+            if (count($errors) > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $field = $error->getPropertyPath();
+                    $errorMessages[] = $field;
+                }
+                if (sizeof($request->files->all()) == 0)
+                    $errorMessages[] = 'image';
+                return new JsonResponse(['error' => $errorMessages], Response::HTTP_BAD_REQUEST);
+            }*/
 
             $entityManager->flush();
 
-            return new JsonResponse([]);
+            $images = $request->files->all();
+            $newImagesPath = $imageHelper->saveImages($images, $product);
+
+/*            $aiverification=new AiVerification();
+            $desc=$aiverification->run($newImagesPath);
+            return new JsonResponse(['state' => 'done','desc'=>$desc]);*/
+            return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
         $product=$productRepository->findOneBy(['idProduct' => $request->get('_token_' . $index)]);

@@ -72,3 +72,6 @@
     width: 165px !important;
 }
 
+.updateImageHeight{
+    min-height: 200px !important;
+}

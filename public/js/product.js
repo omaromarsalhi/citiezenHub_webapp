@@ -9,37 +9,70 @@
 // }, 1000);
 
 
-
-window.onload = function() {
+window.onload = function () {
     regex();
 }
 
-function updateProduct(id){
+function updateProduct(id) {
+
+    // if(check_all_inputs()){
+    loader_start()
+    let name = $('#name').val();
+    let description = $('#description').val();
+    let price = $('#price').val();
+    let quantity = $('#quantity').val();
+    let category = $('#category').val();
+
+    let form_data = new FormData();
+    const list = $('#createinputfile').prop('files');
+
+    for (let i = 0; i < list.length; i++) {
+        form_data.append('file-' + (i + 1), list[i]);
+    }
+    form_data.append('name', name);
+    form_data.append('description', description);
+    form_data.append('price', price);
+    form_data.append('quantity', quantity);
+    form_data.append('category', category);
+    form_data.append('idProduct', id);
+
+    console.log(name)
+    console.log(description)
+    console.log(price)
+    console.log(quantity)
+    console.log(category)
+
     $.ajax({
-        url: '/product/delete',
+        url: '/product/1/edit',
         type: "POST",
-        data: {
-            id:id
-        },
+        data: form_data,
         async: true,
+        processData: false,
+        contentType: false,
         success: function (response) {
-
-            DisplayListProducts4Owner(response.page,type);
-
-            $('#notification_box').html('<div class="woocommerce-message notifDiv" id="notifDiv" role="alert">\n' +
-                '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  “ Product has been Deleted ”\n' +
-                '<a href=""\n' +
-                '   class="restore-item">Undo?</a>\n' +
-                '</div>')
-
-            $('#notifDiv').on('click', function () {
-                $('#notifDiv').remove()
-            });
-        }
+            console.log(response)
+            loader_stop(2000)
+            setTimeout(function () {
+                handle_success('the product has been added successfully')
+                // $('#createinputfile').val(null)
+                // $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
+                // $('#name').val('');
+                // $('#description').val('');
+                // $('#price').val('');
+                // $('#quantity').val('');
+                // $('#category').val('');
+            }, 2000)
+        },
+        error: function (xhr) {
+            loader_stop(1000)
+            const errorMessage = xhr.responseJSON.error;
+            check_all_inputs_with_php(errorMessage)
+        },
     });
+    // }
 }
 
-function initializeUpdate(product){
+function initializeUpdate(product) {
     regex();
     $('#name').val(product.name);
     $('#description').val(product.description);
@@ -49,20 +82,20 @@ function initializeUpdate(product){
 }
 
 
-function deleteProduct(id,index,type){
+function deleteProduct(id, index, type) {
     console.log(id)
     console.log(type)
     $.ajax({
         url: '/product/delete',
         type: "POST",
         data: {
-            id:id,
-            type:type
+            id: id,
+            type: type
         },
         async: true,
         success: function (response) {
 
-            DisplayListProducts4Owner(response.page,type);
+            DisplayListProducts4Owner(response.page, type);
 
             $('#notification_box').html('<div class="woocommerce-message notifDiv" id="notifDiv" role="alert">\n' +
                 '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  “ Product has been Deleted ”\n' +
@@ -78,10 +111,8 @@ function deleteProduct(id,index,type){
 }
 
 
-
-
 function createProduct(e) {
-    if(check_all_inputs()){
+    if (check_all_inputs()) {
         loader_start()
         let name = $('#name').val();
         let description = $('#description').val();
@@ -111,7 +142,7 @@ function createProduct(e) {
             success: function (response) {
                 console.log(response.desc)
                 loader_stop(4000)
-                setTimeout(function (){
+                setTimeout(function () {
                     handle_success('the product has been added successfully')
                     $('#createinputfile').val(null)
                     $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
@@ -120,7 +151,7 @@ function createProduct(e) {
                     $('#price').val('');
                     $('#quantity').val('');
                     $('#category').val('');
-                },4100)
+                }, 4100)
             },
             error: function (xhr) {
                 loader_stop(1000)
@@ -138,10 +169,10 @@ function consultProd() {
     let quantity = $('#quantity').val();
     let category = $('#category').val();
 
-    $("#name_model").html(name.charAt(0).toUpperCase()+name.slice(1).toLowerCase())
-    $("#price_model").html(price+' DT')
-    $("#quantity_model").html(quantity+' Pieces/ ')
-    $("#category_model").html(category.charAt(0).toUpperCase()+category.slice(1).toLowerCase())
+    $("#name_model").html(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
+    $("#price_model").html(price + ' DT')
+    $("#quantity_model").html(quantity + ' Pieces/ ')
+    $("#category_model").html(category.charAt(0).toUpperCase() + category.slice(1).toLowerCase())
 
     const files = $('#createinputfile').prop('files');
     let html = '<div class="swiper-wrapper" >';
@@ -159,19 +190,19 @@ function consultProd() {
     launchSwiper()
 }
 
-function check_all_inputs(){
+function check_all_inputs() {
     let errors = [];
     $('#error-message-image').html('')
 
-    if(! $('#name').val().match(/^[a-zA-Z][a-zA-Z0-9\s]*$/))
+    if (!$('#name').val().match(/^[a-zA-Z][a-zA-Z0-9\s]*$/))
         errors.push({text: "name", el: $('#error-message')});
-    if(! $('#price').val().match(/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/))
+    if (!$('#price').val().match(/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/))
         errors.push({text: "price", el: $('#error-message-price')});
-    if(! $('#quantity').val().match(/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/))
+    if (!$('#quantity').val().match(/^[1-9]\d{0,10}(,\d{3})*(\.\d{1,2})?$/))
         errors.push({text: "quantity", el: $('#error-message-quantity')});
-    if( $('#description').val().trim() === '')
+    if ($('#description').val().trim() === '')
         errors.push({text: "description", el: $('#error-message-desc')});
-    if($('#createinputfile').prop('files').length===0)
+    if ($('#createinputfile').prop('files').length === 0)
         errors.push({text: "image", el: $('#error-message-image')});
 
     if (errors.length > 0) {
@@ -180,19 +211,20 @@ function check_all_inputs(){
     }
     return true
 }
-function check_all_inputs_with_php(test_result){
+
+function check_all_inputs_with_php(test_result) {
     let errors = [];
     $('#error-message-image').html('')
 
-    if(test_result.includes('name'))
+    if (test_result.includes('name'))
         errors.push({text: "name", el: $('#error-message')});
-    if(test_result.includes('price'))
+    if (test_result.includes('price'))
         errors.push({text: "price", el: $('#error-message-price')});
-    if(test_result.includes('quantity'))
+    if (test_result.includes('quantity'))
         errors.push({text: "quantity", el: $('#error-message-quantity')});
-    if(test_result.includes('name'))
+    if (test_result.includes('name'))
         errors.push({text: "description", el: $('#error-message-desc')});
-    if(test_result.includes('image'))
+    if (test_result.includes('image'))
         errors.push({text: "image", el: $('#error-message-image')});
 
     if (errors.length > 0) {
@@ -256,7 +288,7 @@ function generateDescreption() {
         errorMessageElement.textContent = 'Please enter a valid product name so that Ai can help you generating a description';
     } else {
         loader_start_desc()
-        errorMessageElement.textContent=''
+        errorMessageElement.textContent = ''
         $.ajax({
             url: '/product/generate_description',
             type: "POST",
@@ -282,21 +314,21 @@ function DisplayListProducts4Owner(movement_direction, page) {
         type: "post",
         data: {
             movement_direction: movement_direction,
-            page:page
+            page: page
         },
         async: true,
         success: function (response) {
 
             console.log(response)
 
-            $("#sub-"+page+"-block").html(response.template);
-            setTimeout(function() {
+            $("#sub-" + page + "-block").html(response.template);
+            setTimeout(function () {
                 launchSwiper();
             }, 1000);
 
 
-            $("#"+page+"-page-"+response.previousPage).removeClass("active")
-            $("#"+page+"-page-"+response.currentPage).addClass("active")
+            $("#" + page + "-page-" + response.previousPage).removeClass("active")
+            $("#" + page + "-page-" + response.currentPage).addClass("active")
         },
         error: function (response) {
             console.log(response);
