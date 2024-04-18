@@ -16,13 +16,13 @@ class ConferenceController extends AbstractController
     #[Route('/conference', name: 'app_conference')]
     public function showReclamations(EntityManagerInterface $entityManager)
     {
-
+    
         $recc = $entityManager->getRepository(Reeclamation::class)->findBy([], ['createdAt' => 'DESC']);
         $last_reclamations = [];
         $rec = [];
         foreach ($recc as $reclamation) {
             $subject = $reclamation->getSubject();
-
+    
             if (!isset($rec[$subject]) || $rec[$subject]->getCreatedAt() < $reclamation->getCreatedAt()) {
                 $rec[$subject] = $reclamation;
             }
@@ -31,6 +31,7 @@ class ConferenceController extends AbstractController
             'reclamations' => $rec,
         ]);
     }
+    
   
 
     // Inside ConferenceController
@@ -91,4 +92,8 @@ public function addResponseToReclamation(int $id, Request $request, EntityManage
     // Return a success message
     return new JsonResponse(['message' => 'Response added successfully']);
 }
+
+
+
+
 }
