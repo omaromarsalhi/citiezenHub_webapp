@@ -121,7 +121,20 @@ groups: ['creation'],
 
     #[ORM\Column(name:"gender",length: 255, nullable: true)]
     private ?string $gender = null;
+    #[ORM\ManyToOne(targetEntity: Municipalite::class, inversedBy: "users")]
+    #[ORM\JoinColumn(name: "idMunicipalite ", referencedColumnName: "idMunicipalite", nullable: false)]
+    private $municipalite ;
 
+    public function getMunicipalite(): ?Municipalite
+    {
+        return $this->municipalite;
+    }
+
+    public function setMunicipalite(?Municipalite $municipalite): self
+    {
+        $this->municipalite = $municipalite;
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->idUser;
@@ -339,16 +352,7 @@ groups: ['creation'],
 
         return $this;
     }
-    public function serialize()
-    {
-        $this->image = base64_encode($this->image);
-    }
 
-    public function unserialize($serialized)
-    {
-        $this->image = base64_decode($this->image);
-
-    }
 
 
 

@@ -1,0 +1,132 @@
+
+{% extends 'admin_controlller/index.html.twig' %}
+{% block body %}
+  <script src="{{ asset('js/userScript.js') }}"></script>
+      <div class="content">
+        <nav class="mb-2" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="#!">Page 1</a></li>
+            <li class="breadcrumb-item"><a href="#!">Page 2</a></li>
+            <li class="breadcrumb-item active">Default</li>
+          </ol>
+        </nav>
+        <div class="mb-9">
+          <div class="row align-items-center justify-content-between g-3 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">Municipality details</h2>
+            </div>
+            <div class="col-auto">
+              <div class="row g-3">
+                <div class="col-auto"><a class="btn btn-phoenix-danger" href="{{path('DeleteMunicipality',{id:list.id})}}" onclick="alert('municipility deleted !!!!!!!!')"><span class="fa-solid fa-trash-can me-2"></span>Delete customer</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-5">
+            <div class="col-12 col-xxl-4">
+              <div class="row g-3 g-xxl-0 h-100">
+                <div class="col-12 col-md-7 col-xxl-12 mb-xxl-3">
+                  <div class="card h-100">
+                    <div class="card-body d-flex flex-column justify-content-between pb-3">
+                      <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
+                        <div class="col-12 col-sm-auto mb-sm-2">
+                          <div class="avatar avatar-5xl"><img class="rounded-circle" src="{{ asset('images/users/' ~ list.photo) }}" alt="" /></div>
+                        </div>
+                        <div class="col-12 col-sm-auto flex-1">
+                          <h3>{{ list.name }}</h3>
+                          <p class="text-body-secondary"> </p>
+                          <div><a class="me-2" href="#!"><span class="fab fa-linkedin-in text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a class="me-2" href="#!"><span class="fab fa-facebook text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a href="#!"><span class="fab fa-twitter text-body-quaternary text-opacity-75 text-primary-hover"></span></a></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-between-center border-top border-dashed pt-4">
+                        <div>
+                          <h6>ADDRESS</h6>
+                          <p class="fs-7 text-body-secondary mb-0">{{ list.Address }}</p>
+                        </div>
+                        <div>
+                          <h6>Status</h6>
+                          <p class="fs-7 text-body-secondary mb-0"></p>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+{#                <div class="col-12 col-md-5 col-xxl-12 mb-xxl-3">#}
+{#                  <div class="card h-100">#}
+{#                    <div class="card-body pb-3">#}
+{#                      <div class="d-flex align-items-center mb-3">#}
+{#                        <h3 class="me-1">Default Address</h3><button class="btn btn-link p-0"><span class="fas fa-pen fs-8 ms-3 text-body-quaternary"></span></button>#}
+{#                      </div>#}
+{#                      <h5 class="text-body-secondary">Address:</h5>#}
+{#                      <p class="text-body-secondary">{{ list.Address }}</p>#}
+
+{#                    </div>#}
+{#                  </div>#}
+{#                </div>#}
+
+              </div>
+            </div>
+            <div class="col-12 col-xxl-8">
+              <div class="mb-6">
+                <h3 class="mb-4">Municipalitiesr<span class="text-body-tertiary fw-normal">(97)</span></h3>
+                <div class="border-top border-bottom border-translucent" id="customerOrdersTable" data-list='{"valueNames":["order","total","payment_status","fulfilment_status","delivery_type","date"],"page":6,"pagination":true}'>
+                  <div class="table-responsive scrollbar">
+                    <table class="table table-sm fs-9 mb-0">
+                      <thead>
+                        <tr>
+                          <th class="sort white-space-nowrap align-middle ps-0 pe-3" scope="col" data-sort="order" style="width:10%;">CUSTOMER</th>
+                          <th class="sort align-middle text-end pe-7" scope="col" data-sort="total" style="width:10%;">EMAIL</th>
+                          <th class="sort align-middle white-space-nowrap pe-3" scope="col" data-sort="payment_status" style="width:15%;">ADDRESS</th>
+{#                          <th class="sort align-middle white-space-nowrap text-start pe-3" scope="col" data-sort="fulfilment_status" style="width:20%;">LAST SEEN</th>#}
+                          <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="delivery_type" style="width:30%;">DATE OF BRITH</th>
+                          <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">SUBSCRIBTION DATE /th>
+                          <th class="sort text-end align-middle pe-0 ps-5" scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="list" id="customer-order-table-body">
+                      {% for list in user %}
+                        <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                          <td class="order align-middle white-space-nowrap ps-0"><a class="fw-semibold"href="{{path('Show_Details', {user : list.email} )}}">{{ list.firstName }} {{ list.lastName }}</a></td>
+                          <td class="total align-middle text-end fw-semibold pe-7 text-body-highlight">{{ list.email }}</td>
+                          <td class="payment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary"><span class="badge badge-phoenix fs-10 badge-phoenix-success"><span class="badge-label">Paid</span><span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;">{{ list.Address }}</span></span></td>
+{#                          <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary"><span class="badge badge-phoenix fs-10 badge-phoenix-success"><span class="badge-label">{{ list.Address }}</span><span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;"></span></span></td>#}
+                          <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{ list.dob | date('Y-m-d H:i:s') }}</td>
+                          <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{ list.date | date('Y-m-d H:i:s') }}</td>
+                          <td class="align-middle white-space-nowrap text-end pe-0 ps-5">
+                            <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                      {% endfor %}
+                    </table>
+                  </div>
+                  <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
+                    <div class="col-auto d-flex">
+                      <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
+                    </div>
+                    <div class="col-auto d-flex"><button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
+                      <ul class="mb-0 pagination"></ul><button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer position-absolute">
+          <div class="row g-0 justify-content-between align-items-center h-100">
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2023 &copy;<a class="mx-1" href="https://themewagon.com/">Themewagon</a></p>
+            </div>
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 text-body-tertiary text-opacity-85">v1.14.0</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      {% endblock %}

@@ -145,6 +145,7 @@ function editImage(event) {
         },
     });
 }
+
 const customAlert = {
     alertWithPromise: function (message) {
         return new Promise(function (resolve, reject) {
@@ -195,14 +196,48 @@ function editPassword(event) {
             const messagesErreur = parserMessagesErreur(response.responseText);
             console.log(messagesErreur);
             afficherMessagesErreur(messagesErreur);
-            // for (const champ in messagesErreur) {
-            //     console.log(champ);
-            //     const messageErreur = messagesErreur[champ];
-            //   afficherMessagesErreur()
+
+
+
+        },
+    });
+}
+function AddMunicipality(event) {
+    event.preventDefault();
+    let formData = new FormData();
+    let name=$('#namee').val();
+    let adresse=$('#adresse').val();
+    formData.append('imagee',$('#createinputfile').prop('files')[0]);
+    formData.append('name',name);
+    formData.append('adresse',adresse);
+    $.ajax({
+
+        url: '/AddMunicipality',
+        type: "POST",
+        data:formData,
+        async: true,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response.state);
+            removeInputs();
+
+            // customAlert.alertWithPromise('Votre mot de passe a été modifié avec succès. Vous devez vous déconnecter et saisir vos nouvelles informations.')
+            //     .then(function () {
             //
-            // }
-
-
+            //         $('#namee').val('');
+            //         $('#adresse').val('');
+            //         // window.location.href = '/logout';
+            //     })
+            //     .catch(function () {
+            //         console.log("L'utilisateur a annulé l'action.");
+            //     });
+            customAlert.alert('Successfully saved Your Notificationm setting');
+        },
+        error: function (response) {
+            const messagesErreur = parserMessagesErreur(response.responseText);
+            console.log(messagesErreur);
+            afficherMessagesErreur(messagesErreur);
         },
     });
 }
