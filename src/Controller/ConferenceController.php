@@ -151,4 +151,8 @@ class ConferenceController extends AbstractController
         // Return the response data
         return new JsonResponse($responseData);
     }
+
+   
+
 }
+
