@@ -39,7 +39,6 @@
                 </div>
               </div>
               <h4 class="title">
-                           
                               {% if (recll.description|length) > 10 %}
                                 {{ recll.description|slice(0, 10) }}...
                               {% else %}
@@ -64,31 +63,31 @@
       <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
     </svg>
   </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const deleteButtons = document.querySelectorAll('.delete-reclamation');
-    
-      deleteButtons.forEach(function(button) {
-        button.addEventListener('click', function(e) {
-          e.preventDefault();
-          const reclamationId = this.getAttribute('data-id');
-          
-          if (confirm('Are you sure?')) {
-            fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
-              method: 'POST',
-              // Include any necessary headers, CSRF tokens, etc.
-            }).then(response => {
-              if (response.ok) {
-                document.getElementById(`reclamation-${reclamationId}`).remove();
-              } else {
-                window.location.reload();
-              }
-            }).catch(error => console.error('Error:', error));
-          }
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-reclamation');
+      
+        deleteButtons.forEach(function(button) {
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const reclamationId = this.getAttribute('data-id');
+            
+            if (confirm('Are you sure?')) {
+              fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
+                method: 'POST',
+                // Include any necessary headers, CSRF tokens, etc.
+              }).then(response => {
+                if (response.ok) {
+                  document.getElementById(`reclamation-${reclamationId}`).remove();
+                } else {
+                  window.location.reload();
+                }
+              }).catch(error => console.error('Error:', error));
+            }
+          });
         });
       });
-    });
-    </script>
+      </script>
 
 
 <!-- Modal Structure -->

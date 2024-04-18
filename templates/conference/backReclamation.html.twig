@@ -40,17 +40,42 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end py-2">
                         <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
-                        <a class="dropdown-item" href="#!">Reclamation</a>
+                        <a class="dropdown-item" href="#!">show more </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="#!">Delete Reclamation</a>
-                    </div>
+                    <button class="btn btn-danger delete-reclamation" data-id="{{ reclamation.id }}">Delete</button>
+                </div>
                 </div>
             </td>
         </tr>
     {% endfor %}
 </tbody>
 </table>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const deleteButtons = document.querySelectorAll('.delete-reclamation');
+    
+      deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          const reclamationId = this.getAttribute('data-id');
+          
+          if (confirm('Are you sure?')) {
+            fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
+              method: 'POST',
+              // Include any necessary headers, CSRF tokens, etc.
+            }).then(response => {
+              if (response.ok) {
+                document.getElementById(`reclamation-${reclamationId}`).remove();
+                window.location.reload();
+              } else {
+                window.location.reload();
+              }
+            }).catch(error => console.error('Error:', error));
+          }
+        });
+      });
+    });
+    </script>
 <div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true"> 
 <div class="modal-dialog">
     <div class="modal-content">
@@ -138,7 +163,7 @@
                         <img src="/images/reclamation/${reclamation.imagePath}" + reclamation.imagePath alt="Reclamation Image" width="200" height="200"/>
                     </td>
                     <td class="align-middle ps-4">${reclamation.privateKey}</td>
-                    <td class="align-middle ps-4">${ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }</td>
+                    <td class="align-middle ps-4">${ reclamation.createdAt }</td>
                     <td class="align-middle ps-4">${reclamation.subject}</td>
                     <td class="align-middle ps-4">${reclamation.description}</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
