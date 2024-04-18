@@ -14,21 +14,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ConferenceController extends AbstractController
 {
     #[Route('/conference', name: 'app_conference')]
-    public function showReclamations(EntityManagerInterface $entityManager)
+    public function showReclamations(EntityManagerInterface $entityManager, Request $request)
     {
+        $page = max(1, $request->query->getInt('page', 1)); // Get the current page from query parameters, default to 1
+        $maxResults = 5; // Maximum number of reclamations per page
+        
+        $queryBuilder = $entityManager->getRepository(Reeclamation::class)->createQueryBuilder('r')
+            ->orderBy('r.createdAt', 'DESC');
+            
+        $totalReclamations = count($queryBuilder->getQuery()->getResult()); // Total number of reclamations
+        $totalPages = ceil($totalReclamations / $maxResults); // Total number of pages
     
-        $recc = $entityManager->getRepository(Reeclamation::class)->findBy([], ['createdAt' => 'DESC']);
-        $last_reclamations = [];
-        $rec = [];
-        foreach ($recc as $reclamation) {
-            $subject = $reclamation->getSubject();
+        $reclamations = $queryBuilder
+            ->setFirstResult(($page - 1) * $maxResults) // Calculate the offset
+            ->setMaxResults($maxResults) // Limit the number of results
+            ->getQuery()
+            ->getResult();
     
-            if (!isset($rec[$subject]) || $rec[$subject]->getCreatedAt() < $reclamation->getCreatedAt()) {
-                $rec[$subject] = $reclamation;
-            }
-        }
         return $this->render('conference/backReclamation.html.twig', [
-            'reclamations' => $rec,
+            'reclamations' => $reclamations,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
         ]);
     }
     
