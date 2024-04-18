@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
@@ -13,8 +14,20 @@ class Reponse
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "text")]
+    #[Assert\NotBlank(message: "The reclamation text cannot be blank.")]
+    #[Assert\Length(
+        min: 5,
+        minMessage: "The reclamation text must be at least {{ limit }} characters long.",
+        max: 65535,
+        maxMessage: "The reclamation text cannot be longer than {{ limit }} characters."
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9,. ]+$/',
+        message: "The reclamation text must only contain letters, numbers, commas, periods, and spaces."
+    )]
     private ?string $repReclamation = null;
+    
 
     #[ORM\OneToOne(inversedBy: 'reponse', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]

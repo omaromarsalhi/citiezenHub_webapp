@@ -90,6 +90,8 @@
             <p><strong>Subject:</strong> <span id="reclamationSubject"></span></p>
             <p><strong>Description:</strong> <span id="reclamationDescription"></span></p>
             <!-- Form for submitting a response -->
+          <div class="mb-4"><label class=" fw-bold mb-2 error-label" id ="error-label"></label> </div>
+
             <form id="responseForm">
                 <div class="mb-3">
                     <label for="responseText" class="form-label">Your Response</label>
@@ -104,34 +106,34 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const deleteButtons = document.querySelectorAll('.delete-reclamation');
-    
-      deleteButtons.forEach(function(button) {
-        button.addEventListener('click', function(e) {
-          e.preventDefault();
-          const reclamationId = this.getAttribute('data-id');
-    
-          if (confirm('Are you sure?')) {
-            fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
-              method: 'POST',
-            }).then(response => {
-              if (response.ok) {
-                document.getElementById(`reclamation-${reclamationId}`).remove();
-                window.location.reload();
-              } else {
-                window.location.reload();
-              }
-            }).catch(error => console.error('Error:', error));
-          }
-        });
+    const deleteButtons = document.querySelectorAll('.delete-reclamation');
+
+    deleteButtons.forEach(function(button) {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const reclamationId = this.getAttribute('data-id');
+
+        if (confirm('Are you sure?')) {
+          fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
+            method: 'POST',
+          }).then(response => {
+            if (response.ok) {
+              document.getElementById(`reclamation-${reclamationId}`).remove();
+              window.location.reload();
+            } else {
+              window.location.reload();
+            }
+          }).catch(error => console.error('Error:', error));
+        }
       });
-    
-      $('#responseForm').submit(function(event) {
-        event.preventDefault();
-        var responseText = $('#responseText').val().trim();
-        var reclamationId = $('#reclamationId').val();
-    
-        $.ajax({
+    });
+
+    $('#responseForm').submit(function(event) {
+      event.preventDefault();
+      var responseText = $('#responseText').val().trim();
+      var reclamationId = $('#reclamationId').val();
+
+      $.ajax({
           url: '/reclamation/' + reclamationId + '/add-response',
           method: 'POST',
           data: {
@@ -139,13 +141,34 @@
           },
           success: function(response) {
               alert('Response added successfully');
+
+              var rowToUpdate = document.querySelector('tr[data-reclamation-id="' + reclamationId + '"]');
+              var responseCell = rowToUpdate.querySelector('.response-cell-class');
+              // Use actual property from response, for example response.newResponse
+              responseCell.textContent = response.newResponse || 'Done'; // Adjust based on actual response structure
+              responseCell.classList.remove('badge-phoenix-danger');
+              responseCell.classList.add('badge-phoenix-success');
           },
           error: function(xhr, status, error) {
-              var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred';
-              alert(errorMessage);
-          }
-        });
-      });
+  if (xhr.responseJSON && xhr.responseJSON.error === 'VALIDATION_ERROR') {
+    const errorMessage = xhr.responseJSON.messages.join(', '); // Join error messages with ','
+    const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
+    let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
+
+    // Loop through each error message and create HTML for it
+    errorMessagesArray.forEach((message) => {
+        errorMessagesHTML += `<div>${message.trim()}</div>`; // Trim whitespace and wrap each message in a <div>
+    });
+    $('.error-label').html(errorMessagesHTML);
+  } else {
+    var errorMessage = 'An error occurred';
+    if(xhr.responseJSON && xhr.responseJSON.error) {
+      errorMessage = xhr.responseJSON.error;
+    }
+    alert(errorMessage);
+  }
+}});
+    });
     
       let lastReclamationId = {{ reclamations|length > 0 ? reclamations|first.id : 0 }};
     
@@ -215,7 +238,18 @@
       setInterval(pollForNewReclamations, 10000);
     });
     </script>
+    <style>
+        .input-invalid {
+            border-color: #DC143C; /* Change border color to red */
+        }
     
+        .input-typing {
+            border-color: #50C878;
+        }
+         .error-label {
+            color: red;
+        }
+    </style>
 	
 
 	<!-- ===============================================-->
