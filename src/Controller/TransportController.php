@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class TransportController extends AbstractController
 {
@@ -31,6 +32,21 @@ class TransportController extends AbstractController
  
     
       return $this->render('transport/Admin/transportAdmin.html.twig', [
+        
+          'stations' => $stations,
+          'transports' => $transports,
+      ]);
+    }
+    #[Route('/transportClient', name: 'app_transport_client')]
+    public function transportClient(StationRepository $StationRep): Response
+    {
+      $stations = $StationRep->findAll();
+      $transports = $this->getDoctrine()->getManager()->getRepository(Transport::class)->findAll();
+      $entityManager = $this->getDoctrine()->getManager();
+
+ 
+    
+      return $this->render('transport/showTransport.html.twig', [
         
           'stations' => $stations,
           'transports' => $transports,
@@ -144,23 +160,9 @@ public function updatetransport(Request $request, EntityManagerInterface $entity
                 $transport->setImageFile($image);
             }
 
+             
 
-             // Validate the station entity using Symfony Validator
-         /*    $errors = $validator->validate($transport);
- 
-             if (count($errors) > 0) {
-                 // If validation fails, return the validation errors
-                 $validationMessages = [];
-                 foreach ($errors as $error) {
-                     $validationMessages[] = $error->getMessage();
-                 }
-                 $responses = [
-                    'messages' => $validationMessages,
-                    'error' => 'VALIDATION_ERROR'            
-                ];
-                 
-                 return new JsonResponse($responses, Response::HTTP_BAD_REQUEST);
-             }*/
+          
 
         try {
 
@@ -172,13 +174,20 @@ public function updatetransport(Request $request, EntityManagerInterface $entity
             ];        
 
             return new JsonResponse($responses);
-        } catch (\Exception $e) {
+        } 
+        catch (UniqueConstraintViolationException $e) {
+   
+            return new JsonResponse(['error' => 'Duplicate entry detected. Please enter a unique value.'], Response::HTTP_BAD_REQUEST);
+        }    
+        catch (\PDOException $e) {
+            // Handle database errors
             if ($e->getCode() === '23000' && strpos($e->getMessage(), 'Duplicate entry') !== false) {
-                return new JsonResponse(['error' => 'DUPLICATE_ENTRY', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+                return new JsonResponse(['error' => 'DUPLICATE_ENTRY', 'message' => 'aaa'], Response::HTTP_BAD_REQUEST);
             } else {
-                return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while updating the subscription.'], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-              }
+                return new JsonResponse(['error' => 'DATABASE_ERROR', 'message' => 'An error occurred while inserting the subscription.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            } 
+       } 
+
         
     
     } else {

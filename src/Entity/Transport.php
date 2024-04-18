@@ -48,7 +48,11 @@ class Transport
 
     // Heure property with string type
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Regex(pattern:"/^(0[7-9]|1[0-6]):[0-5][0-9]$/",message:"L'heure doit être comprise entre 07:00 et 16:59")]
     private ?string $Heure = null;
+  
+    
+ 
 
     #[ORM\Column]
     private ?int $Station_depart = null;

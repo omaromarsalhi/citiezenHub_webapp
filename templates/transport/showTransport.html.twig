@@ -1,0 +1,87 @@
+   {% extends '/home/index.html.twig' %}
+
+{% block body %}
+   
+    <div class="rn-upcoming-area rn-section-gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- start Table Title -->
+                    <div class="table-title-area d-flex">
+                        <i data-feather="briefcase"></i>
+                        <h3>Les Transports dispo</h3>
+
+                    </div>
+                    <!-- End Table Title -->
+
+                    <!-- table area Start -->
+                    <div class="box-table table-responsive">
+                        <table class="table upcoming-projects">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span>Num</span>
+                                    </th>
+                                    <th>
+                                        <span>Company</span>
+                                    </th>
+                                    <th>
+                                        <span>Heure</span>
+                                    </th>
+                                    <th>
+                                        <span>Depart</span>
+                                    </th>
+                                    <th>
+                                        <span>Arrive</span>
+                                    </th>
+                                    <th>
+                                        <span>Type Vehicule</span>
+                                    </th>
+                                    <th>
+                                        <span>Prix</span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="ranking">
+                                               {% for transport in transports %}
+
+                                <tr class="color-light">
+                                    <td><span>1.</span></td>
+                                    <td>
+                                        <div class="product-wrapper d-flex align-items-center">
+                                            <a href="product-details.html" class="thumbnail">
+                                                <img src="/images/transports/{{ transport.VehiculeImage }}" alt="Nft_Profile">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td><span >{{transport.Heure}}</span></td>
+                                    <td><span class="color-danger">{{transport.Stationarrive}}</span></td>
+                                    <td><span class="color-green">{{transport.Stationarrive}}</span></td>
+                                    <td><span>{{transport.TypeVehicule}}</span></td>
+                                    <td><span>{{transport.Prix}}</span></td>
+                                </tr>
+                                               {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- table End -->
+                    <div class="row">
+                        <div class="col-lg-12" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
+                            <nav class="pagination-wrapper" aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                    <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

@@ -123,7 +123,7 @@ class StationController extends AbstractController
             $station->setTypeVehicule($type);
     
             if ($image) {
-                $station->setImageFile($image);
+                $station->setImageFile($request->files->get('image'));
             }
     
             try {

@@ -94,8 +94,8 @@ function updateStation(event) {
                 $('#updateDealModal').modal('hide');
                 $('#name').val('');
                 $('#adressStation').val('');
-                $('#createinputfile').val('');
-                $('#createinputfile').closest('form').get(0).reset();
+                $('#createinputfileUpd').val('');
+                $('#createinputfileUpd').closest('form').get(0).reset();
                 updateStationList(response.stations); 
             } else {
                 alert(response.message);
@@ -230,8 +230,8 @@ function deleteStation(stationId) {
             url: '/station/' + stationId,
             type: 'DELETE',
             success: function(response) {
-                updateStationList(response.stations); 
-
+            updateStationList(response.stations); 
+            alert("deleted")
             },
             error: function(xhr, status, error) {
                 console.error(error);
@@ -263,7 +263,7 @@ function updateStationList(stationList) {
                     <td class="align-middle product white-space-nowrap py-0"><a class="d-block rounded-2 border border-translucent" href="apps/e-commerce/landing/product-details.html"><img src=" assetsAdmin/assets/img/products/60x60/3.png" alt="" width="53" /></a></td>
                     <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">${station.nomstation}</a></td>
                     <td class="align-middle customer white-space-nowrap"><a class="d-flex align-items-center text-body" href="apps/e-commerce/landing/profile.html">
-                        {# <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/station/$'{station.imagestation}'"   alt="" /></div> #}
+                         <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/station/${station.image_station}" + station.image_station   alt="" /></div> 
                         <h6 class="mb-0 ms-3 text-body"> ${station.Type_Vehicule}</h6>
                       </a></td>
                     <td class="align-middle rating white-space-nowrap fs-10"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span></td>
@@ -302,11 +302,10 @@ function showModifierPopup(id, name, address,image,type) {
     let stationLocationInput = document.getElementById("adressStationUpd");
     let stationImageInput =document.getElementById("createinputfileUpd");
 
-console.log(name);
+    console.log(name);
     // Assuming stationData is an object with properties like name, location, capacity
     stationNameInput.value = name;
     stationLocationInput.value = address;
-//    stationImageInput.value=image;
-
+   // stationImageInput.value=image;
     $('#updateDealModal').modal('show');
 }

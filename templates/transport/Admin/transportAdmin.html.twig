@@ -208,7 +208,6 @@
                     <div class="col-lg-6">
                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Type Vehicule</label>
                             <select class="form-select" id="typeSelect">
-                                <option>Select</option>
                                 <option>Metro</option>
                                 <option>Bus</option>
                             </select>
@@ -231,7 +230,9 @@
 
                     </div>
                     <div class="col-lg-6">
-                    <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Start Time</label><input class="form-control datetimepicker" type="text" name="Time" id="Time" placeholder="H:i" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' /></div>
+                    <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Start Time</label>
+    <input class="form-control" type="time" name="Time" id="Time" placeholder="HH:mm" step="60" />
+                    </div>
                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Arrive</label>
                           <select class="form-select" id="station-arrive">
                             {% for station in stations %}
@@ -313,6 +314,7 @@ function addTransport(event) {
 
     formData.append('depart', depart);
     formData.append('arrive', arrive);
+    console.log(Time);
 
     $.ajax({
         
@@ -338,7 +340,10 @@ function addTransport(event) {
             } 
         },
         error: function(response) {
-    if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
+        if (response.message == "aaa") {
+  alert("duplicate in database")
+  } 
+          else if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
         const errorMessage = response.responseJSON.messages.join(', '); // Join error messages with ','
         const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
         let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
@@ -410,31 +415,13 @@ function updateTransport(event) {
                 $('#createinputfileUpd').closest('form').get(0).reset();
                  window.location.reload();
                 
-            } else {
-    if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
-        const errorMessage = response.responseJSON.messages.join(', '); // Join error messages with ','
-        const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
-        let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
-
-        // Loop through each error message and create HTML for it
-        errorMessagesArray.forEach((message) => {
-            errorMessagesHTML += `<div>${message.trim()}</div>`; // Trim whitespace and wrap each message in a <div>
-        });
-        $('.error-label').html(errorMessagesHTML);
-    } else if (response.responseJSON && response.responseJSON.error === 'DUPLICATE_ENTRY') {
-        // Handle duplicate entry error
-        alert("Error: " + response.responseJSON.message);
-        console.log("Duplicate entry");
-    } else {
-        // Handle other errors
-        alert("An error occurred while inserting the subscription: " + response.responseJSON.message);
-        console.log("Database error");
-    }                                 window.location.reload();
-
-            }
+            } 
         },
         error: function (response) {
-                if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
+       if (response.error == "DUPLICATE_ENTRY") {
+  alert(duplicate in database)
+  } 
+        else if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
         const errorMessage = response.responseJSON.messages.join(', '); // Join error messages with ','
         const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
         let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
@@ -650,7 +637,6 @@ function showModifierPopup(id,prix,Reference,Time) {
    transportPrixInput.value = prix;
    stationReferenceInput.value=Reference;
    stationTimeInput.value=Time;
-
     $('#updateDealModal').modal('show');
 }</script>
 {% endblock %}

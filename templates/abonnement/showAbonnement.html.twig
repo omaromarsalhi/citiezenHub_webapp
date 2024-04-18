@@ -2,6 +2,11 @@
 
 {% block body %}
 
+
+
+
+
+
    <div class="rn-breadcrumb-inner ptb--30">
          <div class="container">
              <div class="row align-items-center">
@@ -12,7 +17,10 @@
              </div>
          </div>
      </div>
+  
 
+
+  
     <div class="rn-banner-area">
         <div class="slider-activation-banner-4 game-banner-short-slick-wrapper slick-arrow-style-one rn-slick-dot-style">
 {#            <div id="abonnements-list"> #}{# Ajout de l'ID abonnements-list #}
@@ -68,7 +76,7 @@
                                         <!-- End Countdown area -->
                                     </div>
                                     <button type="button" class="btn btn-primary-alta btn-large mt--35" data-bs-toggle="modal" data-bs-target="#placebidModal" tabindex="0">Voir détails</button>
-                                    <button type="button" class="btn btn-primary-alta btn-large mt--35" data-bs-toggle="modal" data-bs-target="#placebidModal" tabindex="0" onclick="deletePost({{abonnement.id}})">Supprimer l'abonnement</button>
+                                 {#   <button type="button" class="btn btn-primary-alta btn-large mt--35" data-bs-toggle="modal" data-bs-target="#placebidModal" tabindex="0" onclick="deletePost({{abonnement.id}})">Supprimer l'abonnement</button>#}
                                 </div>
                             </div>
                             <div class="col-xl-2 col-lg-12 col-12 order-1 order-xl-3 order-sm-3">
@@ -143,6 +151,142 @@
 
 
         }
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+}
+body{
+  background: #3498db;
+}
+.main-box{
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 550px;
+  text-align: center;
+}
+.main-box .content{
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.content .box{
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  border-radius: 25px;
+  cursor: pointer;
+}
+.share, .cancel{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2980b9;
+  line-height: 50px;
+  background: #fff;
+  letter-spacing: 1px;
+  border-radius: 25px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.content .box .share{
+  opacity: 1;
+}
+#check:checked ~ .box .share{
+  opacity: 0;
+}
+#check:checked ~ .box .cancel{
+  opacity: 1;
+}
+.content .image-box{
+  position: absolute;
+  height: 450px;
+  width: 100%;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 10px;
+  border-radius: 25px;
+  transition: all 0.4s ease;
+}
+#check:checked ~ .image-box{
+  bottom: 70px;
+}
+#check{
+  display: none;
+}
+.image-box::before{
+  position: absolute;
+  content: '';
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  height: 30px;
+  width: 30px;
+  background: #fff;
+  z-index: -1;
+}
+.image-box img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 26px;
+}
+.image-box .about{
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 25px;
+  padding: 20px;
+  text-align: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+#check:checked ~ .image-box .about{
+  opacity: 1;
+}
+.about .details{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 35px;
+}
+.details .name, .job{
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+}
+ .details .icon i{
+   font-size: 20px;
+   color: #fff;
+   height: 45px;
+   width: 45px;
+   line-height: 43px;
+   border-radius: 50%;
+   border: 2px solid #fff;
+   margin: 14px 5px;
+   transition: all 0.3s ease;
+ }
+.details .icon i:hover{
+  transform: scale(0.95);
+}
     </script>
 
 {% endblock %}

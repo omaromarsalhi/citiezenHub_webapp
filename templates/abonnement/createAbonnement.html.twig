@@ -202,7 +202,7 @@ redirectToAnotherRoute();
         const isNameValid = validateName();
         const isLastNameValid = validateLastName();
 
-    if (isNameValid || isLastNameValid) {
+    if (isNameValid && isLastNameValid) {
 
         formData.append('image', $('#createinputfile').prop('files')[0]);
         formData.append('name', name);
