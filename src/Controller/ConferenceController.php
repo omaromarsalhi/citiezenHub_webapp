@@ -94,6 +94,34 @@ public function addResponseToReclamation(int $id, Request $request, EntityManage
 }
 
 
+#[Route('/reclamation/{id}/get-responses', name: 'get_responses_for_reclamation', methods: ['GET'])]
+public function getResponsesForReclamation(int $id, EntityManagerInterface $entityManager): JsonResponse
+{
+    // Retrieve the specific reclamation
+    $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
 
+    if (!$reclamation) {
+        // If the reclamation is not found, return an error message
+        return new JsonResponse(['error' => 'Reclamation not found'], JsonResponse::HTTP_NOT_FOUND);
+    }
+
+    // Retrieve the responses associated with the reclamation
+    $responses = $reclamation->getResponses();
+
+    // Prepare an array to hold the response data
+    $responseData = [];
+
+    // Iterate over the responses and extract relevant information
+    foreach ($responses as $response) {
+        $responseData[] = [
+            'id' => $response->getId(),
+            'text' => $response->getRepReclamation(),
+            'created_at' => $response->getCreatedAt()->format('Y-m-d H:i:s')
+        ];
+    }
+
+    // Return the response data
+    return new JsonResponse($responseData);
+}
 
 }
