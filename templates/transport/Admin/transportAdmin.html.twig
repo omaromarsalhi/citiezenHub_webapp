@@ -305,9 +305,10 @@ function addTransport(event) {
     formData.append('time', Time);
     formData.append('type_vehicule', TypeVehicule);
     if(prix===null){
-    formData.append('prix', prix);}
+    prix=prix;
+    formData.append('prix',0);}
     else 
-    formData.append('prix', 0);
+    formData.append('prix', prix);
 
     formData.append('depart', depart);
     formData.append('arrive', arrive);
@@ -332,7 +333,7 @@ function addTransport(event) {
                 $('#time').val('');
                 $('#prix').val('');
                 $('#createinputfile').closest('form').get(0).reset();
-                updateTransportList(response.stations); 
+        window.location.reload();
             } 
         },
         error: function(response) {
@@ -395,14 +396,17 @@ function updateTransport(event) {
             // Add any pre-request logic here
         },
         success: function(response) {
-            if (response.message == "Station updated successfully.") {
+            if (response.message == "Transport added successfully.") {
                 $('#updateDealModal').modal('hide');
                 $('#ReferenceUpd').val('');
                 $('#PrixUpd').val('');
                 $('#createinputfileUpd').closest('form').get(0).reset();
-                updateTransportList(response.stations); 
+                 window.location.reload();
+                
             } else {
                 alert(response.message);
+                                 window.location.reload();
+
             }
         },
         error: function (response) {
@@ -535,11 +539,13 @@ function deleteTransport(transportid) {
             url: '/transport/' + transportid,
             type: 'DELETE',
             success: function(response) {
-                updateTransportList(response.transports); 
+              alert(response.message);
+              window.location.reload();
 
             },
             error: function(xhr, status, error) {
-                console.error(error);
+                              window.location.reload();
+
             }
         });
         

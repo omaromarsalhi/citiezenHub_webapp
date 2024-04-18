@@ -19,6 +19,11 @@ class Transport
     #[ORM\Column(name: "idTransport")]
     private ?int $id = null;
 
+    private ?string $nomStationDepart = null;
+
+
+    private ?string $nomStationArrive = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $TypeVehicule = null;
 
@@ -27,7 +32,7 @@ class Transport
     #[Assert\Regex(pattern:"/^[A-Za-z]+$/",message:"Nom Station should contain only letters")]
     private ?string $Reference = null;
 
-    #[ORM\Column(length: 255, name: "vehicule_image")]
+    #[ORM\Column(length: 255, name: "Vehicule_Image")]
     private ?string $vehiculeimage = null;
     
     #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'vehiculeimage')]
@@ -151,4 +156,32 @@ class Transport
     {
         return $this->imageFile;
     }
+    
+    public function removeImageFile(): self
+    {
+        $this->imageFile = null;
+        // Call Vich Uploader Bundle method to remove the image file (refer to documentation)
+        $this->vehiculeimage = null;  // Optional: Set vehiculeimage to null (might not be necessary)
+        return $this;
+    }
+    public function getNomStationDepart(): ?string
+    {
+        return $this->nomStationDepart;
+    }
+
+    public function setNomStationDepart(?string $nomStationDepart): void
+    {
+        $this->nomStationDepart = $nomStationDepart;
+    }
+
+    public function getNomStationArrive(): ?string
+    {
+        return $this->nomStationArrive;
+    }
+
+    public function setNomStationArrive(?string $nomStationArrive): void
+    {
+        $this->nomStationArrive = $nomStationArrive;
+    }
+
 }

@@ -25,13 +25,20 @@ class TransportController extends AbstractController
     public function listAllStationsAndTransports(StationRepository $StationRep): Response
     {
       $stations = $StationRep->findAll();
-      $transports = $this->getDoctrine()->getManager()->getRepository(transport::class)->findAll();
+      $transports = $this->getDoctrine()->getManager()->getRepository(Transport::class)->findAll();
+      $entityManager = $this->getDoctrine()->getManager();
+
+ 
     
       return $this->render('transport/Admin/transportAdmin.html.twig', [
+        
           'stations' => $stations,
           'transports' => $transports,
       ]);
     }
+
+
+ 
     
     #[Route('/formTransport', name: 'app_addTransport')]
     public function index( ): Response
@@ -188,23 +195,13 @@ public function deletetransport($id, transportRepository $transportRepository, R
         $entityManager->remove($transport);
         $entityManager->flush();
 
-        $transports = $transportRepository->findAll();
+             
+        $responses = [
+                
+            'message' => 'Transport Deleted successfully.'
+        ];        
 
-       $transportsArray = array_map(function ($transport) {
-                return [
-                    'id' => $transport->getId(),
-                    'reference' => $transport->getReference(),
-                    'prix' => $transport->getPrix(),
-                    'type_Vehicule' =>  $transport->getTypeVehicule(),
-                    'station_Depart' =>  $transport->getStationDepart(),
-                    'station_Arrive' =>  $transport->getStationArrive(),
-                    'heure' =>  $transport->getHeure(),
-                    'vehiculeimage' =>  $transport->getVehiculeImage()
-
-                ];
-            }, $transports);
-    
-        return new JsonResponse(['transports' => $transportsArray]);
+        return new JsonResponse($responses);
 
          }
 
