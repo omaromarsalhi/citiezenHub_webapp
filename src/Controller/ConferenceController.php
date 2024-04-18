@@ -16,23 +16,25 @@ class ConferenceController extends AbstractController
     #[Route('/conference', name: 'app_conference')]
     public function showReclamations(EntityManagerInterface $entityManager, Request $request)
     {
-        $page = max(1, $request->query->getInt('page', 1)); // Get the current page from query parameters, default to 1
-        $maxResults = 5; // Maximum number of reclamations per page
-        
+        $page = max(1, $request->query->getInt('page', 1));
+        $maxResults = 5; // Set the number of reclamations you want per page
+
+        // Use QueryBuilder to create a query that left joins Reponse
         $queryBuilder = $entityManager->getRepository(Reeclamation::class)->createQueryBuilder('r')
+            ->leftJoin('r.reponse', 'resp') // Ensure this matches your property name in Reeclamation
+            ->addSelect('resp') // Select the joined Reponse entities as well
             ->orderBy('r.createdAt', 'DESC');
-            
-        $totalReclamations = count($queryBuilder->getQuery()->getResult()); // Total number of reclamations
-        $totalPages = ceil($totalReclamations / $maxResults); // Total number of pages
-    
-        $reclamations = $queryBuilder
-            ->setFirstResult(($page - 1) * $maxResults) // Calculate the offset
-            ->setMaxResults($maxResults) // Limit the number of results
-            ->getQuery()
-            ->getResult();
-    
+
+        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($queryBuilder);
+        $paginator->getQuery()
+            ->setFirstResult($maxResults * ($page - 1)) // Offset
+            ->setMaxResults($maxResults); // Limit
+
+        $totalReclamations = count($paginator);
+        $totalPages = ceil($totalReclamations / $maxResults);
+
         return $this->render('conference/backReclamation.html.twig', [
-            'reclamations' => $reclamations,
+            'reclamations' => iterator_to_array($paginator),
             'totalPages' => $totalPages,
             'currentPage' => $page,
         ]);

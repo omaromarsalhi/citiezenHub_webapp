@@ -5,11 +5,12 @@
 <thead>
     <tr>
         <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">IMAGE</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;" data-sort="product">PRIVATE KEY</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;" data-sort="product">PUBLISH
-        </th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" data-sort="price" style="width:150px;">SUBJECT</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" data-sort="category" style="width:350px;">DESCRIPTION</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PRIVATE KEY</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PUBLISH</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">SUBJECT</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">DESCRIPTION</th>
+    <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">ETAT</th>
+        <th class="sort white-space-nowrap align-middle ps-4" scope="col">RESPONSE</th> <!-- Add this column for responses -->
         <th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
     </tr>
 </thead>
@@ -17,7 +18,6 @@
     {% for reclamation in reclamations %}
         <tr class="position-static">
             <td class="align-middle ps-4">
-                <!-- If you have an image or other content to display here -->
                 <img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image" width="200" height="200"/>
             </td>
             <td class="align-middle ps-4">
@@ -26,25 +26,32 @@
             <td class="align-middle ps-4">
                 {{ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
             </td>
-            <td class="align-middle  ps-4">
+            <td class="align-middle ps-4">
                 {{ reclamation.subject }}
             </td>
             <td class="align-middle ps-4">
                 {{ reclamation.description }}
             </td>
-            
-            <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
-                <div class="btn-reveal-trigger position-static">
-                    <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
-                        <span class="fas fa-ellipsis-h fs-10"></span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end py-2">
-                        <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
-                        <a class="dropdown-item" href="#!">show more </a>
-                        <div class="dropdown-divider"></div>
-                    <button class="btn btn-danger delete-reclamation" data-id="{{ reclamation.id }}">Delete</button>
-                </div>
-                </div>
+            <td class="align-middle ps-4">
+            {% if reclamation.reponse %}
+                {{ reclamation.reponse.repReclamation }}
+            <span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success">completed</span>
+            {% else %}
+        <span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-danger">Critical</span>
+            {% endif %}
+        </td>
+            <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
+            <div class="btn-reveal-trigger position-static">
+            <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="fas fa-ellipsis-h fs-10"></span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end py-2">
+                <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="${reclamation.id}" data-reclamation-subject="${reclamation.subject}" data-reclamation-description="${reclamation.description}">Add Response</a>
+                <a class="dropdown-item" href="#">Reclamation</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" href="#">Delete Reclamation</a>
+            </div>
+        </div>
             </td>
         </tr>
     {% endfor %}
