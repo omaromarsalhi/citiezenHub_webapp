@@ -15,6 +15,7 @@ use App\Repository\PostRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BlogController extends AbstractController
 {
@@ -69,7 +70,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
-    public function new(Request $req, ManagerRegistry $doc): Response
+    public function new(Request $req, ManagerRegistry $doc, ValidatorInterface $validator): Response
     {
         if ($req->isXmlHttpRequest()) {
             $post = new Post();
@@ -81,26 +82,45 @@ class BlogController extends AbstractController
             $post->setCaption($caption);
             $post->setDatePost(new DateTime());
             $post->setNbReactions(0);
-
             $post->setUser($user);
 
-            $em = $doc->getManager();
-            $em->persist($post);
-
-            $nbComments = 0;
-
-            $imagesArray = [];
-            if ($imageFiles) { // Vérifier si des images ont été fournies
+            // Add images to the Post entity before validation
+            if ($imageFiles) {
                 foreach ($imageFiles as $imageFile) {
                     $postImage = new ImagePsot();
                     $postImage->setImageFile($imageFile);
                     $postImage->setPost($post);
-                    $em->persist($postImage);
-                    $imagesArray[] = $postImage->getPath();
+                    $post->addImage($postImage);
                 }
             }
 
+            $errors = $validator->validate($post);
+
+            if (count($errors) > 1) {
+                $errorsString = '';
+                foreach ($errors as $error) {
+                    $errorsString .= $error->getMessage() . "\n";
+                }
+
+                return new JsonResponse(['success' => false, 'message' => $errorsString]);
+            }
+
+            $em = $doc->getManager();
+            $em->persist($post);
+
+            // Persist images to the database
+            foreach ($post->getImages() as $postImage) {
+                $em->persist($postImage);
+            }
+
             $em->flush();
+
+            // Define $imagesArray and $nbComments
+            $imagesArray = array_map(function ($image) {
+                return $image->getPath();
+            }, $post->getImages());
+
+            $nbComments = count($post->getComments());
 
             $postUrl = $this->generateUrl('app_PostDetail', ['id' => $post->getId()]);
 
@@ -143,7 +163,7 @@ class BlogController extends AbstractController
             throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
         }
         $caption = $req->get('caption');
-        $imageFiles = $req->files->get('images'); // Récupérez les fichiers d'image
+        $imageFiles = $req->files->get('images');
 
         $post->setDatePost(new DateTime());
         $post->setCaption($caption);
@@ -155,7 +175,7 @@ class BlogController extends AbstractController
         $em = $doctrine->getManager();
 
         $imagesArray = [];
-        if ($imageFiles) { // Vérifiez si des images ont été fournies
+        if ($imageFiles) {
             foreach ($imageFiles as $imageFile) {
                 $postImage = new ImagePsot();
                 $postImage->setImageFile($imageFile);
@@ -165,7 +185,6 @@ class BlogController extends AbstractController
             }
         }
 
-        // Ajoutez les images déjà présentes dans le post
         foreach ($post->getImages() as $image) {
             $imagesArray[] = $image->getPath();
         }
@@ -201,8 +220,6 @@ class BlogController extends AbstractController
         if (!$post) {
             throw $this->createNotFoundException('Le post d\'id ' . $id . ' n\'a pas été trouvé.');
         }
-
-        $post->setImage(null);
 
         $em = $doctrine->getManager();
         $em->persist($post);
@@ -244,6 +261,7 @@ class BlogController extends AbstractController
                 'nbReactions' => $post->getNbReactions(),
                 'images' => $imagesArray,
                 'comments' => $commentsArray,
+                'nbComments' => count($comments),
             ];
         }, $posts);
 
@@ -282,6 +300,7 @@ class BlogController extends AbstractController
             'post' => $post,
             'images' => $imagesArray,
             'comments' => $commentsArray,
+            'nbComments' => count($comments),
         ]);
     }
 

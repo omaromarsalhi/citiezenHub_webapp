@@ -45,97 +45,106 @@
 {% endblock %}
 
 {% block body %}
-    <!-- start page title area -->
-    <div class="rn-breadcrumb-inner ptb--30">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <h5 class="title text-center text-md-start">Blog Single Column</h5>
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-list">
-                        <li class="item"><a href="index.html">Home</a></li>
-                        <li class="separator"><i class="feather-chevron-right"></i></li>
-                        <li class="item current">Blog Single column</li>
-                    </ul>
+        <!-- start page title area -->
+        <div class="rn-breadcrumb-inner ptb--30">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <h5 class="title text-center text-md-start">Blog Single Column</h5>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <ul class="breadcrumb-list">
+                            <li class="item"><a href="index.html">Home</a></li>
+                            <li class="separator"><i class="feather-chevron-right"></i></li>
+                            <li class="item current">Blog Single column</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- end page title area -->
+        <!-- end page title area -->
 
-    <!-- blog details area start -->
-    <div class="rn-blog-area rn-blog-details-default rn-section-gapTop">
-        <div class="container">
-            <div class="row g-5 flex-wrap">
-                <!-- login form -->
-                <div class="col-lg-8" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
-                    <div class="form-wrapper-one registration-area">
-                        <h3 class="mb--30">Exprimer Vous!</h3>
-                        <form class="rwt-dynamic-form" id="contact-form" method="POST">
-                            <div class="mb-5">
-                                <label for="contact-message" class="form-label">Write Message</label>
-                                <textarea name="contact-message" id="contact-message" rows="3"></textarea>
-                            </div>
-                            <label for="contact-message" class="form-label">Add image</label>
-                            <div class="button-area mb-5">
-                                <div class="collection-single-wized banner">
-                                    <div class="create-collection-input feature-image">
-                                        <center>
-                                            <div class="logo-c-image feature" style="position:relative;">
-                                                <img id="rbtinput2" src="{{ asset('aucuneImg.png') }}"
-                                                     alt="Profile-NFT" style="width: 700px; height: 400px; object-fit: contain;">
-                                                <label for="nipa" title="No File Choosen">
+        <!-- blog details area start -->
+        <div class="rn-blog-area rn-blog-details-default rn-section-gapTop">
+            <div class="container">
+                <div class="row g-5 flex-wrap">
+                    <!-- login form -->
+                    <div class="col-lg-12" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
+                        <div class="form-wrapper-one registration-area">
+                            <h3 class="mb--30">Exprimer Vous!</h3>
+                            <form class="rwt-dynamic-form" id="contact-form" method="POST">
+                                <div class="mb-5">
+                                    <label for="contact-message" class="form-label">Write Message</label>
+                                    <textarea name="contact-message" id="contact-message" rows="3"></textarea>
+                                </div>
+                                <label for="contact-message" class="form-label">Add image</label>
+                                <div class="button-area mb-5">
+                                    <div class="collection-single-wized banner">
+                                        <div class="create-collection-input feature-image">
+                                            <center>
+                                                <div class="logo-c-image feature" style="position:relative;">
+                                                    <img id="rbtinput2" src="{{ asset('aucuneImg.png') }}"
+                                                         alt="Profile-NFT"
+                                                         style="width: 500px; height: 250px; object-fit: contain;">
+                                                    <label for="nipa" title="No File Choosen">
                                                     <span class="text-center color-white"><i
                                                                 class="feather-edit"></i></span>
-                                                </label>
-                                                <label id="delImage" style="position: absolute; top: 0; left: -8px; display: none">
+                                                    </label>
+                                                    <label id="delImage"
+                                                           style="position: absolute; top: 0; left: -8px; display: none">
                                                     <span class="text-center color-white"><i
                                                                 class="feather-x"></i></span>
-                                                </label>
-                                                <button class="image-nav" id="previousImage" style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px; display: none;" onclick="changeImageUpload(-1)">&#8592;</button>
-                                                <button class="image-nav" id="nextImage" style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px; display: none;" onclick="changeImageUpload(1)">&#8594;</button>
-                                            </div>
-                                        </center>
+                                                    </label>
+                                                    <button class="image-nav" id="previousImage"
+                                                            style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px; display: none;"
+                                                            onclick="changeImageUpload(-1)">&#8592;
+                                                    </button>
+                                                    <button class="image-nav" id="nextImage"
+                                                            style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px; display: none;"
+                                                            onclick="changeImageUpload(1)">&#8594;
+                                                    </button>
+                                                </div>
+                                            </center>
 
-                                        <div class="button-area">
-                                            <div class="brows-file-wrapper" style="position: relative;">
-                                                <!-- actual upload which is hidden -->
-                                                <input name="nipa[]" id="nipa" type="file" accept="image/*,.gif" multiple onclick="afficherIconDelImage()">
-                                                <!-- our custom upload button -->
+                                            <div class="button-area">
+                                                <div class="brows-file-wrapper" style="position: relative;">
+                                                    <!-- actual upload which is hidden -->
+                                                    <input name="nipa[]" id="nipa" type="file" accept="image/*,.gif"
+                                                           multiple onclick="afficherIconDelImage()">
+                                                    <!-- our custom upload button -->
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <button name="submit" id="ajoutPost" type="submit" class="btn btn-primary"
-                                    onclick="addPost(event)">
-                                Publier
-                            </button>
-                        </form>
+                                <button name="submit" id="ajoutPost" type="submit" class="btn btn-primary"
+                                        onclick="addPost(event)">
+                                    Publier
+                                </button>
+                            </form>
+                        </div>
                     </div>
+                    <!-- login form end -->
+
+                    <!-- categorie area houni -->
+
+                    <!-- start single blog -->
+                    <div id="postsContainer">
+
+                    </div>
+
+                    <!-- end single blog -->
+                    <center>
+                        <div id="loadingIcon" style="display: none;">
+                            <img src={{ asset('loading.gif') }} alt="Loading..." style="height: 150px"/>
+                        </div>
+                    </center>
+
+
                 </div>
-                <!-- login form end -->
-
-                <!-- categorie area houni -->
-
-                <!-- start single blog -->
-                <div id="postsContainer">
-
-                </div>
-
-                <!-- end single blog -->
-                <center>
-                <div id="loadingIcon" style="display: none;">
-                    <img src={{ asset('loading.gif')}} alt="Loading..." style="height: 150px" />
-                </div>
-                </center>
-
-
             </div>
         </div>
-    </div>
     <!-- blog details area end -->
 
     <!-- Modal de modification -->
@@ -152,23 +161,33 @@
                                 <div class="create-collection-input logo-image" style="margin-top: 80px">
                                     <center>
                                         <div class="logo-c-image logo" style="position: relative;">
-                                            <img id="imageModifer" src="{{ asset('aucuneImg.png') }}" alt="Profile-NFT" style="width: 620px; height: 300px; object-fit: contain;">
-                                            <label for="nipaUpload" title="No File Choosen" style="position: absolute; top: 0; right: -8px;">
+                                            <img id="imageModifer" src="{{ asset('aucuneImg.png') }}" alt="Profile-NFT"
+                                                 style="width: 620px; height: 300px; object-fit: contain;">
+                                            <label for="nipaUpload" title="No File Choosen"
+                                                   style="position: absolute; top: 0; right: -8px;">
                                                 <span class="text-center color-white"><i
                                                             class="feather-edit"></i></span>
                                             </label>
-                                            <label id="delImageUpdate" style="position: absolute; top: 0; left: -8px; display: none">
+                                            <label id="delImageUpdate"
+                                                   style="position: absolute; top: 0; left: -8px; display: none">
                                                     <span class="text-center color-white"><i
                                                                 class="feather-x"></i></span>
                                             </label>
-                                            <button class="image-nav" id="previousImageUpload" style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px;">&#8592;</button>
-                                            <button class="image-nav" id="nextImageUload" style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px;">&#8594;</button>
+                                            <button class="image-nav" id="previousImageUpload"
+                                                    style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px;">
+                                                &#8592;
+                                            </button>
+                                            <button class="image-nav" id="nextImageUload"
+                                                    style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px;">
+                                                &#8594;
+                                            </button>
                                         </div>
                                     </center>
                                     <div class="button-area">
                                         <div class="brows-file-wrapper">
                                             <!-- actual upload which is hidden -->
-                                            <input name="nipaUpload[]" id="nipaUpload" type="file" onclick="changerImage()" accept="image/*,.gif" multiple>
+                                            <input name="nipaUpload[]" id="nipaUpload" type="file"
+                                                   onclick="changerImage()" accept="image/*,.gif" multiple>
                                             <!-- our custom upload button -->
                                         </div>
                                     </div>
@@ -183,7 +202,7 @@
                                     <div class="mb-5">
                                         <label for="captionModfier" class="form-label">Exprimer vous!</label>
                                         <textarea name="captionModfier" id="captionModfier"
-                                                  rows="5" style="height: 270px"></textarea>
+                                                  rows="5" style="height: 250px"></textarea>
                                     </div>
                                     <button name="submit" id="modifierButton" type="submit" class="btn btn-primary"
                                             onclick="submitModifierForm(event)">Save

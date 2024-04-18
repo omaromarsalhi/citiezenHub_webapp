@@ -21,13 +21,13 @@ function createPostHTML(post, postUrl) {
         imageHTML = `
             <div class="thumbnail" style="position: relative;">
                 <img id="post-image-${post.id}" src="images/blog/${post.images[0]}"
-                     alt="Personal Portfolio Images" style="width: 800px; height: 500px; object-fit: contain;">
+                     alt="Personal Portfolio Images" style="width: 1300px; height: 500px; object-fit: contain;">
                 ${bouttonImg}
             </div>
         `;
     }
     return `
-        <div class="col-xl-8 col-lg-8" data-post-id="${post.id}">
+        <div class="col-xl-12 col-lg-8" data-post-id="${post.id}">
             <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
                 <div class="inner">
                     <div class="content mb-4">
@@ -286,34 +286,31 @@ function showModifierPopup(caption, images) {
     var modal = document.getElementById("modifierModal");
     let messageTextarea = document.getElementById("captionModfier");
     let imageModifier = document.getElementById("imageModifer");
-    let nextButton = document.getElementById("nextImageUload"); // Assurez-vous d'avoir un bouton avec cet id dans votre HTML
-    let prevButton = document.getElementById("previousImageUpload"); // Assurez-vous d'avoir un bouton avec cet id dans votre HTML
+    let nextButton = document.getElementById("nextImageUload");
+    let prevButton = document.getElementById("previousImageUpload");
 
     messageTextarea.value = caption;
     initialCaption = caption;
 
 
     if (images !== "") {
-        let imageArray = images.split(','); // Divisez la chaîne d'images en un tableau
-        imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload]; // Utilisez l'index pour accéder à l'image
+        let imageArray = images.split(',');
+        imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload];
 
-        // Vérifiez si le post a une seule image ou aucune image
         if (imageArray.length <= 1) {
-            // Cachez les boutons si le post a une seule image ou aucune image
             nextButton.style.display = "none";
             prevButton.style.display = "none";
         } else {
-            // Sinon, affichez les boutons et ajoutez des écouteurs d'événements pour naviguer entre les images
             nextButton.style.display = "block";
             prevButton.style.display = "block";
 
             nextButton.onclick = function () {
-                currentImageIndexUpload = (currentImageIndexUpload + 1) % imageArray.length; // Utilisez le modulo pour boucler à travers les images
+                currentImageIndexUpload = (currentImageIndexUpload + 1) % imageArray.length;
                 imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload];
             }
 
             prevButton.onclick = function () {
-                currentImageIndexUpload = (currentImageIndexUpload - 1 + imageArray.length) % imageArray.length; // Ajoutez la longueur avant le modulo pour éviter les indices négatifs
+                currentImageIndexUpload = (currentImageIndexUpload - 1 + imageArray.length) % imageArray.length;
                 imageModifier.src = "images/blog/" + imageArray[currentImageIndexUpload];
             }
         }
@@ -337,9 +334,9 @@ function submitModifierForm(event) {
     event.preventDefault();
     let formData = new FormData();
     let caption = $('#captionModfier').val();
-    let files = $('#nipaUpload')[0].files; // Récupérez les fichiers d'image
+    let files = $('#nipaUpload')[0].files;
     for (let i = 0; i < files.length; i++) {
-        formData.append('images[]', files[i]); // Ajoutez chaque fichier d'image à formData
+        formData.append('images[]', files[i]);
     }
     formData.append('caption', caption);
 
@@ -357,9 +354,7 @@ function submitModifierForm(event) {
             $('#postsContainer').prepend(newPostHTML);
             closeModifierPopup();
 
-            // Supprimez l'ancienne version du post du tableau posts
             posts = posts.filter(post => post.id !== postIdToModify);
-            // Ajoutez la nouvelle version du post au début du tableau posts
             posts.unshift(response.post);
 
             $('html, body').animate({

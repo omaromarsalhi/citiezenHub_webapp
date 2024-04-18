@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -22,12 +23,15 @@ class Post
     private ?\DateTimeInterface $date_post = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Assert\NotBlank(message: 'Le champ caption ne peut pas être vide.')]
     private ?string $caption = null;
 
     #[ORM\Column(type: "integer", nullable: true)]
     private ?int $nbReactions = null;
 
+
     #[ORM\OneToMany(targetEntity: ImagePsot::class, mappedBy: "post")]
+    #[Assert\Count(min: 1, minMessage: 'Vous devez ajouter au moins une image.')]
     private Collection $images;
 
     #[ORM\OneToMany(targetEntity: CommentPost::class, mappedBy: "post")]

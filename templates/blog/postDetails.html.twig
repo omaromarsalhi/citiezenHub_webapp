@@ -44,6 +44,9 @@
 
 {% block body %}
 
+
+
+
     <div class="rn-breadcrumb-inner ptb--30">
         <div class="container">
             <div class="row align-items-center">
@@ -62,6 +65,7 @@
     </div>
     <!-- end page title area -->
 
+
     <!-- blog details area start -->
     <div class="rn-blog-area rn-blog-details-default rn-section-gapTop">
         <div class="container">
@@ -73,7 +77,7 @@
                             <span class="date">{{ post.datePost|date('Y-m-d H:i:s') }}</span>
                         </div>
                         <div class="bd-thumbnail">
-                            <div class="large-img mb--30" style="position: relative">
+                            <div class="large-img mb--10" style="position: relative">
                                 {% if images|length > 0 %}
                                     <button id="prev-button" class="nav-button prev-button"
                                             style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px;">
@@ -90,14 +94,12 @@
                         </div>
                         <div class="news-details">
                             <h4>Caption : </h4>
-                            <p>{{ post.caption }}</p>
+                            <p style="font-size: 25px;">{{ post.caption }}</p>
                         </div>
                         <div class="comments-wrapper pt--40">
                             <div class="comments-area">
                                 <div class="trydo-blog-comment">
-                                    <h5 class="comment-title mb--40">9 replies on “Have You Heard?
-                                        Agency Is Your Best
-                                        Bet To Grow”</h5>
+                                    <h5 class="comment-title mb--10">{{ nbComments }} replies on Omar marrakchi Post</h5>
                                     <!-- Start Coment List  -->
                                     <ul class="comment-list">
 
@@ -150,8 +152,6 @@
                                                 </div>
                                             </li>
                                         {% endfor %}
-
-
                                     </ul>
                                 </div>
                             </div>
@@ -186,6 +186,12 @@
                             </div>
                         </div>
                         <!-- End Contact Form Area  -->
+
+
+
+
+
+
 
                         <!-- comment form area End -->
                     </div>

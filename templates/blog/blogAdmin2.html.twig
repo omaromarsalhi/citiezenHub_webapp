@@ -1,13 +1,11 @@
 {% extends 'admin/index.html.twig' %}
 
 {% block body %}
-
-
     <div class="content">
         <div class="pb-10">
             <div class="row gy-3 gx-5 gx-xxl-6">
 
-                <div class="col-lg-7 col-xl-10">
+                <div class="col-lg-7 col-xl-12">
                     <div class=" flex-column mb-5">
                         <h3>Edit all Posts</h3>
                     </div>
@@ -46,15 +44,16 @@
                                                 <p class="text-body-secondary">{{ post.caption }}</p>
                                                 {% if post.images|length > 0 %}
                                                     <div class="row g-1 mb-5">
-                                                        {% for image in post.images %}
-                                                            {% set colSize = image.size == 'large' ? 'col-5' : 'col-2' %}
-                                                            <div class="{{ colSize }}"><a
-                                                                        href="{{ asset('images/blog/' ~ image.path) }}"
-                                                                        data-gallery="gallery-posts-0"><img
-                                                                            class="rounded h-100 w-100"
-                                                                            src="{{ asset('images/blog/' ~ image.path) }}"
-                                                                            alt="..."/></a>
-                                                            </div>
+                                                            {% for image in post.images %}
+                                                                {% set colSize = image.size == 'large' ? 'col-6' : 'col-3' %}
+                                                                <div class="{{ colSize }}">
+                                                                    <a href="{{ asset('images/blog/' ~ image.path) }}"
+                                                                       data-gallery="gallery-posts-{{ loop.parent.loop.index }}">
+                                                                        <img class="rounded h-100 w-100"
+                                                                             src="{{ asset('images/blog/' ~ image.path) }}"
+                                                                             alt="..."/>
+                                                                    </a>
+                                                                </div>
                                                         {% endfor %}
                                                     </div>
                                                 {% endif %}
@@ -66,7 +65,8 @@
                                                 </button>
                                                 <button class="btn btn-link text-body p-0 fs-10 me-3 fw-bolder"
                                                         type="button">
-                                                    <span class="fa-solid fa-comment me-1"></span>45 Comments
+                                                    <span class="fa-solid fa-comment me-1"></span>{{ post.nbComments }}
+                                                    Comments
                                                 </button>
                                             </div>
                                         </div>
@@ -197,108 +197,6 @@
                 }
             });
         });
-
-
-
-        var navbarTopShape = window.config.config.phoenixNavbarTopShape;
-        var navbarPosition = window.config.config.phoenixNavbarPosition;
-        var body = document.querySelector('body');
-        var navbarDefault = document.querySelector('#navbarDefault');
-        var navbarTop = document.querySelector('#navbarTop');
-        var topNavSlim = document.querySelector('#topNavSlim');
-        var navbarTopSlim = document.querySelector('#navbarTopSlim');
-        var navbarCombo = document.querySelector('#navbarCombo');
-        var navbarComboSlim = document.querySelector('#navbarComboSlim');
-        var dualNav = document.querySelector('#dualNav');
-
-        var documentElement = document.documentElement;
-        var navbarVertical = document.querySelector('.navbar-vertical');
-
-        if (navbarPosition === 'dual-nav') {
-            topNavSlim.remove();
-            navbarTop.remove();
-            navbarVertical.remove();
-            navbarTopSlim.remove();
-            navbarCombo.remove();
-            navbarComboSlim.remove();
-            navbarDefault.remove();
-            dualNav.removeAttribute('style');
-            document.documentElement.setAttribute('data-navigation-type', 'dual');
-
-        } else if (navbarTopShape === 'slim' && navbarPosition === 'vertical') {
-            navbarDefault.remove();
-            navbarTop.remove();
-            navbarTopSlim.remove();
-            navbarCombo.remove();
-            navbarComboSlim.remove();
-            topNavSlim.style.display = 'block';
-            navbarVertical.style.display = 'inline-block';
-            document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
-
-        } else if (navbarTopShape === 'slim' && navbarPosition === 'horizontal') {
-            navbarDefault.remove();
-            navbarVertical.remove();
-            navbarTop.remove();
-            topNavSlim.remove();
-            navbarCombo.remove();
-            navbarComboSlim.remove();
-            navbarTopSlim.removeAttribute('style');
-            document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
-        } else if (navbarTopShape === 'slim' && navbarPosition === 'combo') {
-            navbarDefault.remove();
-            navbarTop.remove();
-            topNavSlim.remove();
-            navbarCombo.remove();
-            navbarTopSlim.remove();
-            navbarComboSlim.removeAttribute('style');
-            navbarVertical.removeAttribute('style');
-            document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
-        } else if (navbarTopShape === 'default' && navbarPosition === 'horizontal') {
-            navbarDefault.remove();
-            topNavSlim.remove();
-            navbarVertical.remove();
-            navbarTopSlim.remove();
-            navbarCombo.remove();
-            navbarComboSlim.remove();
-            navbarTop.removeAttribute('style');
-            document.documentElement.setAttribute('data-navigation-type', 'horizontal');
-        } else if (navbarTopShape === 'default' && navbarPosition === 'combo') {
-            topNavSlim.remove();
-            navbarTop.remove();
-            navbarTopSlim.remove();
-            navbarDefault.remove();
-            navbarComboSlim.remove();
-            navbarCombo.removeAttribute('style');
-            navbarVertical.removeAttribute('style');
-            document.documentElement.setAttribute('data-navigation-type', 'combo');
-
-
-        } else {
-            topNavSlim.remove();
-            navbarTop.remove();
-            navbarTopSlim.remove();
-            navbarCombo.remove();
-            navbarComboSlim.remove();
-            navbarDefault.removeAttribute('style');
-            navbarVertical.removeAttribute('style');
-        }
-
-        var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
-        var navbarTop = document.querySelector('.navbar-top');
-        if (navbarTopStyle === 'darker') {
-            navbarTop.setAttribute('data-navbar-appearance', 'darker');
-        }
-
-        var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
-        var navbarVertical = document.querySelector('.navbar-vertical');
-        if (navbarVerticalStyle === 'darker') {
-            navbarVertical.setAttribute('data-navbar-appearance', 'darker');
-        }
-
-
-
-
-
     </script>
 
 {% endblock %}
