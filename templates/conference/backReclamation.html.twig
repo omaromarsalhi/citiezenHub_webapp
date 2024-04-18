@@ -1,213 +1,243 @@
 {% extends 'index_admin.html.twig' %}
 {% block body  %}
 
-<table class="table fs-9 mb-0">
-<thead>
-    <tr>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">IMAGE</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PRIVATE KEY</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PUBLISH</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">SUBJECT</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">DESCRIPTION</th>
-    <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">ETAT</th>
-        <th class="sort white-space-nowrap align-middle ps-4" scope="col">RESPONSE</th> <!-- Add this column for responses -->
-        <th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
-    </tr>
-</thead>
-<tbody class="list" id="products-table-body">
-    {% for reclamation in reclamations %}
-        <tr class="position-static">
-            <td class="align-middle ps-4">
-                <img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image" width="200" height="200"/>
-            </td>
-            <td class="align-middle ps-4">
-                {{ reclamation.privateKey }}
-            </td>
-            <td class="align-middle ps-4">
-                {{ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
-            </td>
-            <td class="align-middle ps-4">
-                {{ reclamation.subject }}
-            </td>
-            <td class="align-middle ps-4">
-                {{ reclamation.description }}
-            </td>
-            <td class="align-middle ps-4">
-            {% if reclamation.reponse %}
-                {{ reclamation.reponse.repReclamation }}
-            <span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success">Done</span>
-            {% else %}
-        <span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-danger">Still panding</span>
-            {% endif %}
-        </td>
-            <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
-            <div class="btn-reveal-trigger position-static">
-            <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="fas fa-ellipsis-h fs-10"></span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end py-2">
-        <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
-    <a class="dropdown-item" href="#"></a>
-                <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-danger delete-reclamation" href="#" data-id="{{ reclamation.id }}">Delete Reclamation</a>
-            </div>
-        </div>
-            </td>
-        </tr>
-    {% endfor %}
-</tbody>
-</table>
-<!-- Pagination Controls -->
-<nav aria-label="Page navigation">
-  <ul class="pagination">
-    {% if currentPage > 1 %}
-      <li class="page-item"><a class="page-link" href="{{ path('app_conference', {'page': currentPage - 1}) }}">Previous</a></li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">Previous</span></li>
-    {% endif %}
+	<table class="table fs-9 mb-0">
+		<thead>
+			<tr>
+				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">IMAGE</th>
+				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PRIVATE KEY</th>
+				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PUBLISH</th>
+				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">SUBJECT</th>
+				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">DESCRIPTION</th>
+				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">ETAT</th>
+				<th class="sort white-space-nowrap align-middle ps-4" scope="col">RESPONSE</th>
+				<!-- Add this column for responses -->
+				<th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
+			</tr>
+		</thead>
+		<tbody class="list" id="products-table-body">
+			{% for reclamation in reclamations %}
+				<tr class="position-static">
+					<td class="align-middle ps-4">
+						<img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image" width="200" height="200"/>
+					</td>
+					<td class="align-middle ps-4">
+						{{ reclamation.privateKey }}
+					</td>
+					<td class="align-middle ps-4">
+						{{ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
+					</td>
+					<td class="align-middle ps-4">
+						{{ reclamation.subject }}
+					</td>
+					<td class="align-middle ps-4">
+						{{ reclamation.description }}
+					</td>
+					<td class="align-middle ps-4">
+						{% if reclamation.reponse %}
+							{{ reclamation.reponse.repReclamation }}
+							<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success">Done</span>
+						{% else %}
+							<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-danger">Still panding</span>
+						{% endif %}
+					</td>
+					<td class="align-middle white-space-nowrap text-end pe-0 ps-4">
+						<div class="btn-reveal-trigger position-static">
+							<button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="fas fa-ellipsis-h fs-10"></span>
+							</button>
+							<div class="dropdown-menu dropdown-menu-end py-2">
+								<a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
+								<a class="dropdown-item mod-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}" data-reclamation-response="{{ reclamation.reponse ? reclamation.reponse.repReclamation : '' }}">Mod Rec</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item text-danger delete-reclamation" href="#" data-id="{{ reclamation.id }}">Delete Reponse</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<!-- Pagination Controls -->
+	<nav aria-label="Page navigation">
+		<ul class="pagination">
+			{% if currentPage > 1 %}
+				<li class="page-item">
+					<a class="page-link" href="{{ path('app_conference', {'page': currentPage - 1}) }}">Previous</a>
+				</li>
+			{% else %}
+				<li class="page-item disabled">
+					<span class="page-link">Previous</span>
+				</li>
+			{% endif %}
 
-    {% for i in 1..totalPages %}
-      <li class="page-item {{ currentPage == i ? 'active' : '' }}"><a class="page-link" href="{{ path('app_conference', {'page': i}) }}">{{ i }}</a></li>
-    {% endfor %}
+			{% for i in 1..totalPages %}
+				<li class="page-item {{ currentPage == i ? 'active' : '' }}">
+					<a class="page-link" href="{{ path('app_conference', {'page': i}) }}">{{ i }}</a>
+				</li>
+			{% endfor %}
 
-    {% if currentPage < totalPages %}
-      <li class="page-item"><a class="page-link" href="{{ path('app_conference', {'page': currentPage + 1}) }}">Next</a></li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">Next</span></li>
-    {% endif %}
-  </ul>
-</nav>
+			{% if currentPage < totalPages %}
+				<li class="page-item">
+					<a class="page-link" href="{{ path('app_conference', {'page': currentPage + 1}) }}">Next</a>
+				</li>
+			{% else %}
+				<li class="page-item disabled">
+					<span class="page-link">Next</span>
+				</li>
+			{% endif %}
+		</ul>
+	</nav>
 
-<div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true"> 
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="addResponseModalLabel">Add Response to Reclamation</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <!-- Placeholders for reclamation details -->
-            <p><strong>Subject:</strong> <span id="reclamationSubject"></span></p>
-            <p><strong>Description:</strong> <span id="reclamationDescription"></span></p>
-            <!-- Form for submitting a response -->
-          <div class="mb-4"><label class=" fw-bold mb-2 error-label" id ="error-label"></label> </div>
+	<div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addResponseModalLabel">Add Response to Reclamation</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div
+					class="modal-body">
+					<!-- Placeholders for reclamation details -->
+					<p>
+						<strong>Subject:</strong>
+						<span id="reclamationSubject"></span>
+					</p>
+					<p>
+						<strong>Description:</strong>
+						<span id="reclamationDescription"></span>
+					</p>
+					<!-- Form for submitting a response -->
+					<div class="mb-4">
+						<label class=" fw-bold mb-2 error-label" id="error-label"></label>
+					</div>
 
-            <form id="responseForm">
-                <div class="mb-3">
-                    <label for="responseText" class="form-label">Your Response</label>
-                    <textarea class="form-control" id="responseText" rows="3" required></textarea>
-                </div>
-                <input type="hidden" id="reclamationId">
-                <button type="submit" class="btn btn-primary">Submit Response</button>
-            </form>
-        </div>
-    </div>
-</div>
-</div>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const deleteButtons = document.querySelectorAll('.delete-reclamation');
-  
-    deleteButtons.forEach(function(button) {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const reclamationId = this.getAttribute('data-id');
-  
-            if (confirm('Are you sure?')) {
-                fetch(`/delete-reclamation/${reclamationId}`, { // Update the endpoint to your delete route
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                }).then(response => {
-                    if (response.ok) {
-                        document.getElementById(`reclamation-${reclamationId}`).remove();
-                        window.location.reload();
-                    } else {
-                        window.location.reload();
-                    }
-                }).catch(error => console.error('Error:', error));
-            }
-        });
-    });
+					<form id="responseForm">
+						<div class="mb-3">
+							<label for="responseText" class="form-label">Your Response</label>
+							<textarea class="form-control" id="responseText" rows="3" required></textarea>
+						</div>
+						<input type="hidden" id="reclamationId">
+						<button type="submit" class="btn btn-primary">Submit Response</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const deleteButtons = document.querySelectorAll('.delete-reclamation');
+
+deleteButtons.forEach(function (button) {
+button.addEventListener('click', function (e) {
+e.preventDefault();
+const reclamationId = this.getAttribute('data-id');
+
+if (confirm('Are you sure?')) {
+fetch (`/delete-reclamation/${reclamationId}`, { // Update the endpoint to your delete route
+method: 'POST',
+headers: {
+'X-Requested-With': 'XMLHttpRequest'
+}
+}).then(response => {
+if (response.ok) {
+document.getElementById (`reclamation-${reclamationId}`).remove();
+window.location.reload();
+} else {
+window.location.reload();
+}
+}).catch(error => console.error('Error:', error));
+}
+});
+});
 });
 
-  
-  $('#responseForm').submit(function(event) {
-    event.preventDefault();
-    var responseText = $('#responseText').val().trim();
-    var reclamationId = $('#reclamationId').val();
-  
-    $.ajax({
-      url: '/reclamation/' + reclamationId + '/add-response',
-      method: 'POST',
-      data: {
-        response: responseText
-      },
-      success: function(response) {
-        alert('Response added successfully');
-  
-        var rowToUpdate = document.querySelector('tr[data-reclamation-id="' + reclamationId + '"]');
-        var responseCell = rowToUpdate.querySelector('.response-cell-class');
-        // Use actual property from response, for example response.newResponse
-        responseCell.textContent = response.newResponse || 'Done'; // Adjust based on actual response structure
-        responseCell.classList.remove('badge-phoenix-danger');
-        responseCell.classList.add('badge-phoenix-success');
-      },
-      error: function(xhr, status, error) {
-        if (xhr.responseJSON && xhr.responseJSON.error === 'VALIDATION_ERROR') {
-          const errorMessage = xhr.responseJSON.messages.join(', '); // Join error messages with ','
-          const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
-          let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
-  
-          // Loop through each error message and create HTML for it
-          errorMessagesArray.forEach((message) => {
-            errorMessagesHTML += `<div>${message.trim()}</div>`; // Trim whitespace and wrap each message in a <div>
-          });
-          $('.error-label').html(errorMessagesHTML);
-        } else {
-          var errorMessage = 'An error occurred';
-          if(xhr.responseJSON && xhr.responseJSON.error) {
-            errorMessage = xhr.responseJSON.error;
-          }
-          alert(errorMessage);
-        }
-      }
-    });
-  });
-  
-  let lastReclamationId = {{ reclamations|length > 0 ? reclamations|first.id : 0 }};
-  
-  function pollForNewReclamations() {
-    fetch('/get-latest-reclamations')
-      .then(response => response.json())
-      .then(data => {
-        if (data.reclamations && data.reclamations.length > 0) {
-          const newReclamations = data.reclamations.filter(reclamation => reclamation.id > lastReclamationId);
-          if (newReclamations.length > 0) {
-            lastReclamationId = newReclamations[0].id;
-            updateTable(newReclamations);
-          }
-        }
-      })
-      .catch(error => console.error('Error fetching latest reclamations:', error));
-  }
-  
-  function updateTable(reclamations) {
-    const tableBody = document.getElementById('products-table-body');
-    reclamations.sort((a, b) => b.id - a.id).forEach(reclamation => {
-      const row = document.createElement('tr');
-      row.className = 'position-static';
-      let responseStatusHTML = reclamation.response ? `<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success">Done</span>` : `<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-danger">Still pending</span>`;
-  
-      row.innerHTML = `
+
+$('#responseForm').submit(function (event) {
+event.preventDefault();
+var responseText = $('#responseText').val().trim();
+var reclamationId = $('#reclamationId').val();
+
+$.ajax({
+url: '/reclamation/' + reclamationId + '/add-response',
+method: 'POST',
+data: {
+response: responseText
+},
+success: function (response) {
+alert('Response added successfully');
+
+var rowToUpdate = document.querySelector('tr[data-reclamation-id="' + reclamationId + '"]');
+var responseCell = rowToUpdate.querySelector('.response-cell-class');
+// Use actual property from response, for example response.newResponse
+responseCell.textContent = response.newResponse || 'Done'; // Adjust based on actual response structure
+responseCell.classList.remove('badge-phoenix-danger');
+responseCell.classList.add('badge-phoenix-success');
+},
+error: function (xhr, status, error) {
+if (xhr.responseJSON && xhr.responseJSON.error === 'VALIDATION_ERROR') {
+const errorMessage = xhr.responseJSON.messages.join(', '); // Join error messages with ','
+const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
+let errorMessagesHTML = '';
+// Initialize an empty string to store HTML for error messages
+
+// Loop through each error message and create HTML for it
+errorMessagesArray.forEach((message) => {
+errorMessagesHTML += `<div>${
+message.trim()
+}</div>`; // Trim whitespace and wrap each message in a <div>
+});
+$('.error-label').html(errorMessagesHTML);
+} else {
+var errorMessage = 'An error occurred';
+if (xhr.responseJSON && xhr.responseJSON.error) {
+errorMessage = xhr.responseJSON.error;
+}
+alert(errorMessage);
+}
+}
+});
+});
+
+let lastReclamationId = {{ reclamations|length > 0 ? reclamations|first.id : 0 }};
+
+function pollForNewReclamations() {
+fetch('/get-latest-reclamations').then(response => response.json()).then(data => {
+if (data.reclamations && data.reclamations.length > 0) {
+const newReclamations = data.reclamations.filter(reclamation => reclamation.id > lastReclamationId);
+if (newReclamations.length > 0) {
+lastReclamationId = newReclamations[0].id;
+updateTable(newReclamations);
+}
+}
+}).catch(error => console.error('Error fetching latest reclamations:', error));
+}
+
+function updateTable(reclamations) {
+const tableBody = document.getElementById('products-table-body');
+reclamations.sort((a, b) => b.id - a.id).forEach(reclamation => {
+const row = document.createElement('tr');
+row.className = 'position-static';
+let responseStatusHTML = reclamation.response ? `<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success">Done</span>` : `<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-danger">Still pending</span>`;
+
+row.innerHTML = `
         <td class="align-middle ps-4">
-          <img src="/images/reclamation/${reclamation.imagePath}" alt="Reclamation Image" width="200" height="200"/>
+          <img src="/images/reclamation/${
+reclamation.imagePath
+}" alt="Reclamation Image" width="200" height="200"/>
         </td>
-        <td class="align-middle ps-4">${reclamation.privateKey}</td>
-        <td class="align-middle ps-4">${reclamation.createdAt}</td>
-        <td class="align-middle ps-4">${reclamation.subject}</td>
-        <td class="align-middle ps-4">${reclamation.description}</td>
+        <td class="align-middle ps-4">${
+reclamation.privateKey
+}</td>
+        <td class="align-middle ps-4">${
+reclamation.createdAt
+}</td>
+        <td class="align-middle ps-4">${
+reclamation.subject
+}</td>
+        <td class="align-middle ps-4">${
+reclamation.description
+}</td>
         <td class="align-middle ps-4">${responseStatusHTML}</td>
         <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
           <div class="btn-reveal-trigger position-static">
@@ -215,48 +245,59 @@
               <span class="fas fa-ellipsis-h fs-10"></span>
             </button>
             <div class="dropdown-menu dropdown-menu-end py-2">
-              <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="${reclamation.id}" data-reclamation-subject="${reclamation.subject}" data-reclamation-description="${reclamation.description}">Add Response</a>
+              <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="${
+reclamation.id
+}" data-reclamation-subject="${
+reclamation.subject
+}" data-reclamation-description="${
+reclamation.description
+}">Add Response</a>
               <a class="dropdown-item" href="#">Reclamation</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-danger delete-reclamation" href="#" data-id="${reclamation.id}">Delete Reclamation</a>
+              <a class="dropdown-item text-danger delete-reclamation" href="#" data-id="${
+reclamation.id
+}">Delete Reclamation</a>
             </div>
           </div>
         </td>
       `;
-      tableBody.prepend(row);
-    });
-  }
-  
-  document.addEventListener('click', function(event) {
-    if (event.target.matches('.add-response')) {
-      const reclamationId = event.target.getAttribute('data-reclamation-id');
-      const reclamationSubject = event.target.getAttribute('data-reclamation-subject');
-      const reclamationDescription = event.target.getAttribute('data-reclamation-description');
-  
-      document.getElementById('reclamationSubject').textContent = reclamationSubject;
-      document.getElementById('reclamationDescription').textContent = reclamationDescription;
-      document.getElementById('reclamationId').value = reclamationId;
-  
-      $('#addResponseModal').modal('show');
+tableBody.prepend(row);
+});
+}
+
+document.addEventListener('click', function(event) {
+    if (event.target.matches('.add-response, .mod-response')) {
+        const reclamationId = event.target.getAttribute('data-reclamation-id');
+        const reclamationSubject = event.target.getAttribute('data-reclamation-subject');
+        const reclamationDescription = event.target.getAttribute('data-reclamation-description');
+        const reclamationResponse = event.target.getAttribute('data-reclamation-response') || '';
+
+        document.getElementById('reclamationSubject').textContent = reclamationSubject;
+        document.getElementById('reclamationDescription').textContent = reclamationDescription;
+        document.getElementById('reclamationId').value = reclamationId;
+        document.getElementById('responseText').value = reclamationResponse; // Set the existing response
+
+        $('#addResponseModal').modal('show');
     }
-  });
-  
-  setInterval(pollForNewReclamations, 10000);
-  </script>
-  
-    <style>
-        .input-invalid {
-            border-color: #DC143C; /* Change border color to red */
-        }
-    
-        .input-typing {
-            border-color: #50C878;
-        }
-         .error-label {
-            color: red;
-        }
-    </style>
-	
+});
+
+
+setInterval(pollForNewReclamations, 10000);
+	</script>
+
+	<style>
+		.input-invalid {
+			border-color: #DC143C; /* Change border color to red */
+		}
+
+		.input-typing {
+			border-color: #50C878;
+		}
+		.error-label {
+			color: red;
+		}
+	</style>
+
 
 	<!-- ===============================================-->
 <!--    End of Main Content-->
