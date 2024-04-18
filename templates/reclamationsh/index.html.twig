@@ -103,7 +103,8 @@
         <h3 id="modalReclamationSubject"></h3>
       <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>  
       <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
-        
+      <div><strong>Response:</strong> <span id="modalReclamationResponse"></span></div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -138,6 +139,8 @@
 
             // Populate the description
             document.getElementById('modalReclamationDescription').textContent = data.description;
+// Populate the response
+document.getElementById('modalReclamationResponse').textContent = data.reponse ? data.reponse.repReclamation : 'Pending';
 
 
             // Show the modal

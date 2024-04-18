@@ -1,0 +1,28 @@
+{% extends 'index_admin.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Reclamation Details</h2>
+            <p><strong>Private Key:</strong> {{ reclamation.privateKey }}</p>
+            <p><strong>Description:</strong> {{ reclamation.description }}</p>
+            <p><strong>Subject:</strong> {{ reclamation.subject }}</p>
+            <p><strong>Created At:</strong> {{ reclamation.createdAt | date('Y-m-d H:i:s') }}</p>
+            {% if reclamation.imagePath %}
+                <img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image">
+            {% else %}
+                <p>No image available for this reclamation.</p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h2>Response Details</h2>
+            {% if reclamation.reponse %}
+                <p><strong>Response Text:</strong> {{ reclamation.reponse.repReclamation }}</p>
+            {% else %}
+                <p>No response available for this reclamation.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
