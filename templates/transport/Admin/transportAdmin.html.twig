@@ -304,9 +304,10 @@ function addTransport(event) {
     formData.append('reference', reference);
     formData.append('time', Time);
     formData.append('type_vehicule', TypeVehicule);
-    if(prix===null){
+    if(prix===''){
     prix=prix;
-    formData.append('prix',0);}
+    formData.append('prix',0);
+    }
     else 
     formData.append('prix', prix);
 
@@ -384,6 +385,12 @@ function updateTransport(event) {
     formData.append('prix', prix);
     formData.append('depart', depart);
     formData.append('arrive', arrive);
+        if(prix===''){
+    prix=prix;
+    formData.append('prix',0);
+    }
+    else 
+    formData.append('prix', prix);
 
     $.ajax({
         url: '/updateTransport/' + maVariableGlobale,
@@ -404,8 +411,25 @@ function updateTransport(event) {
                  window.location.reload();
                 
             } else {
-                alert(response.message);
-                                 window.location.reload();
+    if (response.responseJSON && response.responseJSON.error === 'VALIDATION_ERROR') {
+        const errorMessage = response.responseJSON.messages.join(', '); // Join error messages with ','
+        const errorMessagesArray = errorMessage.split(','); // Split the error messages on ','
+        let errorMessagesHTML = ''; // Initialize an empty string to store HTML for error messages
+
+        // Loop through each error message and create HTML for it
+        errorMessagesArray.forEach((message) => {
+            errorMessagesHTML += `<div>${message.trim()}</div>`; // Trim whitespace and wrap each message in a <div>
+        });
+        $('.error-label').html(errorMessagesHTML);
+    } else if (response.responseJSON && response.responseJSON.error === 'DUPLICATE_ENTRY') {
+        // Handle duplicate entry error
+        alert("Error: " + response.responseJSON.message);
+        console.log("Duplicate entry");
+    } else {
+        // Handle other errors
+        alert("An error occurred while inserting the subscription: " + response.responseJSON.message);
+        console.log("Database error");
+    }                                 window.location.reload();
 
             }
         },

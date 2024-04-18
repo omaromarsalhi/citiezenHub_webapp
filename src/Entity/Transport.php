@@ -37,12 +37,13 @@ class Transport
     
     #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'vehiculeimage')]
     #[Assert\NotBlank(message:"Image can't be null ")]
-
     private ?File $imageFile = null;
 
     #[ORM\Column]
     #[Assert\Regex(pattern:"/^(\d+(\.\d+)?|\.\d+)$/",message:"Prix Transport should contain only numbers and points")]
     #[Assert\NotBlank(message:"Price is required")]
+    #[Assert\Positive(message:"price  is positive not negative")]
+
     private ?float $Prix = 0;
 
     // Heure property with string type

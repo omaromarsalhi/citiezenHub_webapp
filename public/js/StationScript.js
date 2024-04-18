@@ -129,23 +129,38 @@ function updateStation(event) {
 
 
 
-    const inputFields = document.querySelectorAll('.input-target');
-    
+const inputFields = document.querySelectorAll('.input-target');
+const inputFieldAddress = document.querySelectorAll('.input-Address');
 
-    inputFields.forEach(inputField => {
-        inputField.addEventListener('keyup', function() {
-            // Check if the input value contains a number
-            if (/^[A-Za-z,]+$/.test(this.value)) {
-                this.classList.add('input-modified');
-                this.classList.add('input-valid');
-            } 
-            else {
-                this.classList.remove('input-modified');
-                this.classList.remove('input-invalid');
-                this.classList.add('input-typing');
-            }
-        });
-    });
+inputFields.forEach(inputField => {
+  inputField.addEventListener('keyup', function() {
+    // Check for letters, commas and spaces
+    if (/^[A-Za-z ,]+$/.test(this.value)) {
+      this.classList.add('input-modified');
+      this.classList.add('input-valid');
+    } else {
+      this.classList.remove('input-modified');
+      this.classList.remove('input-invalid');
+      this.classList.add('input-typing');
+    }
+  });
+});
+
+inputFieldAddress.forEach(inputField => {
+  inputField.addEventListener('keyup', function() {
+    // Check for valid geolocation format
+    if (/^(\-?\d+\.\d+),(\-?\d+\.\d+)$/.test(this.value)) {
+      this.classList.add('input-modified');
+      this.classList.add('input-valid');
+    } else {
+      this.classList.remove('input-modified');
+      this.classList.remove('input-invalid');
+      this.classList.add('input-typing');
+    }
+  });
+});
+
+
 
 
     const fileInputs = document.querySelectorAll('input[type="file"]');
