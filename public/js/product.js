@@ -51,17 +51,17 @@ function updateProduct(id) {
         contentType: false,
         success: function (response) {
             console.log(response)
-            loader_stop(2000)
+            loader_stop(100)
             setTimeout(function () {
                 handle_success('the product has been added successfully')
-                // $('#createinputfile').val(null)
-                // $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
-                // $('#name').val('');
-                // $('#description').val('');
-                // $('#price').val('');
-                // $('#quantity').val('');
-                // $('#category').val('');
-            }, 2000)
+                $('#createinputfile').val(null)
+                $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
+                $('#name').val('');
+                $('#description').val('');
+                $('#price').val('');
+                $('#quantity').val('');
+                $('#category').val('');
+            }, 100)
         },
         error: function (xhr) {
             loader_stop(1000)

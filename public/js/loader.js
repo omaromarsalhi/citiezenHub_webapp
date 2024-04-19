@@ -1,3 +1,10 @@
+window.onload = function () {
+    loader_start_unverified();
+}
+
+
+
+
 
 function loader_start(){
     document.getElementById('container').classList.add('body');
@@ -22,3 +29,8 @@ function loader_stop_desc(time){
     }, time)
 }
 
+
+function loader_start_unverified(){
+    document.getElementById('container-ai').classList.add('body');
+    document.getElementById('loading-ai').classList.add('loader-ai');
+}

@@ -1,4 +1,3 @@
-
 {% for i,product in products %}
     <!-- start single product -->
     <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" id="product_at_index_{{ i }}">
@@ -6,38 +5,32 @@
             <div class="card-thumbnail">
                 <a href="../pages/product-details.html">
                     {% if product.images|length > 1 %}
-                    <!-- Swiper -->
-                    <div class="swiper effect-creative-swiper rounded">
-                        <div class="swiper-wrapper">
-                            {% for image in product.images %}
-                            <div class="swiper-slide">
-                                <a href="#"
-                                   onclick="document.getElementById('form_details_{{ i }}').submit(); return false;">
-                                    <img src="{{ asset(image.path)|default("Not available") }}"
-                                         alt="NFT_portfolio"
-                                         class="fixedImagesSize4owner"/>
-                                </a>
+                        <!-- Swiper -->
+                        <div class="swiper effect-creative-swiper rounded"  >
+                            <div class="swiper-wrapper">
+                                {% for image in product.images %}
+                                    <div class="swiper-slide">
+                                        <a href="#"
+                                           onclick="document.getElementById('form_details_{{ i }}').submit(); return false;">
+                                            <img src="{{ asset(image.path)|default("Not available") }}"
+                                                 alt="NFT_portfolio"
+                                                 class="fixedImagesSize4owner"/>
+                                        </a>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
+                            <div class="swiper-pagination"></div>
                         </div>
-                        <div class="swiper-pagination"></div>
-                    </div>
                     {% else %}
-                    <div>
-                        <!--{#                        <a href="{{ path('app_product_product_details',{'idProduct':csrf_token('details'~product.idProduct),'_method': 'POST'} ) }}"><img src="{{ asset(product.images[0].path) }}" #}-->
-                        <!--{#                                                            alt="NFT_portfolio" #}-->
-                        <!--{#                                                            class="fixedImagesSize4owner" #}-->
-                        <!--{#                        > #}-->
-                        <!--{# </a> #}-->
-                        <a href="#"
-                           onclick="document.getElementById('form_details_{{ i }}').submit(); return false;">
-                            <img src="{{ asset(product.images[0].path) }}"
-                                 alt="NFT_portfolio"
-                                 class="fixedImagesSize4owner"
-                            >
-                        </a>
-
-                    </div>
+                        <div >
+                            <a href="#"
+                               onclick="document.getElementById('form_details_{{ i }}').submit(); return false;">
+                                <img src="{{ asset(product.images[0].path) }}"
+                                     alt="NFT_portfolio"
+                                     class="fixedImagesSize4owner"
+                                >
+                            </a>
+                        </div>
                     {% endif %}
                 </a>
                 <div class="rbt-quick-action--btns">

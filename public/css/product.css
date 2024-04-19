@@ -75,3 +75,13 @@
 .updateImageHeight{
     min-height: 200px !important;
 }
+
+
+.loader-ai {
+    background: transparent url("../marketPlaceImages/t9gQ2ptYYn.gif") no-repeat center center;
+    background-size: 50%;
+    position: fixed;
+    z-index: 100;
+    height: 100%;
+    width: 100%;
+}
