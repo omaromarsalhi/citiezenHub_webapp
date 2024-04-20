@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\MyHelpers\AiVerification;
 use App\MyHelpers\ImageHelper;
-use App\MyHelpers\ProductCreatedEvent;
+use App\MyHelpers\AiVerificationMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,14 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 
 #[Route('/product', name: 'app_product')]
 class ProductController extends AbstractController
 {
     #[Route('/new', name: '_new', methods: ['GET', 'POST'])]
-    public function new(EventDispatcherInterface $eventDispatcher,Request $request, EntityManagerInterface $entityManager, ImageHelper $imageHelper, ProductRepository $productRepository, ValidatorInterface $validator): Response
+    public function new(MessageBusInterface $messageBus,Request $request, EntityManagerInterface $entityManager, ImageHelper $imageHelper, ProductRepository $productRepository, ValidatorInterface $validator): Response
     {
 
         if ($request->isXmlHttpRequest()) {
@@ -67,12 +66,23 @@ class ProductController extends AbstractController
             $images = $request->files->all();
             $newImagesPath = $imageHelper->saveImages($images, $product);
 
-//            $aiverification=new AiVerification($newImagesPath);
-//            $desc=$aiverification->run($newImagesPath);
 
-//            $bus->dispatch(new AiVerification($newImagesPath));
-            $eventDispatcher->dispatch(new ProductCreatedEvent($product));
-//            return new JsonResponse(['state' => 'done','desc'=>$desc]);
+
+            $obj=[
+                'title' => $new_product->getName(),
+                'category' => $new_product->getCategory(),
+                'images' => $newImagesPath
+            ];
+            $messageBus->dispatch(new AiVerificationMessage($obj));
+//            $images = $message->getImages();
+//            $aiVerification= new AiVerification();
+//            $obj=[
+//                'title' => $new_product->getName(),
+//                'category' => $new_product->getCategory(),
+//                'images' => $newImagesPath
+//            ];
+//            $res=$aiVerification->run($obj);
+//            var_dump($res);
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
