@@ -76,11 +76,6 @@ class ProductController extends AbstractController
             $messageBus->dispatch(new AiVerificationMessage($obj));
 //            $images = $message->getImages();
 //            $aiVerification= new AiVerification();
-//            $obj=[
-//                'title' => $new_product->getName(),
-//                'category' => $new_product->getCategory(),
-//                'images' => $newImagesPath
-//            ];
 //            $res=$aiVerification->run($obj);
 //            var_dump($res);
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
