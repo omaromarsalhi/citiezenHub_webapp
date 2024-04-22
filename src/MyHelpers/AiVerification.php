@@ -2,39 +2,61 @@
 
 namespace App\MyHelpers;
 
+use App\Entity\AiResult;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpClient\HttpClient;
-
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class AiVerification
 {
+    private $aiDataHolder;
 
-    public function run($obj): array
+
+    public function run($obj): AiDataHolder
     {
-        $result=$this->getAllDesc($obj['images']);
-//        $result=$this->compareDescWithTitleAndCategory($result,$obj['title']);
-//        var_dump($result);
-        return $this->compareDescWithTitleAndCategory($result,$obj);
+        $this->aiDataHolder=new AiDataHolder();;
+        $this->getAllDesc($obj['images']);
+        $this->compareDescWithTitleAndCategory($this->aiDataHolder->getDescriptions(),$obj);
+        return $this->aiDataHolder;
     }
 
 
+//    private function saveData($obj): void
+//    {
+//        $aiResult = new AiResult();
+//        $aiResultServes=new AiResultServes();
+//
+//        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+//        $serializedData = $serializer->serialize($this->aiDataHolder, 'json');
+//
+//        $aiResult->setBody($serializedData);
+//        $aiResult->setIdProduct($obj['product']);
+//
+//    }
 
-    public function getAllDesc($images_url): array
+
+    private function getAllDesc($images_url): void
     {
         $result=[];
         for($i=0;$i<sizeof($images_url);$i++){
             $result[]=$this->generateImageDescription($images_url[$i]);
         }
-        return $result;
+        $this->aiDataHolder->setDescriptions($result);
     }
 
-    public function compareDescWithTitleAndCategory($descriptions,$obj): array
+    private function compareDescWithTitleAndCategory($descriptions,$obj): void
     {
-        $result=[];
+        $result1=[];
+        $result2=[];
         for($i=0;$i<sizeof($descriptions);$i++){
-            $result[][]=$this->getTitleValidation($descriptions[$i],$obj['title']);
-            $result[][]=$this->getCategoryValidation($descriptions[$i],$obj['category']);
+            $result1[]=$this->getTitleValidation($descriptions[$i],$obj['product']->getName());
+            $result2[]=$this->getCategoryValidation($descriptions[$i],$obj['product']->getCategory());
         }
-        return $result;
+        $this->aiDataHolder->setTitleValidation($result1);
+        $this->aiDataHolder->setCategoryValidation($result2);
+
     }
 
     private function getTitleValidation($desc,$title): string

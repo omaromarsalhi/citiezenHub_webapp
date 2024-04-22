@@ -23978,7 +23978,7 @@
       }
       /**
        * Logs out the currently logged in user session. This will remove the
-       * session from disk, log out of linked services, and future calls to
+       * session from disk, log out of linked Service, and future calls to
        * <code>current</code> will return <code>null</code>.
        *
        * @param {object} options

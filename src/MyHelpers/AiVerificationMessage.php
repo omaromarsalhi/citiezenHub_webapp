@@ -3,6 +3,8 @@
 namespace App\MyHelpers;
 
 
+use Doctrine\ORM\EntityManagerInterface;
+
 class AiVerificationMessage
 {
     private  $obj;
@@ -12,8 +14,9 @@ class AiVerificationMessage
         $this->obj = $obj;
     }
 
-    public function getImages()
+    public function getObj()
     {
         return $this->obj;
     }
+
 }

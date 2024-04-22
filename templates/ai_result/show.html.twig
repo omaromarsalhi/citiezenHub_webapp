@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AiResult{% endblock %}
+
+{% block body %}
+    <h1>AiResult</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdAiResult</th>
+                <td>{{ ai_result.idAiResult }}</td>
+            </tr>
+            <tr>
+                <th>IdProduct</th>
+                <td>{{ ai_result.idProduct }}</td>
+            </tr>
+            <tr>
+                <th>Body</th>
+                <td>{{ ai_result.body }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ ai_result.timestamp ? ai_result.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ai_result_index') }}">back to list</a>
+
+    <a href="{{ path('app_ai_result_edit', {'idAiResult': ai_result.idAiResult}) }}">edit</a>
+
+    {{ include('ai_result/_delete_form.html.twig') }}
+{% endblock %}

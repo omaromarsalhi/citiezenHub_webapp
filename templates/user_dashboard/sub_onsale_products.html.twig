@@ -45,7 +45,7 @@
                                 class="yith-wcqv-button"
                                 data-product_id="793"
                         >
-                            <i class="fa-solid fa-pen-to-square"></i>
+                            <i class="fa-solid fa-pen-to-square" style="font-size: 14px"></i>
                         </a>
                     </div>
                     <div
@@ -60,14 +60,14 @@
                                 onclick="deleteProduct({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
                                 class="yith-wcqv-button"
                         >
-                            <i class="fa-regular fa-trash-can"></i>
+                            <i class="fa-regular fa-trash-can" style="font-size: 14px"></i>
                         </a>
 
                     </div>
                 </div>
             </div>
             {% if underverif %}
-                <div class="aiverif">
+               <!--{# <div class="aiverif">
                     <div class="profile-share">
                         <a
                                 class="avatar"
@@ -79,7 +79,7 @@
                             />
                         </a>
                     </div>
-                </div>
+                </div>#}-->
             {% endif %}
             <div class="product-share-wrapper">
 
@@ -98,7 +98,7 @@
             <span id="category_model">Sports</span>
             <div class="bid-react-area m-0 ">
                 <div class="last-bid mt-3 " id="price_model">120 DT</div>
-
+                {% if underverif %}
                 <div class="product-share-wrapper  " style="margin: 0 !important;">
                     <div class="share-btn share-btn-activation dropdown">
                         <button
@@ -131,11 +131,12 @@
                                     data-bs-toggle="modal"
                                     data-bs-target="#reportModal"
                             >
-                                Update
+                                Details
                             </button>
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
         <form id="form_details_{{ i }}" method="post"

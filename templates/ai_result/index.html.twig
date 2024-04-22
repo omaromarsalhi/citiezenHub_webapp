@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AiResult index{% endblock %}
+
+{% block body %}
+    <h1>AiResult index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdAiResult</th>
+                <th>IdProduct</th>
+                <th>Body</th>
+                <th>Timestamp</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ai_result in ai_results %}
+            <tr>
+                <td>{{ ai_result.idAiResult }}</td>
+                <td>{{ ai_result.idProduct }}</td>
+                <td>{{ ai_result.body }}</td>
+                <td>{{ ai_result.timestamp ? ai_result.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_ai_result_show', {'idAiResult': ai_result.idAiResult}) }}">show</a>
+                    <a href="{{ path('app_ai_result_edit', {'idAiResult': ai_result.idAiResult}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ai_result_new') }}">Create new</a>
+{% endblock %}

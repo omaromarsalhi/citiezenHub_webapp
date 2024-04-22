@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\AiResult;
 use App\Entity\Product;
+use App\MyHelpers\AiResultServes;
 use App\MyHelpers\AiVerification;
 use App\MyHelpers\ImageHelper;
 use App\MyHelpers\AiVerificationMessage;
 use App\Repository\ProductRepository;
+use App\Service\AiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -69,15 +72,22 @@ class ProductController extends AbstractController
 
 
             $obj=[
-                'title' => $new_product->getName(),
-                'category' => $new_product->getCategory(),
+                'product' => $product,
                 'images' => $newImagesPath
             ];
+
             $messageBus->dispatch(new AiVerificationMessage($obj));
 //            $images = $message->getImages();
 //            $aiVerification= new AiVerification();
 //            $res=$aiVerification->run($obj);
 //            var_dump($res);
+
+//            $aiResult = new AiResult();
+//            $aiResultServes=new AiResultServes();
+//
+//            $aiResult->setBody('eeee');
+//            $aiResultServes->addAiResult($aiResult,new AiService());
+
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
@@ -196,5 +206,17 @@ class ProductController extends AbstractController
             return new JsonResponse(['page'=>$map[$page]->getCurrentPage()]);
         }
         return new Response('something went wrong', Response::HTTP_BAD_REQUEST);
+    }
+
+
+    #[Route('/test', name: 'test', methods: ['POST','GET'])]
+    public function test(): Response
+    {
+        $aiResult = new AiResult();
+        $aiResult->setBody('qfdgqrfg');
+        $entityManager = $this->get('doctrine')->getManager();
+        $entityManager->persist($aiResult);
+        $entityManager->flush();
+        return new JsonResponse($aiResult);
     }
 }
