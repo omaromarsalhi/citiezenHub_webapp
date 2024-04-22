@@ -2,12 +2,8 @@
 
 namespace App\MyHelpers;
 
-use App\Entity\AiResult;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
+
 
 class AiVerification
 {
@@ -22,19 +18,6 @@ class AiVerification
         return $this->aiDataHolder;
     }
 
-
-//    private function saveData($obj): void
-//    {
-//        $aiResult = new AiResult();
-//        $aiResultServes=new AiResultServes();
-//
-//        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-//        $serializedData = $serializer->serialize($this->aiDataHolder, 'json');
-//
-//        $aiResult->setBody($serializedData);
-//        $aiResult->setIdProduct($obj['product']);
-//
-//    }
 
 
     private function getAllDesc($images_url): void

@@ -14,54 +14,27 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AiVerificationMessengerHandler
 {
 
-    private $entityManager=null;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function __invoke(AiVerificationMessage $message): void
     {
         $obj = $message->getObj();
+
         $aiVerification= new AiVerification();
         $aiDataHolder=$aiVerification->run($obj);
-        var_dump($aiDataHolder);
-
 
         $aiResult = new AiResult();
-//        $aiResultServes=new AiResultServes();
-//
-//        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-//        $serializedData = $serializer->serialize($aiDataHolder, 'json');
+        $aiResultServes=new AiResultServes();
 
-        $aiResult->setBody('eeee');
-        $aiResult->setIdProduct($obj['product']);
+        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+        $serializedData = $serializer->serialize($aiDataHolder, 'json');
 
+        $aiResult->setBody($serializedData);
+        $aiResult->setProduct($obj['product']);
 
-
-        if (!$this->entityManager->isOpen()) {
-            $this->entityManager = $this->getDoctrine()->resetManager();
-        }
-
-        $this->entityManager->persist($aiResult);
-        $this->entityManager->flush();
-//        $aiResultServes->addAiResult($aiResult,$this->entityManager);
-
-////        $aiResultController=new AiResultController();
-//        $aiResult = new AiResult();
-//
-//        $this->aiDataHolder=$aiVerification->run($obj);
-//
-//        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-//        $serializedData = $serializer->serialize($this->aiDataHolder, 'json');
-//
-//        $aiResult->setBody($serializedData);
-//        $aiResult->setIdProduct($obj['product']);
-//
-////        $aiResultController->new($aiResult,$this->entityManager);
-//        $this->entityManager->persist($aiResult);
-//        $this->entityManager->flush();
+        $aiResultServes->addAiResult($aiResult,$this->entityManager);
 
     }
 }

@@ -23,9 +23,6 @@ services:
 
   # config/Service.yaml
 
-  App\MyHelpers\AiVerificationMessengerHandler:
-    arguments:
-      $entityManager: '@doctrine.orm.default_entity_manager'
 
 
 

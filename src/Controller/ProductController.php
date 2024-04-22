@@ -82,12 +82,6 @@ class ProductController extends AbstractController
 //            $res=$aiVerification->run($obj);
 //            var_dump($res);
 
-//            $aiResult = new AiResult();
-//            $aiResultServes=new AiResultServes();
-//
-//            $aiResult->setBody('eeee');
-//            $aiResultServes->addAiResult($aiResult,new AiService());
-
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 

@@ -19,4 +19,5 @@ class AiVerificationMessage
         return $this->obj;
     }
 
+
 }

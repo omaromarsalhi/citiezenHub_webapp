@@ -15,13 +15,13 @@ class AiResult
     private ?int $idAiResult = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\Column(name: 'idProduct')]
-    private ?Product $idProduct = null;
+    #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
+    private ?Product $product = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $timestamp = null;
 
     public function getId(): ?int
@@ -29,14 +29,14 @@ class AiResult
         return $this->idAiResult;
     }
 
-    public function getIdProduct(): ?Product
+    public function getProduct(): ?Product
     {
-        return $this->idProduct;
+        return $this->product;
     }
 
-    public function setIdProduct(?Product $idProduct): static
+    public function setProduct(?Product $product): static
     {
-        $this->idProduct = $idProduct;
+        $this->product = $product;
 
         return $this;
     }
