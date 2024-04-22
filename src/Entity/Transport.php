@@ -25,14 +25,16 @@ class Transport
     private ?string $nomStationArrive = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+
     private ?string $TypeVehicule = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank(message:"Refrence  is required")]
-    #[Assert\Regex(pattern:"/^[A-Za-z]+$/",message:"Nom Station should contain only letters")]
+   
     private ?string $Reference = null;
 
     #[ORM\Column(length: 255, name: "Vehicule_Image")]
+
     private ?string $vehiculeimage = null;
     
     #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'vehiculeimage')]
@@ -42,22 +44,29 @@ class Transport
     #[ORM\Column]
     #[Assert\Regex(pattern:"/^(\d+(\.\d+)?|\.\d+)$/",message:"Prix Transport should contain only numbers and points")]
     #[Assert\NotBlank(message:"Price is required")]
-    #[Assert\Positive(message:"price  is positive not negative")]
+   
+
 
     private ?float $Prix = 0;
 
     // Heure property with string type
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Regex(pattern:"/^(0[7-9]|1[0-6]):[0-5][0-9]$/",message:"L'heure doit être comprise entre 07:00 et 16:59")]
+
     private ?string $Heure = null;
   
     
  
 
     #[ORM\Column]
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Station")]
+    #[ORM\JoinColumn(name:"station_depart", referencedColumnName:"id")]
+
     private ?int $Station_depart = null;
 
     #[ORM\Column]
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Station")]
+    #[ORM\JoinColumn(name:"station_arrive", referencedColumnName:"id")]
+
     private ?int $Station_arrive = null;
 
     public function getIdTransport(): ?int

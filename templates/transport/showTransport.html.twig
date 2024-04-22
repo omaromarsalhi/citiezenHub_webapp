@@ -57,8 +57,18 @@
                                         </div>
                                     </td>
                                     <td><span >{{transport.Heure}}</span></td>
-                                    <td><span class="color-danger">{{transport.Stationarrive}}</span></td>
-                                    <td><span class="color-green">{{transport.Stationarrive}}</span></td>
+                                  {% for station_dep in stations %}
+                                  {% if station_dep.id == transport.Stationdepart %}
+                                    <td><span class="color-danger">{{station_dep.NomStation}}</span></td>
+                                    {% endif %}
+                                    {% endfor %}
+                                {% for station_ari in stations %}
+                                  {% if station_ari.id == transport.Stationarrive %}
+
+                                    <td><span class="color-green">{{station_ari.NomStation}}</span></td>
+                                                                        {% endif %}
+
+                              {% endfor %}
                                     <td><span>{{transport.TypeVehicule}}</span></td>
                                     <td><span>{{transport.Prix}}</span></td>
                                 </tr>
