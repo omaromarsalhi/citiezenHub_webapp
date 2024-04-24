@@ -12,9 +12,30 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     # makes classes in src/ available to be used as services
+# config/services.yaml
 
 
-    # makes classes in src/ available to be used as services
+        # Configuration du client GuzzleHttp pour les requêtes HTTP
+    GuzzleHttp\Client:
+        class: GuzzleHttp\Client
+
+        # Configuration du service Geocoder GoogleMaps
+    Geocoder\Provider\GoogleMaps\GoogleMaps:
+        class: Geocoder\Provider\GoogleMaps\GoogleMaps
+        arguments:
+                - '@GuzzleHttp\Client' # Injectez le client GuzzleHttp pour les requêtes HTTP
+
+        # Configuration du service Geocoder StatefulGeocoder
+    Geocoder\StatefulGeocoder:
+        class: Geocoder\StatefulGeocoder
+        arguments:
+                - '@Geocoder\Provider\GoogleMaps\GoogleMaps'
+                - 'fr' # Locale facultative (par exemple, 'fr' pour le français)
+
+
+
+
+            # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'

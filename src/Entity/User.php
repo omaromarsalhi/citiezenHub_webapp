@@ -90,7 +90,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
 //        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
 //    )]
     #[Assert\Regex(
-        pattern: '/^[a-zA-Z]{3,}$/',
+        pattern: '/^[a-zA-Z0-9\s-]+$/',
         message: "L adresse.",
         groups: ['add'],
 
