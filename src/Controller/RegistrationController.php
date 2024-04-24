@@ -36,7 +36,7 @@ class RegistrationController extends AbstractController
                 $user->setEmail($userData['email']);
                 $user->setPassword($userData['password']);
 
-                $errors = $validator->validate($user);
+                $errors = $validator->validate($user, null, 'add');
 
                 foreach ($errors as $error) {
                     $field = $error->getPropertyPath();

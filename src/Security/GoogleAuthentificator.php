@@ -88,7 +88,13 @@ class GoogleAuthentificator extends SocialAuthenticator
 
             return new RedirectResponse($this->router->generate('editProfile'));
         }
-//        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+
+            $this->session->set('authenticatedUser', $this->user);
+            $targetUrl = $this->router->generate('app_register');
+            return new RedirectResponse($targetUrl);
+
+    }
+    //        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
 //            var_dump($targetPath);
 //            return new RedirectResponse('addUser');
 //        }
@@ -96,10 +102,4 @@ class GoogleAuthentificator extends SocialAuthenticator
 
 //        return new RedirectResponse($this->urlGenerator->generate('addUser'));
 //        return new RedirectResponse($this->urlGenerator->generate('signup_route'));
-
-            $this->session->set('authenticatedUser', $this->user);
-            $targetUrl = $this->router->generate('app_register');
-            return new RedirectResponse($targetUrl);
-
-    }
 }

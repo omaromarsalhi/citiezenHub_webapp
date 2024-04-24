@@ -30,7 +30,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[Assert\Regex(
         pattern: '/^[a-zA-Z]{3,}$/',
         message: "Le nom contient que des alphabet ",
-        groups: ['creation'],
+        groups: ['add'],
 )]
     private ?string $firstName = null;
 
@@ -39,7 +39,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[Assert\Regex(
         pattern: '/^[a-zA-Z]{3,}$/',
         message: "Le nom contient que des alphabet ",
-        groups: ['creation'],
+        groups: ['add'],
 )]
     private ?string $lastName = null;
 
@@ -58,7 +58,8 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[Assert\NotBlank(message: 'Lemail ne pas etre vide ')]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
-        message: "To ensure that your email address is valid, it must be in the following format:user@example.com"
+        message: "To ensure that your email address is valid, it must be in the following format:user@example.com",
+        groups: ['add'],
     )]
     private ?string $email = null;
 
@@ -76,7 +77,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[Assert\Regex(
         pattern: '/^\d{1,8}$/',
         message: "Le numéro de téléphone doit contenir entre 1 et 8 chiffres et aucun autre caractère.",
-groups: ['creation'],
+         groups: ['creation'],
 
     )]
 //    #[Assert\Email(groups: ['creation'])]
@@ -85,8 +86,14 @@ groups: ['creation'],
 
 
     #[Assert\NotBlank(message: 'Ladresse ne peut pas être vide')]
-    #[Assert\Length(
-        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
+//    #[Assert\Length(
+//        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
+//    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]{3,}$/',
+        message: "L adresse.",
+        groups: ['add'],
+
     )]
     #[ORM\Column(name:"address",length: 255)]
     private ?string $address = null;
@@ -99,7 +106,7 @@ groups: ['creation'],
     #[Assert\Regex(
         pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
         message: "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial, avec une longueur minimale de 8 caractères",
-        groups: ['editPassword'],
+        groups: ['add'],
     )]
     private ?string $password = null;
 
@@ -107,6 +114,11 @@ groups: ['creation'],
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+//    #[Assert\LessThan("today",message: 'Le password ne peut pas être vide')]
+//    #[Assert\Regex(
+//        groups: ['creation'],
+//    )]
+
     private ?\DateTimeInterface $dob = null;
 
     #[ORM\Column(name:"status",length: 255)]
