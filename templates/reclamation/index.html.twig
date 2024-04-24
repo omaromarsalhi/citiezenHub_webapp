@@ -79,7 +79,7 @@
                             <!-- Private Key Input -->
                             <div class="input-box pb--20">
                                 <label for="privateKey" class="required">Private Key</label>
-                                <input type="text" id="privateKey" name="privateKey" pattern="^[0-9]+$">
+                                <input type="text" id="privateKey" name="privateKey" pattern="^[0-9]+$" readonly>
                                 <small id="privateKeyHelp" class="form-text text-muted">Enter a numeric private key.</small>
                             </div>
                             
@@ -121,6 +121,15 @@
                 
                 reader.readAsDataURL(input.files[0]);
             }
+        });
+        // Generate and set Private Key
+        document.addEventListener('DOMContentLoaded', function() {
+            function generatePrivateKey() {
+                return Math.floor(100000 + Math.random() * 900000);
+            }
+
+            const privateKeyField = document.getElementById('privateKey');
+            privateKeyField.value = generatePrivateKey();
         });
     </script>
 {% endblock %}
