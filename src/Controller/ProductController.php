@@ -4,12 +4,9 @@ namespace App\Controller;
 
 use App\Entity\AiResult;
 use App\Entity\Product;
-use App\MyHelpers\AiResultServes;
-use App\MyHelpers\AiVerification;
 use App\MyHelpers\ImageHelper;
 use App\MyHelpers\AiVerificationMessage;
 use App\Repository\ProductRepository;
-use App\Service\AiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -72,16 +69,14 @@ class ProductController extends AbstractController
 
 
             $obj=[
-                'product' => $product,
+                'title' => $product->getName(),
+                'category' => $product->getCategory(),
+                'id' => $product->getIdProduct(),
                 'images' => $newImagesPath
             ];
 
             $messageBus->dispatch(new AiVerificationMessage($obj));
-//            $images = $message->getImages();
-//            $aiVerification= new AiVerification();
-//            $res=$aiVerification->run($obj);
-//            var_dump($res);
-
+            var_dump($obj);
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 

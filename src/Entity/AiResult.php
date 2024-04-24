@@ -11,32 +11,31 @@ class AiResult
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'idAiResult', type: 'integer')]
+    #[ORM\Column(name:'idAiResult')]
     private ?int $idAiResult = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: "idProduct",referencedColumnName:"idProduct")]
-    private ?Product $product = null;
+    #[ORM\Column(name:'idProduct',nullable: true)]
+    private ?int $idProduct = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $timestamp = null;
 
     public function getId(): ?int
     {
-        return $this->idAiResult;
+        return $this->id;
     }
 
-    public function getProduct(): ?Product
+    public function getIdProduct(): ?int
     {
-        return $this->product;
+        return $this->idProduct;
     }
 
-    public function setProduct(?Product $product): static
+    public function setIdProduct(?int $idProduct): static
     {
-        $this->product = $product;
+        $this->idProduct = $idProduct;
 
         return $this;
     }

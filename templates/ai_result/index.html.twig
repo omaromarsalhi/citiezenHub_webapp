@@ -9,7 +9,6 @@
         <thead>
             <tr>
                 <th>IdAiResult</th>
-                <th>IdProduct</th>
                 <th>Body</th>
                 <th>Timestamp</th>
                 <th>actions</th>
@@ -19,7 +18,6 @@
         {% for ai_result in ai_results %}
             <tr>
                 <td>{{ ai_result.idAiResult }}</td>
-                <td>{{ ai_result.idProduct }}</td>
                 <td>{{ ai_result.body }}</td>
                 <td>{{ ai_result.timestamp ? ai_result.timestamp|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
@@ -29,7 +27,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

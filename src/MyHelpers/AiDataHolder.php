@@ -4,9 +4,9 @@ namespace App\MyHelpers;
 
 class AiDataHolder
 {
-    private $descriptions = [];
-    private $titleValidation = [];
-    private $categoryValidation = [];
+    private array $descriptions = [];
+    private array $titleValidation = [];
+    private array $categoryValidation = [];
 
     public function getDescriptions(): array
     {

@@ -2,6 +2,7 @@
 
 namespace App\MyHelpers;
 
+use App\Controller\AiResultController;
 use App\Entity\AiResult;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -26,13 +27,18 @@ class AiVerificationMessengerHandler
         $aiDataHolder=$aiVerification->run($obj);
 
         $aiResult = new AiResult();
+//        $aiResultController=new AiResultController();
         $aiResultServes=new AiResultServes();
 
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
 
         $aiResult->setBody($serializedData);
-        $aiResult->setProduct($obj['product']);
+        $aiResult->setIdProduct($obj['id']);
+
+//        $object = $serializer->deserialize($json, AiResult::class, 'json');
+//        var_dump($object);
+
 
         $aiResultServes->addAiResult($aiResult,$this->entityManager);
 

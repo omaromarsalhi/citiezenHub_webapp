@@ -15,6 +15,7 @@
     <script src="{{ asset('js/product.js') }}"></script>
     <script src="{{ asset('js/loader.js') }}"></script>
     <script src="{{ asset('js/details.js') }}"></script>
+    <script src="{{ asset('js/ai.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -270,7 +271,7 @@
     <!-- Modal -->
     <div
             class="rn-popup-modal report-modal-wrapper modal fade"
-            id="reportModal"
+            id="aiModel"
             tabindex="-1"
             aria-hidden="true"
     >
@@ -288,15 +289,15 @@
                         <h4 class="modal-title">Security Check Completed</h4>
                     </div>
                 <div class="modal-body overflow-hidden align-content-center">
-                    <section>
-                        <details>
-                            <summary>Details</summary>
-                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div>
-                        </details>
-                        <details>
-                            <summary>Details</summary>
-                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div>
-                        </details>
+                    <section id="sectionData">
+{#                        <details>#}
+{#                            <summary>Details</summary>#}
+{#                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div>#}
+{#                        </details>#}
+{#                        <details>#}
+{#                            <summary>Details</summary>#}
+{#                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div>#}
+{#                        </details>#}
                     </section>
                 </div>
                 <div class="report-form-box mt-4">
@@ -321,7 +322,7 @@
     <!-- Modal -->
     <div
             class="rn-popup-modal report-modal-wrapper modal fade"
-            id="reportModald"
+            id="loadingModel"
             tabindex="-1"
             aria-hidden="true"
     >
