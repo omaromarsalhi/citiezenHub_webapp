@@ -66,8 +66,6 @@ class ProductController extends AbstractController
             $images = $request->files->all();
             $newImagesPath = $imageHelper->saveImages($images, $product);
 
-
-
             $obj=[
                 'title' => $product->getName(),
                 'category' => $product->getCategory(),
@@ -76,7 +74,6 @@ class ProductController extends AbstractController
             ];
 
             $messageBus->dispatch(new AiVerificationMessage($obj));
-            var_dump($obj);
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 

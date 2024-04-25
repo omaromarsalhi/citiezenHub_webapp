@@ -31,36 +31,26 @@ class AiResultController extends AbstractController
     public function index(AiResultRepository $aiResultRepository, Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-//            $aiDataHolder->setDescriptions([" The image shows a single, whole red apple. It's positioned against a plain white background,
-//                allowing the focus to be solely on the apple. The apple appears to be of high quality with a shiny skin
-//                and a clear reflection on its surface, suggesting it might be fresh. There are no other objects or text in the image."]);
-//            $aiDataHolder->setTitleValidation([" No, the paragraph does not mention Omar Salhi."]);
-//            $aiDataHolder->setTitleValidation([" Yes, the main object of the paragraph is a red apple, which falls under the category of food;"]);
-            $doesItExist=false;
             $aiResult = $aiResultRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
+            if ($aiResult != null) {
+                $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+                $aiDataHolder = $serializer->deserialize($aiResult->getBody(), AiDataHolder::class, 'json');
 
-            $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-            $aiDataHolder = $serializer->deserialize($aiResult->getBody(), AiDataHolder::class, 'json');
-
-
-            $result = [];
-            $sub_result = [];
-            for($i=0;$i<sizeof($aiDataHolder->getDescriptions());$i++) {
-                $sub_result['title']=str_starts_with(strtolower($aiDataHolder->getTitleValidation()[$i]), " yes");
-                $sub_result['titleData']=$aiDataHolder->getTitleValidation()[$i];
-                $sub_result['category']=str_starts_with(strtolower($aiDataHolder->getCategoryValidation()[$i]), " yes");
-                $sub_result['categoryData']=$aiDataHolder->getCategoryValidation()[$i];
-                $result[]=$sub_result;
-                $doesItExist=true;
+                $result = [];
+                $sub_result = [];
+                for ($i = 0; $i < sizeof($aiDataHolder->getDescriptions()); $i++) {
+                    $sub_result['title'] = str_starts_with(strtolower($aiDataHolder->getTitleValidation()[$i]), " yes");
+                    $sub_result['titleData'] = $aiDataHolder->getTitleValidation()[$i];
+                    $sub_result['category'] = str_starts_with(strtolower($aiDataHolder->getCategoryValidation()[$i]), " yes");
+                    $sub_result['categoryData'] = $aiDataHolder->getCategoryValidation()[$i];
+                    $result[] = $sub_result;
+                }
+                return new JsonResponse(['doesItExist' => true, 'data' => $result], Response::HTTP_OK);
             }
-//            var_dump($result);
-//            return new JsonResponse(['doesItExist'=>false], Response::HTTP_OK);
-            return new JsonResponse(['doesItExist'=>$doesItExist,'data' => $result], Response::HTTP_OK);
+            return new JsonResponse(['doesItExist' => false], Response::HTTP_OK);
         }
         return new Response('bad request', Response::HTTP_BAD_REQUEST);
     }
-
-
 
 
     public function new(AiResult $aiResult, EntityManagerInterface $entityManager): void

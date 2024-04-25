@@ -27,8 +27,8 @@ class AiVerificationMessengerHandler
         $aiDataHolder=$aiVerification->run($obj);
 
         $aiResult = new AiResult();
-//        $aiResultController=new AiResultController();
-        $aiResultServes=new AiResultServes();
+        $aiResultController=new AiResultController();
+//        $aiResultServes=new AiResultServes();
 
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
@@ -36,11 +36,8 @@ class AiVerificationMessengerHandler
         $aiResult->setBody($serializedData);
         $aiResult->setIdProduct($obj['id']);
 
-//        $object = $serializer->deserialize($json, AiResult::class, 'json');
-//        var_dump($object);
 
-
-        $aiResultServes->addAiResult($aiResult,$this->entityManager);
+        $aiResultController->new($aiResult,$this->entityManager);
 
     }
 }

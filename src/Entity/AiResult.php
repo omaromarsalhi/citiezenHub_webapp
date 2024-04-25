@@ -20,12 +20,12 @@ class AiResult
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $timestamp = null;
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->idAiResult;
     }
 
     public function getIdProduct(): ?int
