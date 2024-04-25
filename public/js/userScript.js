@@ -15,6 +15,19 @@ function parserMessagesErreur(reponseTexte) {
         return {};
     }
 }
+function showLoaderAndBlockUI(inputId) {
+    const loader = document.getElementById('loader');
+    const mainContent = document.getElementById('main-content');
+    loader.style.display = 'flex';
+    // loader.style.justifyContent = 'center'; // Centrer horizontalement
+    // loader.style.alignItems = 'center'; // Centrer verticalement
+    mainContent.style.pointerEvents = 'none';
+    mainContent.style.filter = 'blur(5px)';
+    setTimeout(() => {
+        const form = document.getElementById(inputId);
+        form.submit();
+    }, 10000);
+}
 function afficherMessagesErreur(erreurs) {
 
     if (Object.keys(erreurs).length === 0) {
@@ -50,9 +63,15 @@ function removeInputs() {
         element.innerHTML='';
     });
 }
+function hideLoaderAndUnblockUI() {
+    // Masquer l'indicateur de chargement
+    $('#loader').hide();
+
+}
 function editProfile(event) {
 
     event.preventDefault();
+    showLoaderAndBlockUI("test");
     let formData = new FormData();
     let name=$('#firstnamee').val();
     let lastname=$('#lastnamee').val();
@@ -107,9 +126,9 @@ function editProfile(event) {
 
 
         },
+
     });
 }
-
 
 function addErrorMessage(message,classeStyle,inputId) {
     const conteneurErreurs = document.getElementById(inputId);
@@ -154,9 +173,7 @@ function editPassword(event) {
     formData.append('oldPassword',oldPass);
     formData.append('newPassword',NewPass);
     formData.append('confirmPassword',rePass);
-
     $.ajax({
-
         url: '/changePassword',
         type: "POST",
         data:formData,
@@ -221,6 +238,8 @@ function AddMunicipality(event) {
         },
     });
 }
+
+
 function DeleteCustomer(event) {
 }
 

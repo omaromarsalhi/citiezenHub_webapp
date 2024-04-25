@@ -10,6 +10,10 @@
 
     <script src="{{ asset('js/userScript.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <div id="loader" style="display: none;">
+        <!-- Insérez ici votre image de chargement (loader) -->
+        <img src="images/img/Animation - 1714076220937.gif"  alt="Loader">
+    </div>
     <header class="rn-header haeder-default header--sticky">
         <div class="container">
             <div class="header-inner">
@@ -297,7 +301,7 @@
                     </nav>
                     <!-- End tabs area -->
                 </div>
-                <div class="col-lg-9 col-md-9 col-sm-12 mt_sm--30">
+                <div id="main-content" class="col-lg-9 col-md-9 col-sm-12 mt_sm--30">
                     <div class="tab-content tab-content-edit-wrapepr" id="nav-tabContent">
 
                         <!-- sigle tab content -->
@@ -347,7 +351,7 @@
 
 
                             <!-- start personal information -->
-                            <form>
+                            <form id="test">
                              <div class="nuron-information">
                                 <div class="profile-form-wrapper">
                                     <div class="input-two-wrapper mb--15">
@@ -610,7 +614,15 @@
             </div>
         </div>
     </div>
-
+    <script>
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const form = document.getElementById('test');
+        //     form.addEventListener('submit', function(event) {
+        //           console.log("lllllll");
+        //         showLoaderAndBlockUI("test"); // Appeler la fonction pour afficher le loader et flouter la page
+        //     });
+        // });
+    </script>
 
     <!-- End tabs area -->
 

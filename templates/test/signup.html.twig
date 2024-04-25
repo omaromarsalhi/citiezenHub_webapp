@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block test %}
+    <script src="{{ asset('js/userScript.js') }}"></script>
+
+    <div id="loader" style="display: none;">
+        <img src="images/img/Animation - 1714076220937.gif"  alt="Loader">
+    </div>
+
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- start page title area -->
     <div class="rn-breadcrumb-inner ptb--30">
@@ -27,13 +33,13 @@
     {% endif %}
 
     <!-- login form -->
-    <div class="login-area rn-section-gapTop">
+    <div  id='main-content' class="login-area rn-section-gapTop">
         <div class="container">
             <div class="row g-5">
                 <div class="offset-2 col-lg-4 col-md-6 ml_md--0 ml_sm--0 col-sm-12">
                     <div class="form-wrapper-one registration-area">
                         <h4>Sign up</h4>
-                        <form method="POST" action="{{ path('app_register') }}">
+                        <form  id="signup-form" method="POST" action="{{ path('app_register') }}">
                             <div class="mb-5">
                                 <label for="firstName" class="form-label">First name</label>
                                 <input type="text" id="firstName" name="user[firstName]" value=" {{ name }}" >
@@ -46,7 +52,6 @@
                                     .test {
                                         color: red;
                                         font-weight: bold;
-
                                     }
                                 </style>
 
@@ -72,7 +77,7 @@
                             </div>
                             <div class="mb-5">
                                 <label for="Address" class="form-label">Address</label>
-                                <input type="address" id="Address" name="user[address]" >
+                                <input type="address" id="address" name="user[address]" >
                                 <div >
                                     {% if errors['municipalite'] is defined %}
                                         <div class="test">{{ errors['municipalite'] }}</div>
@@ -105,7 +110,14 @@
                     </div>
                 </div>
 
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('signup-form');
+        form.addEventListener('submit', function(event) {
+            showLoaderAndBlockUI("signup-form");
+        });
+    });
+</script>
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="social-share-media form-wrapper-one">
