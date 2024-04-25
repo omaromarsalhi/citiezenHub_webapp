@@ -1307,5 +1307,9 @@
 <script src="{{ asset('js/userScript.js') }}"></script>
 
 
+{% block scripts %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 </body>
 </html>

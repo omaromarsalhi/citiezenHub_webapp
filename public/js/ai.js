@@ -1,4 +1,10 @@
-function showModelUnverfied(idProduct) {
+
+window.onload = function () {
+}
+
+
+
+function showModelUnverfied(idProduct,index,type) {
     $.ajax({
             url: "/ai/result/check4verification",
             type: "POST",
@@ -7,7 +13,6 @@ function showModelUnverfied(idProduct) {
             },
             async: true,
             success: function (response) {
-                console.log(response)
                 if (response.doesItExist === true) {
                     str2Add = '';
                     for (let i = 0; i < response.data.length; i++) {
@@ -24,13 +29,13 @@ function showModelUnverfied(idProduct) {
                         str2Add += '</details>'
                     }
                     $('#sectionData').html(str2Add);
+                    str='form_update_unverified_'+index
+                    $('#updateBtn').attr('onclick','document.getElementById("'+str+'").submit(); return false;')
+                    $('#deleteBtn').attr('onclick','deleteProduct('+idProduct+','+index+',"unverified")')
                     $('#aiModel').modal("show")
                 } else {
                     $('#loadingModel').modal("show")
                 }
-
-
-
 
             },
             error: function (resp) {

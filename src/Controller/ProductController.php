@@ -73,7 +73,7 @@ class ProductController extends AbstractController
                 'images' => $newImagesPath
             ];
 
-            $messageBus->dispatch(new AiVerificationMessage($obj));
+//            $messageBus->dispatch(new AiVerificationMessage($obj));
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
@@ -153,17 +153,15 @@ class ProductController extends AbstractController
             $images = $request->files->all();
             $newImagesPath = $imageHelper->saveImages($images, $product);
 
-/*            $aiverification=new AiVerification();
-            $desc=$aiverification->run($newImagesPath);
-            return new JsonResponse(['state' => 'done','desc'=>$desc]);*/
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
-        $product=$productRepository->findOneBy(['idProduct' => $request->get('_token_' . $index)]);
+        $product=$productRepository->findOneBy(['idProduct' => $request->get('_token_'. $index)]);
 
         return $this->render('market_place/create.html.twig',[
             'product' => $product,
-            'update'=>true]);
+            'update'=>true
+        ]);
     }
 
     #[Route('/delete', name: '_delete', methods: ['POST'])]

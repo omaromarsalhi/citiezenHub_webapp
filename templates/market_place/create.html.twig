@@ -43,80 +43,63 @@
                     <div class="row g-5">
                         <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
                             {% if update == false %}
-                            <!-- file upload area -->
-                            <div class="upload-area">
-                                <div class="upload-formate mb--30">
-                                    <h6 class="title">Upload file</h6>
-                                    <p class="formate">Drag or choose your file to upload</p>
-                                </div>
+                                <!-- file upload area -->
+                                <div class="upload-area">
+                                    <div class="upload-formate mb--30">
+                                        <h6 class="title">Upload file</h6>
+                                        <p class="formate">Drag or choose your file to upload</p>
+                                    </div>
 
-                                <div class="brows-file-wrapper">
-                                    <!-- actual upload which is hidden -->
-                                    <input
-                                            name="createinputfile"
-                                            id="createinputfile"
-                                            type="file"
-                                            class="inputfile"
-                                            multiple
-                                    />
-                                    <img
-                                            id="createfileImage"
-                                            src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
-                                            alt=""
-                                            data-black-overlay="6"
-                                    />
+                                    <div class="brows-file-wrapper">
+                                        <!-- actual upload which is hidden -->
+                                        <input
+                                                name="createinputfile"
+                                                id="createinputfile"
+                                                type="file"
+                                                class="inputfile"
+                                                multiple
+                                        />
+                                        <img
+                                                id="createfileImage"
+                                                src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                                alt=""
+                                                data-black-overlay="6"
+                                        />
 
-                                    <!-- our custom upload button -->
-                                    <label for="createinputfile" title="No File Choosen">
-                                        <i class="feather-upload"></i>
-                                        <span class="text-center">Choose a File</span>
-                                        <p class="text-center mt&#45;&#45;10">
-                                            PNG, GIF, WEBP, MP4 or MP3. <br/>
-                                            Max 1Gb.
-                                        </p>
-                                    </label>
+                                        <!-- our custom upload button -->
+                                        <label for="createinputfile" title="No File Choosen">
+                                            <i class="feather-upload"></i>
+                                            <span class="text-center">Choose a File</span>
+                                            <p class="text-center mt&#45;&#45;10">
+                                                PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                                Max 1Gb.
+                                            </p>
+                                        </label>
 
+                                    </div>
+                                    <div id="error-message-image" class="error">
+                                    </div>
                                 </div>
-                                <div id="error-message-image" class="error">
-                                </div>
-                            </div>
                             {% else %}
-                            <div class="upload-area">
+                                <div class="upload-area">
 
-                                <div class="upload-formate mb--30">
-                                    <h6 class="title">
-                                        Upload file
-                                    </h6>
-                                    <p class="formate">
-                                        Drag or choose your file to upload
-                                    </p>
-                                </div>
+                                    <div class="upload-formate mb--30">
+                                        <h6 class="title">
+                                            Upload file
+                                        </h6>
+                                        <p class="formate">
+                                            Drag or choose your file to upload
+                                        </p>
+                                    </div>
 
-                                <div class="swiper rounded effect-creative-swiper" id="product_images_">
-                                    <input hidden="" name="createinputfile" id="createinputfile" type="file"
-                                           class="inputfile">
-                                    {% if product.images|length == 1 %}
-                                        <div class="brows-file-wrapper">
-
-                                            <img id="createfileImage"
-                                                 src="{{ asset(product.images[0].path) }}" alt=""
-                                                 data-black-overlay="6">
-                                            <!-- our custom upload button -->
-                                            <label for="createinputfile" title="No File Choosen">
-                                                <i class="feather-upload"></i>
-                                                <span class="text-center">Choose a File</span>
-                                                <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br> Max
-                                                    1Gb.</p>
-                                            </label>
-                                        </div>
-                                    {% else %}
-                                    <div class="swiper-wrapper">
-                                        {% for image in product.images %}
-                                        <div class="swiper-slide">
+                                    <div class="swiper rounded effect-creative-swiper" id="product_images_">
+                                        <input hidden="" name="createinputfile" id="createinputfile" type="file"
+                                               class="inputfile">
+                                        {% if product.images|length == 1 %}
                                             <div class="brows-file-wrapper">
 
                                                 <img id="createfileImage"
-                                                     src="{{ asset(image.path) }}" alt=""
+                                                     src="{{ asset(product.images[0].path) }}" alt=""
                                                      data-black-overlay="6">
                                                 <!-- our custom upload button -->
                                                 <label for="createinputfile" title="No File Choosen">
@@ -126,13 +109,31 @@
                                                         1Gb.</p>
                                                 </label>
                                             </div>
-                                        </div>
-                                        {% endfor %}
+                                        {% else %}
+                                            <div class="swiper-wrapper">
+                                                {% for image in product.images %}
+                                                    <div class="swiper-slide">
+                                                        <div class="brows-file-wrapper">
+
+                                                            <img id="createfileImage"
+                                                                 src="{{ asset(image.path) }}" alt=""
+                                                                 data-black-overlay="6">
+                                                            <!-- our custom upload button -->
+                                                            <label for="createinputfile" title="No File Choosen">
+                                                                <i class="feather-upload"></i>
+                                                                <span class="text-center">Choose a File</span>
+                                                                <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or
+                                                                    MP3. <br> Max
+                                                                    1Gb.</p>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="swiper-pagination"></div>
                                     </div>
-                                    {% endif %}
-                                    <div class="swiper-pagination"></div>
                                 </div>
-                            </div>
                             {% endif %}
                             <!-- end upoad file area -->
 
@@ -152,6 +153,9 @@
                                             <input
                                                     id="name"
                                                     placeholder="e. g. `Digital Awesome Game`"
+                                                    {% if update %}
+                                                        value="{{ product.name }}"
+                                                    {% endif %}
                                             />
                                             <div id="error-message" class="error">
                                             </div>
@@ -175,6 +179,7 @@
                                                     placeholder="e. g. “After purchasing the product you can get item...”"
                                                     style="min-height: 200px;"
                                                     class=""
+
                                             ></textarea>
                                             <div id="error-message-desc" class="error">
                                             </div>
@@ -186,7 +191,11 @@
                                             <label for="price" class="form-label"
                                             >Item Price in Dt</label
                                             >
-                                            <input id="price" placeholder="e. g. `20Dt`"/>
+                                            <input id="price" placeholder="e. g. `20Dt`"
+                                                    {% if update %}
+                                                        value="{{ product.price }} Dt"
+                                                    {% endif %}
+                                            />
                                             <div id="error-message-price" class="error">
                                             </div>
                                         </div>
@@ -195,7 +204,11 @@
                                     <div class="col-md-4">
                                         <div class="input-box pb--20">
                                             <label for="quantity" class="form-label">Quantity</label>
-                                            <input id="quantity" placeholder="e. g. `10`"/>
+                                            <input id="quantity" placeholder="e. g. `10`"
+                                                    {% if update %}
+                                                        value="{{ product.quantity }}"
+                                                    {% endif %}
+                                            />
                                             <div id="error-message-quantity" class="error">
                                             </div>
                                         </div>
@@ -217,11 +230,61 @@
                                             <label for="category" class="title">Category</label>
                                             <div class="create-collection-input">
                                                 <select id="category">
-                                                    <option value="food" selected>Food</option>
-                                                    <option value="sports">Sports</option>
-                                                    <option value="entertainment">Entertainment</option>
-                                                    <option value="realestate">RealEstate</option>
-                                                    <option value="vehicul">Vehicul</option>
+
+                                                    {% if update %}
+                                                        value="{{ product.name }}"
+                                                        {% if  product.category=="food" %}
+                                                            <option value="{{ product.category }}"
+                                                                    selected>{{ product.category|capitalize }}</option>
+                                                            <option value="sports">Sports</option>
+                                                            <option value="entertainment">Entertainment</option>
+                                                            <option value="realestate">RealEstate</option>
+                                                            <option value="vehicul">Vehicul</option>
+                                                        {% endif %}
+
+                                                        {% if  product.category=="sports" %}
+                                                            <option value="food">Food</option>
+                                                            <option value="{{ product.category }}"
+                                                                    selected>{{ product.category|capitalize }}</option>
+                                                            <option value="entertainment">Entertainment</option>
+                                                            <option value="realestate">RealEstate</option>
+                                                            <option value="vehicul">Vehicul</option>
+                                                        {% endif %}
+
+                                                        {% if  product.category=="entertainment" %}
+                                                            <option value="food">Food</option>
+                                                            <option value="sports">Sports</option>
+                                                            <option value="{{ product.category }}"
+                                                                    selected>{{ product.category|capitalize }}</option>
+                                                            <option value="realestate">RealEstate</option>
+                                                            <option value="vehicul">Vehicul</option>
+                                                        {% endif %}
+
+                                                        {% if  product.category=="realestate" %}
+                                                            <option value="food">Food</option>
+                                                            <option value="sports">Sports</option>
+                                                            <option value="entertainment">Entertainment</option>
+                                                            <option value="{{ product.category }}"
+                                                                    selected>{{ product.category|capitalize }}</option>
+                                                            <option value="vehicul">Vehicul</option>
+                                                        {% endif %}
+
+                                                        {% if  product.category=="vehicul" %}
+                                                            <option value="food">Food</option>
+                                                            <option value="sports">Sports</option>
+                                                            <option value="entertainment">Entertainment</option>
+                                                            <option value="realestate">Realestate</option>
+                                                            <option value="{{ product.category }}"
+                                                                    selected>{{ product.category|capitalize }}</option>
+                                                        {% endif %}
+
+                                                    {% else %}
+                                                        <option value="food" selected>Food</option>
+                                                        <option value="sports">Sports</option>
+                                                        <option value="entertainment">Entertainment</option>
+                                                        <option value="realestate">RealEstate</option>
+                                                        <option value="vehicul">Vehicul</option>
+                                                    {% endif %}
                                                 </select>
                                             </div>
                                         </div>
@@ -248,13 +311,15 @@
                                     <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
                                         <div class="input-box">
                                             {% if update == true %}
-                                            <button class="btn btn-primary btn-large w-100" onclick="updateProduct({{ product.idProduct }})">
-                                                Update Item
-                                            </button>
+                                                <button class="btn btn-primary btn-large w-100"
+                                                        onclick="updateProduct({{ product.idProduct }})">
+                                                    Update Item
+                                                </button>
                                             {% else %}
-                                            <button class="btn btn-primary btn-large w-100" onclick="createProduct()">
-                                                Submit Item
-                                            </button>
+                                                <button class="btn btn-primary btn-large w-100"
+                                                        onclick="createProduct()">
+                                                    Submit Item
+                                                </button>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -397,21 +462,21 @@
         </div>
     </div>
 
+    <script>
+        window.onload = function () {
+            document.getElementById("description").html({{ product.description|json_encode }})
+        }
+    </script>
 
-    {% if update == true %}
+{% endblock %}
 
-        {% set myProduct = { 'name':product.name,
-            'description':product.description,
-            'price':product.price,
-            'quantity':product.quantity,
-            'category':product.category } %}
 
-        <script>
-            window.onload = function () {
-                var myData = {{ myProduct|json_encode|raw }};
-                initializeUpdate(myData);
-            }
-        </script>
-    {% endif %}
+{% block scripts %}
+    <script>
+        window.onload = function () {
+            console.log('ali')
+            $('#description').val({{ product.description|json_encode|raw }});
 
+        }
+    </script>
 {% endblock %}

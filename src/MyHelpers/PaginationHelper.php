@@ -12,6 +12,8 @@ class PaginationHelper
     private int $current_page;
     private int $previous_page;
     private int $nbr_pages;
+    private $aiResults;
+
 
     /**
      * @param  $products
@@ -19,13 +21,28 @@ class PaginationHelper
      * @param int $previous_page
      * @param int $nbr_pages
      */
-    public function __construct( $products, int $current_page, int $previous_page, int $nbr_pages)
+    public function __construct( $products, int $current_page, int $previous_page, int $nbr_pages,$aiResults=[])
     {
         $this->products = $products;
         $this->current_page = $current_page;
         $this->previous_page = $previous_page;
         $this->nbr_pages = $nbr_pages;
+        $this->aiResults = $aiResults;
     }
+
+
+    public function getAiResult(int $number)
+    {
+        return array_slice($this->aiResults, ($this->current_page - 1) * $number, $number);
+//        return $this->aiResults;
+
+    }
+
+    public function setAiResults(mixed $aiResults): void
+    {
+        $this->aiResults = $aiResults;
+    }
+
 
     public function getProducts()
     {

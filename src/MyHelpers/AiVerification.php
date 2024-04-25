@@ -25,6 +25,7 @@ class AiVerification
         $result=[];
         for($i=0;$i<sizeof($images_url);$i++){
             $result[]=$this->generateImageDescription($images_url[$i]);
+            sleep(10);
         }
         $this->aiDataHolder->setDescriptions($result);
     }

@@ -28,16 +28,16 @@ class AiVerificationMessengerHandler
 
         $aiResult = new AiResult();
         $aiResultController=new AiResultController();
-//        $aiResultServes=new AiResultServes();
+
 
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
 
         $aiResult->setBody($serializedData);
         $aiResult->setIdProduct($obj['id']);
-
-
+        $aiResult->setTerminationDate();
         $aiResultController->new($aiResult,$this->entityManager);
 
+        var_dump($aiResult);
     }
 }

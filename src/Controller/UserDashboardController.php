@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\AiResult;
 use App\MyHelpers\PaginationHelper;
+use App\Repository\AiResultRepository;
 use App\Repository\ProductRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +19,7 @@ class UserDashboardController extends AbstractController
 {
 
     #[Route('/', name: '_index')]
-    public function index(ProductRepository $productRepository,Request $request): Response
+    public function index(EntityManagerInterface $entityManager,AiResultRepository $aiResultRepository,ProductRepository $productRepository,Request $request): Response
     {
         $session = $request->getSession();
 
@@ -45,7 +49,8 @@ class UserDashboardController extends AbstractController
             $template=$this->render('user_dashboard/sub_onsale_products.html.twig', [
                 'products' => $map[$page]->getNProducts(10),
                 'underverif'=>$underverif,
-                'type'=>$page
+                'type'=>$page,
+                'aiResult'=>$map[$page]->getAiResult(10),
             ]);
 
             return new JsonResponse([
@@ -60,13 +65,15 @@ class UserDashboardController extends AbstractController
 
         $on_sale=$productRepository->findBy(['isDeleted' => false,'state' => 'verified']);
         $unverified=$productRepository->findBy(['isDeleted' => false,'state' => 'unverified']);
+        $aiResults=$aiResultRepository->findAll();
 
         $map=[
             'on_sale'=>new PaginationHelper($on_sale,1,2,ceil(sizeof($on_sale) / 10)),
-            'unverified'=>new PaginationHelper($unverified,1,2,ceil(sizeof($unverified) / 10))
+            'unverified'=>new PaginationHelper($unverified,1,2,ceil(sizeof($unverified) / 10),$aiResults)
         ];
 
         $session->set('user_products_map', $map);
+
 
         return $this->render('user_dashboard/author.html.twig', [
             'on_sale' =>$map['on_sale'],

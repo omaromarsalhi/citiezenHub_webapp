@@ -1,9 +1,8 @@
 {% for i,product in products %}
-{#    {{ dump(product) }}#}
     <!-- start single product -->
-    <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" id="product_at_index_{{ i }}">
+    <div class="col-5 col-lg-4 col-md-6 col-sm-6 col-12 " id="product_at_index_{{ i }}">
         <div class="product-style-one no-overlay">
-            <div class="card-thumbnail">
+            <div class="card-thumbnail ">
                 <a href="../pages/product-details.html">
                     {% if product.images|length > 1 %}
                     <!-- Swiper -->
@@ -12,7 +11,7 @@
                             {% for image in product.images %}
                             <div class="swiper-slide">
                                 <a href="#"
-                                   onclick="document.getElementById('form_details_{{ i }}').submit(); return false;">
+                                   onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
                                     <img src="{{ asset(image.path)|default("Not available") }}"
                                          alt="NFT_portfolio"
                                          class="fixedImagesSize4owner"/>
@@ -25,7 +24,7 @@
                     {% else %}
                     <div>
                         <a href="#"
-                           onclick="document.getElementById('form_details_{{ i }}').submit(); return false;">
+                           onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
                             <img src="{{ asset(product.images[0].path) }}"
                                  alt="NFT_portfolio"
                                  class="fixedImagesSize4owner"
@@ -34,8 +33,11 @@
                     </div>
                     {% endif %}
                 </a>
-                <div class="countdown" data-date="2024-4-25" data-time="11:41">
+                {% if underverif %}
+                <div class="countdown" data-date="{{ aiResult[i].getTerminationDateDate() }}"
+                     data-time="{{ aiResult[i].getTerminationDateTime() }}" data-value="{{ product.iDProduct }}:{{ i }}">
                 </div>
+                {% endif %}
                 <div class="rbt-quick-action--btns">
                     {% if underverif %}
                     <div
@@ -45,7 +47,7 @@
                             title="Details">
                         <a
                                 href="javascript: void(0);"
-                                onclick="showModelUnverfied({{ product.idProduct }})"
+                                onclick="showModelUnverfied({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
                                 class="yith-wcqv-button"
                                 data-product_id="793"
                         >
@@ -60,7 +62,7 @@
                             title="Contact Seller">
                         <a
                                 href="#"
-                                onclick="document.getElementById('form_update_{{ i }}').submit(); return false;"
+                                onclick="document.getElementById('form_update_{{ type }}_{{ i }}').submit(); return false;"
                                 class="yith-wcqv-button"
                                 data-product_id="793"
                         >
@@ -160,13 +162,13 @@
             </div>
         </div>
 
-        <form id="form_details_{{ i }}" method="post"
+        <form id="form_details_{{ type }}_{{ i }}" method="post"
               action="{{ path('app_product_product_details',{'index': i }) }}">
             <input type="hidden" name="_token_{{ i }}"
                    value="{{ product.idProduct }}">
         </form>
 
-        <form id="form_update_{{ i }}" method="post"
+        <form id="form_update_{{ type }}_{{ i }}" method="post"
               action="{{ path('app_product_edit',{'index': i }) }}">
             <input type="hidden" name="_token_{{ i }}"
                    value="{{ product.idProduct }}">

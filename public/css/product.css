@@ -85,3 +85,7 @@
     height: 100%;
     width: 100%;
 }
+
+.danger{
+    background-color: #a91b1b !important;
+}

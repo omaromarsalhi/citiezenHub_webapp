@@ -237,7 +237,7 @@
                         <div class="container">
                             <div id="sub-unverified-block" class="row g-5">
                                 <!-- start single product -->
-                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': unverified.getNProducts(10),'underverif':true,'type':'unverified'} %}
+                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': unverified.getNProducts(10),'underverif':true,'type':'unverified','aiResult':unverified.getAiResult(10)} %}
                                 <!-- end single product -->
                             </div>
                         </div>
@@ -303,10 +303,11 @@
                         {#                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div> #}
                         {#                        </details> #}
                     </section>
-                    <section >
+                    <section>
                         <details>
-                            <summary>NOTE !!!</summary>
-                            <div> Please Do Update This Product Before It Gets Deleted
+                            <summary style="color: #ce2727"> NOTE</summary>
+                            <div> Please do update this product before it gets deleted otherwise it will be deleted
+                                after remainig time ends
                                 <i class="fa-regular fa-face-smile-beam ms-2"
                                    style="color: #2899d8;font-size: 15px;"></i>
                             </div>
@@ -315,13 +316,14 @@
                 </div>
                 <div class="report-form-box mt-4">
                     <div class="d-flex gap-2 justify-content-end me-0">
-                        <button type="button" class="btn btn-primary-alta  w-auto">
+                        <button type="button" class="btn btn-primary-alta  w-auto" id="updateBtn">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </button>
                         <button
                                 type="button"
                                 class="btn btn-primary-alta w-auto"
                                 data-bs-dismiss="modal"
+                                id="deleteBtn"
                         >
                             <i class="fa-regular fa-trash-can"></i>
                         </button>

@@ -73,6 +73,7 @@ function updateProduct(id) {
 }
 
 function initializeUpdate(product) {
+    console.log('pomar')
     regex();
     $('#name').val(product.name);
     $('#description').val(product.description);
@@ -84,7 +85,6 @@ function initializeUpdate(product) {
 
 function deleteProduct(id, index, type) {
     console.log(id)
-    console.log(type)
     $.ajax({
         url: '/product/delete',
         type: "POST",
@@ -319,11 +319,10 @@ function DisplayListProducts4Owner(movement_direction, page) {
         async: true,
         success: function (response) {
 
-            console.log(response)
-
             $("#sub-" + page + "-block").html(response.template);
             setTimeout(function () {
                 launchSwiper();
+                count();
             }, 1000);
 
 

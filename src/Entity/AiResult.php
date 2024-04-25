@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\AiResultRepository;
+use DateTimeZone;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 #[ORM\Entity(repositoryClass: AiResultRepository::class)]
 class AiResult
@@ -22,6 +24,9 @@ class AiResult
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $timestamp = null;
+
+    #[ORM\Column(name:'terminationDate',type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $terminationDate = null;
 
     public function getId(): ?int
     {
@@ -57,10 +62,27 @@ class AiResult
         return $this->timestamp;
     }
 
-    public function setTimestamp(?\DateTimeInterface $timestamp): static
+    public function getTerminationDate(): ?\DateTimeInterface
     {
-        $this->timestamp = $timestamp;
+        return $this->terminationDate;
+    }
 
+    public function setTerminationDate(): static
+    {
+        $currentTimestamp = new DateTime();
+        $currentTimestamp->setTimezone(new DateTimeZone('Africa/Tunis'));
+        $currentTimestamp->modify('+2 days');
+        $this->terminationDate = $currentTimestamp;
         return $this;
     }
+
+    public function getTerminationDateDate(): string
+    {
+        return $this->terminationDate->format('Y-m-d');
+    }
+    public function getTerminationDateTime(): string
+    {
+        return $this->terminationDate->format('H:i:s');
+    }
+
 }
