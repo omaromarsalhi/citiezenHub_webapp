@@ -89,3 +89,8 @@
 .danger{
     background-color: #a91b1b !important;
 }
+
+.splide__slide img {
+    width: 100%;
+    height: auto;
+}

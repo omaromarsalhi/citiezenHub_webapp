@@ -4,6 +4,7 @@ namespace App\MyHelpers;
 
 use App\Entity\Product;
 use App\Entity\ProductImages;
+use App\Repository\ProductImagesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -17,31 +18,37 @@ class ImageHelper
     }
 
 
-    public  function saveImages($files,Product $product): array
+    public function saveImages($files, Product $product): array
     {
-        $newImagesPath=[];
+        $newImagesPath = [];
         for ($i = 0; $i < sizeof($files); $i++) {
             $product_image = new ProductImages();
 
-            $file=$files['file-' . ($i + 1)];
+            $file = $files['file-' . ($i + 1)];
 
             $fileName = md5(uniqid()) . '.' . $file->guessClientExtension();
             $file->move(
-                    '../public/usersImg/',
-                    $fileName
-                );
+                '../public/usersImg/',
+                $fileName
+            );
 
-            $product_image->setPath('usersImg/'.$fileName);
+            $product_image->setPath('usersImg/' . $fileName);
             $product_image->setProduct($product);
 
             $this->entityManager->persist($product_image);
             $this->entityManager->flush();
 
-            $newImagesPath[]=$fileName;
+            $newImagesPath[] = $fileName;
         }
         return $newImagesPath;
-  }
+    }
 
 
+    public function deleteImages($imagesToDelete,$images, EntityManagerInterface $entityManager): void
+    {
+        for ($i = 0; $i < sizeof($imagesToDelete); $i++) {
+            $entityManager->remove($images[intval($imagesToDelete[$i])]);
+        }
+    }
 
 }

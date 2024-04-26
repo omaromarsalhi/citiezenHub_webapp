@@ -3,17 +3,74 @@
 // });
 
 
-// setTimeout(function () {
-//     adjustSelection();
-//     regex();
-// }, 1000);
-
-
-window.onload = function () {
+$(document).ready(function () {
     regex();
+    changeImageUpdate()
+    new Splide('#image-slider').mount();
+});
+
+function changeImageUpdate() {
+    $('input[type="checkbox"]').click(function () {
+        $('#deleteImage').prop('checked', false);
+        $('#uploadImage').prop('checked', false);
+        $(this).prop('checked', true);
+
+        for (let i = 0; i < 4; i++) {
+            var myElement = document.getElementById("updateImageLabel_" + i);
+            if (myElement) {
+                if ($(this).prop('id') === 'uploadImage') {
+                    $('.updateImageLabel_' + i).attr('for', 'createinputfile')
+                    $('.updateImageLabel_' + i).html('<i class="feather-upload"></i>\n' +
+                        '<span class="text-center">Choose a File</span>\n' +
+                        '<p class="text-center mt&#45;&#45;10">PNG, GIF, WEBP, MP4 or\n' +
+                        'MP3. <br> Max\n' +
+                        '1Gb.</p>')
+                } else {
+                    $('.updateImageLabel_' + i).attr('for', '')
+                    $('.updateImageLabel_' + i).html('<button type="button"\n' +
+                        'name="deleteBtns"\n' +
+                        'style="border: none !important;"\n' +
+                        'data-bs-toggle="modal"\n' +
+                        'data-bs-target="#confirmModel"\n' +
+                        'data-value="{{ index }}">\n' +
+                        '<i class="fa-regular fa-trash-can"></i>\n' +
+                        '</button>\n' +
+                        '<span class="text-center">Delete a File</span>')
+                }
+            }
+        }
+    })
+
+    $('Button[name="deleteBtns"]').click(function () {
+        $('#modelValue').val($(this).data("value"))
+        $('#confirmModel').modal("show")
+    })
 }
 
+function deleteImage() {
+    if ($('.splide__list')[0].children.length > 1) {
+        let imageIndex = $('#modelValue').val();
+        $('.slider_' + imageIndex).remove()
+        $('#confirmModel').modal("hide")
+        $('.splide__pagination').remove()
+        new Splide('#image-slider').mount();
+    } else {
+        $('#confirmModel').modal("hide")
+        let errors = [];
+        $('#error-message-image').html('')
+
+        if ($('#createinputfile').prop('files').length === 0)
+            errors.push({text: "image", el: $('#error-message-image')});
+
+        if (errors.length > 0) {
+            handle_errors(errors);
+        }
+    }
+}
+
+
 function updateProduct(id) {
+
 
     // if(check_all_inputs()){
     loader_start()
@@ -29,18 +86,22 @@ function updateProduct(id) {
     for (let i = 0; i < list.length; i++) {
         form_data.append('file-' + (i + 1), list[i]);
     }
+    str = ''
+    for (let i = 1; i <= $('#nbrImages').val(); i++) {
+        var myElement = document.getElementById("image-slider-slide0" + i);
+        if (!myElement) {
+            str += i;
+            str += '_';
+        }
+    }
+    str=str.replace(/_$/,'')
     form_data.append('name', name);
     form_data.append('description', description);
     form_data.append('price', price);
     form_data.append('quantity', quantity);
     form_data.append('category', category);
     form_data.append('idProduct', id);
-
-    console.log(name)
-    console.log(description)
-    console.log(price)
-    console.log(quantity)
-    console.log(category)
+    form_data.append('savedImages', str);
 
     $.ajax({
         url: '/product/1/edit',
@@ -69,7 +130,6 @@ function updateProduct(id) {
             check_all_inputs_with_php(errorMessage)
         },
     });
-    // }
 }
 
 function initializeUpdate(product) {
