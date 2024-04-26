@@ -19,7 +19,11 @@
 			<link rel="stylesheet" href="{{asset('/assets/css/plugins/feature.css')}}">
 			<link rel="stylesheet" href="{{asset('/assets/css/plugins/jquery-ui.min.css')}}">
 			<link rel="stylesheet" href="{{asset('/assets/css/vendor/odometer.css')}}">
-			<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="{{asset('/assets/css/vendor/odometer.css')}}">
+			<link rel="stylesheet" href="{{asset('/assets/css/vendor/chat.css')}}">
+
+			<link
+			href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 
 			<!-- Style css -->
 			<link rel="stylesheet" href="{{asset('/assets/css/style.css')}}">
@@ -31,58 +35,91 @@
 			<div class="mouse-cursor cursor-outer"></div>
 			<div class="mouse-cursor cursor-inner"></div>
 			<!-- Start Top To Bottom Area  -->
-			<div class="rn-progress-parent">
-				<svg class="rn-back-circle svg-inner" width="100%" height="100%" viewbox="-1 -1 102 102">
-					<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
-				</svg>
+			<div class="title">
+				<div>
+					<div id="chatbot" class="main-card collapsed">
+						<button id="chatbot_toggle">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/></svg>
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" style="display:none"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+						</svg>
+					</button>
+					<div class="main-title">
+						<div>
+							<svg viewbox="0 0 640 512" title="robot">
+								<path fill="currentColor" d="M32,224H64V416H32A31.96166,31.96166,0,0,1,0,384V256A31.96166,31.96166,0,0,1,32,224Zm512-48V448a64.06328,64.06328,0,0,1-64,64H160a64.06328,64.06328,0,0,1-64-64V176a79.974,79.974,0,0,1,80-80H288V32a32,32,0,0,1,64,0V96H464A79.974,79.974,0,0,1,544,176ZM264,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,264,256Zm-8,128H192v32h64Zm96,0H288v32h64ZM456,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,456,256Zm-8,128H384v32h64ZM640,256V384a31.96166,31.96166,0,0,1-32,32H576V224h32A31.96166,31.96166,0,0,1,640,256Z"/>
+							</svg>
+						</div>
+						<span>Chatbot</span>
+
+					</div>
+					<div class="chat-area" id="message-box"></div>
+					<div class="line"></div>
+						<div class="input-div">
+							<input class="input-message" name="message" type="text" id="message" placeholder="Type your message ..."/>
+							<button class="input-send" onclick="send()">
+    <svg style="width:24px;height:24px">
+        <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+    </svg>
+</button>
+<button id="start-voice-input" onclick="toggleRecording()" class="input-send">
+    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor">
+        <path d="M12 1L12 23M5 10L5 14C5 18.4183 8.58172 22 13 22V22C17.4183 22 21 18.4183 21 14L21 10"/>
+    </svg>
+</button>
+<button id="stop-voice-input" onclick="toggleRecording()" class="input-send" style="display: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor">
+        <path d="M12 1L12 23M5 10L5 14C5 18.4183 8.58172 22 13 22V22C17.4183 22 21 18.4183 21 14L21 10"/>
+    </svg>
+</button>
+
+						</div>
+				</div>
 			</div>
-			<!-- End Top To Bottom Area  -->
-
-			<!-- JS ============================================ -->
-			<script src="{{ asset('assets/js/vendor/jquery.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/jquery.nice-select.min.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/jquery-ui.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/modernizer.min.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/feather.min.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/slick.min.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/bootstrap.min.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/sal.min.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/particles.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/jquery.style.swicher.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/js.cookie.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/count-down.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/isotop.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/imageloaded.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/backtoTop.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/odometer.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/jquery-appear.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/scrolltrigger.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/jquery.custom-file-input.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/savePopup.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/vanilla.tilt.js') }}"></script>
-
-			<!-- main JS -->
-			<script src="{{ asset('assets/js/main.js') }}"></script>
-			<!-- Meta Mask  -->
-			<script src="{{ asset('assets/js/vendor/web3.min.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/maralis.js') }}"></script>
-			<script src="{{ asset('assets/js/vendor/nft.js') }}"></script>
+		</head>
+	</html>
 
 
-			<script src="{{ asset('assetsOfOutsiderElements/libs/swiper/swiper-bundle.min.js') }}"></script>
-			<script src="{{ asset('assetsOfOutsiderElements/js/pages/extended-swiper.js') }}"></script>
-			<script src="{{ asset('js/loader.js') }}"></script>
-			<script src="{{ asset('js/error_success.js') }}"></script>
-			<script src="{{ asset('js/error_success.js') }}"></script>
-			<script src="{{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11') }}"></script>
+	<!-- End Top To Bottom Area  -->
 
-		{% endblock %}
-	</head>
-	{% include 'parts/header.html.twig' %}
-	<body>
-		{% block body %}{% endblock %}
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
-	</body>
-	{% include 'parts/footer.html.twig' %}
-</html>
+	<!-- JS ============================================ -->
+	<script src="{{ asset('assets/js/vendor/chat.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/jquery.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/jquery.nice-select.min.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/jquery-ui.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/modernizer.min.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/feather.min.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/slick.min.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/bootstrap.min.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/sal.min.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/particles.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/jquery.style.swicher.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/js.cookie.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/count-down.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/isotop.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/imageloaded.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/backtoTop.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/odometer.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/jquery-appear.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/scrolltrigger.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/jquery.custom-file-input.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/savePopup.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/vanilla.tilt.js') }}"></script>
+
+	<!-- main JS -->
+	<script src="{{ asset('assets/js/main.js') }}"></script>
+	<!-- Meta Mask  -->
+	<script src="{{ asset('assets/js/vendor/web3.min.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/maralis.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/nft.js') }}"></script>
+
+
+	<script src="{{ asset('assetsOfOutsiderElements/libs/swiper/swiper-bundle.min.js') }}"></script>
+	<script src="{{ asset('assetsOfOutsiderElements/js/pages/extended-swiper.js') }}"></script>
+	<script src="{{ asset('js/loader.js') }}"></script>
+	<script src="{{ asset('js/error_success.js') }}"></script>
+	<script src="{{ asset('js/error_success.js') }}"></script>
+	<script src="{{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11') }}"></script>
+{% endblock %}</head>{% include 'parts/header.html.twig' %}<body>
+{% block body %}{% endblock %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script></body>{% include 'parts/footer.html.twig' %}</head></html>
