@@ -11,10 +11,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class ImageHelper
 {
     private $entityManager;
+    private $productImagesRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, ProductImagesRepository $productImagesRepository)
     {
         $this->entityManager = $entityManager;
+        $this->productImagesRepository = $productImagesRepository;
     }
 
 
@@ -44,11 +46,26 @@ class ImageHelper
     }
 
 
-    public function deleteImages($imagesToDelete,$images, EntityManagerInterface $entityManager): void
+    public function deleteImages($imagesNotToDelete, $product): void
     {
-        for ($i = 0; $i < sizeof($imagesToDelete); $i++) {
-            $entityManager->remove($images[intval($imagesToDelete[$i])]);
-        }
-    }
 
+        $newArray = [];
+        $idArray = [];
+        $images = $this->productImagesRepository->findBy(['product' => $product]);
+        for ($i = 0; $i < sizeof($images); $i++) {
+            $idArray[] = $images[$i]->getIdImage();
+        }
+        var_dump($idArray);
+
+        for ($i = 0; $i < sizeof($imagesNotToDelete); $i++) {
+            $idArray = array_splice($idArray, intval($imagesNotToDelete[$i]), 1);
+            var_dump($imagesNotToDelete[$i]);
+            var_dump($idArray);
+        }
+
+//        for ($j = 0; $j < sizeof($newArray); $j++) {
+//            $this->entityManager->remove($images[$j]);
+//            $this->entityManager->flush();
+//        }
+    }
 }

@@ -75,7 +75,7 @@ class ProductController extends AbstractController
                 'images' => $newImagesPath
             ];
 
-            $messageBus->dispatch(new AiVerificationMessage($obj));
+//            $messageBus->dispatch(new AiVerificationMessage($obj));
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
@@ -118,7 +118,8 @@ class ProductController extends AbstractController
             $price = $request->get("price");
             $quantity = $request->get("quantity");
             $category = $request->get("category");
-            $toDeleteImages = preg_split('/_/', $request->get("savedImages"), -1, PREG_SPLIT_NO_EMPTY);;
+            $imagesNotToDelete = preg_split('/_/', $request->get("savedImages"), -1, PREG_SPLIT_NO_EMPTY);
+
 
             $product->setName($name);
             $product->setDescription($description);
@@ -142,7 +143,7 @@ class ProductController extends AbstractController
 
             $images = $request->files->all();
             $newImagesPath = $imageHelper->saveImages($images, $product);
-            $imageHelper->deleteImages($toDeleteImages, $product->getImages(),$entityManager);
+            $imageHelper->deleteImages($imagesNotToDelete,$product);
 
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }

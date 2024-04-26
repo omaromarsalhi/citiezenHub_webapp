@@ -15,7 +15,6 @@
 {% block body %}
 
 
-
     <div>
         <div class="" id="loading-div">
         </div>
@@ -141,8 +140,8 @@
                                     </div> #}-->
                                     <div id="image-slider" class="splide">
                                         <input hidden="" name="createinputfile" id="createinputfile" type="file"
-                                               class="inputfile">
-                                        {% if product.images|length == 1 %}
+                                               class="inputfile" multiple>
+                                        {% if product.images|length <= 1 %}
                                         <div class="brows-file-wrapper">
                                             <img id="createfileImage"
                                                  src="{{ asset(product.images[0].path) }}" alt=""
@@ -159,7 +158,7 @@
                                         <div class="splide__track">
                                             <ul class="splide__list">
                                                 {% for index,image in product.images %}
-                                                <li class="splide__slide slider_{{ index }}">
+                                                <li class="splide__slide slider_{{ index }}"  data-value="{{ image.getIdImage() }}">
                                                     <div class="brows-file-wrapper">
                                                         <img id="createfileImage"
                                                              src="{{ asset(image.path) }}" alt=""

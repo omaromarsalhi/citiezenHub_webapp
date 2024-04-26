@@ -15,7 +15,7 @@ function changeImageUpdate() {
         $('#uploadImage').prop('checked', false);
         $(this).prop('checked', true);
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 10; i++) {
             var myElement = document.getElementById("updateImageLabel_" + i);
             if (myElement) {
                 if ($(this).prop('id') === 'uploadImage') {
@@ -89,8 +89,8 @@ function updateProduct(id) {
     str = ''
     for (let i = 1; i <= $('#nbrImages').val(); i++) {
         var myElement = document.getElementById("image-slider-slide0" + i);
-        if (!myElement) {
-            str += i;
+        if (myElement) {
+            str += $("#image-slider-slide0" + i).data('value');
             str += '_';
         }
     }
@@ -102,6 +102,7 @@ function updateProduct(id) {
     form_data.append('category', category);
     form_data.append('idProduct', id);
     form_data.append('savedImages', str);
+    console.log(str)
 
     $.ajax({
         url: '/product/1/edit',
