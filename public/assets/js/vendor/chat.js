@@ -51,55 +51,55 @@ document.getElementById("message").addEventListener("keyup", function (event) {
       document.getElementById("chatbot_toggle").children[1].style.display = "none"
     }
   }
-  let mediaRecorder;
-  let audioChunks = [];
-  let isRecording = false;
-  
-  function toggleRecording() {
-      if (!isRecording) {
-          startRecording();
-          document.getElementById('start-voice-input').style.display = 'none';
-          document.getElementById('stop-voice-input').style.display = 'inline-block';
-      } else {
-          stopRecording();
-          document.getElementById('start-voice-input').style.display = 'inline-block';
-          document.getElementById('stop-voice-input').style.display = 'none';
-      }
-      isRecording = !isRecording;
-  }
-  
-  function startRecording() {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(stream => {
-              mediaRecorder = new MediaRecorder(stream);
-              mediaRecorder.addEventListener("dataavailable", event => {
-                  audioChunks.push(event.data);
-              });
-              console.log("salem");
-              mediaRecorder.start();
-          })
-          .catch(error => console.error("Error accessing microphone:", error));
-  }
-  
-  function stopRecording() {
-      mediaRecorder.stop();
-      mediaRecorder.addEventListener("stop", () => {
-          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-          const formData = new FormData();
-          formData.append("audioFile", audioBlob);
-          console.log(audioBlob);
-  
-          fetch('/save-audio', {
-              method: 'POST',
-              body: formData,
-          }).then(response => {
-              console.log("Audio file saved!");
-          }).catch(error => console.error("Error saving audio:", error));
-  
-          // Reset recording state
-          isRecording = false;
-          audioChunks = [];
-          console.log('a7chi');
-      });
-  }
+ let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+function toggleRecording() {
+    if (!isRecording) {
+        startRecording();
+        document.getElementById('start-voice-input').style.display = 'none';
+        document.getElementById('stop-voice-input').style.display = 'inline-block';
+    } else {
+        stopRecording();
+        document.getElementById('start-voice-input').style.display = 'inline-block';
+        document.getElementById('stop-voice-input').style.display = 'none';
+    }
+    isRecording = !isRecording;
+}
+
+function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
+            });
+            console.log("salem");
+            mediaRecorder.start();
+        })
+        .catch(error => console.error("Error accessing microphone:", error));
+}
+
+function stopRecording() {
+    mediaRecorder.stop();
+    mediaRecorder.addEventListener("stop", () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        const formData = new FormData();
+        formData.append("audioFile", audioBlob);
+        console.log(audioBlob);
+
+        fetch('/save-audio', {
+            method: 'POST',
+            body: formData,
+        }).then(response => {
+            console.log("Audio file saved!");
+        }).catch(error => console.error("Error saving audio:", error));
+
+        // Reset recording state
+        isRecording = false;
+        audioChunks = [];
+        console.log('a7chi');
+    });
+}
   
