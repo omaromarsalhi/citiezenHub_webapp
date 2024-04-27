@@ -36,6 +36,7 @@ class ProductRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+
 //    public function findOneBySomeField($value): ?Product
 //    {
 //        return $this->createQueryBuilder('p')
@@ -45,5 +46,20 @@ class ProductRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findByIdUser($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.idProduct')
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 }

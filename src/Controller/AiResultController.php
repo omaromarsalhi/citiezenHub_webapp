@@ -60,8 +60,8 @@ class AiResultController extends AbstractController
     public function reverify(MessageBusInterface $messageBus, ProductRepository $productRepository, AiResultRepository $aiResultRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isXmlHttpRequest()) {
-            $aiResult = $aiResultRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
-            $this->delete($aiResult, $entityManager);
+//            $aiResult = $aiResultRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
+//            $this->delete($aiResult, $entityManager);
 
             $product = $productRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
 
@@ -75,6 +75,7 @@ class AiResultController extends AbstractController
                 'category' => $product->getCategory(),
                 'id' => $product->getIdProduct(),
                 'images' => $paths,
+                'mode' => 'edit'
             ];
 
             $messageBus->dispatch(new AiVerificationMessage($obj));
@@ -87,6 +88,15 @@ class AiResultController extends AbstractController
     public function new(AiResult $aiResult, EntityManagerInterface $entityManager): void
     {
         $entityManager->persist($aiResult);
+        $entityManager->flush();
+    }
+
+    public function edit($data,$id, EntityManagerInterface $entityManager,AiResultRepository $aiResultRepository): void
+    {
+        $aiResult=$aiResultRepository->findOneBy(['idProduct' => $id]);
+        $aiResult->setBody($data);
+        $aiResult->setTerminationDate();
+
         $entityManager->flush();
     }
 

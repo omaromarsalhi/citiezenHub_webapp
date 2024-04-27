@@ -36,8 +36,8 @@ class ProductController extends AbstractController
             $category = $request->get("category");
 
             $new_product = new Product();
-
-            $new_product->setIdUser(1);
+            $user = $this->getUser();
+            $new_product->setUser($user);
             $new_product->setName($name);
             $new_product->setDescription($description);
             $new_product->setPrice(floatval($price));
@@ -72,7 +72,8 @@ class ProductController extends AbstractController
                 'title' => $product->getName(),
                 'category' => $product->getCategory(),
                 'id' => $product->getIdProduct(),
-                'images' => $newImagesPath
+                'images' => $newImagesPath,
+                'mode' => 'add'
             ];
 
             $messageBus->dispatch(new AiVerificationMessage($obj));
@@ -111,9 +112,9 @@ class ProductController extends AbstractController
     {
 
         if ($request->isXmlHttpRequest()) {
-            $aiResult = $aiResultRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
-            if ($aiResult != null)
-                AiResultController::delete($aiResult, $entityManager);
+//            $aiResult = $aiResultRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
+//            if ($aiResult != null)
+//                AiResultController::delete($aiResult, $entityManager);
 
 
             $product = $productRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
@@ -162,10 +163,11 @@ class ProductController extends AbstractController
                 'title' => $product->getName(),
                 'category' => $product->getCategory(),
                 'id' => $product->getIdProduct(),
-                'images' => $paths
+                'images' => $paths,
+                'mode' => 'edit'
             ];
 
-//            $messageBus->dispatch(new AiVerificationMessage($obj));
+            $messageBus->dispatch(new AiVerificationMessage($obj));
 
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
@@ -180,7 +182,7 @@ class ProductController extends AbstractController
 
 
     #[Route('/test', name: 'test', methods: ['POST', 'GET'])]
-    public static function changeState(AiResultRepository $aiResultRepository,ProductRepository $productRepository, EntityManagerInterface $entityManager, AiDataHolder $aiDataHolder, int $idProduct): Response
+    public static function changeState(AiResultRepository $aiResultRepository, ProductRepository $productRepository, EntityManagerInterface $entityManager, AiDataHolder $aiDataHolder, int $idProduct): Response
     {
         for ($i = 0; $i < sizeof($aiDataHolder->getDescriptions()); $i++) {
             if (str_starts_with(strtolower($aiDataHolder->getTitleValidation()[$i]), " no") || str_starts_with(strtolower($aiDataHolder->getCategoryValidation()[$i]), " no"))

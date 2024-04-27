@@ -140,53 +140,53 @@
                                     </div> #}-->
 
                                     {% if product.images|length <= 1 %}
-                                    <input hidden="" name="createinputfile" id="createinputfile" type="file"
-                                           class="inputfile" multiple>
-                                    <div class="brows-file-wrapper">
-                                        <img id="createfileImage"
-                                             src="{{ asset(product.images[0].path) }}" alt=""
-                                             data-black-overlay="6">
-                                        <!-- our custom upload button -->
-                                        <label for="createinputfile" title="No File Choosen">
-                                            <i class="feather-upload"></i>
-                                            <span class="text-center">Choose a File</span>
-                                            <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br> Max
-                                                1Gb.</p>
-                                        </label>
-                                    </div>
-                                    {% else %}
-                                    <div id="image-slider" class="splide">
                                         <input hidden="" name="createinputfile" id="createinputfile" type="file"
                                                class="inputfile" multiple>
-                                        <div class="splide__track">
-                                            <ul class="splide__list">
-                                                {% for index,image in product.images %}
-                                                <li class="splide__slide slider_{{ index }}"
-                                                    data-value="{{ image.getIdImage() }}">
-                                                    <div class="brows-file-wrapper">
-                                                        <img id="createfileImage"
-                                                             src="{{ asset(image.path) }}" alt=""
-                                                             data-black-overlay="6"
-                                                        >
-                                                        <label for="" title="No File Choosen"
-                                                               class="updateImageLabel_{{ index }}"
-                                                               id="updateImageLabel_{{ index }}">
-                                                            <button type="button"
-                                                                    name="deleteBtns"
-                                                                    style="border: none !important;"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#confirmModel"
-                                                                    data-value="{{ index }}">
-                                                                <i class="fa-regular fa-trash-can"></i>
-                                                            </button>
-                                                            <span class="text-center">Delete a File</span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                {% endfor %}
-                                            </ul>
+                                        <div class="brows-file-wrapper">
+                                            <img id="createfileImage"
+                                                 src="{{ asset(product.images[0].path) }}" alt=""
+                                                 data-black-overlay="6">
+                                            <!-- our custom upload button -->
+                                            <label for="createinputfile" title="No File Choosen">
+                                                <i class="feather-upload"></i>
+                                                <span class="text-center">Choose a File</span>
+                                                <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br> Max
+                                                    1Gb.</p>
+                                            </label>
                                         </div>
-                                    </div>
+                                    {% else %}
+                                        <div id="image-slider" class="splide">
+                                            <input hidden="" name="createinputfile" id="createinputfile" type="file"
+                                                   class="inputfile" multiple>
+                                            <div class="splide__track">
+                                                <ul class="splide__list">
+                                                    {% for index,image in product.images %}
+                                                        <li class="splide__slide slider_{{ index }}"
+                                                            data-value="{{ image.getIdImage() }}">
+                                                            <div class="brows-file-wrapper">
+                                                                <img id="createfileImage"
+                                                                     src="{{ asset(image.path) }}" alt=""
+                                                                     data-black-overlay="6"
+                                                                >
+                                                                <label for="" title="No File Choosen"
+                                                                       class="updateImageLabel_{{ index }}"
+                                                                       id="updateImageLabel_{{ index }}">
+                                                                    <button type="button"
+                                                                            name="deleteBtns"
+                                                                            style="border: none !important;"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#confirmModel"
+                                                                            data-value="{{ index }}">
+                                                                        <i class="fa-regular fa-trash-can"></i>
+                                                                    </button>
+                                                                    <span class="text-center">Delete a File</span>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                     <input type="hidden" value="{{ product.images|length }}" id="nbrImages">
                                 </div>
@@ -194,7 +194,8 @@
                                     <div class="d-flex justify-content-center">
                                         <div class="col-md-4 col-sm-4">
                                             <div class="input-box rn-check-box">
-                                                <input class="rn-check-box-input" type="checkbox" id="deleteImage" checked>
+                                                <input class="rn-check-box-input" type="checkbox" id="deleteImage"
+                                                       checked>
                                                 <label class="rn-check-box-label" for="deleteImage">
                                                     Delete Image
                                                 </label>
@@ -304,64 +305,14 @@
                                             </select>
                                         </div> #}-->
                                         <div class="collection-single-wized " style="margin-top: -20px !important;">
-                                            <label for="category" class="title">Category</label>
-                                            <div class="create-collection-input">
+                                            <label for="category" class="title mt--10" style="margin: 10px 0 -10px 0; !important;">Category</label>
+                                            <div class="create-collection-input" >
                                                 <select id="category">
-
-                                                    {% if update %}
-                                                        value="{{ product.name }}"
-                                                        {% if  product.category=="food" %}
-                                                            <option value="{{ product.category }}"
-                                                                    selected>{{ product.category|capitalize }}</option>
-                                                            <option value="sports">Sports</option>
-                                                            <option value="entertainment">Entertainment</option>
-                                                            <option value="realestate">RealEstate</option>
-                                                            <option value="vehicul">Vehicul</option>
-                                                        {% endif %}
-
-                                                        {% if  product.category=="sports" %}
-                                                            <option value="food">Food</option>
-                                                            <option value="{{ product.category }}"
-                                                                    selected>{{ product.category|capitalize }}</option>
-                                                            <option value="entertainment">Entertainment</option>
-                                                            <option value="realestate">RealEstate</option>
-                                                            <option value="vehicul">Vehicul</option>
-                                                        {% endif %}
-
-                                                        {% if  product.category=="entertainment" %}
-                                                            <option value="food">Food</option>
-                                                            <option value="sports">Sports</option>
-                                                            <option value="{{ product.category }}"
-                                                                    selected>{{ product.category|capitalize }}</option>
-                                                            <option value="realestate">RealEstate</option>
-                                                            <option value="vehicul">Vehicul</option>
-                                                        {% endif %}
-
-                                                        {% if  product.category=="realestate" %}
-                                                            <option value="food">Food</option>
-                                                            <option value="sports">Sports</option>
-                                                            <option value="entertainment">Entertainment</option>
-                                                            <option value="{{ product.category }}"
-                                                                    selected>{{ product.category|capitalize }}</option>
-                                                            <option value="vehicul">Vehicul</option>
-                                                        {% endif %}
-
-                                                        {% if  product.category=="vehicul" %}
-                                                            <option value="food">Food</option>
-                                                            <option value="sports">Sports</option>
-                                                            <option value="entertainment">Entertainment</option>
-                                                            <option value="realestate">Realestate</option>
-                                                            <option value="{{ product.category }}"
-                                                                    selected>{{ product.category|capitalize }}</option>
-                                                        {% endif %}
-
-                                                    {% else %}
-                                                        <option value="food" selected>Food</option>
-                                                        <option value="sports">Sports</option>
-                                                        <option value="entertainment">Entertainment</option>
-                                                        <option value="realestate">RealEstate</option>
-                                                        <option value="vehicul">Vehicul</option>
-                                                    {% endif %}
+                                                    <option id="food" value="food" selected>Food</option>
+                                                    <option value="sports" id="sports">Sports</option>
+                                                    <option value="entertainment" id="entertainment">Entertainment</option>
+                                                    <option value="realestate" id="realestate">RealEstate</option>
+                                                    <option value="vehicul" id="vehicul">Vehicul</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -390,7 +341,7 @@
                                             {% if update == true %}
                                                 <a class="btn btn-primary btn-large w-100"
                                                    onclick="updateProduct({{ product.idProduct }})"
-                                                   >
+                                                >
                                                     Update Item
                                                 </a>
                                             {% else %}
@@ -600,6 +551,7 @@
         <script>
             window.onload = function () {
                 $('#description').val({{ product.description|json_encode|raw }});
+                $('#{{ product.category }}').prop('selected');
             }
         </script>
     {% endif %}

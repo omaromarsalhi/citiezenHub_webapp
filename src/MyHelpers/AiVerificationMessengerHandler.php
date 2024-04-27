@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AiVerificationMessengerHandler
 {
 
-    public function __construct(private EntityManagerInterface $entityManager, private ProductRepository $productRepository)
+    public function __construct(private EntityManagerInterface $entityManager, private ProductRepository $productRepository, private AiResultRepository $aiResultRepository)
     {
     }
 
@@ -30,20 +30,26 @@ class AiVerificationMessengerHandler
 
         $aiDataHolder = $aiVerification->run($obj);
 
-        ProductController::changeState($this->productRepository, $this->entityManager, $aiDataHolder, $obj['id']);
+        ProductController::changeState($this->aiResultRepository, $this->productRepository, $this->entityManager, $aiDataHolder, $obj['id']);
 
-        $aiResult = new AiResult();
 
         $aiResultController = new AiResultController();
 
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
 
-        $aiResult->setBody($serializedData);
-        $aiResult->setIdProduct($obj['id']);
-        $aiResult->setTerminationDate();
 
-        $aiResultController->new($aiResult, $this->entityManager);
+        var_dump($obj);
+        if ($obj['mode'] === 'edit') {
+            $aiResultController->edit($serializedData,$obj['id'],$this->entityManager,$this->aiResultRepository);
+        } else {
+            $aiResult = new AiResult();
+            $aiResult->setBody($serializedData);
+            $aiResult->setIdProduct($obj['id']);
+            $aiResult->setTerminationDate();
+
+            $aiResultController->new($aiResult, $this->entityManager);
+        }
 
     }
 }

@@ -18,9 +18,6 @@ class Product
     private ?int $idProduct = null;
 
 
-    #[ORM\Column(name:"idUser",nullable: true)]
-    private ?int $idUser = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank(message: "aaa")]
     #[Assert\Regex('/^[a-zA-Z][a-zA-Z0-9\s]*$/')]
@@ -61,28 +58,19 @@ class Product
     #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'product')]
     private Collection $transactions;
 
+    #[ORM\OneToOne]
+    #[ORM\JoinColumn(name: "idUser",referencedColumnName:"idUser")]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->transactions = new ArrayCollection();
     }
 
-
     public function getIdProduct(): ?int
     {
         return $this->idProduct;
-    }
-
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(?int $idUser): static
-    {
-        $this->idUser = $idUser;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -248,6 +236,18 @@ class Product
                 $transaction->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

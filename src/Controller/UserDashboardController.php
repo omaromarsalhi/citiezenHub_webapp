@@ -40,8 +40,7 @@ class UserDashboardController extends AbstractController
             else if ($movement_direction != "next" && $movement_direction != "previous" && $movement_direction > 0)
                 $current_page = $movement_direction;
 
-
-                $map[$page]->setCurrentPage($current_page);
+            $map[$page]->setCurrentPage($current_page);
             $map[$page]->setPreviousPage($previous_page);
             $session->set('user_products_map', $map);
 
@@ -60,13 +59,11 @@ class UserDashboardController extends AbstractController
                 'previousPage' => $map[$page]->getPreviousPage(),
                 'nbrpages' => $map[$page]->getNbrPages()
             ]);
-
         }
 
-
-        $on_sale = $productRepository->findBy(['isDeleted' => false, 'state' => 'verified']);
-        $unverified = $productRepository->findBy(['isDeleted' => false, 'state' => 'unverified']);
-        $aiResults = $aiResultRepository->findAll();
+        $on_sale = $productRepository->findBy(['user' => $this->getUser(),'state' => 'verified']);
+        $unverified = $productRepository->findBy(['user' => $this->getUser(),'state' => 'unverified']);
+        $aiResults = $aiResultRepository->findByIdProduct($productRepository->findByIdUser($this->getUser()));
 
         $map = [
             'on_sale' => new PaginationHelper($on_sale, 1, 2, ceil(sizeof($on_sale) / 10)),
@@ -74,7 +71,6 @@ class UserDashboardController extends AbstractController
         ];
 
         $session->set('user_products_map', $map);
-
 
         return $this->render('user_dashboard/author.html.twig', [
             'on_sale' => $map['on_sale'],

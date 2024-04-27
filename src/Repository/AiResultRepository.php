@@ -45,4 +45,14 @@ class AiResultRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+    public function findByIdProduct($values): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.idProduct in (:val)')
+            ->setParameter('val', $values)
+            ->getQuery()
+            ->getResult();
+    }
 }

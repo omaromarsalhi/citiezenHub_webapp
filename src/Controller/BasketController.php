@@ -37,10 +37,21 @@ class BasketController extends AbstractController
         ]);
     }
 
+    #[Route('/count', name: '_count')]
+    public function count(BasketRepository $basketRepository, Request $request): Response
+    {
+        if($request->isXmlHttpRequest()){
+            $nbr=$basketRepository->count(['user'=>$this->getUser()]);
+            return new Response($nbr, Response::HTTP_OK);
+        }
+        return new Response('', Response::HTTP_BAD_REQUEST);
+    }
+
     #[Route('/new', name: '_add')]
     public function new(BasketRepository $basketRepository,ProductRepository $productRepository, Request $request,EntityManagerInterface $entityManager): Response
     {
         if($request->isXmlHttpRequest()){
+
             $product =$productRepository->findOneBy(['idProduct'=>$request->get("id")]) ;
 
             $new_basket = new Basket();
@@ -52,7 +63,6 @@ class BasketController extends AbstractController
 
             $entityManager->persist($new_basket);
             $entityManager->flush();
-
 
             return new Response(sizeof($basketRepository->findBy(['user'=>$user])), Response::HTTP_OK);
         }

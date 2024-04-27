@@ -71,6 +71,10 @@
     height: 165px !important;
     width: 165px !important;
 }
+.fixedSubImages4MarketPlace{
+    height: 300px !important;
+    width: 310px !important;
+}
 
 .updateImageHeight{
     min-height: 200px !important;

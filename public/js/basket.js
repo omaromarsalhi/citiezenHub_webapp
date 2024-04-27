@@ -1,6 +1,3 @@
-window.onload = function () {
-
-}
 
 
 function checkOut() {
