@@ -9,10 +9,12 @@ use App\Security\UserAuthanticatorAuthenticator;
 use App\Utils\GeocodingService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use EmailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
@@ -23,11 +25,13 @@ class RegistrationController extends AbstractController
 {
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator,GeocodingService $geo,MunicipaliteRepository $municipaliteRepository): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator,GeocodingService $geo,MunicipaliteRepository $municipaliteRepository,MailerInterface $mailer): Response
     {
+        $email = $request->query->get('email');
+        $name = $request->query->get('name');
+        $parts = explode(" ", $name);
         $user = $session->get('authenticatedUser');
         $userData = $request->request->get('user');
-        $errors = [];
         $errorMessages = [];
         if ($request->isMethod('POST') && $userData !== null) {
             if ($request->request->has('submit_button')) {
@@ -37,9 +41,7 @@ class RegistrationController extends AbstractController
                 $user->setAddress($userData['address']);
                 $user->setEmail($userData['email']);
                 $user->setPassword($userData['password']);
-
                 $errors = $validator->validate($user, null, 'add');
-
                 foreach ($errors as $error) {
                     $field = $error->getPropertyPath();
                     $errorMessages[$field] = $error->getMessage();
@@ -55,6 +57,7 @@ class RegistrationController extends AbstractController
                         $user->setPassword($hashedPassword);
                         $user->setRole("Citoyen");
                         $user->setDate(new DateTime());
+//                        $email->envoyerEmail();
                         $entityManager->persist($user);
                         $entityManager->flush();
                         return $userAuthenticator->authenticateUser(
@@ -67,221 +70,17 @@ class RegistrationController extends AbstractController
 
             }
         }
-//            else {
-//            return  $this->redirectToRoute('app_register');
-//        }
 
         return $this->render('test/signup.html.twig', [
-            'name' => $user ? $user->getFirstName() : '',
+            'name' =>  $parts[0] ? $parts[0] : ($user ? $user->getFirstName() : ''),
+//            'lastName' =>  $parts[1]? $parts[1] : ($user ? $user->getLastName() : ''),
             'lastName' => $user ? $user->getLastName() : '',
-            'email' => $user ? $user->getEmail() : '',
+            'email' => $email ? $email : ($user ? $user->getEmail() : ''),
             'role' => $user ? $user->getRole() : '',
-            'errors' => $errorMessages ,
+            'errors' => $errorMessages,
         ]);
+
     }
-//
-//    #[Route('/register', name: 'app_register')]
-//    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator,GeocodingService $geo,MunicipaliteRepository $municipaliteRepository): Response
-//    {
-//        $user = $session->get('authenticatedUser');
-//        $userData = $request->request->get('user');
-//        $errors = [];
-//        $errorMessages = [];
-//        if ($request->isXmlHttpRequest()) {
-//            dump("heloooo");
-//            $name = $request->get('name');
-//            $lastname = $request->get('lastname');
-//            $email = $request->get('email');
-//            $address = $request->get('address');
-//            $newpassword = $request->get('newpassword');
-//            $repassword = $request->get('repassword');
-//            $user = new User();
-//                $user->setFirstName($name);
-//                $user->setLastName($lastname);
-//                $user->setAddress($address);
-//                $user->setEmail($email);
-//                $user->setPassword($newpassword);
-//                $errors = $validator->validate($user, null, 'add');
-//                foreach ($errors as $error) {
-//                    $field = $error->getPropertyPath();
-//                    $errorMessages[$field] = $error->getMessage();
-//                }
-//                $muni = $municipaliteRepository->findOneBy(['name' => $geo->getMunicipalityFromAddress($address)]);
-//                if (count($errors) === 0 && $newpassword=== $repassword && $muni) {
-//                    if ($muni !== null) {
-//                        $hashedPassword = $userPasswordHasher->hashPassword(
-//                            $user,
-//                            $userData['password']
-//                        );
-//                        $user->setMunicipalite($muni);
-//                        $user->setPassword($hashedPassword);
-//                        $user->setRole("Citoyen");
-//                        $user->setDate(new DateTime());
-//                        $entityManager->persist($user);
-//                        $entityManager->flush();
-//                        return $userAuthenticator->authenticateUser(
-//                            $user,
-//                            $authenticator,
-//                            $request
-//                        );
-//                    }
-//                }
-//
-//
-//        }
-//
-////            else {
-////            return  $this->redirectToRoute('app_register');
-////        }
-//
-//        return $this->render('test/signup.html.twig', [
-//            'name' => $user ? $user->getFirstName() : '',
-//            'lastName' => $user ? $user->getLastName() : '',
-//            'email' => $user ? $user->getEmail() : '',
-//            'role' => $user ? $user->getRole() : '',
-//            'errors' => $errorMessages ,
-//        ]);
-//    }
-//
-
-
-
-//    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator,GeocodingService $geo,MunicipaliteRepository $municipaliteRepository): Response
-//    {
-//        $user = $session->get('authenticatedUser');
-//        $userData = $request->request->get('user');
-//        $errors = [];
-//        $errorMessages = [];
-//
-//        if ($request->isMethod('POST') && $userData !== null) {
-//            if ($request->request->has('submit_button')) {
-//                $user = new User();
-//                $user->setFirstName($userData['firstName']);
-//                $user->setLastName($userData['lastName']);
-//                $user->setAddress($userData['address']);
-//                $user->setEmail($userData['email']);
-//                $user->setPassword($userData['password']);
-//
-//                $errors = $validator->validate($user, null, 'add');
-//
-//                foreach ($errors as $error) {
-//                    $field = $error->getPropertyPath();
-//                    $errorMessages[$field] = $error->getMessage();
-//                }
-//                $muni=$municipaliteRepository->findOneBy([ 'name' =>$geo->getMunicipalityFromAddress($userData['address'])]);
-//                if (count($errors) === 0 && $userData['password'] === $userData['password1'] && $muni) {
-//                    if ($muni !== null) {
-//                        $hashedPassword = $userPasswordHasher->hashPassword(
-//                            $user,
-//                            $userData['password']
-//                        );
-//                        $user->setMunicipalite($muni);
-//                        $user->setPassword($hashedPassword);
-//                        $user->setRole("Citoyen");
-//                        $user->setDate(new DateTime());
-//                        $entityManager->persist($user);
-//                        $entityManager->flush();
-//                        return $userAuthenticator->authenticateUser(
-//                            $user,
-//                            $authenticator,
-//                            $request
-//                        );
-//                    }
-//                } elseif (!$muni) {
-//
-//                        $errorMessages['municipalite'] = 'Municipalité non valide ou non reconnue.';
-//                    return $this->render('test/signup.html.twig', [
-//                        'name' => $user ? $user->getFirstName() : '',
-//                        'lastName' => $user ? $user->getLastName() : '',
-//                        'email' => $user ? $user->getEmail() : '',
-//                        'role' => $user ? $user->getRole() : '',
-//                        'errors' => $errorMessages ,
-//                    ]);
-//
-//                    }
-//            }
-//
-//        } else {
-//                return  $this->redirectToRoute('app_register');
-//            }
-//
-//        return $this->render('test/signup.html.twig', [
-//            'name' => $user ? $user->getFirstName() : '',
-//            'lastName' => $user ? $user->getLastName() : '',
-//            'email' => $user ? $user->getEmail() : '',
-//            'role' => $user ? $user->getRole() : '',
-//            'errors' => $errorMessages ,
-//        ]);
-//    }
-//    #[Route('/register', name: 'app_register')]
-//    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator,GeocodingService $geo,MunicipaliteRepository $municipaliteRepository): Response
-//    {
-//        $user = $session->get('authenticatedUser');
-//        $userData = $request->request->get('user');
-//        $errors = [];
-//        $errorMessages = [];
-//
-//        if ($request->isMethod('POST') && $userData !== null) {
-//            if ($request->request->has('submit_button')) {
-//                $user = new User();
-//                $user->setFirstName($userData['firstName']);
-//                $user->setLastName($userData['lastName']);
-//                $user->setAddress($userData['address']);
-//                $user->setEmail($userData['email']);
-//                $user->setPassword($userData['password']);
-//
-//                $errors = $validator->validate($user, null, 'add');
-//
-//                foreach ($errors as $error) {
-//                    $field = $error->getPropertyPath();
-//                    $errorMessages[$field] = $error->getMessage();
-//                }
-//
-//                $muni=$municipaliteRepository->findOneBy([ 'name' =>$geo->getMunicipalityFromAddress($userData['address'])]);
-//                if (count($errors) === 0 && $userData['password'] === $userData['password1'] && $muni) {
-//                    if ($muni !== null) {
-//                        $hashedPassword = $userPasswordHasher->hashPassword(
-//                            $user,
-//                            $userData['password']
-//                        );
-//                        $user->setMunicipalite($muni);
-//                        $user->setPassword($hashedPassword);
-//                        $user->setRole("Citoyen");
-//                        $user->setDate(new DateTime());
-//                        $entityManager->persist($user);
-//                        $entityManager->flush();
-//                        return $userAuthenticator->authenticateUser(
-//                            $user,
-//                            $authenticator,
-//                            $request
-//                        );
-//                    }
-//                } elseif (!$muni) {
-//
-//                    $errorMessages['municipalite'] = 'Municipalité non valide ou non reconnue.';
-//                    return $this->render('test/signup.html.twig', [
-//                        'name' => $user ? $user->getFirstName() : '',
-//                        'lastName' => $user ? $user->getLastName() : '',
-//                        'email' => $user ? $user->getEmail() : '',
-//                        'role' => $user ? $user->getRole() : '',
-//                        'errors' => $errorMessages ,
-//                    ]);
-//
-//                }
-//            }
-//
-//        } else {
-//            return  $this->redirectToRoute('app_login');
-//        }
-//
-//        return $this->render('test/signup.html.twig', [
-//            'name' => $user ? $user->getFirstName() : '',
-//            'lastName' => $user ? $user->getLastName() : '',
-//            'email' => $user ? $user->getEmail() : '',
-//            'role' => $user ? $user->getRole() : '',
-//            'errors' => $errorMessages ,
-//        ]);
-//    }
 
 }
 

@@ -61,3 +61,11 @@
     font-weight: bold;
 
 }
+.notifIcon {
+    color: #3EB75E;
+    margin: 0 10px 0 0;
+}
+
+.notifDiv {
+    font-size: 20px;
+}

@@ -10,10 +10,21 @@
 
     <script src="{{ asset('js/userScript.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <div id="loader" style="display: none;">
-        <!-- Insérez ici votre image de chargement (loader) -->
-        <img src="images/img/Animation - 1714076220937.gif"  alt="Loader">
-    </div>
+    <link rel="stylesheet" href="{{ asset('css/wtf.css') }}">
+{#    <div id="loader" style="display: none;">#}
+{#        <!-- Insérez ici votre image de chargement (loader) -->#}
+{#        <img src="images/img/Animation - 1714076220937.gif"  alt="Loader">#}
+{#    </div>#}
+{#    <style>#}
+{#        #loader {#}
+{#            position: fixed;#}
+{#            top: 50%;#}
+{#            left: 50%;#}
+{#            transform: translate(-50%, -50%);#}
+{#        }#}
+{#    </style>#}
+
+
     <header class="rn-header haeder-default header--sticky">
         <div class="container">
             <div class="header-inner">
@@ -288,6 +299,8 @@
                     <a  href="{{path('profile',{image:image,name:name,lastname:lastname,email:email})}}" class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
                 </div>
             </div>
+            <div class="woocommerce-notices-wrapper" id="notification_box">
+            </div>
             <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
                 <div class="col-lg-3 col-md-3 col-sm-12">
                     <!-- Start tabs area -->
@@ -351,7 +364,7 @@
 
 
                             <!-- start personal information -->
-                            <form id="test">
+                            <form>
                              <div class="nuron-information">
                                 <div class="profile-form-wrapper">
                                     <div class="input-two-wrapper mb--15">
@@ -444,7 +457,15 @@
 
 
                             </form>
-
+                                                    <style>
+                                                        .notifIcon {
+                                                            color: #3EB75E;
+                                                            margin: 0 10px 0 0;
+                                                        }
+                                                        .notifDiv {
+                                                            font-size: 20px;
+                                                        }
+                                                    </style>
                                 <div class="button-area save-btn-edit">
                                     <a href="{{path('editProfile')}}" class="btn btn-primary-alta mr--15" onclick="customAlert.alert('Cancel Edit Profile?')">Cancel</a>
                                     <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editProfile(event)">Save
@@ -614,16 +635,27 @@
             </div>
         </div>
     </div>
-    <script>
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const form = document.getElementById('test');
-        //     form.addEventListener('submit', function(event) {
-        //           console.log("lllllll");
-        //         showLoaderAndBlockUI("test"); // Appeler la fonction pour afficher le loader et flouter la page
-        //     });
-        // });
-    </script>
 
+    <script>
+        var routePrecedente = '{{ routePrecedente }}';
+
+        if (routePrecedente === '{{ path('app_register') }}') {
+            $(document).ready(function() {
+                $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
+                    '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
+                    '<a href=""\n' +
+                    '   class="restore-item">Undo?</a>\n' +
+                    '</div>');
+            });
+            var timer = setInterval(function() {
+                $('#notifDiv').remove();
+                clearInterval(timer);
+            }, 30 * 60 * 1000); // 30 minutes en millisecondes
+
+        }
+        else
+            console.log("La route précédente est.");
+    </script>
     <!-- End tabs area -->
 
 

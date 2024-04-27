@@ -110,7 +110,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     )]
     private ?string $password = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -136,6 +136,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[ORM\ManyToOne(targetEntity: Municipalite::class, inversedBy: "users")]
     #[ORM\JoinColumn(name: "idMunicipalite ", referencedColumnName: "idMunicipalite", nullable: false)]
     private $municipalite ;
+    private ?\DateTimeInterface $informationCompletionDate;
 
     public function getMunicipalite(): ?Municipalite
     {
@@ -363,6 +364,22 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
         $this->gender = $gender;
 
         return $this;
+    }
+    public function setInformationCompletionDate(?\DateTimeInterface $informationCompletionDate): self
+    {
+        $this->informationCompletionDate = $informationCompletionDate;
+
+        return $this;
+    }
+
+    /**
+     * Get the information completion date.
+     *
+     * @return \DateTimeInterface|null
+     */
+    public function getInformationCompletionDate(): ?\DateTimeInterface
+    {
+        return $this->informationCompletionDate;
     }
 
 

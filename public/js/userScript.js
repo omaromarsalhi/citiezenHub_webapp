@@ -15,18 +15,16 @@ function parserMessagesErreur(reponseTexte) {
         return {};
     }
 }
-function showLoaderAndBlockUI(inputId) {
+function showLoaderAndBlockUI() {
     const loader = document.getElementById('loader');
     const mainContent = document.getElementById('main-content');
     loader.style.display = 'flex';
-    // loader.style.justifyContent = 'center'; // Centrer horizontalement
-    // loader.style.alignItems = 'center'; // Centrer verticalement
     mainContent.style.pointerEvents = 'none';
     mainContent.style.filter = 'blur(5px)';
     setTimeout(() => {
-        const form = document.getElementById(inputId);
+        const form = document.getElementById("signup-form");
         form.submit();
-    }, 10000);
+    }, 100);
 }
 function afficherMessagesErreur(erreurs) {
 
@@ -50,9 +48,9 @@ const customAlert = {
     alertWithPromise: function (message) {
         return new Promise(function (resolve, reject) {
             if (confirm(message)) {
-                resolve(); // Confirmer la promesse si l'utilisateur clique sur OK
+                resolve();
             } else {
-                reject(); // Rejeter la promesse si l'utilisateur annule
+                reject();
             }
         });
     }
@@ -63,15 +61,11 @@ function removeInputs() {
         element.innerHTML='';
     });
 }
-function hideLoaderAndUnblockUI() {
-    // Masquer l'indicateur de chargement
-    $('#loader').hide();
 
-}
 function editProfile(event) {
 
     event.preventDefault();
-    showLoaderAndBlockUI("test");
+    // showLoaderAndBlockUI("test");
     let formData = new FormData();
     let name=$('#firstnamee').val();
     let lastname=$('#lastnamee').val();
@@ -106,8 +100,13 @@ function editProfile(event) {
                 let user = response.user;
                 console.log(user)
                 removeInputs();
+                $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
+                    '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
+                    '<a href=""\n' +
+                    '   class="restore-item">Undo?</a>\n' +
+                    '</div>')
               //  addErrorMessage(" Profile edited with sucess",'success','message');
-                alert('Profile edited with sucess.');
+              //   alert('Profile edited with sucess.');
             } else  {
                 let errors = response.errors;
                 console.log(errors);
@@ -189,8 +188,7 @@ function editPassword(event) {
                     $('#oldPass').val('');
                     $('#NewPass').val('');
                     $('#rePass').val('');
-
-                    window.location.href = '/logout';
+                    // window.location.href = '/logout';
                 })
                 .catch(function () {
                     console.log("L'utilisateur a annulé l'action.");

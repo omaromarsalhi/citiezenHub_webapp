@@ -4,13 +4,16 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Message\UserCompletionMessage;
 use App\Repository\UserRepository;
 use App\Utils\ImageHelper;
 use Cassandra\Date;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,8 +32,12 @@ class UserController extends AbstractController
     }
 
     #[Route('/editProfile', name: 'editProfile',methods: ['GET', 'POST'])]
-    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper): Response
+    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper,MessageBusInterface $bus): Response
     {    $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
+        $routePrecedente = $req->headers->get('referer');
+        $parsedUrl = parse_url($routePrecedente);
+        $path = $parsedUrl['path'];
+         var_dump($routePrecedente);
          $errors = [];
          $errorMessages = [];
         if ($req->isXmlHttpRequest()) {
@@ -63,10 +70,13 @@ class UserController extends AbstractController
                 $errorMessages[$field] = $error->getMessage();
                 var_dump($field);
             }
+//            $userId = $this->getUser()->getId();
+//            $bus->dispatch(new UserCompletionMessage($userId));
             if (count($errors) === 0) {
                 $em = $doc->getManager();
                 $em->persist($user);
                 $em->flush();
+
                 return new JsonResponse([
                     'success' => true,
                     'user' => [
@@ -106,10 +116,13 @@ class UserController extends AbstractController
             'gender'=>$user->getGender(),
             'dob'=>$user->getDob(),
             'errors' => $errorMessages,
+            'routePrecedente' => $path,
         ]);
 
 
     }
+
+
     #[Route('/editImage', name: 'editImage',methods: ['GET', 'POST'])]
     public function editUserImage(UserRepository $rep, ManagerRegistry $doc, Request $req): Response
     {    $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
@@ -190,11 +203,10 @@ class UserController extends AbstractController
             $errorMessages[$field] = $error->getMessage();
             dump($field);
         }
-        dump($oldPassword);
-        dump($confirmPassword);
         if ($userPasswordHasher->isPasswordValid($user, $oldPassword))//password nafssou
         {
           if(strcmp($newPassword,$confirmPassword)==0) {
+              dump(count($errors));
               if (count($errors) === 0) {//mot de passe valider par le validtor
                   $user->setPassword($hashedPassword);
                   $em = $doc->getManager();
@@ -214,6 +226,7 @@ class UserController extends AbstractController
 //        }
         return new JsonResponse([
             'success' => false,
+            'errors' => count($errors),
             'errors' => $errorMessages,
 //            'otherErrors' => $Messages,
         ],422);

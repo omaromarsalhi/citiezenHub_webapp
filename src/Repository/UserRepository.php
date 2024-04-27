@@ -20,29 +20,19 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
-
+//
 //    /**
-//     * @return User[] Returns an array of User objects
+//     * Récupère les utilisateurs dont au moins un champ est vide.
+//     *
+//     * @return User[]
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findIncompleteUsers(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.age IS NULL OR u.phoneNumber IS NULL') // Vérifiez si au moins un champ est vide
+            // Ajoutez d'autres conditions pour vérifier d'autres champs si nécessaire
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

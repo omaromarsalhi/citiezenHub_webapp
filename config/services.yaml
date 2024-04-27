@@ -31,7 +31,10 @@ services:
         arguments:
                 - '@Geocoder\Provider\GoogleMaps\GoogleMaps'
                 - 'fr' # Locale facultative (par exemple, 'fr' pour le français)
-
+    App\Service\EmailService:
+        class: App\Utils\EmailService
+        arguments:
+                - '@Symfony\Component\Mailer\MailerInterface'
 
 
 
