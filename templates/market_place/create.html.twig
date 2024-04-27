@@ -138,27 +138,31 @@
                                         {% endif %}
                                         <div class="swiper-pagination" id="paginationContent"></div>
                                     </div> #}-->
+
+                                    {% if product.images|length <= 1 %}
+                                    <input hidden="" name="createinputfile" id="createinputfile" type="file"
+                                           class="inputfile" multiple>
+                                    <div class="brows-file-wrapper">
+                                        <img id="createfileImage"
+                                             src="{{ asset(product.images[0].path) }}" alt=""
+                                             data-black-overlay="6">
+                                        <!-- our custom upload button -->
+                                        <label for="createinputfile" title="No File Choosen">
+                                            <i class="feather-upload"></i>
+                                            <span class="text-center">Choose a File</span>
+                                            <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br> Max
+                                                1Gb.</p>
+                                        </label>
+                                    </div>
+                                    {% else %}
                                     <div id="image-slider" class="splide">
                                         <input hidden="" name="createinputfile" id="createinputfile" type="file"
                                                class="inputfile" multiple>
-                                        {% if product.images|length <= 1 %}
-                                        <div class="brows-file-wrapper">
-                                            <img id="createfileImage"
-                                                 src="{{ asset(product.images[0].path) }}" alt=""
-                                                 data-black-overlay="6">
-                                            <!-- our custom upload button -->
-                                            <label for="createinputfile" title="No File Choosen">
-                                                <i class="feather-upload"></i>
-                                                <span class="text-center">Choose a File</span>
-                                                <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br> Max
-                                                    1Gb.</p>
-                                            </label>
-                                        </div>
-                                        {% else %}
                                         <div class="splide__track">
                                             <ul class="splide__list">
                                                 {% for index,image in product.images %}
-                                                <li class="splide__slide slider_{{ index }}"  data-value="{{ image.getIdImage() }}">
+                                                <li class="splide__slide slider_{{ index }}"
+                                                    data-value="{{ image.getIdImage() }}">
                                                     <div class="brows-file-wrapper">
                                                         <img id="createfileImage"
                                                              src="{{ asset(image.path) }}" alt=""
@@ -182,8 +186,8 @@
                                                 {% endfor %}
                                             </ul>
                                         </div>
-                                        {% endif %}
                                     </div>
+                                    {% endif %}
                                     <input type="hidden" value="{{ product.images|length }}" id="nbrImages">
                                 </div>
                             {% endif %}
@@ -383,13 +387,15 @@
                                     <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
                                         <div class="input-box">
                                             {% if update == true %}
-                                                <button class="btn btn-primary btn-large w-100"
-                                                        onclick="updateProduct({{ product.idProduct }})">
+                                                <a class="btn btn-primary btn-large w-100"
+                                                   onclick="updateProduct({{ product.idProduct }})"
+                                                   >
                                                     Update Item
-                                                </button>
+                                                </a>
                                             {% else %}
                                                 <button class="btn btn-primary btn-large w-100"
-                                                        onclick="createProduct()">
+                                                        onclick="createProduct()"
+                                                >
                                                     Submit Item
                                                 </button>
                                             {% endif %}

@@ -70,8 +70,6 @@ function deleteImage() {
 
 
 function updateProduct(id) {
-
-
     // if(check_all_inputs()){
     loader_start()
     let name = $('#name').val();
@@ -86,7 +84,7 @@ function updateProduct(id) {
     for (let i = 0; i < list.length; i++) {
         form_data.append('file-' + (i + 1), list[i]);
     }
-    str = ''
+    let str = ''
     for (let i = 1; i <= $('#nbrImages').val(); i++) {
         var myElement = document.getElementById("image-slider-slide0" + i);
         if (myElement) {
@@ -95,6 +93,7 @@ function updateProduct(id) {
         }
     }
     str=str.replace(/_$/,'')
+
     form_data.append('name', name);
     form_data.append('description', description);
     form_data.append('price', price);
@@ -102,7 +101,7 @@ function updateProduct(id) {
     form_data.append('category', category);
     form_data.append('idProduct', id);
     form_data.append('savedImages', str);
-    console.log(str)
+
 
     $.ajax({
         url: '/product/1/edit',
@@ -112,18 +111,7 @@ function updateProduct(id) {
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response)
-            loader_stop(100)
-            setTimeout(function () {
-                handle_success('the product has been added successfully')
-                $('#createinputfile').val(null)
-                $('#createfileImage').attr('src', '/assets/images/portfolio/portfolio-05.jpg')
-                $('#name').val('');
-                $('#description').val('');
-                $('#price').val('');
-                $('#quantity').val('');
-                $('#category').val('');
-            }, 100)
+            loader_stop(3000)
         },
         error: function (xhr) {
             loader_stop(1000)
@@ -133,15 +121,6 @@ function updateProduct(id) {
     });
 }
 
-function initializeUpdate(product) {
-    console.log('pomar')
-    regex();
-    $('#name').val(product.name);
-    $('#description').val(product.description);
-    $('#price').val(product.price);
-    $('#quantity').val(product.quantity);
-    $('#category').val(product.category);
-}
 
 
 function deleteProduct(id, index, type) {

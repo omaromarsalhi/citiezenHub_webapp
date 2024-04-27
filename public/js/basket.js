@@ -115,7 +115,6 @@ function removeItem(id, product_name, product_index,length) {
         },
         async: true,
         success: function (response) {
-
             $('#itmesNumber').html(response)
             $('#product_in_basket_' + product_index).remove()
             $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +

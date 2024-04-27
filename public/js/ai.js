@@ -1,10 +1,8 @@
-
 window.onload = function () {
 }
 
 
-
-function showModelUnverfied(idProduct,index,type) {
+function showModelUnverfied(idProduct, index, type) {
     $.ajax({
             url: "/ai/result/check4verification",
             type: "POST",
@@ -24,19 +22,39 @@ function showModelUnverfied(idProduct,index,type) {
                         }
                         if (response.data[i].category === false) {
                             str2 = response.data[i].categoryData.replace(' No,', ' CATEGORY : ');
-                            str2Add += '<div><i class="fa-solid fa-star-of-life" style="color: #2899d8;font-size: 8px"></i>' + str2.replace('paragraph', ' image ') + '</div>\n'
+                            str2Add += '<div><i class="fa-solid fa-star-of-life" style="color: #2899d8;font-size: 8px"></i>' + str2.replaceAll(/paragraph/gi, ' image ') + '</div>\n'
                         }
                         str2Add += '</details>'
                     }
                     $('#sectionData').html(str2Add);
-                    str='form_update_unverified_'+index
-                    $('#updateBtn').attr('onclick','document.getElementById("'+str+'").submit(); return false;')
-                    $('#deleteBtn').attr('onclick','deleteProduct('+idProduct+','+index+',"unverified")')
+                    str = 'form_update_unverified_' + index
+                    $('#updateBtn').attr('onclick', 'document.getElementById("' + str + '").submit(); return false;')
+                    $('#refreshAiResult').attr('onclick', 'reverifyItem(' + idProduct + ')')
+                    $('#deleteBtn').attr('onclick', 'deleteProduct(' + idProduct + ',' + index + ',"unverified")')
                     $('#aiModel').modal("show")
                 } else {
                     $('#loadingModel').modal("show")
                 }
 
+            },
+            error: function (resp) {
+                console.log('omar')
+            },
+        }
+    );
+}
+
+function reverifyItem(idProduct) {
+    $.ajax({
+            url: "/ai/result/reverify",
+            type: "POST",
+            data: {
+                idProduct: idProduct,
+            },
+            async: true,
+            success: function (response) {
+                $('#aiModel').modal("hide")
+                $('#loadingModel').modal("show")
             },
             error: function (resp) {
                 console.log('omar')

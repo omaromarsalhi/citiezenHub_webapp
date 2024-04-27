@@ -46,26 +46,14 @@ class ImageHelper
     }
 
 
-    public function deleteImages($imagesNotToDelete, $product): void
+    public function deleteImages($imagesNotToDelete, $images): void
     {
-
-        $newArray = [];
-        $idArray = [];
-        $images = $this->productImagesRepository->findBy(['product' => $product]);
         for ($i = 0; $i < sizeof($images); $i++) {
-            $idArray[] = $images[$i]->getIdImage();
-        }
-        var_dump($idArray);
-
-        for ($i = 0; $i < sizeof($imagesNotToDelete); $i++) {
-            $idArray = array_splice($idArray, intval($imagesNotToDelete[$i]), 1);
-            var_dump($imagesNotToDelete[$i]);
-            var_dump($idArray);
+            if (array_search(strval($images[$i]->getIdImage()), $imagesNotToDelete) === false) {
+                $this->entityManager->remove($images[$i]);
+                $this->entityManager->flush();
+            }
         }
 
-//        for ($j = 0; $j < sizeof($newArray); $j++) {
-//            $this->entityManager->remove($images[$j]);
-//            $this->entityManager->flush();
-//        }
     }
 }

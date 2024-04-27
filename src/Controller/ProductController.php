@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\AiResult;
+
 use App\Entity\Product;
 use App\MyHelpers\AiDataHolder;
 use App\MyHelpers\ImageHelper;
 use App\MyHelpers\AiVerificationMessage;
-use App\Repository\ProductImagesRepository;
+use App\Repository\AiResultRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,7 +75,7 @@ class ProductController extends AbstractController
                 'images' => $newImagesPath
             ];
 
-//            $messageBus->dispatch(new AiVerificationMessage($obj));
+            $messageBus->dispatch(new AiVerificationMessage($obj));
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
@@ -107,10 +107,14 @@ class ProductController extends AbstractController
 
 
     #[Route('/{index}/edit', name: '_edit', methods: ['POST'])]
-    public function edit(ImageHelper $imageHelper, Request $request, ProductRepository $productRepository, EntityManagerInterface $entityManager, int $index): Response
+    public function edit(AiResultRepository $aiResultRepository, MessageBusInterface $messageBus, ImageHelper $imageHelper, Request $request, ProductRepository $productRepository, EntityManagerInterface $entityManager, int $index): Response
     {
 
         if ($request->isXmlHttpRequest()) {
+            $aiResult = $aiResultRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
+            if ($aiResult != null)
+                AiResultController::delete($aiResult, $entityManager);
+
 
             $product = $productRepository->findOneBy(['idProduct' => $request->get('idProduct')]);
             $name = $request->get("name");
@@ -126,6 +130,7 @@ class ProductController extends AbstractController
             $product->setPrice(floatval($price));
             $product->setQuantity(floatval($quantity));
             $product->setCategory($category);
+            $product->setState('unverified');
             /*   $errors = $validator->validate($updated_product);
 
                if (count($errors) > 0) {
@@ -142,8 +147,25 @@ class ProductController extends AbstractController
             $entityManager->flush();
 
             $images = $request->files->all();
-            $newImagesPath = $imageHelper->saveImages($images, $product);
-            $imageHelper->deleteImages($imagesNotToDelete,$product);
+            $imageHelper->saveImages($images, $product);
+//            $imageHelper->deleteImages($imagesNotToDelete, $product->getImages());
+
+            $product = $productRepository->findOneBy(['idProduct' => $product->getIdProduct()]);
+
+
+            $paths = [];
+            for ($i = 0; $i < sizeof($product->getImages()); $i++) {
+                $paths[] = str_replace('usersImg/', '', $product->getImages()[$i]->getPath());
+            }
+
+            $obj = [
+                'title' => $product->getName(),
+                'category' => $product->getCategory(),
+                'id' => $product->getIdProduct(),
+                'images' => $paths
+            ];
+
+            $messageBus->dispatch(new AiVerificationMessage($obj));
 
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
@@ -172,10 +194,14 @@ class ProductController extends AbstractController
     }
 
     #[Route('/delete', name: '_delete', methods: ['POST'])]
-    public function delete(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
+    public function delete(AiResultRepository $aiResultRepository, Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
     {
         $session = $request->getSession();
         if ($request->isXmlHttpRequest()) {
+
+            $aiResult = $aiResultRepository->findOneBy(['idProduct' => $request->get('id')]);
+            if ($aiResult != null)
+                AiResultController::delete($aiResult, $entityManager);
 
             $prod2Remove = $productRepository->findOneBy(['idProduct' => $request->get('id')]);
 

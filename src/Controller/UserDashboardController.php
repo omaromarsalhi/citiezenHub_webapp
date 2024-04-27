@@ -19,7 +19,7 @@ class UserDashboardController extends AbstractController
 {
 
     #[Route('/', name: '_index')]
-    public function index(EntityManagerInterface $entityManager,AiResultRepository $aiResultRepository,ProductRepository $productRepository,Request $request): Response
+    public function index(AiResultRepository $aiResultRepository,ProductRepository $productRepository,Request $request): Response
     {
         $session = $request->getSession();
 

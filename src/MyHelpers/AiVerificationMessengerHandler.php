@@ -5,6 +5,7 @@ namespace App\MyHelpers;
 use App\Controller\AiResultController;
 use App\Controller\ProductController;
 use App\Entity\AiResult;
+use App\Repository\AiResultRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -17,7 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AiVerificationMessengerHandler
 {
 
-    public function __construct(private EntityManagerInterface $entityManager,private ProductRepository $productRepository)
+    public function __construct(private EntityManagerInterface $entityManager, private ProductRepository $productRepository)
     {
     }
 
@@ -25,14 +26,15 @@ class AiVerificationMessengerHandler
     {
         $obj = $message->getObj();
 
-        $aiVerification= new AiVerification();
-        $aiDataHolder=$aiVerification->run($obj);
+        $aiVerification = new AiVerification();
 
-        ProductController::changeState($this->productRepository,$this->entityManager,$aiDataHolder,$obj['id']);
+        $aiDataHolder = $aiVerification->run($obj);
+
+        ProductController::changeState($this->productRepository, $this->entityManager, $aiDataHolder, $obj['id']);
 
         $aiResult = new AiResult();
 
-        $aiResultController=new AiResultController();
+        $aiResultController = new AiResultController();
 
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
@@ -40,7 +42,8 @@ class AiVerificationMessengerHandler
         $aiResult->setBody($serializedData);
         $aiResult->setIdProduct($obj['id']);
         $aiResult->setTerminationDate();
-        $aiResultController->new($aiResult,$this->entityManager);
+
+        $aiResultController->new($aiResult, $this->entityManager);
 
     }
 }
