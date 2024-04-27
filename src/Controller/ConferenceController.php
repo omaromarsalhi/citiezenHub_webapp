@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reponse;
 use App\Entity\Reeclamation;
+use Symfony\Component\Mime\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class ConferenceController extends AbstractController
 {
@@ -73,7 +76,7 @@ class ConferenceController extends AbstractController
 
 
     #[Route('/reclamation/{id}/add-response', name: 'add_response_to_reclamation', methods: ['POST'])]
-    public function addResponseToReclamation(int $id, Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): JsonResponse
+    public function addResponseToReclamation(int $id, Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator, VerifyEmailHelperInterface $verifyEmailHelper, MailerInterface $mailer): JsonResponse
     {
         // Retrieve the specific reclamation
         $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
@@ -116,6 +119,22 @@ class ConferenceController extends AbstractController
         // Persist the response
         $entityManager->persist($response);
         $entityManager->flush();
+
+        $signatureComponents = $verifyEmailHelper->generateSignature(
+            'app_verify_email',
+            'khalil.rmila@esprit.tn',
+            (new \DateTimeImmutable())->modify('+7 days'),
+            ['id' => $response->getId()]
+        );
+
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to('khalil.rmila@esprit.tn')
+            ->subject('Vérification de votre adresse mail')
+            ->html('<p>Confirmez votre adresse mail en cliquant sur ce lien: <a href="'.$signatureComponents->getSignedUrl().'">Confirmer mon adresse</a></p>');
+        $mailer->send($email);
+
+
 
         // Return a success message
         return new JsonResponse(['message' => 'Response added successfully']);

@@ -160,5 +160,21 @@ recognition.start(); // Start recording
 
 document.getElementById('startRecording').addEventListener('click', startRecording);
 	</script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const aviInput = document.getElementById('{{ form.avi.vars.id }}');
+    
+            const badWords = ['badword1', 'badword2', 'badword3','aziz'];
+    
+            aviInput.addEventListener('input', function () {
+                const inputValue = aviInput.value.toLowerCase();
+                const foundBadWord = badWords.some(badWord => inputValue.includes(badWord));
+    
+                if (foundBadWord) {
+                    swal("Warning!", "Please avoid using inappropriate language.", "warning");
+                    aviInput.value = '';
+                }
+            });
+        });
+    </script>
 {% endblock %}
