@@ -91,6 +91,8 @@
 
                             <!-- Description Input -->
                             <div class="input-box pb--20">
+                                 <!-- <button id="startRecording">Start Recording</button> -->
+
                                 <label for="description" class="required">Description</label>
                                 <textarea id="description" name="description" required></textarea>
                             </div>
@@ -132,4 +134,20 @@
             privateKeyField.value = generatePrivateKey();
         });
     </script>
+    <script>
+        // Function to start recording
+        function startRecording() {
+          const recognition = new window.webkitSpeechRecognition(); // Initialize speech recognition
+          recognition.lang = 'en-US'; // Set recognition language
+      
+          recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript; // Get the transcription
+            document.getElementById('description').value = transcript; // Fill the description field with the transcription
+          }
+      
+          recognition.start(); // Start recording
+        }
+      
+        document.getElementById('startRecording').addEventListener('click', startRecording);
+      </script>
 {% endblock %}
