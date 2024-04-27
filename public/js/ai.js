@@ -55,6 +55,7 @@ function reverifyItem(idProduct) {
             success: function (response) {
                 $('#aiModel').modal("hide")
                 $('#loadingModel').modal("show")
+                DisplayListProducts4Owner(-1, 'unverified')
             },
             error: function (resp) {
                 console.log('omar')

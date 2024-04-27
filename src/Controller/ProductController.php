@@ -165,7 +165,7 @@ class ProductController extends AbstractController
                 'images' => $paths
             ];
 
-            $messageBus->dispatch(new AiVerificationMessage($obj));
+//            $messageBus->dispatch(new AiVerificationMessage($obj));
 
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
@@ -180,7 +180,7 @@ class ProductController extends AbstractController
 
 
     #[Route('/test', name: 'test', methods: ['POST', 'GET'])]
-    public static function changeState(ProductRepository $productRepository, EntityManagerInterface $entityManager, AiDataHolder $aiDataHolder, int $idProduct): Response
+    public static function changeState(AiResultRepository $aiResultRepository,ProductRepository $productRepository, EntityManagerInterface $entityManager, AiDataHolder $aiDataHolder, int $idProduct): Response
     {
         for ($i = 0; $i < sizeof($aiDataHolder->getDescriptions()); $i++) {
             if (str_starts_with(strtolower($aiDataHolder->getTitleValidation()[$i]), " no") || str_starts_with(strtolower($aiDataHolder->getCategoryValidation()[$i]), " no"))
@@ -190,6 +190,9 @@ class ProductController extends AbstractController
         $product = $productRepository->findOneBy(['idProduct' => $idProduct]);
         $product->setState('verified');
         $entityManager->flush();
+        $aiResult = $aiResultRepository->findOneBy(['idProduct' => $product->getIdProduct()]);
+        if ($aiResult != null)
+            AiResultController::delete($aiResult, $entityManager);
         return new Response('done', Response::HTTP_OK);
     }
 

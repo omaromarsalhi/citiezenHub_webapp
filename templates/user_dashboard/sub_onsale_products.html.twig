@@ -5,107 +5,109 @@
             <div class="card-thumbnail ">
                 <a href="../pages/product-details.html">
                     {% if product.images|length > 1 %}
-                        <!-- Swiper -->
-                        <div class="swiper effect-creative-swiper rounded">
-                            <div class="swiper-wrapper">
-                                {% for image in product.images %}
-                                    <div class="swiper-slide">
-                                        <a href="#"
-                                           onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
-                                            <img src="{{ asset(image.path)|default("Not available") }}"
-                                                 alt="NFT_portfolio"
-                                                 class="fixedImagesSize4owner"/>
-                                        </a>
-                                    </div>
-                                {% endfor %}
+                    <!-- Swiper -->
+                    <div class="swiper effect-creative-swiper rounded">
+                        <div class="swiper-wrapper">
+                            {% for image in product.images %}
+                            <div class="swiper-slide">
+                                <a href="#"
+                                   onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
+                                    <img src="{{ asset(image.path)|default("Not available") }}"
+                                         alt="NFT_portfolio"
+                                         class="fixedImagesSize4owner"/>
+                                </a>
                             </div>
-                            <div class="swiper-pagination"></div>
+                            {% endfor %}
                         </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
                     {% else %}
-                        <div>
-                            <a href="#"
-                               onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
-                                <img src="{{ asset(product.images[0].path) }}"
-                                     alt="NFT_portfolio"
-                                     class="fixedImagesSize4owner"
-                                >
-                            </a>
-                        </div>
+                    <div>
+                        <a href="#"
+                           onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
+                            <img src="{{ asset(product.images[0].path) }}"
+                                 alt="NFT_portfolio"
+                                 class="fixedImagesSize4owner"
+                            >
+                        </a>
+                    </div>
                     {% endif %}
                 </a>
                 {% if underverif %}
-                    {% if aiResult|length > 0 %}
-                        {% if aiResult[i] is defined %}
-                        <div class="countdown" data-date="{{ aiResult[i].getTerminationDateDate() }}"
-                             data-time="{{ aiResult[i].getTerminationDateTime() }}"
-                             data-value="{{ product.iDProduct }}:{{ i }}">
-                        </div>
-                        {% endif %}
-                    {% endif %}
+                {% if aiResult|length > 0 %}
+                {% if aiResult[i] is defined %}
+                {% if aiResult[i].idProduct == product.idProduct %}
+                <div class="countdown" data-date="{{ aiResult[i].getTerminationDateDate() }}"
+                     data-time="{{ aiResult[i].getTerminationDateTime() }}"
+                     data-value="{{ product.iDProduct }}:{{ i }}">
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
                 {% endif %}
                 <div class="rbt-quick-action--btns">
                     {% if underverif %}
-                        <div
-                                class="quickview--box"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="Details">
-                            <a
-                                    href="javascript: void(0);"
-                                    onclick="showModelUnverfied({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
-                                    class="yith-wcqv-button"
-                                    data-product_id="793"
-                            >
-                                <i class="fa-solid fa-info"></i>
-                            </a>
-                        </div>
-                        <div
-                                class="quickview--box"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="Buy"
-
+                    <div
+                            class="quickview--box"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Details">
+                        <a
+                                href="javascript: void(0);"
+                                onclick="showModelUnverfied({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
+                                class="yith-wcqv-button"
+                                data-product_id="793"
                         >
+                            <i class="fa-solid fa-info"></i>
+                        </a>
+                    </div>
+                    <div
+                            class="quickview--box"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Buy"
 
-                            <a
-                                    onclick="deleteProduct({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
-                                    class="yith-wcqv-button"
-                            >
-                                <i class="fa-regular fa-trash-can" style="font-size: 14px"></i>
-                            </a>
+                    >
 
-                        </div>
+                        <a
+                                onclick="deleteProduct({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
+                                class="yith-wcqv-button"
+                        >
+                            <i class="fa-regular fa-trash-can" style="font-size: 14px"></i>
+                        </a>
+
+                    </div>
                     {% else %}
-                        <div
-                                class="quickview--box"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="Contact Seller">
-                            <a
-                                    href="#"
-                                    onclick="document.getElementById('form_update_{{ type }}_{{ i }}').submit(); return false;"
-                                    class="yith-wcqv-button"
-                                    data-product_id="793"
-                            >
-                                <i class="fa-solid fa-pen-to-square" style="font-size: 14px"></i>
-                            </a>
-                        </div>
-                        <div
-                                class="quickview--box"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="Buy"
-
+                    <div
+                            class="quickview--box"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Contact Seller">
+                        <a
+                                href="#"
+                                onclick="document.getElementById('form_update_{{ type }}_{{ i }}').submit(); return false;"
+                                class="yith-wcqv-button"
+                                data-product_id="793"
                         >
+                            <i class="fa-solid fa-pen-to-square" style="font-size: 14px"></i>
+                        </a>
+                    </div>
+                    <div
+                            class="quickview--box"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Buy"
 
-                            <a
-                                    onclick="deleteProduct({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
-                                    class="yith-wcqv-button"
-                            >
-                                <i class="fa-regular fa-trash-can" style="font-size: 14px"></i>
-                            </a>
+                    >
 
-                        </div>
+                        <a
+                                onclick="deleteProduct({{ product.idProduct }},{{ i }},{{ type|json_encode }})"
+                                class="yith-wcqv-button"
+                        >
+                            <i class="fa-regular fa-trash-can" style="font-size: 14px"></i>
+                        </a>
+
+                    </div>
                     {% endif %}
                 </div>
             </div>

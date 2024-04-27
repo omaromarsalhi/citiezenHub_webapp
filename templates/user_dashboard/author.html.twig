@@ -234,7 +234,7 @@
                 <div class="tab-pane row g-5 d-flex fade" id="nav-unverified" role="tabpanel"
                      aria-labelledby="nav-unverified-tab">
                     <div class="rn-new-items">
-                        <div class="container">
+                        <div class="container" style="margin-top: 10px;margin-bottom: 100px">
                             <div id="sub-unverified-block" class="row g-5">
                                 <!-- start single product -->
                                 {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': unverified.getNProducts(10),'underverif':true,'type':'unverified','aiResult':unverified.getAiResult(10)} %}
