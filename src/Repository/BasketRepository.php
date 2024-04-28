@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Basket;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,4 +46,19 @@ class BasketRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+
+
+
+    public function clear($user): mixed
+    {
+        return $this->createQueryBuilder('b')
+            ->delete()
+            ->andWhere('b.user = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -55,6 +55,7 @@
                             <i class="feather-search"></i>
                         </a>
                     </div>
+                    {% if product.user != app.user %}
                     <div
                             class="quickview--box"
                             data-bs-toggle="tooltip"
@@ -75,7 +76,6 @@
                             title="Buy"
 
                     >
-
                         <a
                                 onclick="add2Card({{ product.idProduct }},{{ i+1 }})"
                                 class="yith-wcqv-button"
@@ -85,6 +85,7 @@
                         </a>
 
                     </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="product-share-wrapper">
@@ -109,13 +110,13 @@
                 </span>
             </a>
             <span class="latest-bid">
-                <span id="quantity_model">10 Pieces/</span>
+                <span id="quantity_model">{{ product.quantity }} Pieces/</span>
                 <strong
                         style="color: #2899d8">In Stock
                 </strong>
             </span>
             <br>
-            <span id="category_model">Sports</span>
+            <span id="category_model">{{ product.category|capitalize }}</span>
             <div class="bid-react-area m-0 ">
                 <div class="last-bid mt-3 " id="price_model">120 DT</div>
             </div>

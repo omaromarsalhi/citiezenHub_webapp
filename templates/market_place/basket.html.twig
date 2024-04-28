@@ -122,7 +122,7 @@
                                                                             <dd class="variation-Store"><p>
                                                                                     <a class="wcfm_dashboard_item_title"
                                                                                        target="_blank"
-                                                                                       href="">{{ product[0].idUser }}</a>
+                                                                                       href="">{{ product[0].user.firstName|capitalize~' '~ product[0].user.lastName|capitalize }}</a>
                                                                                 </p>
                                                                             </dd>
                                                                         </dl>
@@ -258,7 +258,6 @@
                                                                                 </p>
 
 
-
                                                                                 <p>
                                                                                     <button type="submit"
                                                                                             onclick="updateAddress()"
@@ -268,7 +267,12 @@
                                                                                 </p>
                                                                             </section>
                                                                         </form>
-
+                                                                        <a href="javascript:void(0);"
+                                                                           data-bs-toggle="modal"
+                                                                           data-bs-target="#termsModel"
+                                                                           class="shipping-calculator-button"
+                                                                           style="font-size: 20px">
+                                                                            Terms and conditions</a>
                                                                     </td>
                                                                 </tr>
 
@@ -287,8 +291,9 @@
                                                             </table>
 
                                                             <div class="wc-proceed-to-checkout">
-                                                                <a href="javascript:void(0);"
+                                                                <a
                                                                    onclick="checkOut()"
+                                                                   href="{{ path('app_basket_success')}}"
                                                                    class="checkout-button button alt wc-forward">
                                                                     Proceed to checkout</a>
                                                             </div>
@@ -308,5 +313,50 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal -->
+    <div
+            class="rn-popup-modal report-modal-wrapper modal fade"
+            id="termsModel"
+            tabindex="-1"
+            aria-hidden="true"
+    >
+        <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        >
+            <i data-feather="x"></i>
+        </button>
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content report-content-wrapper">
+                <div class="modal-header report-modal-header">
+                    <h5 class="modal-title">These are the terms and conditions</h5>
+                </div>
+                <div class="modal-body">
+                    <p>1/iurf airfgyu &irfuh airfu azirhf arf_ azr ifarifu <br>
+                        2/kjhfv aeirugyh aeriguh zeriuuv zaeiurh gvaeur gh ufv<br>
+                        3/aiyuzr aizuyryfg aoiuyrf<br>
+                        4/aiyuzr aizuyryfg aoiuyrf rrtyhzyjz ztey rtyh<br>
+                        5/aiyuzr aizuyryfg  , ftujse qrgztheyik brghert<br>
+                    </p>
+                    <div class="report-form-box justify-content-end">
+                            <button
+                                    type="button"
+                                    class="btn btn-primary-alta w-auto"
+                                    data-bs-dismiss="modal"
+                            >
+                                exit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 

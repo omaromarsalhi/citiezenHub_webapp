@@ -44,7 +44,7 @@ class ProductController extends AbstractController
             $new_product->setQuantity(floatval($quantity));
             $new_product->setCategory($category);
             $new_product->setIsDeleted(0);
-            $new_product->setState('unverified');
+            $new_product->setState('verified');
             $new_product->setType('BIEN');
 
             $errors = $validator->validate($new_product);
@@ -76,7 +76,7 @@ class ProductController extends AbstractController
                 'mode' => 'add'
             ];
 
-            $messageBus->dispatch(new AiVerificationMessage($obj));
+//            $messageBus->dispatch(new AiVerificationMessage($obj));
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 

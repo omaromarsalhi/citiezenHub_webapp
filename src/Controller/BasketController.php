@@ -16,81 +16,84 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
-
 #[Route('/basket', name: 'app_basket')]
 class BasketController extends AbstractController
 {
     #[Route('/', name: '_index')]
-    public function index(BasketRepository $basketRepository,ProductRepository $productRepository): Response
+    public function index(BasketRepository $basketRepository, ProductRepository $productRepository): Response
     {
         $basket_items = $basketRepository->findBy(['user' => $this->getUser()]);
-        $products=array();
+        $products = array();
         foreach ($basket_items as $basket) {
-            $products[]=$productRepository->findBy(['idProduct' => $basket->getProduct()->getIdProduct()]);
-//            $products[]= $basket->getProduct();
+            $products[] = $productRepository->findBy(['idProduct' => $basket->getProduct()->getIdProduct()]);
         }
-//        dump($products);
-//        die();
-        return $this->render('market_place/basket.html.twig',[
-            'products'=>$products,
-            'basket_items'=>$basket_items
+
+        return $this->render('market_place/basket.html.twig', [
+            'products' => $products,
+            'basket_items' => $basket_items
         ]);
     }
 
     #[Route('/count', name: '_count')]
     public function count(BasketRepository $basketRepository, Request $request): Response
     {
-        if($request->isXmlHttpRequest()){
-            $nbr=$basketRepository->count(['user'=>$this->getUser()]);
+        if ($request->isXmlHttpRequest()) {
+            $nbr = $basketRepository->count(['user' => $this->getUser()]);
             return new Response($nbr, Response::HTTP_OK);
         }
         return new Response('', Response::HTTP_BAD_REQUEST);
     }
 
     #[Route('/new', name: '_add')]
-    public function new(BasketRepository $basketRepository,ProductRepository $productRepository, Request $request,EntityManagerInterface $entityManager): Response
+    public function new(BasketRepository $basketRepository, ProductRepository $productRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if($request->isXmlHttpRequest()){
+        if ($request->isXmlHttpRequest()) {
 
-            $product =$productRepository->findOneBy(['idProduct'=>$request->get("id")]) ;
+            $product = $productRepository->findOneBy(['idProduct' => $request->get("id")]);
 
             $new_basket = new Basket();
-            $user=$this->getUser();
+            $user = $this->getUser();
 
             $new_basket->setProduct($product);
             $new_basket->setUser($user);
             $new_basket->setQuantity(1);
 
+            $product->setQuantity($product->getQuantity() - 1);
+
             $entityManager->persist($new_basket);
             $entityManager->flush();
 
-            return new Response(sizeof($basketRepository->findBy(['user'=>$user])), Response::HTTP_OK);
+            return new Response($basketRepository->count(['user' => $user]), Response::HTTP_OK);
         }
         return $this->render('market_place/basket.html.twig');
     }
 
     #[Route('/remove', name: '_remove')]
-    public function remove(BasketRepository $basketRepository, Request $request,EntityManagerInterface $entityManager): Response
+    public function remove(BasketRepository $basketRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if($request->isXmlHttpRequest()){
-            $basket_id =$request->get("id") ;
+        if ($request->isXmlHttpRequest()) {
+            $basket_id = $request->get("id");
 
-            $entityManager->remove($basketRepository->findOneBy(['idBasket'=>$basket_id]));
+            $entityManager->remove($basketRepository->findOneBy(['idBasket' => $basket_id]));
             $entityManager->flush();
 
-            return new Response(sizeof($basketRepository->findBy(['user'=>$this->getUser()])), Response::HTTP_OK);
+            return new Response(sizeof($basketRepository->findBy(['user' => $this->getUser()])), Response::HTTP_OK);
         }
         return $this->render('market_place/basket.html.twig');
     }
 
 
     #[Route('/update', name: '_update')]
-    public function update(BasketRepository $basketRepository, Request $request,EntityManagerInterface $entityManager): Response
+    public function update(ProductRepository $productRepository, BasketRepository $basketRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if($request->isXmlHttpRequest()){
-            $new_quantities =$request->get("new_quantities") ;
+
+        if ($request->isXmlHttpRequest()) {
+            $new_quantities = $request->get("new_quantities");
             $basket_items = $basketRepository->findBy(['user' => $this->getUser()]);
-            for($i=0;$i<sizeof($basket_items);$i++){
+            for ($i = 0; $i < sizeof($basket_items); $i++) {
+                $product = $basket_items[$i]->getProduct();
+                $product->setQuantity($product->getQuantity() - ($new_quantities[$i] - $basket_items[$i]->getQuantity()));
+                $basket_items[$i]->setProduct($product);
                 $basket_items[$i]->setQuantity($new_quantities[$i]);
                 $entityManager->flush();
             }
@@ -102,24 +105,28 @@ class BasketController extends AbstractController
 
 
     #[Route('/proceedCheckOut', name: '_proceedCheckOut')]
-    public function proceedCheckOut(ContractRepository $contractRepository,BasketRepository $basketRepository, Request $request,EntityManagerInterface $entityManager): Response
+    public function proceedCheckOut(ContractRepository $contractRepository, BasketRepository $basketRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if($request->isXmlHttpRequest()){
+        if ($request->isXmlHttpRequest()) {
 
-            $address=$request->get("address");
+            $address = $request->get("address");
             /** @var UserInterface $user */
             $user = $this->getUser();
             $userId = $user->getId();
 
             $basket_items = $basketRepository->findBy(['user' => $this->getUser()]);
 
-            for($i=0;$i<sizeof($basket_items);$i++){
-                $new_contract= new Contract();
-                $new_contract->setTitle("Contrat of selling ".$basket_items[$i]->getProduct()->getName() );
+            for ($i = 0; $i < sizeof($basket_items); $i++) {
+                $new_contract = new Contract();
+                $new_contract->setTitle("Contract of selling " . $basket_items[$i]->getProduct()->getName());
                 $new_contract->setTerminationDate(new \DateTime());
                 $new_contract->setPurpose("Buying this Item");
-                $new_contract->setTermsAndConditions("title");
-                $new_contract->setPaymentMethod("title");
+                $new_contract->setTermsAndConditions("1/iurf airfgyu &irfuh airfu azirhf arf_ azr ifarifu\n" .
+                    "2/kjhfv aeirugyh aeriguh zeriuuv zaeiurh gvaeur gh ufv\n" .
+                    "3/aiyuzr aizuyryfg aoiuyrf \n" .
+                    "4/aiyuzr aizuyryfg aoiuyrf rrtyhzyjz ztey rtyh\n" .
+                    "5/aiyuzr aizuyryfg  , ftujse qrgztheyik brghert \n");
+                $new_contract->setPaymentMethod("Credit Card");
                 $new_contract->setRecivingLocation($address);
 
                 $entityManager->persist($new_contract);
@@ -127,10 +134,10 @@ class BasketController extends AbstractController
 
                 $contract = $contractRepository->findOneBy([], ['idContract' => 'DESC']);
 
-                $new_transaction= new Transaction();
+                $new_transaction = new Transaction();
                 $new_transaction->setProduct($basket_items[$i]->getProduct());
                 $new_transaction->setContract($contract);
-                $new_transaction->setIdSeller($basket_items[$i]->getProduct()->getIdUser());
+                $new_transaction->setIdSeller($basket_items[$i]->getProduct()->getUser()->getId());
                 $new_transaction->setIdBuyer($userId);
                 $new_transaction->setPricePerUnit($basket_items[$i]->getProduct()->getPrice());
                 $new_transaction->setQuantity($basket_items[$i]->getQuantity());
@@ -140,8 +147,20 @@ class BasketController extends AbstractController
                 $entityManager->flush();
             }
 
+            $basketRepository->clear($this->getUser());
+
             return new Response('success', Response::HTTP_OK);
         }
-        return $this->render('market_place/basket.html.twig');
+        return $this->render('market_place/success.html.twig');
     }
+
+
+    #[Route('/success', name: '_success')]
+    public function success(): Response
+    {
+        return $this->render('market_place/success.html.twig');
+
+    }
+
+
 }
