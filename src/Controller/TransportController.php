@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use App\Service\ImaggaService;
 
 class TransportController extends AbstractController
 {
@@ -216,6 +217,13 @@ public function deletetransport($id, transportRepository $transportRepository, R
 
     return new JsonResponse('This route accepts only AJAX requests', Response::HTTP_BAD_REQUEST);
 }
+/*
+#[Route('/analyze-image', name: 'analyze_image')]
+public function analyzeImage(ImaggaService $imaggaService): Response
+{
+
+}
+*/
 
 
 

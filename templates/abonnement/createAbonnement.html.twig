@@ -33,7 +33,7 @@
 
                          <div class="brows-file-wrapper">
                              <!-- actual upload which is hidden -->
-                             <input name="createinputfile" id="createinputfile" type="file" class="inputfile" />
+                             <input name="createinputfile" id="createinputfile" type="file" class="inputfile"  />
                              <img id="createfileImage" src="assets/images/portfolio/portfolio-05.jpg" alt="" data-black-overlay="6">
 
 {#                             <img id="createfileImage" src="{{ asset('/assets/images/portfolio/1.jpeg') }}" class=alt data-black-overlay="6">#}
@@ -115,7 +115,9 @@
              </div>
          </div>
      </div>
-     
+    <button class="btn btn-primary btn-large w-100" onclick="testImage()">Submit Item</button>
+
+
 <div class ="popup" id="popup">
 <img src="images/404-tick.png"> 
 <h2>Thank You</h2>
@@ -190,6 +192,7 @@ popup.classList.remove("open-popup");
 redirectToAnotherRoute();
 
     }
+   
     function addPost(event) {
         event.preventDefault();
         const selectedOption = document.querySelector('.nice-select ul li.selected');
@@ -233,6 +236,20 @@ redirectToAnotherRoute();
       }
     }
 
+function testImage() {
+    $.ajax({
+        url: '/AbonnementScan',
+        type: "GET", // Change the request type to GET if you're retrieving data
+        async: true,
+        success: function (response) {
+            console.log("Tags:", response); // Log the response to the console
+            openPopup();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
 
     function redirectToAnotherRoute() {
             // Wait for 3 seconds (3000 milliseconds)

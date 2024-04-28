@@ -13,6 +13,10 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
+    App\Service\ImaggaService:
+        arguments:
+            $apiKey: '%acc_94dd4f1769c190a%'
+            $apiSecret: '%5a56d117d922cf4da9488e1349dd7c09%'
     App\:
         resource: '../src/'
         exclude:

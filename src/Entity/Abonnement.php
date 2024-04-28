@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints\Date;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\HttpFoundation\File\File;
+
 use Symfony\UX\Turbo\Attribute\Broadcast;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -116,4 +117,6 @@ class Abonnement
     {
         return $this->imageFile;
     }
+
+  
 }

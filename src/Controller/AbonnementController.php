@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Service\ImaggaService;
+
 
 
 
@@ -107,5 +109,17 @@ class AbonnementController extends AbstractController
             'list' => $abonnement
 
         ]);
+    }
+
+    #[Route('/AbonnementScan', name: 'imageScan')]
+    public function imageScan(ImaggaService $imaggaService): JsonResponse
+    {
+      
+        // Example usage: tagging an image
+        $imageUrl = 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxhY2slMjBtYW58ZW58MHx8MHx8fDA%3D';
+        $tags = $imaggaService->tagImage($imageUrl);
+    
+        // Return the tags as JSON response
+        return new JsonResponse($tags);
     }
 }
