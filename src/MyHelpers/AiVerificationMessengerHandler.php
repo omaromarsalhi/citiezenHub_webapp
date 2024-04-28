@@ -50,6 +50,5 @@ class AiVerificationMessengerHandler
 
             $aiResultController->new($aiResult, $this->entityManager);
         }
-
     }
 }

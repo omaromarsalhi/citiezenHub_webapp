@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Basket;
 use App\Entity\Contract;
 use App\Entity\Transaction;
+use App\MyHelpers\SendPdfMessage;
 use App\Repository\BasketRepository;
 use App\Repository\ContractRepository;
 use App\Repository\ProductRepository;
@@ -12,11 +13,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use TCPDF; // Import TCPDF class
+use TCPDF;
+
+// Import TCPDF class
 
 #[Route('/basket', name: 'app_basket')]
 class BasketController extends AbstractController
@@ -107,7 +111,7 @@ class BasketController extends AbstractController
 
 
     #[Route('/proceedCheckOut', name: '_proceedCheckOut')]
-    public function proceedCheckOut(ContractRepository $contractRepository, BasketRepository $basketRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function proceedCheckOut(MessageBus $messageBus, ContractRepository $contractRepository, BasketRepository $basketRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isXmlHttpRequest()) {
 
@@ -123,7 +127,8 @@ class BasketController extends AbstractController
                 $new_contract->setTitle("Contract of selling " . $basket_items[$i]->getProduct()->getName());
                 $new_contract->setTerminationDate(new \DateTime());
                 $new_contract->setPurpose("Buying this Item");
-                $new_contract->setTermsAndConditions("1/iurf airfgyu &irfuh airfu azirhf arf_ azr ifarifu\n" .
+                $new_contract->setTermsAndConditions(
+                    "1/iurf airfgyu &irfuh airfu azirhf arf_ azr ifarifu\n" .
                     "2/kjhfv aeirugyh aeriguh zeriuuv zaeiurh gvaeur gh ufv\n" .
                     "3/aiyuzr aizuyryfg aoiuyrf \n" .
                     "4/aiyuzr aizuyryfg aoiuyrf rrtyhzyjz ztey rtyh\n" .
@@ -151,17 +156,24 @@ class BasketController extends AbstractController
 
             $basketRepository->clear($this->getUser());
 
+            $obj = [
+                'emailSeller' => 'omar.salhi.job@gmail.com',
+                'emailBuyer' => 'omar.salhi.job@gmail.com',
+                'idSeller' => $basket_items[$i]->getProduct()->getUser()->getId(),
+                'idBuyer' => $userId,
+            ];
+
+            $messageBus->dispatch(new SendPdfMessage($obj));
+
             return new Response('success', Response::HTTP_OK);
         }
-
         return $this->render('contract/success.html.twig');
     }
 
-    #[Route('/generatePdf', name: '_generatePdf')]
-    public function generatePdf(ContractRepository $contractRepository): void
+    public function generatePdf(ContractRepository $contractRepository,$idSeller,$idBuyer): string
     {
 
-        $contract = $contractRepository->findOneBy([], ['idContract' => 'DESC']);
+        $contract = $contractRepository->findOneBy(['idBuyer' => $idBuyer,'idSeller'=>$idSeller]);
 
         $html = $this->renderView('contract/pdf_template.html.twig', [
             'contract' => $contract
@@ -177,8 +189,11 @@ class BasketController extends AbstractController
         $pdf->SetFont('helvetica', '', 11);
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
-        $pdf->Output('Contract.pdf', 'D');
+        //$pdf->Output('Contract.pdf', 'D');
+        // Save the PDF to a temporary file
+        //        $pdf->Output($pdfFilePath, 'F');
 
+        return sys_get_temp_dir() . '/Contract.pdf';
     }
 
 
