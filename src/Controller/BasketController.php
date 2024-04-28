@@ -14,7 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use TCPDF; // Import TCPDF class
 
 #[Route('/basket', name: 'app_basket')]
 class BasketController extends AbstractController
@@ -151,14 +153,39 @@ class BasketController extends AbstractController
 
             return new Response('success', Response::HTTP_OK);
         }
-        return $this->render('market_place/success.html.twig');
+
+        return $this->render('contract/success.html.twig');
+    }
+
+    #[Route('/generatePdf', name: '_generatePdf')]
+    public function generatePdf(ContractRepository $contractRepository): void
+    {
+
+        $contract = $contractRepository->findOneBy([], ['idContract' => 'DESC']);
+
+        $html = $this->renderView('contract/pdf_template.html.twig', [
+            'contract' => $contract
+        ]);
+
+        $pdf = new TCPDF();
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Omar Salhi');
+        $pdf->SetTitle('PDF Transaction');
+        $pdf->SetSubject('Transaction Details');
+        $pdf->SetKeywords('PDF, Transaction');
+        $pdf->SetFont('helvetica', '', 11);
+        $pdf->AddPage();
+        $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->Output('Contract.pdf', 'D');
+
     }
 
 
     #[Route('/success', name: '_success')]
     public function success(): Response
     {
-        return $this->render('market_place/success.html.twig');
+        return $this->render('contract/success.html.twig');
 
     }
 
