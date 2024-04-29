@@ -124,17 +124,29 @@ class ConferenceController extends AbstractController
             ->to('gamerkhalil007@gmail.com') // Assuming the user's email is stored in the User entity associated with the reclamation
             ->subject('Nouvelle réponse à votre réclamation')
             ->html("
-            <p>Bonjour,</p>
-            <p>Une nouvelle réponse a été ajoutée à votre réclamation.</p>
-            <p>Numéro de réclamation : {$reclamation->getPrivateKey() }</p>
-            <p>Date de réclamation : {$reclamation->getCreatedAt()->format('Y-m-d H:i:s')}</p>
-            <p>Reclamtion details : {$reclamation->getDescription() }</p>
-            <p>Réponse : $responseText</p>
-            <p><a href='http://127.0.0.1:8000/b'>Cliquez ici</a> pour aller à la page B.</p>
-            <p>...</p> <!-- Add more relevant reclamation details here -->
-        ");
+        <div style='background-image: url(\"C:/Users/khali/Downloads/logo.png\"); background-size: cover; font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
+            <img src='path/to/logo.png' alt='Logo' style='display: block; margin: 0 auto; max-width: 200px;'>
+            <div style='background-color: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px;'>
+                <p style='font-size: 16px; color: #333; line-height: 1.5;'>Bonjour,</p>
+                <p style='font-size: 16px; color: #333; line-height: 1.5;'>Une nouvelle réponse a été ajoutée à votre réclamation :</p>
+                <ul style='font-size: 16px; color: #333; line-height: 1.5; padding-left: 20px;'>
+                    <li><strong>Numéro de réclamation :</strong> {$reclamation->getPrivateKey()}</li>
+                    <li><strong>Date de réclamation :</strong> {$reclamation->getCreatedAt()->format('Y-m-d H:i:s')}</li>
+                    <li><strong>Détails de la réclamation :</strong> {$reclamation->getDescription()}</li>
+                    <li><strong>Réponse :</strong> $responseText</li>
+                </ul>
+                <p style='font-size: 16px; color: #333; line-height: 1.5; margin-top: 20px;'>
+                    <a href='http://127.0.0.1:8000/b' style='display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;'>Cliquez ici pour aller à la page de votre reclamtion</a>
+                </p>
+                <p style='font-size: 16px; color: #333; line-height: 1.5; margin-top: 20px;'>Par l'administrateur Khalil Rmila</p>
+            </div>
+        </div>
+    ");
 
         $mailer->send($email);
+
+
+
 
         // Return a success message
         return new JsonResponse(['message' => 'Response added successfully']);
