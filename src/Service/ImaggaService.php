@@ -19,18 +19,24 @@ class ImaggaService
         ]);
     }
 
-    public function tagImage($imageUrl)
+    public function tagImage($imagePath)
     {
-        $response = $this->client->request('GET', 'tags', [
+        // Read the image file content
+        $imageContent = file_get_contents($imagePath);
+
+        // Encode the image content as base64
+        $base64Image = base64_encode($imageContent);
+
+        // Send the image content in the request
+        $response = $this->client->request('POST', 'tags', [
             'headers' => [
                 'Authorization' => 'Basic ' . base64_encode($this->apiKey . ':' . $this->apiSecret),
             ],
-            'query' => [
-                'image_url' => $imageUrl,
+            'form_params' => [
+                'image_base64' => $base64Image,
             ],
         ]);
 
         return json_decode($response->getBody(), true);
     }
 }
- 

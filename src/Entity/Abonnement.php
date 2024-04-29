@@ -35,7 +35,7 @@ class Abonnement
     #[ORM\Column(length: 255)]
     private ?string $TypeAbonnement = null;
     
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date',name: "dateFin")]
     private ?\DateTimeInterface $datefin;
 
     #[ORM\Column(type: 'datetime')]

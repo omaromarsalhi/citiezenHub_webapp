@@ -82,11 +82,22 @@ class AbonnementController extends AbstractController
             $Type=$request->get('type');
             $Image=$request->files->get('image');
 
+                $systemDate = new \DateTimeImmutable();
+                $interval = match ($Type) {
+                    'Mensuelle' => 30,
+                    'Annuel' => 365,
+                    default => 0,
+                };
+                $endDate = $systemDate->add(new \DateInterval("P{$interval}D"));
+        
+            $abonnement->setDateFin($endDate);
             $abonnement->setNom($Name);
             $abonnement->setPrenom($Lastname);
             $abonnement->setTypeAbonnement($Type);
             $abonnement->setImageFile($Image);
             $em = $doc->getManager();
+
+
 
             $em->persist($abonnement);
             $em->flush();
@@ -112,12 +123,10 @@ class AbonnementController extends AbstractController
     }
 
     #[Route('/AbonnementScan', name: 'imageScan')]
-    public function imageScan(ImaggaService $imaggaService): JsonResponse
+    public function imageScan(ImaggaService $imaggaService,Request $request): JsonResponse
     {
-      
-        // Example usage: tagging an image
-        $imageUrl = 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxhY2slMjBtYW58ZW58MHx8MHx8fDA%3D';
-        $tags = $imaggaService->tagImage($imageUrl);
+        $filePath = $request->request->get('filePath');
+            $tags = $imaggaService->tagImage($filePath);
     
         // Return the tags as JSON response
         return new JsonResponse($tags);
