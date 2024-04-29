@@ -81,7 +81,6 @@ class ConferenceController extends AbstractController
         // Retrieve the specific reclamation
         $reclamation = $entityManager->getRepository(Reeclamation::class)->find($id);
 
-
         if (!$reclamation) {
             // If the reclamation is not found, return an error message
             return new JsonResponse(['error' => 'Reclamation not found'], JsonResponse::HTTP_NOT_FOUND);
@@ -98,8 +97,7 @@ class ConferenceController extends AbstractController
         $response->setRepReclamation($responseText);
         $response->setReclamation($reclamation);
 
-
-        // Validate the station entity using Symfony Validator
+        // Validate the response entity using Symfony Validator
         $errors = $validator->validate($response);
 
         if (count($errors) > 0) {
@@ -120,25 +118,28 @@ class ConferenceController extends AbstractController
         $entityManager->persist($response);
         $entityManager->flush();
 
-        $signatureComponents = $verifyEmailHelper->generateSignature(
-            'app_verify_email',
-            'khalil.rmila@esprit.tn',
-            (new \DateTimeImmutable())->modify('+7 days'),
-            ['id' => $response->getId()]
-        );
-
+        // Send an email notification to the user
         $email = (new Email())
-            ->from('hello@example.com')
-            ->to('khalil.rmila@esprit.tn')
-            ->subject('Vérification de votre adresse mail')
-            ->html('<p>Confirmez votre adresse mail en cliquant sur ce lien: <a href="'.$signatureComponents->getSignedUrl().'">Confirmer mon adresse</a></p>');
+            ->from('khalil.rmila@esprit.tn')
+            ->to('gamerkhalil007@gmail.com') // Assuming the user's email is stored in the User entity associated with the reclamation
+            ->subject('Nouvelle réponse à votre réclamation')
+            ->html("
+            <p>Bonjour,</p>
+            <p>Une nouvelle réponse a été ajoutée à votre réclamation.</p>
+            <p>Numéro de réclamation : {$reclamation->getPrivateKey() }</p>
+            <p>Date de réclamation : {$reclamation->getCreatedAt()->format('Y-m-d H:i:s')}</p>
+            <p>Reclamtion details : {$reclamation->getDescription() }</p>
+            <p>Réponse : $responseText</p>
+            <p><a href='http://127.0.0.1:8000/b'>Cliquez ici</a> pour aller à la page B.</p>
+            <p>...</p> <!-- Add more relevant reclamation details here -->
+        ");
+
         $mailer->send($email);
-
-
 
         // Return a success message
         return new JsonResponse(['message' => 'Response added successfully']);
     }
+
 
 
     #[Route('/reclamation/{id}/get-responses', name: 'get_responses_for_reclamation', methods: ['GET'])]
@@ -170,8 +171,4 @@ class ConferenceController extends AbstractController
         // Return the response data
         return new JsonResponse($responseData);
     }
-
-   
-
 }
-
