@@ -21,6 +21,7 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
+    public const ADMIN_LOGIN_ROUTE = 'app_login_Admin'; // Nouveau chemin de connexion
     private $urlGenerator;
 
     public function __construct(UrlGeneratorInterface $urlGenerator)
@@ -29,14 +30,24 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
     }
     public function supports(Request $request): bool
     {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+        return in_array($request->attributes->get('_route'), [self::LOGIN_ROUTE, self::ADMIN_LOGIN_ROUTE])
             && $request->isMethod('POST');
+//        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+//            && $request->isMethod('POST');
     }
 
     public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('email', '');
         $request->getSession()->set(Security::LAST_USERNAME, $email);
+        var_dump(  new Passport(
+            new UserBadge($email),
+            new PasswordCredentials($request->request->get('password', '')),
+            [
+                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+                new RememberMeBadge(),
+            ]
+        ));
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
@@ -45,20 +56,33 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
                 new RememberMeBadge(),
             ]
         );
+
+
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $user = $token->getUser();
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
 
             return new RedirectResponse($targetPath);
         }
+        if($user->getRole()=='Citoyen')
         return new RedirectResponse($this->urlGenerator->generate('editProfile'));
+        else
+            return new RedirectResponse($this->urlGenerator->generate('editProfileAdmin'));
+
     }
 
     protected function getLoginUrl(Request $request): string
     {
+//        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        if ($request->attributes->get('_route') === self::ADMIN_LOGIN_ROUTE) {
+            return $this->urlGenerator->generate(self::ADMIN_LOGIN_ROUTE);
+        }
+
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+
 }

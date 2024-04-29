@@ -13,7 +13,7 @@ class GeocodingService
     public function __construct(StatefulGeocoder $geocoder)
     {
         $httpClient = new Client(); // Utilisez la classe importée
-        $apiKey = 'AIzaSyC_T-LX7HSxtA_4NkvIw1dBmjA0Lf2KPrk'; // Remplacez par votre propre clé API
+        $apiKey = '';
         $provider = new \Geocoder\Provider\GoogleMaps\GoogleMaps($httpClient, null, $apiKey);
         $this->geocoder = new StatefulGeocoder($provider, 'fr');
     }

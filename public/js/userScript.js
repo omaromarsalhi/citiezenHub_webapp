@@ -241,3 +241,74 @@ function AddMunicipality(event) {
 function DeleteCustomer(event) {
 }
 
+function afficherMessage() {
+    $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
+        '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
+        '<a href=""\n' +
+        '   class="restore-item">Undo?</a>\n' +
+        '</div>')
+    console.log("kkkkk");
+}
+function editProfileAdmin(event) {
+
+    event.preventDefault();
+
+    // showLoaderAndBlockUI("test");
+    let formData = new FormData();
+    let name=$('#firstnamee').val();
+    let lastname=$('#lastnamee').val();
+    let email=$('#email').val();
+    let address=$('#address').val();
+    let role=$('#role').val();
+    let age=$('#agee').val();
+    let gender=$('#gender').val();
+    let status=$('#status').val();
+    let cin=$('#cinn').val();
+    let phoneNumber=$('#phoneNumberr').val();
+    let date=$('#dob').val();
+    formData.append('image',$('#upload-settings-porfile-picture').prop('files')[0]);
+    formData.append('name',name);
+    formData.append('lastname',lastname);
+    formData.append('email',email);
+    formData.append('address',address);
+    formData.append('role',role);
+    formData.append('age',age);
+    formData.append('gender',gender);
+    formData.append('status',status);
+    formData.append('cin',cin);
+    formData.append('phoneNumber',phoneNumber);
+    formData.append('date',date);
+    $.ajax({
+        url: '/editProfileAdmin',
+        type: "POST",
+        data:formData,
+        async: true,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if (response.success) {
+                let user = response.user;
+                console.log(user)
+                removeInputs();
+                 addErrorMessage(" Profile edited with sucess",'success','message');
+                //   alert('Profile edited with sucess.');
+            } else  {
+                let errors = response.errors;
+                console.log(errors);
+                alert('Il y a des erreurs dans le formulaire. Veuillez corriger et réessayer.');
+            }
+
+        },
+        error: function (response) {
+            const messagesErreur = parserMessagesErreur(response.responseText);
+            console.log(messagesErreur);
+            afficherMessagesErreur(messagesErreur);
+            // addErrorMessage("you should fixed your errors",'error','message');
+            alert('Il y a des erreurs dans le formulaire. Veuillez corriger et réessayer.');
+
+        },
+
+    });
+}
+
+

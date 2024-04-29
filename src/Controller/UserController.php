@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,14 +33,13 @@ class UserController extends AbstractController
     }
 
     #[Route('/editProfile', name: 'editProfile',methods: ['GET', 'POST'])]
-    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper,MessageBusInterface $bus): Response
-    {    $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
+    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper,SessionInterface $session): Response
+    {
+        $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
         $routePrecedente = $req->headers->get('referer');
         $parsedUrl = parse_url($routePrecedente);
         $path = $parsedUrl['path'];
-         var_dump($routePrecedente);
-         $errors = [];
-         $errorMessages = [];
+        $errorMessages = [];
         if ($req->isXmlHttpRequest()) {
             $email = $req->get('email');
             $name = $req->get('name');
@@ -70,8 +70,6 @@ class UserController extends AbstractController
                 $errorMessages[$field] = $error->getMessage();
                 var_dump($field);
             }
-//            $userId = $this->getUser()->getId();
-//            $bus->dispatch(new UserCompletionMessage($userId));
             if (count($errors) === 0) {
                 $em = $doc->getManager();
                 $em->persist($user);
@@ -230,6 +228,14 @@ class UserController extends AbstractController
             'errors' => $errorMessages,
 //            'otherErrors' => $Messages,
         ],422);
+    }
+    #[Route('/page404', name: 'page404',methods: ['GET', 'POST'])]
+    public function loadPage404(): Response
+    {
+
+        return $this->render('user/404.html.twig', [
+
+        ]);
     }
 
 

@@ -3,6 +3,9 @@
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.6/flatpickr.min.js"></script>
+     <script src ="jquery-2.1.1.js"></script>
+
+
 
  {% endblock %}
 
@@ -24,7 +27,31 @@
 {#        }#}
 {#    </style>#}
 
+    <script>
+        var routePrecedente = '{{ routePrecedente }}';
 
+        if (routePrecedente === '{{ path('app_register') }}') {
+            // console.log("ddddddddddddddddddddddddddddddddddddddd");
+            // $(document).ready(function() {
+            //
+            //     $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
+            //         '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
+            //         '<a href=""\n' +
+            //         '   class="restore-item">Undo?</a>\n' +
+            //         '</div>');
+            // });
+            // var timer = setInterval(function () {
+            //
+            //     $('#notifDiv').remove();
+            //     clearInterval(timer);
+            // }, 30 * 60 * 1000);
+            console.log("kkkkkk");
+            const intervalId = setInterval(afficherMessage, 30 * 60 * 1000);
+        }
+
+        else
+            console.log("La route précédente est.");
+    </script>
     <header class="rn-header haeder-default header--sticky">
         <div class="container">
             <div class="header-inner">
@@ -448,7 +475,7 @@
                                          </div>
                                          <div class="last-name half-wid">
                                              <label class="dob" for="datepicker">Date of brith</label>
-                                             <input class="form-control datetimepicker" id="date" type="date"  data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}' value="{{ dob|date('Y-m-d') }}"/>
+                                             <input class="form-control datetimepicker" id="dob" type="date"  data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}' value="{{ dob|date('Y-m-d') }}"/>
                                          </div>
                                      </div>
                                  </div>
@@ -636,26 +663,7 @@
         </div>
     </div>
 
-    <script>
-        var routePrecedente = '{{ routePrecedente }}';
 
-        if (routePrecedente === '{{ path('app_register') }}') {
-            $(document).ready(function() {
-                $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
-                    '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
-                    '<a href=""\n' +
-                    '   class="restore-item">Undo?</a>\n' +
-                    '</div>');
-            });
-            var timer = setInterval(function() {
-                $('#notifDiv').remove();
-                clearInterval(timer);
-            }, 30 * 60 * 1000); // 30 minutes en millisecondes
-
-        }
-        else
-            console.log("La route précédente est.");
-    </script>
     <!-- End tabs area -->
 
 

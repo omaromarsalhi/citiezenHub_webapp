@@ -30,14 +30,15 @@
               <div class="row g-3">
                 <div class="col-auto">
                   <div class="search-box">
-                    <form class="position-relative" data-bs-toggle="search" data-bs-display="static"><input class="form-control search-input search" type="search" placeholder="Search customers" aria-label="Search" />
+                    <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+                      <input class="form-control search-input search" type="search" placeholder="Search Municipality" aria-label="Search" />
                       <span class="fas fa-search search-box-icon"></span>
                     </form>
                   </div>
                 </div>
                 <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
                   <div class="btn-group position-static" role="group">
-                    <div class="btn-group position-static text-nowrap"><button class="btn btn-phoenix-secondary px-7 flex-shrink-0" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"> Country<span class="fas fa-angle-down ms-2"></span></button>
+                    <div class="btn-group position-static text-nowrap"><button class="btn btn-phoenix-secondary px-7 flex-shrink-0" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"> Address<span class="fas fa-angle-down ms-2"></span></button>
                       <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">US</a></li>
                         <li><a class="dropdown-item" href="#">Uk</a></li>
@@ -62,39 +63,71 @@
             </div>
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
               <div class="table-responsive scrollbar-overlay mx-n1 px-1">
-                <table class="table table-sm fs-9 mb-0">
-                  <thead>
-                    <tr>
-                      <th class="white-space-nowrap fs-9 align-middle ps-0">
-                        <div class="form-check mb-0 fs-8"><input class="form-check-input" id="checkbox-bulk-customers-select" type="checkbox" data-bulk-select='{"body":"customers-table-body"}' /></div>
-                      </th>
-                      <th class="sort align-middle pe-5" scope="col" data-sort="customer" style="width:10%;">CUSTOMER</th>
-                      <th class="sort align-middle pe-5" scope="col" data-sort="email" style="width:20%;">ADDRESS</th>
-                    </tr>
-                  </thead>
-                  <tbody class="list" id="customers-table-body">
-                  {% for user in list %}
-                    <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                      <td class="fs-9 align-middle ps-0 py-3">
-                        <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"customer":{"avatar":"/team/avatar.webp","name":"Milind Mikuja","placeholder":true},"email":"mimiku@yahoo.com","city":"Manchester","totalOrders":76,"totalSpent":21567,"lastSeen":"6 hours ago","lastOrder":"Dec 9, 2:28 PM"}' /></div>
-                      </td>
 
-                      <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-body-emphasis" href="{{path('Show_Details_Municipality', {id : user.id} )}}">
-                          <div class="avatar avatar-m"><img class="rounded-circle avatar-placeholder" src="{{ asset('images/users/' ~ user.photo) }}" alt="imageee" /></div>
-                          <p class="mb-0 ms-3 text-body-emphasis fw-bold">{{ user.name }} </p>
-                        </a>
-                      </td>
-                      <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:mimiku@yahoo.com">{{ user.Address }}</a></td>
+                <div class="table-responsive table-reponsive-sm scrollbar">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">IMAGE</th>
+                      <th scope="col">MUNICIPALITY NAME</th>
+                      <th scope="col">ADDRESS</th>
+                    </tr>
+                    </thead>
+                    <tbody class="list" id="customers-table-body">
+                                      {% for user in list %}
+                                        <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                          <td class="fs-9 align-middle ps-0 py-3">
+                                            <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"customer":{"avatar":"/team/avatar.webp","name":"Milind Mikuja","placeholder":true},"email":"mimiku@yahoo.com","city":"Manchester","totalOrders":76,"totalSpent":21567,"lastSeen":"6 hours ago","lastOrder":"Dec 9, 2:28 PM"}' /></div>
+                                          </td>
+
+                                          <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-body-emphasis" href="{{path('Show_Details_Municipality', {id : user.id} )}}">
+                                              <div class="avatar avatar-m">
+                                                <img class="rounded-circle avatar-placeholder" src="{{ asset('images/users/' ~ user.photo) }}" alt="imageee" /></div>
+{#                                              <p class="mb-0 ms-3 text-body-emphasis fw-bold">{{ user.name }} </p>#}
+                                            </a>
+                                          </td>
+                                          <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:mimiku@yahoo.com">{{ user.Address }}</a></td>
+                                          <td class="email align-middle white-space-nowrap pe-5">{{ user.name }}</td>
+                                        </tr>
+                                      {% endfor %}
+                                      </tbody>
+                  </table>
+                </div>
+
+                {#                <table class="table table-sm fs-9 mb-0">#}
+{#                  <thead>#}
+{#                    <tr>#}
+{#                      <th class="white-space-nowrap fs-9 align-middle ps-0">#}
+{#                        <div class="form-check mb-0 fs-8"><input class="form-check-input" id="checkbox-bulk-customers-select" type="checkbox" data-bulk-select='{"body":"customers-table-body"}' /></div>#}
+{#                      </th>#}
+{#                      <th class="sort align-middle pe-5" scope="col" data-sort="customer" style="width:10%;">CUSTOMER</th>#}
+{#                      <th class="sort align-middle pe-5" scope="col" data-sort="email" style="width:20%;">ADDRESS</th>#}
+{#                    </tr>#}
+{#                  </thead>#}
+{#                  <tbody class="list" id="customers-table-body">#}
+{#                  {% for user in list %}#}
+{#                    <tr class="hover-actions-trigger btn-reveal-trigger position-static">#}
+{#                      <td class="fs-9 align-middle ps-0 py-3">#}
+{#                        <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"customer":{"avatar":"/team/avatar.webp","name":"Milind Mikuja","placeholder":true},"email":"mimiku@yahoo.com","city":"Manchester","totalOrders":76,"totalSpent":21567,"lastSeen":"6 hours ago","lastOrder":"Dec 9, 2:28 PM"}' /></div>#}
+{#                      </td>#}
+
+{#                      <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-body-emphasis" href="{{path('Show_Details_Municipality', {id : user.id} )}}">#}
+{#                          <div class="avatar avatar-m"><img class="rounded-circle avatar-placeholder" src="{{ asset('images/users/' ~ user.photo) }}" alt="imageee" /></div>#}
+{#                          <p class="mb-0 ms-3 text-body-emphasis fw-bold">{{ user.name }} </p>#}
+{#                        </a>#}
+{#                      </td>#}
+{#                      <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:mimiku@yahoo.com">{{ user.Address }}</a></td>#}
 {#                      <td class="total-orders align-middle white-space-nowrap fw-semibold text-end text-body-highlight">{{ user.address }}</td>#}
-{#                      #}{#                      <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">$ 21567</td>#}
-{#                      #}{#                      <td class="city align-middle white-space-nowrap text-body-highlight ps-7">Manchester</td>#}
+{#                      #}{##}{#                      <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">$ 21567</td>#}
+{#                      #}{##}{#                      <td class="city align-middle white-space-nowrap text-body-highlight ps-7">Manchester</td>#}
 {#                      <td class="last-seen align-middle white-space-nowrap text-body-tertiary text-end">6 hours ago</td>#}
 {#                      <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{ user.dob | date('Y-m-d H:i:s') }}</td>#}
 {#                      <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{ user.date | date('Y-m-d H:i:s') }}</td>#}
-                    </tr>
-                  {% endfor %}
-                  </tbody>
-                </table>
+{#                    </tr>#}
+{#                  {% endfor %}#}
+{#                  </tbody>#}
+{#                </table>#}
               </div>
               <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
                 <div class="col-auto d-flex">
