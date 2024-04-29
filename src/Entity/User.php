@@ -18,49 +18,49 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements PasswordAuthenticatedUserInterface,UserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:"idUser")]
+    #[ORM\Column(name: "idUser")]
     private ?int $idUser = null;
 
-    #[ORM\Column(name:"firstName",length: 255)]
+    #[ORM\Column(name: "firstName", length: 255)]
     #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide')]
     #[Assert\Length(
-        min:3, minMessage: 'le nom il faut contenir au moi 5 caractere',
+        min: 3, minMessage: 'le nom il faut contenir au moi 5 caractere',
     )]
     private ?string $firstName = null;
 
-    #[ORM\Column(name:"lastName",length: 255)]
+    #[ORM\Column(name: "lastName", length: 255)]
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Length(
-        min:5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
+        min: 5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
     )]
     private ?string $lastName = null;
 
-    #[ORM\Column(name:"cin",length: 255)]
+    #[ORM\Column(name: "cin", length: 255)]
     private ?string $cin = null;
     /**
      * @Assert\NotBlank(message="Le prénom ne peut pas être vide.")
      * @Assert\Email
      */
-    #[ORM\Column(name:"email",length: 255)]
+    #[ORM\Column(name: "email", length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(name:"age")]
+    #[ORM\Column(name: "age")]
     private ?int $age = null;
 
-    #[ORM\Column(name:"phoneNumber")]
+    #[ORM\Column(name: "phoneNumber")]
     private ?int $phoneNumber = null;
     #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
     #[Assert\Length(
-        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
+        min: 5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
     )]
-    #[ORM\Column(name:"address",length: 255)]
+    #[ORM\Column(name: "address", length: 255)]
     private ?string $address = null;
 
-    #[ORM\Column(name:"role",length: 255)]
+    #[ORM\Column(name: "role", length: 255)]
     private ?string $role = null;
 
     #[ORM\Column(length: 255)]
@@ -72,17 +72,17 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dob = null;
 
-    #[ORM\Column(name:"status",length: 255)]
+    #[ORM\Column(name: "status", length: 255)]
     private ?string $status = null;
 
-    #[ORM\Column(name:"image",length: 255)]
+    #[ORM\Column(name: "image", length: 255)]
     private ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
     #@Ignore()
     private ?File $imageFile = null;
 
-    #[ORM\Column(name:"gender",length: 255, nullable: true)]
+    #[ORM\Column(name: "gender", length: 255, nullable: true)]
     private ?string $gender = null;
 
     public function getId(): ?int
@@ -244,6 +244,7 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
         $this->image = $image;
         return $this;
     }
+
     public function getImageFile()
     {
         return $this->imageFile;
@@ -261,56 +262,74 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
 
     }
 
-    public function getRoles()
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
     {
-//         return $this->role;
-
-//        // Si vous n'avez pas de champ roles, vous pouvez simplement retourner un tableau vide
+        // Your implementation here
         return [];
     }
 
-    public function getSalt()
+    /**
+     * @return string|null
+     */
+    public function getSalt(): ?string
     {
-        // TODO: Implement getSalt() method.
+        return '';
     }
 
-    public function eraseCredentials()
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->getFirstName();
+    }
+
+
+    public
+    function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername()
-    {
-        // TODO: Implement getUsername() method.
-    }
 
-    public function __call($name, $arguments)
+    public
+    function __call($name, $arguments)
     {
         // TODO: Implement @method string getUserIdentifier()
     }
-    public function getUserIdentifier(): string
+
+    public
+    function getUserIdentifier(): string
     {
 
         return $this->email;
     }
 
-    public function getGender(): ?string
+    public
+    function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function setGender(?string $gender): static
+    public
+    function setGender(?string $gender): static
     {
         $this->gender = $gender;
 
         return $this;
     }
-    public function serialize()
+
+    public
+    function serialize()
     {
         $this->image = base64_encode($this->image);
     }
 
-    public function unserialize($serialized)
+    public
+    function unserialize($serialized)
     {
         $this->image = base64_decode($this->image);
 

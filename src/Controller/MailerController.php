@@ -27,4 +27,20 @@ class MailerController extends AbstractController
         $mailer->send($email);
         return new Response('Mail sent!');
     }
+
+    public function sendNormalMail($to): Response
+    {
+        $transport = Transport::fromDsn('smtp://salhiomar362@gmail.com:pnoavpopklfyybeb@smtp.gmail.com:587');
+        $mailer=new Mailer($transport);
+
+        $email = (new Email())
+            ->from('salhiomar362@gmail.com')
+            ->to($to)
+            ->subject('Hello from Symfony Mailer')
+            ->text('This is the plain text body.')
+            ->html('<p>This is the HTML body.</p>');
+
+        $mailer->send($email);
+        return new Response('Mail sent!');
+    }
 }

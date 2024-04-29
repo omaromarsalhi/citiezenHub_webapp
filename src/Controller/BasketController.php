@@ -9,6 +9,7 @@ use App\MyHelpers\SendPdfMessage;
 use App\Repository\BasketRepository;
 use App\Repository\ContractRepository;
 use App\Repository\ProductRepository;
+use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -122,9 +123,10 @@ class BasketController extends AbstractController
             $userId = $user->getId();
 
             $basket_items = $basketRepository->findBy(['user' => $this->getUser()]);
+            $new_transaction = new Transaction();
+            $new_contract = new Contract();
 
             for ($i = 0; $i < sizeof($basket_items); $i++) {
-                $new_contract = new Contract();
                 $new_contract->setTitle("Contract of selling " . $basket_items[$i]->getProduct()->getName());
                 $new_contract->setTerminationDate(new \DateTime());
                 $new_contract->setPurpose("Buying this Item");
@@ -142,7 +144,6 @@ class BasketController extends AbstractController
 
                 $contract = $contractRepository->findOneBy([], ['idContract' => 'DESC']);
 
-                $new_transaction = new Transaction();
                 $new_transaction->setProduct($basket_items[$i]->getProduct());
                 $new_transaction->setContract($contract);
                 $new_transaction->setIdSeller($basket_items[$i]->getProduct()->getUser()->getId());
@@ -153,33 +154,33 @@ class BasketController extends AbstractController
 
                 $entityManager->persist($new_transaction);
                 $entityManager->flush();
+
+                $html = $this->renderView('contract/pdf_template.html.twig', [
+                    'transaction' => $new_transaction
+                ]);
+
+                $obj = [
+                    'emailSeller' => 'omar.salhi.job@gmail.com',
+                    'emailBuyer' => 'omar.salhi.job@gmail.com',
+                    'idSeller' => $new_transaction->getIdSeller(),
+                    'idBuyer' => $new_transaction->getIdBuyer(),
+                    'html'=>$html
+                ];
+
+                $messageBus->dispatch(new SendPdfMessage($obj));
             }
 
             $basketRepository->clear($this->getUser());
 
-            $obj = [
-                'emailSeller' => 'omar.salhi.job@gmail.com',
-                'emailBuyer' => 'omar.salhi.job@gmail.com',
-                'idSeller' => $basket_items[$i]->getProduct()->getUser()->getId(),
-                'idBuyer' => $userId,
-            ];
-
-            $messageBus->dispatch(new SendPdfMessage($obj));
 
             return new Response('success', Response::HTTP_OK);
         }
         return $this->render('contract/success.html.twig');
     }
 
-    public function generatePdf(ContractRepository $contractRepository,$idSeller,$idBuyer): string
+    public function generatePdf($obj): void
     {
-
-        $contract = $contractRepository->findOneBy(['idBuyer' => $idBuyer,'idSeller'=>$idSeller]);
-
-        $html = $this->renderView('contract/pdf_template.html.twig', [
-            'contract' => $contract
-        ]);
-
+        $mail = new MailerController();
         $pdf = new TCPDF();
 
         $pdf->SetCreator(PDF_CREATOR);
@@ -189,12 +190,14 @@ class BasketController extends AbstractController
         $pdf->SetKeywords('PDF, Transaction');
         $pdf->SetFont('helvetica', '', 11);
         $pdf->AddPage();
-        $pdf->writeHTML($html, true, false, true, false, '');
-        //$pdf->Output('Contract.pdf', 'D');
-        // Save the PDF to a temporary file
-        //        $pdf->Output($pdfFilePath, 'F');
+        $pdf->writeHTML($obj['html'], true, false, true, false, '');
 
-        return sys_get_temp_dir() . '/Contract.pdf';
+        $pdfFilePath = sys_get_temp_dir() . '/Contract.pdf';
+        $pdf->Output($pdfFilePath, 'F');
+
+        $mail->sendMail($pdfFilePath,$obj['emailSeller']);
+        $mail->sendMail($pdfFilePath,$obj['emailBuyer']);
+
     }
 
 
@@ -202,7 +205,6 @@ class BasketController extends AbstractController
     public function success(): Response
     {
         return $this->render('contract/success.html.twig');
-
     }
 
 

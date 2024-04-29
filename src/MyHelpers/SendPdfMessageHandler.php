@@ -4,31 +4,19 @@ namespace App\MyHelpers;
 
 
 use App\Controller\BasketController;
-use App\Controller\MailerController;
-use App\Repository\AiResultRepository;
-use App\Repository\ContractRepository;
-use App\Repository\ProductRepository;
-use App\Repository\TransactionRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+
+#[AsMessageHandler]
 class SendPdfMessageHandler
 {
 
-    public function __construct(private ContractRepository $contractRepository)
-    {
-    }
-
     public function __invoke(SendPdfMessage $message): void
     {
-        $obj = $message->getObj();
 
         $basketController = new BasketController();
 
-        $pdfFilePath = $basketController->generatePdf($this->contractRepository,$obj['idSeller'],$obj['idBuyer']);
+        $basketController->generatePdf($message->getObj());
 
-        $mail = new MailerController();
-
-        $mail->sendMail($pdfFilePath,$obj['emailSeller']);
-        $mail->sendMail($pdfFilePath,$obj['emailBuyer']);
     }
 }

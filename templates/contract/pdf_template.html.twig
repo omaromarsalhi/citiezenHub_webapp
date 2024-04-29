@@ -97,7 +97,7 @@
 				<div style="height:1000px"></div>
 
 				<p>Date:
-					{{ contract.terminationDate|date("d/m/Y") }}</p>
+					{{ transaction.contract.terminationDate|date("d/m/Y") }}</p>
 			</div>
 			<div class="facture-details">
 				<div style="height:1000px"></div>
@@ -116,13 +116,13 @@
 					<tr>
 
 						<td>Sale contract</td>
-						<td>{{ contract.transaction.idSeller }}</td>
-						<td>{{ contract.transaction.idBuyer }}</td>
-						<td>{{ contract.transaction.product.name }}</td>
-						<td>{{ contract.effectiveDate|date("d/m/Y") }}</td>
-						<td>{{ contract.terminationDate|date("d/m/Y") }}</td>
-						<td>{{ contract.termsAndConditions }}</td>
-						<td>{{ contract.paymentMethod }}</td>
+						<td>{{ transaction.idSeller }}</td>
+						<td>{{ transaction.idBuyer }}</td>
+						<td>{{ transaction.product.name }}</td>
+						<td>{{ transaction.contract.effectiveDate|date("d/m/Y") }}</td>
+						<td>{{ transaction.contract.terminationDate|date("d/m/Y") }}</td>
+						<td>{{ transaction.contract.termsAndConditions }}</td>
+						<td>{{ transaction.contract.paymentMethod }}</td>
 					</tr>
 					<!-- Add more rows as needed -->
 				</table>
