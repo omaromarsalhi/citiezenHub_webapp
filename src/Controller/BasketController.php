@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Dompdf\Dompdf;
@@ -111,7 +112,7 @@ class BasketController extends AbstractController
 
 
     #[Route('/proceedCheckOut', name: '_proceedCheckOut')]
-    public function proceedCheckOut(MessageBus $messageBus, ContractRepository $contractRepository, BasketRepository $basketRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function proceedCheckOut(MessageBusInterface $messageBus, ContractRepository $contractRepository, BasketRepository $basketRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isXmlHttpRequest()) {
 

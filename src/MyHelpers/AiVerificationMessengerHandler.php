@@ -39,7 +39,6 @@ class AiVerificationMessengerHandler
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
 
 
-        var_dump($obj);
         if ($obj['mode'] === 'edit') {
             $aiResultController->edit($serializedData,$obj['id'],$this->entityManager,$this->aiResultRepository);
         } else {
