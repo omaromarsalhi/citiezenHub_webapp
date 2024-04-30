@@ -27,31 +27,34 @@
 {#        }#}
 {#    </style>#}
 
-    <script>
-        var routePrecedente = '{{ routePrecedente }}';
 
-        if (routePrecedente === '{{ path('app_register') }}') {
-            // console.log("ddddddddddddddddddddddddddddddddddddddd");
-            // $(document).ready(function() {
-            //
-            //     $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
-            //         '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
-            //         '<a href=""\n' +
-            //         '   class="restore-item">Undo?</a>\n' +
-            //         '</div>');
-            // });
-            // var timer = setInterval(function () {
-            //
-            //     $('#notifDiv').remove();
-            //     clearInterval(timer);
-            // }, 30 * 60 * 1000);
-            console.log("kkkkkk");
-            const intervalId = setInterval(afficherMessage, 30 * 60 * 1000);
-        }
 
-        else
-            console.log("La route précédente est.");
-    </script>
+{#    #}
+{#  <script>}#}
+{#        var routePrecedente = '{{ routePrecedente }}';#}
+
+{#        if (routePrecedente === '{{ path('app_register') }}') #}{#}#}
+{#            // console.log("ddddddddddddddddddddddddddddddddddddddd");#}
+{#            // $(document).ready(function() #}{#}#}
+{#            //#}
+{#            //     $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +#}
+{#            //         '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +#}
+{#            //         '<a href=""\n' +#}
+{#            //         '   class="restore-item">Undo?</a>\n' +#}
+{#            //         '</div>');#}
+{#            // });#}
+{#            // var timer = setInterval(function () #}{#}#}
+{#            //#}
+{#            //     $('#notifDiv').remove();#}
+{#            //     clearInterval(timer);#}
+{#            // }, 30 * 60 * 1000);#}
+{#            console.log("kkkkkk");#}
+{#            const intervalId = setInterval(afficherMessage, 30 * 60 * 1000);#}
+{#        }#}
+
+{#        else#}
+{#            console.log("La route précédente est.");#}
+{#    </script>#}
     <header class="rn-header haeder-default header--sticky">
         <div class="container">
             <div class="header-inner">
@@ -326,8 +329,25 @@
                     <a  href="{{path('profile',{image:image,name:name,lastname:lastname,email:email})}}" class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
                 </div>
             </div>
+                {% set currentTime = "now"|date("Y-m-d H:i:s") %}
+                {% set currentTimeMinusOneHour = currentTime|date("Y-m-d H:i:s")|date_modify("-1 hour") %}
+            {{ currentTimeMinusOneHour|date("Y-m-d H:i:s") }}
+                {% if app.session.has('profile_alert_message') and expiry_time| date("Y-m-d H:i:s") > currentTimeMinusOneHour|date("Y-m-d H:i:s") %}
             <div class="woocommerce-notices-wrapper" id="notification_box">
+                    <div class="woocommerce-message" id="notifDiv" role="alert">
+                        <i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i> You Shoud Edit Your Account Beffor 30 Minutes Otherwise Your Account Will Be Deleted.<a href="" class="restore-item">Undo?</a>
+                    </div>
             </div>
+                {% endif %}
+            <script>
+                setTimeout(function () {
+                    var alertElement = document.getElementById('notification_box');
+                    if (alertElement) {
+                        alertElement.style.display = 'none';
+                    }
+                }, 60000);
+            </script>
+
             <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
                 <div class="col-lg-3 col-md-3 col-sm-12">
                     <!-- Start tabs area -->
@@ -475,14 +495,12 @@
                                          </div>
                                          <div class="last-name half-wid">
                                              <label class="dob" for="datepicker">Date of brith</label>
-                                             <input class="form-control datetimepicker" id="dob" type="date"  data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}' value="{{ dob|date('Y-m-d') }}"/>
+                                             <input class="form-control datetimepicker" id="date" type="date"  data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}' value="{{ dob|date('Y-m-d') }}"/>
                                          </div>
                                      </div>
                                  </div>
 
                              </div>
-
-
                             </form>
                                                     <style>
                                                         .notifIcon {
@@ -653,7 +671,6 @@
                                 <a href="#" class="btn btn-primary save-btn-edit" onclick="customAlert.alert('Successfully saved Your Notificationm setting')">Save</a>
                             </div>
                             <!-- End Notification Setting  -->
-
 
                         </div>
                     </div>

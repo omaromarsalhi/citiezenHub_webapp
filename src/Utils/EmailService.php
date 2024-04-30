@@ -1,26 +1,30 @@
 <?php
+namespace App\Utils;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
+
 class EmailService
 {
 
-    private $mailer;
 
-    public function __construct(MailerInterface $mailer)
-    {
-        $this->mailer = $mailer;
-    }
-
-    public function envoyerEmail()
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function envoyerEmail(MailerInterface $mailer) :Response
     {
 
         $email = (new Email())
             ->from('latifabenzaied23@gmail.com')
             ->to('latifa.benzaied@esprit.tn')
-            ->subject('Sujet de l\'e-mail')
-            ->text('Contenu de l\'e-mail');
-
-
-        $this->mailer->send($email);
+            ->subject('Hello from Symfony Mailer')
+            ->text('This is the plain text body.')
+            ->html('<p>This is the HTML body.</p>');
+        $mailer->send($email);
+        return new Response('yasasasasasasaas');
     }
+
 }

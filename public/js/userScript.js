@@ -1,4 +1,11 @@
+function afficherMessage() {
+    $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
+        '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
+        '<a href=""\n' +
+        '   class="restore-item">Undo?</a>\n' +
+        '</div>')
 
+}
 function parserMessagesErreur(reponseTexte) {
     // Rechercher la partie JSON contenant les messages d'erreur
     const startIndex = reponseTexte.indexOf('{"success":false,"errors":');
@@ -15,16 +22,16 @@ function parserMessagesErreur(reponseTexte) {
         return {};
     }
 }
-function showLoaderAndBlockUI() {
+function showLoaderAndBlockUI(event) {
+
     const loader = document.getElementById('loader');
     const mainContent = document.getElementById('main-content');
     loader.style.display = 'flex';
-    mainContent.style.pointerEvents = 'none';
     mainContent.style.filter = 'blur(5px)';
     setTimeout(() => {
         const form = document.getElementById("signup-form");
         form.submit();
-    }, 100);
+    }, 1000);
 }
 function afficherMessagesErreur(erreurs) {
 
@@ -100,14 +107,19 @@ function editProfile(event) {
                 let user = response.user;
                 console.log(user)
                 removeInputs();
-                $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
-                    '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
-                    '<a href=""\n' +
-                    '   class="restore-item">Undo?</a>\n' +
-                    '</div>')
+                // $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
+                //     '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
+                //     '<a href=""\n' +
+                //     '   class="restore-item">Undo?</a>\n' +
+                //     '</div>')
               //  addErrorMessage(" Profile edited with sucess",'success','message');
               //   alert('Profile edited with sucess.');
-            } else  {
+            }
+            if (response.redirect) {
+
+                window.location.href = response.redirect;
+                console.log("plplplp");
+            }else  {
                 let errors = response.errors;
                 console.log(errors);
                 alert('Il y a des erreurs dans le formulaire. Veuillez corriger et réessayer.');
@@ -241,14 +253,7 @@ function AddMunicipality(event) {
 function DeleteCustomer(event) {
 }
 
-function afficherMessage() {
-    $('#notification_box').html('<div class="woocommerce-message" id="notifDiv" role="alert">\n' +
-        '<i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i>  removed.\n' +
-        '<a href=""\n' +
-        '   class="restore-item">Undo?</a>\n' +
-        '</div>')
-    console.log("kkkkk");
-}
+
 function editProfileAdmin(event) {
 
     event.preventDefault();
@@ -292,7 +297,9 @@ function editProfileAdmin(event) {
                 removeInputs();
                  addErrorMessage(" Profile edited with sucess",'success','message');
                 //   alert('Profile edited with sucess.');
-            } else  {
+            }
+
+                else  {
                 let errors = response.errors;
                 console.log(errors);
                 alert('Il y a des erreurs dans le formulaire. Veuillez corriger et réessayer.');
@@ -310,5 +317,13 @@ function editProfileAdmin(event) {
 
     });
 }
+// function cacheAlerte() {
+//     setTimeout(function () {
+//         var alertElement = document.getElementById('notification_box');
+//         if (alertElement) {
+//             alertElement.style.display = 'none';
+//         }
+//     }, 60000);
+// }
 
 

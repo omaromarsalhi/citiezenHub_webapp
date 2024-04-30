@@ -9,11 +9,12 @@ use App\Security\UserAuthanticatorAuthenticator;
 use App\Utils\GeocodingService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use EmailService;
+use App\Utils\EmailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +26,7 @@ class RegistrationController extends AbstractController
 {
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator,GeocodingService $geo,MunicipaliteRepository $municipaliteRepository,MailerInterface $mailer): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator,GeocodingService $geo,MunicipaliteRepository $municipaliteRepository,MailerInterface $mailer,EmailService $emailService): Response
     {
         $email = $request->query->get('email');
         $name = $request->query->get('name');
@@ -34,6 +35,7 @@ class RegistrationController extends AbstractController
         $userData = $request->request->get('user');
         $errorMessages = [];
         if ($request->isMethod('POST') && $userData !== null) {
+
             if ($request->request->has('submit_button')) {
                 $user = new User();
                 $user->setFirstName($userData['firstName']);
@@ -46,30 +48,34 @@ class RegistrationController extends AbstractController
                     $field = $error->getPropertyPath();
                     $errorMessages[$field] = $error->getMessage();
                 }
+
                 $muni = $municipaliteRepository->findOneBy(['name' => $geo->getMunicipalityFromAddress($userData['address'])]);
                 if (count($errors) === 0 && $userData['password'] === $userData['password1'] && $muni) {
-                    if ($muni !== null) {
+
                         $hashedPassword = $userPasswordHasher->hashPassword(
                             $user,
                             $userData['password']
                         );
+
                         $user->setMunicipalite($muni);
                         $user->setPassword($hashedPassword);
                         $user->setRole("Citoyen");
-                        $user->setDate(new DateTime());
-//                        $email->envoyerEmail();
+                        $user->setDate( new \DateTime('now', new \DateTimeZone('Africa/Tunis')));
                         $entityManager->persist($user);
                         $entityManager->flush();
+//                        $emailService->envoyerEmail($mailer);
                         return $userAuthenticator->authenticateUser(
                             $user,
                             $authenticator,
                             $request
                         );
-                    }
+
+
                 }
 
             }
         }
+
 
         return $this->render('test/signup.html.twig', [
             'name' =>  $parts[0] ? $parts[0] : ($user ? $user->getFirstName() : ''),

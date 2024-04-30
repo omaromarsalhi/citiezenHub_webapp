@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Message\UserCompletionMessage;
 use App\Repository\UserRepository;
+use App\Utils\EmailService;
 use App\Utils\ImageHelper;
 use Cassandra\Date;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,71 +35,84 @@ class UserController extends AbstractController
     }
 
     #[Route('/editProfile', name: 'editProfile',methods: ['GET', 'POST'])]
-    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper,SessionInterface $session): Response
+    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper,SessionInterface $session,EmailService $emailService,MailerInterface $mailer): Response
     {
         $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
         $routePrecedente = $req->headers->get('referer');
         $parsedUrl = parse_url($routePrecedente);
         $path = $parsedUrl['path'];
+        $alertMessage = "Votre profil a été modifié avec succès !";
+        $session->set('profile_alert_message', $alertMessage);
+        $currentDate= $user->getDate();
+        $expiryTime =$currentDate->modify('+1 minutes');
+        $session->set('profile_alert_expiry', $expiryTime);
         $errorMessages = [];
+        $current=new \DateTime('now', new \DateTimeZone('Africa/Tunis'));
         if ($req->isXmlHttpRequest()) {
-            $email = $req->get('email');
-            $name = $req->get('name');
-            $lastname = $req->get('lastname');
-            $role = $req->get('role');
-            $age = $req->get('age');
-            $gender = $req->get('gender');
-            $status = $req->get('status');
-            $cin = $req->get('cin');
-            $phoneNumber = $req->get('phoneNumber');
-            $date = $req->get('date');
-            $fichierImage = $req->files->get('image');
-            $user->setFirstName($name);
-            $user->setLastName($lastname);
-            $user->setAge($age);
-            $user->setPhoneNumber($phoneNumber);
-            $user->setCin($cin);
-            $user->setRole($role);
-            $user->setStatus($status);
-            $user->setGender($gender);
-            if($fichierImage!=null)
-            $user->setImage($imageHelper->saveImages($fichierImage));
-            $datee = date_create($date);
-            $user->setDob($datee);
-            $errors = $validator->validate($user, null, 'creation');
-            foreach ($errors as $error) {
-                $field = $error->getPropertyPath();
-                $errorMessages[$field] = $error->getMessage();
-                var_dump($field);
-            }
-            if (count($errors) === 0) {
-                $em = $doc->getManager();
-                $em->persist($user);
-                $em->flush();
+            if ($current < $expiryTime) {
+                $emailService->envoyerEmail($mailer);
+                $email = $req->get('email');
+                $name = $req->get('name');
+                $lastname = $req->get('lastname');
+                $role = $req->get('role');
+                $age = $req->get('age');
+                $gender = $req->get('gender');
+                $status = $req->get('status');
+                $cin = $req->get('cin');
+                $phoneNumber = $req->get('phoneNumber');
+                $date = $req->get('date');
+                $fichierImage = $req->files->get('image');
+                $user->setFirstName($name);
+                $user->setLastName($lastname);
+                $user->setAge($age);
+                $user->setPhoneNumber($phoneNumber);
+                $user->setCin($cin);
+                $user->setRole($role);
+                $user->setStatus($status);
+                $user->setGender($gender);
+                if ($fichierImage != null)
+                    $user->setImage($imageHelper->saveImages($fichierImage));
+                $datee = date_create($date);
+                $user->setDob($datee);
+                $errors = $validator->validate($user, null, 'creation');
+                foreach ($errors as $error) {
+                    $field = $error->getPropertyPath();
+                    $errorMessages[$field] = $error->getMessage();
+                    var_dump($field);
+                }
+                if (count($errors) === 0) {
+                    $em = $doc->getManager();
+                    $em->persist($user);
+                    $em->flush();
 
+                    return new JsonResponse([
+                        'success' => true,
+                        'user' => [
+                            'name' => $user->getFirstName(),
+                            'lastname' => $user->getLastName(),
+                            'email' => $user->getEmail(),
+                            'address' => $user->getAddress(),
+                            'role' => $user->getRole(),
+                            'cin' => $user->getCin(),
+                            'phoneNumber' => $user->getPhoneNumber(),
+                            'age' => $user->getAge(),
+                            'status' => $user->getStatus(),
+                            'image' => $user->getImage(),
+                            'gender' => $user->getGender(),
+                            'dob' => $user->getDob(),
+                        ]
+                    ]);
+                }
                 return new JsonResponse([
-                    'success' => true,
-                    'user' => [
-                        'name' => $user->getFirstName(),
-                        'lastname' => $user->getLastName(),
-                        'email' => $user->getEmail(),
-                        'address' => $user->getAddress(),
-                        'role' => $user->getRole(),
-                        'cin' => $user->getCin(),
-                        'phoneNumber' => $user->getPhoneNumber(),
-                        'age' => $user->getAge(),
-                        'status' => $user->getStatus(),
-                        'image' => $user->getImage(),
-                        'gender' => $user->getGender(),
-                        'dob' => $user->getDob(),
-                    ]
-                ]);
-            }
-            return new JsonResponse([
-                'success' => false,
-                'errors' => $errorMessages,
-            ],422);
+                    'success' => false,
+                    'errors' => $errorMessages,
+                ], 422);
 
+            }
+            else
+                return new JsonResponse([
+                    'redirect' => $this->generateUrl('page404')
+                ]);
         }
 
         return $this->render('user/edit_profile.html.twig', [
@@ -115,6 +130,8 @@ class UserController extends AbstractController
             'dob'=>$user->getDob(),
             'errors' => $errorMessages,
             'routePrecedente' => $path,
+            'expiry_time' => $expiryTime,
+            'date'=>$user->getDate(),
         ]);
 
 
