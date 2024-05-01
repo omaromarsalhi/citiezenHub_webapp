@@ -54,7 +54,7 @@
                                     <td><span>1.</span></td>
                                     <td>
                                         <div class="product-wrapper d-flex align-items-center">
-                                            <a  onclick="openModal({{transport.idTransport}},{{transport.idTransport}})" class="thumbnail">
+                                            <a  onclick="openModal({{transport.idTransport}})" class="thumbnail">
                                                 <img src="/images/transports/{{ transport.VehiculeImage }}" alt="Nft_Profile">
                                             </a>
                                         </div>
@@ -184,12 +184,11 @@
   var rating = 0;
   var id;
   var stationId ;
-  var userId ;
+  var userId=187;
 
   // Function to open the modal
-  function openModal(user,station) {
+  function openModal(station) {
     modal.style.display = 'block';
-    userId=11;
     stationId=station;
   }
 
@@ -224,10 +223,11 @@
     // Get rating value from the input field
     
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('rating', ratingValue);
     formData.append('stationId', stationId);
     formData.append('userId', userId);
+    console.log(formData);
 
     // Make AJAX request to Symfony controller endpoint
     $.ajax({

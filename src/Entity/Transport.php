@@ -40,6 +40,9 @@ class Transport
     #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'vehiculeimage')]
     #[Assert\NotBlank(message:"Image can't be null ")]
     private ?File $imageFile = null;
+    
+    private ?float $averageRating = null;
+
 
     #[ORM\Column]
     #[Assert\Regex(pattern:"/^(\d+(\.\d+)?|\.\d+)$/",message:"Prix Transport should contain only numbers and points")]
@@ -94,6 +97,18 @@ class Transport
     public function setReference(?string $Reference): static
     {
         $this->Reference = $Reference;
+
+        return $this;
+    }
+
+    public function getAverageRating(): ?string
+    {
+        return $this->averageRating;
+    }
+
+    public function setAverageRating(?string $averageRating): static
+    {
+        $this->averageRating = $averageRating;
 
         return $this;
     }

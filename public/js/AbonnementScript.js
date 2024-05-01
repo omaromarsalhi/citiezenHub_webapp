@@ -95,13 +95,50 @@ document.getElementById('name').addEventListener('input', validateName);
 document.getElementById('lastname').addEventListener('input', validateLastName);
 
 function testImage(filePath) {
+    var critere=0;
+    let rep ;
     $.ajax({
         url: '/AbonnementScan/'+filePath,
         type: "POST", // Change the request type to POST
         success: function (response) {
-            $('#statusSuccessModal').modal('show');
-            console.log(response);
+            for( i=0;i<10;i++){
+               if( response.result.tags[i].confidence>0 &&response.result.tags[i].tag.en=="person")
+               {
+                critere++;
+                rep=rep+"person avec une confiance de " + response.result.tags[i].confidence+" \n";
+               }
+                 if( response.result.tags[i].confidence >30 ,response.result.tags[i].tag.en=="portrait")
+               {
+                critere++;
+                rep=rep+"Image portrait avec une confiance de "+response.result.tags[i].confidence+ "  \n";
 
+               }
+            }
+            console.log(response);
+            console.log(rep);
+
+                              
+
+                              if(critere==2){
+                                $('#sucess-message').text(rep);
+                                $('#statusSuccessModal').modal('show');
+                                
+/*
+                                $('#add-takeout-messages').html('<div class="alert alert-success">' +
+                                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                                '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response +
+                                '</div>');
+*/
+                              }
+                              else{
+                                rep =" ";
+                                rep=" Les critere ne sont pas respecté : \n L'image doit etre de type portrait et d'un etre humain   ";
+                                console.log(rep);
+                                $('#error-message').text(rep);
+
+                                $('#statusErrorsModal').modal('show');
+
+                              }
         },
         error: function (xhr, status, error) {
             $('#statusErrorsModal').modal('show');
@@ -131,7 +168,6 @@ document.getElementById("createinputfile").addEventListener("change", function (
     var imageFile = this.files[0];
     console.log(imageFile);
     testImage(imageFile.name);
-    //testImage(imageFile);
 })
 
 

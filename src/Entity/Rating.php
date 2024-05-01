@@ -13,6 +13,7 @@ class Rating
     #[ORM\Column]
     private ?int $id = null;
 
+
     #[ORM\Column]
     private ?int $id_Transport = null;
 
@@ -22,10 +23,7 @@ class Rating
     #[ORM\Column]
     private ?int $rating = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+  
 
     public function getIdTransport(): ?int
     {

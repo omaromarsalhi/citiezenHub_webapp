@@ -8,6 +8,7 @@ use App\Entity\Station;
 
 use App\Form\TransportType;
 use App\Repository\PostRepository;
+use App\Repository\RatingRepository;
 use App\Repository\TransportRepository;
 use App\Repository\StationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,14 +26,26 @@ use App\Service\ImaggaService;
 class TransportController extends AbstractController
 {
     #[Route('/transport', name: 'app_transport')]
-    public function listAllStationsAndTransports(StationRepository $StationRep): Response
+    public function listAllStationsAndTransports(StationRepository $StationRep,RatingRepository $ratingRepository): Response
     {
       $stations = $StationRep->findAll();
       $transports = $this->getDoctrine()->getManager()->getRepository(Transport::class)->findAll();
       $entityManager = $this->getDoctrine()->getManager();
 
  
-    
+      foreach ($transports as $transport) {
+        $ratings = $ratingRepository->findBy(['id_Transport' => $transport->getIdTransport()]);
+        $totalRatings = count($ratings);
+        $sumRatings = 0;
+
+        foreach ($ratings as $rating) {
+            $sumRatings += $rating->getRating(); // Supposons que la valeur de l'évaluation soit stockée dans une propriété "value"
+        }
+
+        $averageRating = ($totalRatings > 0) ? $sumRatings / $totalRatings : 0;
+
+        $transport->setAverageRating($averageRating);
+    }
       return $this->render('transport/Admin/transportAdmin.html.twig', [
         
           'stations' => $stations,
@@ -224,34 +237,56 @@ public function analyzeImage(ImaggaService $imaggaService): Response
 {
 
 }
-*/
+*/ 
 #[Route('/rating/add', name: 'rating_add', methods: ['POST'])]
 public function add(Request $request): JsonResponse
 {
     // Get rating data from the request
-    $requestData = json_decode($request->getContent(), true);
     $ratingValue = $request->get('rating');
-    $stationId =$request->get('stationId');
-    $stationId = intval($stationId);
-    $userId = $request->get('userId');
-
-    // Validate rating value (optional)
-    if (!is_numeric($ratingValue) || $ratingValue < 1 || $ratingValue > 5) {
-        return new JsonResponse(['error' => 'Invalid rating value'], 400);
-    }
-
-    // Create a new Rating entity and persist it to the database
-    $rating = new Rating();
-    $rating->setRating($ratingValue);
-    $rating->setIdTransport($stationId);
-    $rating->setIdUser(1);
+    $stationId =intval($request->get('stationId')); // Ensure station ID is an integer
+    $userId = intval($request->get('userId')); // Ensure user ID is an integer
 
     $entityManager = $this->getDoctrine()->getManager();
-    $entityManager->persist($rating);
+    $ratingRepository = $this->getDoctrine()->getRepository(Rating::class);
+
+    // Check for existing ratings using a unique combination of user and station
+    $existingRating = $ratingRepository->findOneBy([
+        'id_Transport' => $stationId,
+    ]);
+
+    if ($existingRating) {
+        $existingRating = $ratingRepository->findOneBy([
+            'id_Transport' => $stationId,
+        ]);
+        if ($existingRating) {
+            $existingRating->setRating($ratingValue);
+            $entityManager->persist($existingRating);  
+        }else{
+        
+        $rating = new Rating();
+        $rating->setRating($ratingValue);
+        $rating->setIdTransport($stationId);
+        $rating->setIdUser($userId);
+        $entityManager->persist($rating);
+        }
+        // Update existing rating if found
+    
+    
+    } else {
+        
+        // Create a new Rating entity if no duplicates found
+        $rating = new Rating();
+        $rating->setRating($ratingValue);
+        $rating->setIdTransport($stationId);
+        $rating->setIdUser($userId);
+        $entityManager->persist($rating);
+    }
+
     $entityManager->flush();
 
     // Return a JSON response indicating success
     return new JsonResponse(['success' => true]);
 }
+
 
 }

@@ -29,8 +29,9 @@
                       <th class="sort border-top border-translucent ps-0 align-middle" scope="col" data-sort="country" style="width:32%">DEPART</th>
                       <th class="sort border-top border-translucent align-middle" scope="col" data-sort="users" style="width:17%">ARRIVE</th>
                       <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">IMAGE</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">RATING</th>
                       <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="revenue" style="width:20%">PRIX</th>
-                          <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">TYPE</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">TYPE</th>
                       <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="revenue" style="width:20%">HEURE</th>
                           <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">REFERENCE</th>
                    
@@ -69,11 +70,17 @@
                           </a>
                         </div>
                       </td>
-                            <td class="align-middle text-end transactions" style="width:17%">
+                     <td class="align-middle text-end transactions" style="width:17%">
                         <h6 class="mb-0"><span>
            <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/transports/{{ transport.VehiculeImage }}"  alt="" /></div>
-</span></h6>
+                      </span></h6>
                       </td>
+                    <td class="align-middle rating white-space-nowrap fs-10">
+                    <span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star star-icon text-warning"></span>
+                     <h7 class="mb-0" >{{transport.averageRating}}</span></h7>
+
+                    </td>
+
                       <td class="align-middle text-end transactions" style="width:17%">
                         <h6 class="mb-0">{{transport.Prix}}</span></h6>
                       </td>
@@ -81,7 +88,7 @@
                         <h6 class="mb-0">{{transport.TypeVehicule}}</span></h6>
                       </td>
                            <td class="align-middle text-end transactions" style="width:17%">
-                        <h6 class="mb-0">{{transport.Heure}}6</span></h6>
+                        <h6 class="mb-0">{{transport.Heure}}</span></h6>
                       </td>
                            <td class="align-middle text-end transactions" style="width:17%">
                         <h6 class="mb-0">{{transport.Reference}}</span></h6>
@@ -295,9 +302,13 @@
   .error-label {
         color: red;
     }
+   
 
 </style>
 <script>
+
+
+
 function addTransport(event) {
     event.preventDefault();
     const TypeVehicule = document.getElementById("typeSelect").value;
@@ -308,7 +319,6 @@ function addTransport(event) {
     let Time = $('#Time').val();
     let prix = $('#Prix').val();
  
-
 
     formData.append('image', $('#createinputfile').prop('files')[0]);
     formData.append('reference', reference);
@@ -345,7 +355,7 @@ function addTransport(event) {
                 $('#time').val('');
                 $('#prix').val('');
                 $('#createinputfile').closest('form').get(0).reset();
-        window.location.reload();
+                window.location.reload();
             } 
         },
         error: function(response) {
@@ -373,7 +383,6 @@ function addTransport(event) {
     }
 }
         
-
     });
 }
 
