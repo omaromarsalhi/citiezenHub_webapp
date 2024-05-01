@@ -111,18 +111,18 @@ function testImage(filePath) {
 const fileInput = document.getElementById('createinputfile');
 
 // Add an event listener for when a file is selected
-fileInput.addEventListener('change', function(event) {
-    // Retrieve the file object from the input element
-    const file = event.target.files[0];
+ 
+/*
+var input = document.getElementById('createinputfile');
+  input.addEventListener('change', function() {
+    var fullPath = input.value;
+    console.log(fullPath);
+    testImage(fullPath);
 
-    // Check if a file was selected
-    if (file) {
-        // Retrieve the file path
-        const filePath = URL.createObjectURL(file);
-        filePath=filePath;
-        
-        testImage(filePath);
-        
-        console.log('File path:', filePath);
-    }
-});
+  });*/ 
+
+  $('#createinputfile').change(function (e) {
+    console.log($(this).val()); // Prints out the file path
+    console.log(e.target.files);
+  });
+  

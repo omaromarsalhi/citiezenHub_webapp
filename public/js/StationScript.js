@@ -160,6 +160,27 @@ inputFieldAddress.forEach(inputField => {
   });
 });
 
+$('#name').change(function() {
+    var stationName = $(this).val();
+
+    $.ajax({
+        url: 'https://api.opencagedata.com/geocode/v1/json',
+        data: {
+            q: stationName, // Use the value of the input field
+            key: '53ee85fa919942ebb5df4021833590b4' // replace with your actual OpenCage API key
+        },
+        success: function(response) {
+            if (response.results.length > 0) {
+                var lat = response.results[0].geometry.lat;
+                var lng = response.results[0].geometry.lng;
+                var address = lat + ', ' + lng;
+                $('#adressStation').val(address);
+            } else {
+                $('#adressStation').val('').prop('readonly', false);
+            }
+        }
+    });
+});
 
 
 

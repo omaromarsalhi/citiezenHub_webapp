@@ -29,7 +29,6 @@ class Station
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Address Station is required")]
-    #[Assert\Regex(pattern:"/^(\-?\d+\.\d+)\,(\-?\d+\.\d+)+$/",message:"Address should be in this format  lat;lon ")]
 
 
     private ?string $addressstation = null;
