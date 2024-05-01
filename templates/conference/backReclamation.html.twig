@@ -260,8 +260,8 @@ function updateTable(reclamations) {
         tableBody.prepend(row);
     });
     // Check if there are new reclamations to notify
-    if (reclamations.length > 0) {
-        alert('New reclamation added!');
+	if (reclamations.length > 0) {
+        showNotification('New reclamation added!');
     }
 }
 
@@ -283,6 +283,19 @@ document.addEventListener('click', function(event) {
 
 
 setInterval(pollForNewReclamations, 10000);
+function showNotification(message) {
+    // Check if the browser supports notifications
+    if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+    }
+    // Check if the user has granted permission to show notifications
+    else if (Notification.permission === "granted") {
+        // If permission is granted, create a notification
+        var notification = new Notification("New Reclamation Added", {
+            body: message
+        });
+    }
+}
 	</script>
 
 	<style>

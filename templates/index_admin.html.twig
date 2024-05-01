@@ -65,7 +65,12 @@
         userLinkRTL.setAttribute('disabled', true);
       }
     </script>
-    
+    <script>
+      // Request permission for notifications
+      Notification.requestPermission().then(function(result) {
+          console.log('Notification permission:', result);
+      });
+  </script>
   </head>
 
   <body>
