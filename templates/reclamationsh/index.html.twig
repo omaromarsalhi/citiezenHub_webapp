@@ -61,6 +61,27 @@
       </div>
     </div>
   </div>
+   <!-- Modal Structure -->
+   <div class="modal fade" id="reclamationModal" tabindex="-1" aria-labelledby="reclamationModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="reclamationModalLabel"></h5>
+         <button type="button" the "btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <img id="modalReclamationImage" src="" alt="Reclamation Image" class="img-fluid mb-2">
+         <h3 id="modalReclamationSubject"></h3>
+         <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>  
+         <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
+         <div><strong>Response:</strong> <span id="modalReclamationResponse"></span></div> <!-- Response displayed here -->
+       </div>
+       <div class="modal-footer">
+         <button type of button="btn-secondary" data-bs-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const deleteButtons = document.querySelectorAll('.delete-reclamation');
@@ -92,21 +113,31 @@
     
       // Modal functionality
       const subjectLinks = document.querySelectorAll('.reclamation-subject');
-      subjectLinks.forEach(link => {
-        link.addEventListener('click', function () {
-          const id = this.getAttribute('data-id');
-          // Fetch reclamation details using the ID
-          fetch(`/reclamation/details/${id}`)
-            .then(response => response.json())
-            .then(data => {
-              document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
-              const modalTitle = document.getElementById('reclamationModalLabel');
-              modalTitle.textContent = data.subject;
-              document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
-              document.getElementById('modalReclamationDescription').textContent = data.description;
-              document.getElementById('modalReclamationResponse').textContent = data.response ? data.response : 'Pending';
-              new bootstrap.Modal(document.getElementById('reclamationModal')).show();
-            })
+
+    subjectLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+
+            // Fetch reclamation details using the ID
+            fetch(`/reclamation/details/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Set the image path
+                    document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
+                    // Set the subject as the title of the modal
+                    const modalTitle = document.getElementById('reclamationModalLabel');
+                    modalTitle.textContent = data.subject;
+                    // Format and populate the creation date
+                    document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
+
+                    // Populate the description
+                    document.getElementById('modalReclamationDescription').textContent = data.description;
+                    // Populate the response
+                    // Ensure you use the correct key for the response, which should match what your server sends.
+                    document.getElementById('modalReclamationResponse').textContent = data.response ? data.response : 'Pending';
+                    // Show the modal
+                    new bootstrap.Modal(document.getElementById('reclamationModal')).show();
+                })
             .catch(error => {
               console.error('Error:', error);
               alert('An error occurred while fetching the reclamation details.');
