@@ -202,27 +202,27 @@
 
     <script>
         var images = {{ images|json_encode|raw }};
-        var currentIndex = 0; // L'index de l'image actuelle
+        var currentIndex = 0;
 
-        // Ajouter des écouteurs d'événements aux boutons
+
         document.getElementById('prev-button').addEventListener('click', function () {
 
-            // Décrémenter l'index
+
             currentIndex--;
             if (currentIndex < 0) {
                 currentIndex = images.length - 1; // Aller à la dernière image
             }
-            // Mettre à jour l'image
+
             document.getElementById('post-image').src = '/images/blog/' + images[currentIndex];
         });
 
         document.getElementById('next-button').addEventListener('click', function () {
-            // Incrémenter l'index
+
             currentIndex++;
             if (currentIndex >= images.length) {
                 currentIndex = 0; // Retourner à la première image
             }
-            // Mettre à jour l'image
+
             document.getElementById('post-image').src = '/images/blog/' + images[currentIndex];
         });
 
@@ -234,12 +234,12 @@
             let caption = document.querySelector('#contact-message textarea').value;
             let postId = document.querySelector('#post_id').value;
 
-            // Créer un objet FormData pour stocker les données du formulaire
+
             let formData = new FormData();
             formData.append('caption', caption);
             formData.append('post_id', postId);
 
-            // Envoyer une requête AJAX à la route /newComment
+
             $.ajax({
                 url: '/newComment',
                 type: 'POST',
@@ -273,11 +273,11 @@
         }
 
         function createUpdateBtn(id) {
-            // Créer un nouvel élément div
+
             var updateBtn = document.createElement('div');
             updateBtn.className = 'reply-edit';
 
-            // Créer le contenu interne du bouton
+
             var replyDiv = document.createElement('div');
             replyDiv.className = 'reply';
             var link = document.createElement('a');
@@ -289,7 +289,7 @@
             link.appendChild(document.createTextNode('Update'));
             replyDiv.appendChild(link);
 
-            // Ajouter le contenu interne au bouton
+
             updateBtn.appendChild(replyDiv);
 
             return updateBtn;

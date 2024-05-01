@@ -45,4 +45,14 @@ class PostRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByCaptionLike($caption)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.caption LIKE :caption')
+            ->setParameter('caption', '%' . $caption . '%')
+            ->orderBy('p.id', 'DESC') // Ajoutez cette ligne
+            ->getQuery()
+            ->getResult();
+    }
 }

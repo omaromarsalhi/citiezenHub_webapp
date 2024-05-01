@@ -86,8 +86,13 @@ button.dropbtnComment .fas.fa-cog {
 }
 #delImageUpdate .feather-x {
     position: absolute;
-    top: 50%; /* Ajustez cette valeur selon vos besoins */
-    left: 50%; /* Ajustez cette valeur selon vos besoins */
-    transform: translate(-50%, -50%); /* Centrer l'icône par rapport à sa position */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#translateBtn:hover {
+    cursor: pointer;
+    background-color: rgba(187, 187, 187, 0.49);
 }
 

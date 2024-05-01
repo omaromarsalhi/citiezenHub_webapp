@@ -7,6 +7,7 @@ var initialCaption = null;
 var currentImageIndices = {};
 var posts = [];
 var currentImageIndexUpload = 0;
+var isSearching = false;
 
 function createPostHTML(post, postUrl) {
     var bouttonImg = '';
@@ -24,6 +25,14 @@ function createPostHTML(post, postUrl) {
                      alt="Personal Portfolio Images" style="width: 1300px; height: 500px; object-fit: contain;">
                 ${bouttonImg}
             </div>
+        `;
+    }
+    var captiontext = '';
+    if (post.caption !== '') {
+        captiontext = `
+            <h4 class="title"><a href="${postUrl}">${post.caption} <i
+                class="feather-arrow-up-right"></i></a></h4>
+            <a class="translateBtn" data-post-id="${post.id}" data-original-caption="${post.caption}" onclick="translateText('${post.id}', '${post.caption}', 'fr', 'ar')">Translate</a>
         `;
     }
     return `
@@ -48,8 +57,7 @@ function createPostHTML(post, postUrl) {
                             </div>
                         </div>
                         <span>${post.datePost}</span>
-                        <h4 class="title"><a href="${postUrl}">${post.caption} <i
-                                    class="feather-arrow-up-right"></i></a></h4>
+                        ${captiontext}
                     </div>
                     ${imageHTML}
                     
@@ -135,16 +143,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-window.onscroll = function () {
-    var scrollPosition = window.pageYOffset;
-    var windowSize = window.innerHeight;
-    var bodyHeight = document.body.offsetHeight;
-
-    // Charger plus de posts 500px avant d'arriver au bas de la page
-    if (Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
-        loadPostsPage(currentPage);
-    }
-};
 
 document.addEventListener('DOMContentLoaded', function () {
     loadPostsPage(currentPage);
@@ -155,8 +153,7 @@ window.onscroll = function () {
     var windowSize = window.innerHeight;
     var bodyHeight = document.body.offsetHeight;
 
-    // Charger plus de posts 500px avant d'arriver au bas de la page
-    if (Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
+    if (!isSearching && Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
         loadPostsPage(currentPage);
     }
 };
@@ -207,22 +204,6 @@ function addPost(event) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    var textarea = document.getElementById('contact-message');
-    var fileInput = document.getElementById('nipa');
-    var submitButton = document.getElementById('ajoutPost');
-
-    function verifierEtatBouton() {
-        var caption = textarea.value.trim();
-        var image = fileInput.files.length > 0;
-        submitButton.disabled = !(caption || image);
-    }
-
-    textarea.addEventListener('input', verifierEtatBouton);
-    fileInput.addEventListener('change', verifierEtatBouton);
-
-    verifierEtatBouton();
-});
 
 document.addEventListener('DOMContentLoaded', function () {
     var textarea = document.getElementById('captionModfier');
@@ -245,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function handleMenuAction(button, postId, caption, image, action) {
     if (action === "modifier") {
         postIdToModify = postId;
+        translateText(caption, 'fr', 'ar');
         showModifierPopup(caption, image);
     } else if (action === "supprimer") {
         deletePost(postId);
@@ -274,7 +256,6 @@ function deletePost(postId) {
                     )
                 },
                 error: function (xhr, status, error) {
-                    // Gérer les erreurs en fonction de vos besoins
                     console.error(error);
                 }
             });
@@ -400,7 +381,7 @@ function afficherIconDelImage() {
         selectedImages = [];
         currentImageIndex = 0;
         for (var i = 0; i < files.length; i++) {
-            var reader = new FileReader(); // Créer un nouveau FileReader pour chaque fichier
+            var reader = new FileReader();
             reader.onload = function (event) {
                 selectedImages.push(event.target.result);
                 if (selectedImages.length === files.length) {
@@ -421,13 +402,9 @@ function afficherIconDelImage() {
 }
 
 function changeImageUpload(direction) {
-    // Vérifier si des images ont été sélectionnées
     if (selectedImages.length > 0) {
-        // Mettre à jour l'index de l'image actuelle
         currentImageIndexUpload += direction;
-        // Utiliser l'opérateur modulo pour créer un effet de boucle
         currentImageIndexUpload = (currentImageIndexUpload + selectedImages.length) % selectedImages.length;
-        // Mettre à jour la source de l'image
         document.getElementById("rbtinput2").src = selectedImages[currentImageIndexUpload];
     }
 }
@@ -460,7 +437,6 @@ document.getElementById("delImageUpdate").addEventListener("click", function () 
             rbtinput2.src = "aucuneImg.png";
             this.style.display = "none";
 
-            // Envoyer une requête AJAX pour supprimer l'image du post
             $.ajax({
                 url: '/edit/' + postIdToModify + '/remove-image', // Remplacez par la route appropriée
                 type: 'POST',
@@ -472,10 +448,65 @@ document.getElementById("delImageUpdate").addEventListener("click", function () 
                     )
                 },
                 error: function (xhr, status, error) {
-                    // Gérer les erreurs
                     console.error(error);
                 }
             });
         }
     })
 });
+
+
+let searchInput = document.querySelector('.search-form-wrapper input[type="search"]');
+searchInput.addEventListener('input', function () {
+    isSearching = searchInput.value !== '';
+    if (isSearching) {
+        $.ajax({
+            url: '/blog/search/' + searchInput.value,
+            type: 'GET',
+            success: function (response) {
+                $('#postsContainer').empty();
+
+                response.posts.forEach(function (post) {
+                    var newPostHTML = createPostHTML(post, post.url);
+                    $('#postsContainer').append(newPostHTML);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    } else {
+        $('#postsContainer').empty();
+        currentPage = 1;
+        allPostsLoaded = false;
+        loadPostsPage(currentPage);
+    }
+});
+
+function translateText(postId, textToTranslate, sourceLanguage, targetLanguage) {
+    const apiKey = "db017c40fad98dc5b9fc";
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=${sourceLanguage}|${targetLanguage}&key=${apiKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.responseData && data.responseData.translatedText) {
+                // Trouver le post correspondant et mettre à jour la légende
+                let postElement = document.querySelector(`div[data-post-id="${postId}"] .title a`);
+                let translateButton = document.querySelector(`div[data-post-id="${postId}"] .translateBtn`);
+
+                // Si le bouton dit "Translate", traduire le texte
+                if (translateButton.textContent === 'Translate') {
+                    postElement.textContent = data.responseData.translatedText;
+                    translateButton.textContent = 'Original version';
+                } else {
+                    // Sinon, remettre le texte original
+                    postElement.textContent = translateButton.dataset.originalCaption;
+                    translateButton.textContent = 'Translate';
+                }
+            } else {
+                console.error("Erreur : champ 'translatedText' manquant dans responseData");
+            }
+        })
+        .catch(error => console.error("Erreur lors de l'analyse de la réponse JSON : ", error));
+}

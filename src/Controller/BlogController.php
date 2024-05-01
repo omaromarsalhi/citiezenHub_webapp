@@ -115,7 +115,6 @@ class BlogController extends AbstractController
 
             $em->flush();
 
-            // Define $imagesArray and $nbComments
             $imagesArray = array_map(function ($image) {
                 return $image->getPath();
             }, $post->getImages());
@@ -212,6 +211,35 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/blog/search/{caption}', name: 'app_blog_search', methods: ['GET'])]
+    public function search(string $caption, PostRepository $postRepository): Response
+    {
+        $posts = $postRepository->findByCaptionLike($caption);
+
+        $postsArray = array_map(function ($post) {
+            $images = $post->getImages();
+            $imagesArray = array_map(function ($image) {
+                return $image->getPath();
+            }, $images);
+
+            $postUrl = $this->generateUrl('app_PostDetail', ['id' => $post->getId()]);
+
+            $nbComments = count($post->getComments());
+
+            return [
+                'id' => $post->getId(),
+                'caption' => $post->getCaption(),
+                'datePost' => $post->getDatePost()->format('Y-m-d H:i:s'),
+                'nbReactions' => $post->getNbReactions(),
+                'images' => $imagesArray,
+                'url' => $postUrl,
+                'nbComments' => $nbComments,
+            ];
+        }, $posts);
+
+        return new JsonResponse(['posts' => $postsArray]);
+    }
+
     #[Route('/edit/{id}/remove-image', name: 'app_blog_remove_image', methods: ['POST'])]
     public function removeImage(ManagerRegistry $doctrine, $id): Response
     {
@@ -286,7 +314,6 @@ class BlogController extends AbstractController
 
         $comments = $commentPostRepository->findBy(['post' => $post->getId()], ['dateComment' => 'DESC']);
 
-        // Transformer chaque commentaire en tableau
         $commentsArray = array_map(function ($comment) {
             return [
                 'id' => $comment->getIdComment(),
@@ -322,15 +349,12 @@ class BlogController extends AbstractController
             );
         }
 
-        // Créer une nouvelle instance de CommentPost
         $comment = new CommentPost();
 
-        // Remplir l'instance avec les données du formulaire
         $comment->setCaption($caption);
         $comment->setPost($post);
         $comment->setDateComment(new \DateTime());
 
-        // Sauvegarder le commentaire dans la base de données
         $entityManager->persist($comment);
         $entityManager->flush();
 
@@ -368,30 +392,28 @@ class BlogController extends AbstractController
     #[Route('/updateComment/{id}', name: 'update_comment', methods: ['POST'])]
     public function updateComment($id, Request $request): Response
     {
-        // Récupérer le repository des commentaires
         $repository = $this->getDoctrine()->getRepository(CommentPost::class);
 
-        // Récupérer le commentaire correspondant à l'ID
+
         $comment = $repository->find($id);
 
         if (!$comment) {
-            // Si le commentaire n'existe pas, retourner une erreur
+
             return new JsonResponse(['success' => false, 'message' => 'Comment not found']);
         }
 
-        // Récupérer le nouveau texte du commentaire à partir de la requête
+
         $newCaption = $request->request->get('caption');
 
-        // Mettre à jour le texte du commentaire
+
         $comment->setCaption($newCaption);
         $comment->setDateComment(new \DateTime());
 
-        // Sauvegarder le commentaire modifié dans la base de données
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($comment);
         $entityManager->flush();
 
-        // Retourner une réponse indiquant que l'opération a réussi
         return new JsonResponse([
             'success' => true,
             'comment' => [
