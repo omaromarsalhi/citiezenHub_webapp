@@ -1,5 +1,6 @@
 <?php
 namespace App\MyHelpers;
+
 use GuzzleHttp\Client;
 
 class NewsDataApi {
@@ -35,3 +36,4 @@ class NewsDataApi {
         return $newsList;
     }
 }
+

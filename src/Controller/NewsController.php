@@ -23,8 +23,6 @@ class NewsController extends AbstractController
     #[Route('/news', name: 'app_news2')]
     public function index2(): Response
     {
-
-
         return $this->render('news/index.html.twig');
     }
 }
