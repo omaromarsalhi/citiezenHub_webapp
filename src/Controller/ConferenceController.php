@@ -183,4 +183,38 @@ class ConferenceController extends AbstractController
         // Return the response data
         return new JsonResponse($responseData);
     }
+    
+    #[Route('/statistics', name: 'app_statistics')]
+    public function showStatistics(EntityManagerInterface $entityManager): Response
+    {
+        // Fetch total number of reclamations
+        $totalReclamations = $entityManager->getRepository(Reeclamation::class)->count([]);
+    
+        // Fetch number of responded reclamations using an explicit join and DQL
+        $respondedReclamations = $entityManager->getRepository(Reeclamation::class)
+            ->createQueryBuilder('r')
+            ->leftJoin('r.reponse', 'resp')
+            ->select('count(r.id)')
+            ->where('resp.id IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+    
+        // Calculate pending reclamations by subtracting responded from total
+        $pendingReclamations = $totalReclamations - $respondedReclamations;
+    
+        // Render the statistics view with all the data
+        return $this->render('conference/statistics.html.twig', [
+            'statistics' => [
+                'total_reclamations' => $totalReclamations,
+                'responded_reclamations' => $respondedReclamations,
+                'pending_reclamations' => $pendingReclamations
+            ],
+        ]);
+    }
+    
+    
+    
+    
+    
+
 }
