@@ -36,15 +36,16 @@ if (isNameValid && isLastNameValid) {
         processData: false,
         contentType: false,
         success: function (response) {
-                              openPopup();
+                $('#statusSuccessModal').modal('show');
+                redirectToAnotherRoute();
 
-            if (response.success) {
-            } else {
-                console.error('Failed to create post: ' + response.message);
-            }
+
+            
         },
         error: function (response) {
             console.error("error");
+            $('#statusErrorsModal').modal('show');
+
         },
     });
   }
@@ -95,15 +96,15 @@ document.getElementById('lastname').addEventListener('input', validateLastName);
 
 function testImage(filePath) {
     $.ajax({
-        url: '/AbonnementScan',
+        url: '/AbonnementScan/'+filePath,
         type: "POST", // Change the request type to POST
-        data: { filePath: filePath }, // Pass the file path as data
         success: function (response) {
-            console.log("Tags:", response); // Log the response to the console
-            openPopup();
+            $('#statusSuccessModal').modal('show');
+            console.log(response);
+
         },
         error: function (xhr, status, error) {
-            console.error("Error:", error);
+            $('#statusErrorsModal').modal('show');
         }
     });
 }
@@ -121,8 +122,18 @@ var input = document.getElementById('createinputfile');
 
   });*/ 
 
-  $('#createinputfile').change(function (e) {
-    console.log($(this).val()); // Prints out the file path
-    console.log(e.target.files);
-  });
+  //$('#createinputfile').change(function (e) {
+     // Prints out the file path
+    //console.log(imagePath);  
+  //  testImage("C:\Users\azeez\Downloads\images (3).jpg");
+//});
+document.getElementById("createinputfile").addEventListener("change", function () {
+    var imageFile = this.files[0];
+    console.log(imageFile);
+    testImage(imageFile.name);
+    //testImage(imageFile);
+})
+
+
+  
   

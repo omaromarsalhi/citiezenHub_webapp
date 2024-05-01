@@ -187,6 +187,12 @@ class StationController extends AbstractController
 
         return new JsonResponse('This route accepts only AJAX requests', Response::HTTP_BAD_REQUEST);
     }
+ 
+    #[Route('/searchStation/{nameStation}', name: 'search_station', methods: ['GET'])]
+    public function search(StationRepository $stationRepository ,String $nameStation): Response
+    {
+        $stations = $stationRepository->findBynomStation($nameStation);
+         return new JsonResponse(['posts' => $stations]);
 
-
+    }
 }

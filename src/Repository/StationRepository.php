@@ -45,4 +45,13 @@ class StationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findBynomStation($nomStation)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.NomStation LIKE :nomStation')
+            ->setParameter('nomStation', '%' . $nomStation . '%')
+            ->orderBy('p.id', 'DESC') // Ajoutez cette ligne
+            ->getQuery()
+            ->getResult();
+    }
 }

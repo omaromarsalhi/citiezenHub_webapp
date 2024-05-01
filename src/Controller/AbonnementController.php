@@ -122,13 +122,18 @@ class AbonnementController extends AbstractController
         ]);
     }
 
-    #[Route('/AbonnementScan', name: 'imageScan')]
-    public function imageScan(ImaggaService $imaggaService,Request $request): JsonResponse
+    #[Route('/AbonnementScan/{path}', name: 'imageScan')]
+    public function imageScan(ImaggaService $imaggaService,Request $request,$path): JsonResponse
     {
-        $filePath = $request->request->get('filePath');
-            $tags = $imaggaService->tagImage($filePath);
-    
-        // Return the tags as JSON response
-        return new JsonResponse($tags);
+      $filePath ="C:/Users/azeez/Downloads";
+
+      $concatenatedString=$filePath."/".$path;
+      try {
+          $tags = $imaggaService->tagImage($concatenatedString);
+
+          return new JsonResponse($tags);
+      } catch (\Exception $e) {
+          return new JsonResponse(['error' => $e->getMessage()], 500);
+      }
     }
 }
