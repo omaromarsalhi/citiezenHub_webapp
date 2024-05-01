@@ -46,12 +46,15 @@
                             </thead>
                             <tbody class="ranking">
                                                {% for transport in transports %}
+                             
 
                                 <tr class="color-light">
+                              
+
                                     <td><span>1.</span></td>
                                     <td>
                                         <div class="product-wrapper d-flex align-items-center">
-                                            <a href="product-details.html" class="thumbnail">
+                                            <a  onclick="openModal({{transport.idTransport}},{{transport.idTransport}})" class="thumbnail">
                                                 <img src="/images/transports/{{ transport.VehiculeImage }}" alt="Nft_Profile">
                                             </a>
                                         </div>
@@ -72,6 +75,7 @@
                                     <td><span>{{transport.TypeVehicule}}</span></td>
                                     <td><span>{{transport.Prix}}</span></td>
                                 </tr>
+                                
                                                {% endfor %}
                             </tbody>
                         </table>
@@ -94,4 +98,156 @@
             </div>
         </div>
     </div>
+ <style>
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+    }
+
+    .star {
+      font-size: 30px;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .star:hover,
+    .star.checked {
+      color: gold;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Button to open the modal -->
+
+<!-- The Modal -->
+<div id="ratingModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Rate Our Service</h2>
+    <p>Please rate your experience:</p>
+    <div class="stars">
+      <span class="star" onclick="setRating(1)">★</span>
+      <span class="star" onclick="setRating(2)">★</span>
+      <span class="star" onclick="setRating(3)">★</span>
+      <span class="star" onclick="setRating(4)">★</span>
+      <span class="star" onclick="setRating(5)">★</span>
+    </div>
+    <button onclick="submitRating()">Submit</button>
+  </div>
+
+</div>
+
+<script>
+  // Get the modal
+  var modal = document.getElementById('ratingModal');
+  var rating = 0;
+  var id;
+  var stationId ;
+  var userId ;
+
+  // Function to open the modal
+  function openModal(user,station) {
+    modal.style.display = 'block';
+    userId=11;
+    stationId=station;
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    modal.style.display = 'none';
+  }
+
+  // Function to set the rating
+  function setRating(stars) {
+    rating = stars;
+    var starsElements = document.getElementsByClassName('star');
+    for (var i = 0; i < starsElements.length; i++) {
+      if (i < stars) {
+        starsElements[i].classList.add('checked');
+      } else {
+        starsElements[i].classList.remove('checked');
+      }
+    }
+  }
+
+  // Function to submit the rating
+ function submitRating(event) {
+    var ratingValue = rating;
+
+    // Check if rating value is valid
+    if (!ratingValue || ratingValue < 1 || ratingValue > 5) {
+        alert('Please select a valid rating.');
+        return; // Exit the function early if rating is invalid
+    }
+
+    // Get rating value from the input field
+    
+
+    var formData = new FormData();
+    formData.append('rating', ratingValue);
+    formData.append('stationId', stationId);
+    formData.append('userId', userId);
+
+    // Make AJAX request to Symfony controller endpoint
+    $.ajax({
+        url: '/rating/add',
+        type: 'POST',
+        data: formData,
+        contentType: false, // Do not set content type
+        processData: false, // Do not process data
+        success: function(response) {
+            // Rating submitted successfully
+            alert('Rating submitted successfully!');
+            closeModal(); // Close the modal or perform any other action
+        },
+        error: function(xhr, status, error) {
+            // Error handling: Display an error message if the request fails
+            alert('An error occurred while submitting the rating.');
+        }
+    });
+}
+
+</script>
+ 
     {% endblock %}

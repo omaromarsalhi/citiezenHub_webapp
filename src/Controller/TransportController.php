@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use App\Entity\Transport;
 use App\Entity\Station;
 
@@ -224,7 +225,33 @@ public function analyzeImage(ImaggaService $imaggaService): Response
 
 }
 */
+#[Route('/rating/add', name: 'rating_add', methods: ['POST'])]
+public function add(Request $request): JsonResponse
+{
+    // Get rating data from the request
+    $requestData = json_decode($request->getContent(), true);
+    $ratingValue = $request->get('rating');
+    $stationId =$request->get('stationId');
+    $stationId = intval($stationId);
+    $userId = $request->get('userId');
 
+    // Validate rating value (optional)
+    if (!is_numeric($ratingValue) || $ratingValue < 1 || $ratingValue > 5) {
+        return new JsonResponse(['error' => 'Invalid rating value'], 400);
+    }
 
+    // Create a new Rating entity and persist it to the database
+    $rating = new Rating();
+    $rating->setRating($ratingValue);
+    $rating->setIdTransport($stationId);
+    $rating->setIdUser(1);
+
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->persist($rating);
+    $entityManager->flush();
+
+    // Return a JSON response indicating success
+    return new JsonResponse(['success' => true]);
+}
 
 }
