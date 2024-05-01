@@ -113,37 +113,36 @@
 
       const subjectLinks = document.querySelectorAll('.reclamation-subject');
 
-      subjectLinks.forEach(link => {
+    subjectLinks.forEach(link => {
         link.addEventListener('click', function() {
-          const id = this.getAttribute('data-id');
+            const id = this.getAttribute('data-id');
 
-          // Fetch reclamation details using the ID
-          fetch(`/reclamation/details/${id}`)
-            .then(response => response.json())
-            .then(data => {
-              
-              // Set the image path
-              document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
-              // Set the subject as the title of the modal
-              const modalTitle = document.getElementById('reclamationModalLabel');
-              modalTitle.textContent = data.subject;
-              // Format and populate the creation date
-              document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
+            // Fetch reclamation details using the ID
+            fetch(`/reclamation/details/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Set the image path
+                    document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
+                    // Set the subject as the title of the modal
+                    const modalTitle = document.getElementById('reclamationModalLabel');
+                    modalTitle.textContent = data.subject;
+                    // Format and populate the creation date
+                    document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
 
-              // Populate the description
-              document.getElementById('modalReclamationDescription').textContent = data.description;
-              // Populate the response
-              document.getElementById('modalReclamationResponse').textContent = data.reponse ? data.reponse.repReclamation : 'Pending';
-
-              // Show the modal
-              new bootstrap.Modal(document.getElementById('reclamationModal')).show();
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              alert('An error occurred while fetching the reclamation details.');
-            });
+                    // Populate the description
+                    document.getElementById('modalReclamationDescription').textContent = data.description;
+                    // Populate the response
+                    // Ensure you use the correct key for the response, which should match what your server sends.
+                    document.getElementById('modalReclamationResponse').textContent = data.response ? data.response : 'Pending';
+                    // Show the modal
+                    new bootstrap.Modal(document.getElementById('reclamationModal')).show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching the reclamation details.');
+                });
         });
-      });
+    });
     });
   </script>
   
