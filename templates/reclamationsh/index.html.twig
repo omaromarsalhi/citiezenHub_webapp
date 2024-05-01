@@ -12,6 +12,12 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
           <h5>Here you can find all your reclamation. Hope you find it helpful!</h5>
         </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-right">
+          <!-- Filter Buttons -->
+          <button id="filter-all" class="btn btn-info">All</button>
+          <button id="filter-responded" class="btn btn-success">Responded</button>
+          <button id="filter-pending" class="btn btn-warning">Pending</button>
+        </div>
       </div>
       {% for message in app.flashes('success') %}
         <div class="alert alert-success">
@@ -20,7 +26,7 @@
       {% endfor %}
       <div class="row g-5 d-flex flex-wrap">
         {% for recll in recc %}
-          <div class="inner flex-grow-1" style="max-width: 300px; overflow-wrap: break-word;">
+          <div class="inner flex-grow-1" style="max-width: 300px; overflow-wrap: break-word;" data-status="{{ recll.reponse ? 'responded' : 'pending' }}">
             <div class="thumbnail">
               <a href="{{ path('reclamationsh.modifer', { id: recll.id }) }}">
                 <img src="{{ asset('images/reclamation/' ~ recll.getImagePath()) }}" alt="Reclamation Image" />
@@ -55,47 +61,20 @@
       </div>
     </div>
   </div>
-  <!-- End Blog Area -->
-
-  <div class="mouse-cursor cursor-inner"></div>
-  <!-- Start Top To Bottom Area -->
-  <div class="rn-progress-parent">
-    <svg class="rn-back-circle svg-inner" width="100%" height="100%" viewbox="-1 -1 102 102">
-      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-    </svg>
-  </div>
-
-  <!-- Modal Structure -->
-  <div class="modal fade" id="reclamationModal" tabindex="-1" aria-labelledby="reclamationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="reclamationModalLabel"></h5>
-          <button type="button" the "btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <img id="modalReclamationImage" src="" alt="Reclamation Image" class="img-fluid mb-2">
-          <h3 id="modalReclamationSubject"></h3>
-          <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>  
-          <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
-          <div><strong>Response:</strong> <span id="modalReclamationResponse"></span></div> <!-- Response displayed here -->
-        </div>
-        <div class="modal-footer">
-          <button type of button="btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const deleteButtons = document.querySelectorAll('.delete-reclamation');
-
-      deleteButtons.forEach(function(button) {
-        button.addEventListener('click', function(e) {
+      const filterAll = document.getElementById('filter-all');
+      const filterResponded = document.getElementById('filter-responded');
+      const filterPending = document.getElementById('filter-pending');
+      const reclamationItems = document.querySelectorAll('.inner');
+    
+      // Delete functionality
+      deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function (e) {
           e.preventDefault();
           const reclamationId = this.getAttribute('data-id');
-
+    
           if (confirm('Are you sure?')) {
             fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
               method: 'POST',
@@ -110,41 +89,50 @@
           }
         });
       });
-
+    
+      // Modal functionality
       const subjectLinks = document.querySelectorAll('.reclamation-subject');
-
-    subjectLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-
-            // Fetch reclamation details using the ID
-            fetch(`/reclamation/details/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Set the image path
-                    document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
-                    // Set the subject as the title of the modal
-                    const modalTitle = document.getElementById('reclamationModalLabel');
-                    modalTitle.textContent = data.subject;
-                    // Format and populate the creation date
-                    document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
-
-                    // Populate the description
-                    document.getElementById('modalReclamationDescription').textContent = data.description;
-                    // Populate the response
-                    // Ensure you use the correct key for the response, which should match what your server sends.
-                    document.getElementById('modalReclamationResponse').textContent = data.response ? data.response : 'Pending';
-                    // Show the modal
-                    new bootstrap.Modal(document.getElementById('reclamationModal')).show();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while fetching the reclamation details.');
-                });
+      subjectLinks.forEach(link => {
+        link.addEventListener('click', function () {
+          const id = this.getAttribute('data-id');
+          // Fetch reclamation details using the ID
+          fetch(`/reclamation/details/${id}`)
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
+              const modalTitle = document.getElementById('reclamationModalLabel');
+              modalTitle.textContent = data.subject;
+              document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
+              document.getElementById('modalReclamationDescription').textContent = data.description;
+              document.getElementById('modalReclamationResponse').textContent = data.response ? data.response : 'Pending';
+              new bootstrap.Modal(document.getElementById('reclamationModal')).show();
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while fetching the reclamation details.');
+            });
         });
+      });
+    
+      // Filter functionality
+      function filterReclamations(filter) {
+        reclamationItems.forEach(item => {
+          const status = item.getAttribute('data-status');
+          if (filter === 'all' || status === filter) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      }
+    
+      filterAll.addEventListener('click', () => filterReclamations('all'));
+      filterResponded.addEventListener('click', () => filterReclamations('responded'));
+      filterPending.addEventListener('click', () => filterReclamations('pending'));
     });
-    });
-  </script>
+    </script>
+    
+  
   
   <style>
     .modal-content {
