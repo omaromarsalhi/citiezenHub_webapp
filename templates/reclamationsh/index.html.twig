@@ -1,60 +1,61 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  show reclamation!
+  Show Reclamation!
 {% endblock %}
 
 {% block body %}
-  <!-- Start BLog Area -->
+  <!-- Start Blog Area -->
   <div class="rn-blog-area rn-section-gapTop">
     <div class="container">
       <div class="row mb--50 align-items-center">
         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-          <h5>Here you can find all your reclamation hope you find it good</h5>
+          <h5>Here you can find all your reclamation. Hope you find it helpful!</h5>
         </div>
-        
       </div>
       {% for message in app.flashes('success') %}
-							<div class="alert alert-success">
-								{{message}}
-							</div>
-						{% endfor %}
+        <div class="alert alert-success">
+          {{ message }}
+        </div>
+      {% endfor %}
       <div class="row g-5 d-flex flex-wrap">
-        <!-- [:4] -->
         {% for recll in recc %}
           <div class="inner flex-grow-1" style="max-width: 300px; overflow-wrap: break-word;">
             <div class="thumbnail">
-              <a href="{{ path('reclamationsh.modifer', { id: recll.id }) }}"><img src="{{ asset('images/reclamation/' ~ recll.getImagePath()) }}" alt="Personal Portfolio Images" /><span class="text-center color-white"><i class="feather-edit"></i></span></a>
+              <a href="{{ path('reclamationsh.modifer', { id: recll.id }) }}">
+                <img src="{{ asset('images/reclamation/' ~ recll.getImagePath()) }}" alt="Reclamation Image" />
+                <span class="text-center color-white"><i class="feather-edit"></i></span>
+              </a>
             </div>
             <div class="content">
               <div class="category-info">
                 <div class="category-list">
-              <a href="javascript:void(0);" class="reclamation-subject" data-id="{{ recll.id }}">{{ recll.subject }}</a>
+                  <a href="javascript:void(0);" class="reclamation-subject" data-id="{{ recll.id }}">
+                    {{ recll.subject }}
+                    <span class="badge {{ recll.reponse ? 'badge-success' : 'badge-warning' }}">
+                      {{ recll.reponse ? 'Responded' : 'Pending' }}
+                    </span>
+                  </a>
                 </div>
                 <div class="meta">
-                  <span>
-                    <i class="feather-clock"></i>
-                    {{ recll.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
-                  </span>
+                  <span><i class="feather-clock"></i> {{ recll.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}</span>
                 </div>
               </div>
               <h4 class="title">
-                              {% if (recll.description|length) > 10 %}
-                                {{ recll.description|slice(0, 10) }}...
-                              {% else %}
-                                {{ recll.description }}
-                              {% endif %}
-                            <button class="btn btn-danger delete-reclamation" data-id="{{ recll.id }}">Delete</button>
-                          
-                          </h4>
+                {% if (recll.description|length) > 10 %}
+                  {{ recll.description|slice(0, 10) }}...
+                {% else %}
+                  {{ recll.description }}
+                {% endif %}
+                <button class="btn btn-danger delete-reclamation" data-id="{{ recll.id }}">Delete</button>
+              </h4>
             </div>
           </div>
         {% endfor %}
       </div>
     </div>
   </div>
-
-  <!-- End BLog Area -->
+  <!-- End Blog Area -->
 
   <div class="mouse-cursor cursor-inner"></div>
   <!-- Start Top To Bottom Area -->
@@ -63,129 +64,112 @@
       <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
     </svg>
   </div>
-  <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const deleteButtons = document.querySelectorAll('.delete-reclamation');
-      
-        deleteButtons.forEach(function(button) {
-          button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const reclamationId = this.getAttribute('data-id');
-            
-            if (confirm('Are you sure?')) {
-              fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
-                method: 'POST',
-                // Include any necessary headers, CSRF tokens, etc.
-              }).then(response => {
-                if (response.ok) {
-                  document.getElementById(`reclamation-${reclamationId}`).remove();
-                } else {
-                  window.location.reload();
-                }
-              }).catch(error => console.error('Error:', error));
-            }
-          });
-        });
-      });
-      </script>
 
-
-<!-- Modal Structure -->
-<div class="modal fade" id="reclamationModal" tabindex="-1" aria-labelledby="reclamationModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reclamationModalLabel"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <img id="modalReclamationImage" src="" alt="Reclamation Image" class="img-fluid mb-2">
-        <h3 id="modalReclamationSubject"></h3>
-      <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>  
-      <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
-      <div><strong>Response:</strong> <span id="modalReclamationResponse"></span></div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  <!-- Modal Structure -->
+  <div class="modal fade" id="reclamationModal" tabindex="-1" aria-labelledby="reclamationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reclamationModalLabel"></h5>
+          <button type="button" the "btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="modalReclamationImage" src="" alt="Reclamation Image" class="img-fluid mb-2">
+          <h3 id="modalReclamationSubject"></h3>
+          <div><strong>Created At:</strong> <span id="modalReclamationDate"></span></div>  
+          <div><strong>Description:</strong> <span id="modalReclamationDescription"></span></div>
+          <div><strong>Response:</strong> <span id="modalReclamationResponse"></span></div> <!-- Response displayed here -->
+        </div>
+        <div class="modal-footer">
+          <button type of button="btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const deleteButtons = document.querySelectorAll('.delete-reclamation');
 
+      deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          const reclamationId = this.getAttribute('data-id');
 
+          if (confirm('Are you sure?')) {
+            fetch(`{{ path('reclamationsh.del', {'id': 'ID_PLACEHOLDER'}) }}`.replace('ID_PLACEHOLDER', reclamationId), {
+              method: 'POST',
+              // Include any necessary headers, CSRF tokens, etc.
+            }).then(response => {
+              if (response.ok) {
+                document.getElementById(`reclamation-${reclamationId}`).remove();
+              } else {
+                window.location.reload();
+              }
+            }).catch(error => console.error('Error:', error));
+          }
+        });
+      });
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const subjectLinks = document.querySelectorAll('.reclamation-subject');
+      const subjectLinks = document.querySelectorAll('.reclamation-subject');
 
-    subjectLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        const id = this.getAttribute('data-id');
+      subjectLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          const id = this.getAttribute('data-id');
 
-        // Fetch reclamation details using the ID
-        fetch(`/reclamation/details/${id}`)
-          .then(response => response.json())
-          .then(data => {
-            
-            // Set the image path
-            document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
-            // Set the subject as the title of the modal
-            const modalTitle = document.getElementById('reclamationModalLabel');
-            modalTitle.textContent = data.subject;
-            // Format and populate the creation date
-            document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
+          // Fetch reclamation details using the ID
+          fetch(`/reclamation/details/${id}`)
+            .then(response => response.json())
+            .then(data => {
+              
+              // Set the image path
+              document.getElementById('modalReclamationImage').src = `{{ asset('images/reclamation/') }}${data.imagePath}`;
+              // Set the subject as the title of the modal
+              const modalTitle = document.getElementById('reclamationModalLabel');
+              modalTitle.textContent = data.subject;
+              // Format and populate the creation date
+              document.getElementById('modalReclamationDate').textContent = new Date(data.createdAt).toLocaleString();
 
-            // Populate the description
-            document.getElementById('modalReclamationDescription').textContent = data.description;
-// Populate the response
-document.getElementById('modalReclamationResponse').textContent = data.reponse ? data.reponse.repReclamation : 'Pending';
+              // Populate the description
+              document.getElementById('modalReclamationDescription').textContent = data.description;
+              // Populate the response
+              document.getElementById('modalReclamationResponse').textContent = data.reponse ? data.reponse.repReclamation : 'Pending';
 
-
-            // Show the modal
-            new bootstrap.Modal(document.getElementById('reclamationModal')).show();
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while fetching the reclamation details.');
-          });
+              // Show the modal
+              new bootstrap.Modal(document.getElementById('reclamationModal')).show();
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while fetching the reclamation details.');
+            });
+        });
       });
     });
-  });
-</script>
-
+  </script>
   
-<style>
-  .modal-content {
-    background-color: #2c3034; /* Dark background */
-    color: #ffffff; /* White text */
-    border: none;
-}
+  <style>
+    .modal-content {
+      background-color: #2c3034; /* Dark background */
+      color: #ffffff; /* White text */
+      border: none;
+    }
 
-.modal-header {
-    border-bottom: none;
-}
+    .modal-header {
+      border-bottom: none;
+    }
 
-.modal-footer {
-    border-top: none;
-}
+    .modal-footer {
+      border-top: none;
+    }
 
-.btn-close {
-    filter: invert(1); /* Make the close button white */
-}
+    .btn-close {
+      filter: invert(1); /* Make the close button white */
+    }
 
-/* Match the font styles from your site */
-.modal-title, .modal-body, .modal-footer {
-    font-family: 'Your Font Family', sans-serif;
-    /* Your font styles here */
-}
-
-</style>
-  
-
-  
-  
-  
-    
+    /* Match the font styles from your site */
+    .modal-title, .modal-body, .modal-footer {
+      font-family: 'Your Font Family', sans-serif;
+      /* Your font styles here */
+    }
+  </style>
 {% endblock %}
