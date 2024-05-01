@@ -1,92 +1,99 @@
 {% extends 'index_admin.html.twig' %}
 {% block body  %}
 
-	<table class="table fs-9 mb-0">
-		<thead>
-			<tr>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">IMAGE</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PRIVATE KEY</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PUBLISH</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">SUBJECT</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">DESCRIPTION</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">ETAT</th>
-				<th class="sort white-space-nowrap align-middle ps-4" scope="col">RESPONSE</th>
-				<!-- Add this column for responses -->
-				<th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
-			</tr>
-		</thead>
-		<tbody class="list" id="products-table-body">
-			{% for reclamation in reclamations %}
-				<tr class="position-static">
-					<td class="align-middle ps-4">
-						<img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image" width="200" height="200"/>
-					</td>
-					<td class="align-middle ps-4">
-						{{ reclamation.privateKey }}
-					</td>
-					<td class="align-middle ps-4">
-						{{ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
-					</td>
-					<td class="align-middle ps-4">
-						{{ reclamation.subject }}
-					</td>
-					<td class="align-middle ps-4">
-						{{ reclamation.description }}
-					</td>
-					<td class="align-middle ps-4">
-						{% if reclamation.reponse %}
-							{{ reclamation.reponse.repReclamation }}
-							<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success">Done</span>
-						{% else %}
-							<span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-danger">Still panding</span>
-						{% endif %}
-					</td>
-					<td class="align-middle white-space-nowrap text-end pe-0 ps-4">
-						<div class="btn-reveal-trigger position-static">
-							<button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="fas fa-ellipsis-h fs-10"></span>
-							</button>
-							<div class="dropdown-menu dropdown-menu-end py-2">
-								<a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
-								<a class="dropdown-item mod-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}" data-reclamation-response="{{ reclamation.reponse ? reclamation.reponse.repReclamation : '' }}">Mod Rec</a>
-								
-							</div>
-						</div>
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	<!-- Pagination Controls -->
-	<nav aria-label="Page navigation">
-		<ul class="pagination">
-			{% if currentPage > 1 %}
-				<li class="page-item">
-					<a class="page-link" href="{{ path('app_conference', {'page': currentPage - 1}) }}">Previous</a>
-				</li>
-			{% else %}
-				<li class="page-item disabled">
-					<span class="page-link">Previous</span>
-				</li>
-			{% endif %}
+    <!-- Filter Buttons -->
+    <div class="btn-group mb-4" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-info" onclick="filterReclamations('all')">All</button>
+        <button type="button" class="btn btn-success" onclick="filterReclamations('done')">Done</button>
+        <button type="button" class="btn btn-warning" onclick="filterReclamations('pending')">Still Pending</button>
+    </div>
 
-			{% for i in 1..totalPages %}
-				<li class="page-item {{ currentPage == i ? 'active' : '' }}">
-					<a class="page-link" href="{{ path('app_conference', {'page': i}) }}">{{ i }}</a>
-				</li>
-			{% endfor %}
+    <table class="table fs-9 mb-0">
+        <thead>
+            <tr>
+                <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">IMAGE</th>
+                <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PRIVATE KEY</th>
+                <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">PUBLISH</th>
+                <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:150px;">SUBJECT</th>
+                <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">DESCRIPTION</th>
+                <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;">ETAT</th>
+                <th class="sort white-space-nowrap align-middle ps-4" scope="col">RESPONSE</th>
+                <!-- Add this column for responses -->
+                <th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody class="list" id="products-table-body">
+            {% for reclamation in reclamations %}
+                <tr class="position-static" data-status="{{ reclamation.reponse ? 'done' : 'pending' }}">
+                    <td class="align-middle ps-4">
+                        <img src="{{ asset('images/reclamation/' ~ reclamation.imagePath) }}" alt="Reclamation Image" width="200" height="200"/>
+                    </td>
+                    <td class="align-middle ps-4">
+                        {{ reclamation.privateKey }}
+                    </td>
+                    <td class="align-middle ps-4">
+                        {{ reclamation.createdAt|date('Y-m-d\TH:i:sP')|time_ago }}
+                    </td>
+                    <td class="align-middle ps-4">
+                        {{ reclamation.subject }}
+                    </td>
+                    <td class="align-middle ps-4">
+                        {{ reclamation.description }}
+                    </td>
+                    <td class="align-middle ps-4">
+                        {% if reclamation.reponse %}
+                            {{ reclamation.reponse.repReclamation }}
+                            <span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success">Done</span>
+                        {% else %}
+                            <span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-danger">Still panding</span>
+                        {% endif %}
+                    </td>
+                    <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
+                        <div class="btn-reveal-trigger position-static">
+                            <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fas fa-ellipsis-h fs-10"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end py-2">
+                                <a class="dropdown-item add-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}">Add Response</a>
+                                <a class="dropdown-item mod-response" href="#" data-bs-toggle="modal" data-bs-target="#addResponseModal" data-reclamation-id="{{ reclamation.id }}" data-reclamation-subject="{{ reclamation.subject }}" data-reclamation-description="{{ reclamation.description }}" data-reclamation-response="{{ reclamation.reponse ? reclamation.reponse.repReclamation : '' }}">Mod Rec</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-			{% if currentPage < totalPages %}
-				<li class="page-item">
-					<a class="page-link" href="{{ path('app_conference', {'page': currentPage + 1}) }}">Next</a>
-				</li>
-			{% else %}
-				<li class="page-item disabled">
-					<span class="page-link">Next</span>
-				</li>
-			{% endif %}
-		</ul>
-	</nav>
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if currentPage > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('app_conference', {'page': currentPage - 1}) }}">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            {% endif %}
+
+            {% for i in 1..totalPages %}
+                <li class="page-item {{ currentPage == i ? 'active' : '' }}">
+                    <a class="page-link" href="{{ path('app_conference', {'page': i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+
+            {% if currentPage < totalPages %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('app_conference', {'page': currentPage + 1}) }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 
 	<div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addResponseModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -150,7 +157,16 @@ window.location.reload();
 });
 });
 });
-
+function filterReclamations(status) {
+	const rows = document.querySelectorAll('#products-table-body tr');
+	rows.forEach(row => {
+		if (status === 'all' || row.dataset.status === status) {
+			row.style.display = '';
+		} else {
+			row.style.display = 'none';
+		}
+	});
+}
 
 $('#responseForm').submit(function (event) {
 event.preventDefault();
