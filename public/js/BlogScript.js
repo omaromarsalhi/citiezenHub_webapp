@@ -161,44 +161,147 @@ window.onscroll = function () {
 function addPost(event) {
     event.preventDefault();
 
-    let imageFile = document.querySelector('#nipa').files[0]; // Récupérer l'image de l'input
-
+    let imageFile = document.querySelector('#nipa').files[0];
     let formData = new FormData();
     formData.append('image', imageFile);
 
-    $.ajax({
-        url: '/checkImage', // URL de la méthode checkImage dans BlogController.php
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            console.log(data); // Affiche la réponse de l'API
-        },
-        error: function() {
-            console.log('Une erreur est survenue lors de l\'envoi de l\'image.');
+    if (imageFile != null) {
+
+        $.ajax({
+            url: '/checkImage',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data.microsoft.items[0].label);
+                console.log(data.microsoft.items[0].likelihood_score);
+                console.log(data.microsoft.items[0].category);
+
+                var isPublic = true;
+                var max = 0;
+                var categorie = "";
+                for (i = 0; i < data.microsoft.items.length; i++) {
+                    if (data.microsoft.items[i].likelihood_score > 0.2) {
+                        isPublic = false;
+                        if (max < data.microsoft.items[i].likelihood_score) {
+                            max = data.microsoft.items[i].likelihood_score;
+                            categorie = data.microsoft.items[i].category;
+                        }
+                    }
+                }
+
+                if (isPublic) {
+                    let formData = new FormData();
+                    let caption = $('#contact-message').val();
+                    let files = $('#nipa')[0].files;
+                    for (let i = 0; i < files.length; i++) {
+                        formData.append('images[]', files[i]);
+                    }
+                    formData.append('caption', caption);
+                    $.ajax({
+                        url: '/new',
+                        type: "POST",
+                        data: formData,
+                        async: true,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.success) {
+                                var newPostHTML = createPostHTML(response.post, response.post.url);
+                                $('#postsContainer').prepend(newPostHTML);
+                                posts.unshift(response.post);
+                                $('html, body').animate({
+                                    scrollTop: 950
+                                }, 300);
+                                $('#contact-message').val('');
+                                $('#nipa').val('');
+                                document.getElementById("previousImage").style.display = "none";
+                                document.getElementById("nextImage").style.display = "none";
+                                $('#rbtinput2').attr('src', 'aucuneImg.png');
+
+                                document.getElementById("delImage").style.display = "none";
+
+                                rep = " ";
+                                rep = "Votre post a été ajouté avec succès";
+                                console.log(rep);
+                                $('#sucess-message').text(rep);
+
+                                $('#statusSuccessModal').modal('show');
+                            } else {
+                                console.error('Failed to create post: ' + response.message);
+                            }
+                        },
+                        error: function (response) {
+                            console.error("error");
+                        },
+                    });
+                } else {
+                    rep = " ";
+                    rep = "Votre post a ete refuse a cause d'un contenu : " + categorie;
+                    console.log(rep);
+                    $('#error-message').text(rep);
+                    $('#statusErrorsModal').modal('show');
+
+                    $('#contact-message').val('');
+                    $('#nipa').val('');
+                    document.getElementById("previousImage").style.display = "none";
+                    document.getElementById("nextImage").style.display = "none";
+                    $('#rbtinput2').attr('src', 'aucuneImg.png');
+                }
+            },
+            error: function () {
+                console.log('Une erreur est survenue lors de l\'envoi de l\'image.');
+            }
+        });
+    } else {
+        let formData = new FormData();
+        let caption = $('#contact-message').val();
+        let files = $('#nipa')[0].files;
+        for (let i = 0; i < files.length; i++) {
+            formData.append('images[]', files[i]);
         }
-    });
-}
+        formData.append('caption', caption);
+        $.ajax({
+            url: '/new',
+            type: "POST",
+            data: formData,
+            async: true,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    var newPostHTML = createPostHTML(response.post, response.post.url);
+                    $('#postsContainer').prepend(newPostHTML);
+                    posts.unshift(response.post);
+                    $('html, body').animate({
+                        scrollTop: 950
+                    }, 300);
+                    $('#contact-message').val('');
+                    $('#nipa').val('');
+                    document.getElementById("previousImage").style.display = "none";
+                    document.getElementById("nextImage").style.display = "none";
+                    $('#rbtinput2').attr('src', 'aucuneImg.png');
 
+                    document.getElementById("delImage").style.display = "none";
 
-document.addEventListener('DOMContentLoaded', function () {
-    var textarea = document.getElementById('captionModfier');
-    var fileInput = document.getElementById('nipaUpload');
-    var submitButton = document.getElementById('modifierButton');
+                    rep = " ";
+                    rep = "Votre post a été ajouté avec succès";
+                    console.log(rep);
+                    $('#sucess-message').text(rep);
 
-    function verifierEtatBoutonModifier() {
-        var caption = textarea.value.trim();
-        var image = fileInput.files.length > 0;
-        var sameCaption = caption === initialCaption;
-        submitButton.disabled = !(caption || image) || sameCaption;
+                    $('#statusSuccessModal').modal('show');
+                } else {
+                    console.error('Failed to create post: ' + response.message);
+                }
+            },
+            error: function (response) {
+                console.error("error");
+            },
+        });
     }
 
-    textarea.addEventListener('input', verifierEtatBoutonModifier);
-    fileInput.addEventListener('change', verifierEtatBoutonModifier);
-
-    verifierEtatBoutonModifier();
-});
+}
 
 function handleMenuAction(button, postId, caption, image, action) {
     if (action === "modifier") {
@@ -211,31 +314,14 @@ function handleMenuAction(button, postId, caption, image, action) {
 }
 
 function deletePost(postId) {
-    Swal.fire({
-        title: 'Êtes-vous sûr?',
-        text: "Vous ne pourrez pas revenir en arrière!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimez-le!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '/blog/' + postId,
-                type: 'DELETE',
-                success: function (response) {
-                    $("div[data-post-id='" + postId + "']").remove();
-                    Swal.fire(
-                        'Supprimé!',
-                        'Votre post a été supprimé.',
-                        'success'
-                    )
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
+    $.ajax({
+        url: '/blog/' + postId,
+        type: 'DELETE',
+        success: function (response) {
+            $("div[data-post-id='" + postId + "']").remove();
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
         }
     });
 }
@@ -386,16 +472,6 @@ function changeImageUpload(direction) {
     }
 }
 
-document.getElementById("delImage").addEventListener("click", function () {
-    var nipaInput = document.getElementById("nipa");
-    nipaInput.value = "";
-    var rbtinput2 = document.getElementById("rbtinput2");
-    rbtinput2.src = "aucuneImg.png";
-    this.style.display = "none";
-    document.getElementById("previousImage").style.display = "none";
-    document.getElementById("nextImage").style.display = "none";
-    $('#ajoutPost').prop('disabled', true);
-});
 
 document.getElementById("delImageUpdate").addEventListener("click", function () {
     Swal.fire({
