@@ -91,7 +91,7 @@ To clone and run this application, you'll need  From your command line:
 ```bash
 # Clone this repository
 
-$ git clone https://github.com/omaromarsalhi/javaFX.git
+$ git clone https://github.com/omaromarsalhi/citiezenHub_webapp.git
 
 # Go into the repository
 
