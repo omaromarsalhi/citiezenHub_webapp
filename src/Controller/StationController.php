@@ -195,4 +195,35 @@ class StationController extends AbstractController
          return new JsonResponse(['posts' => $stations]);
 
     }
+
+
+    #[Route('/tri-stations', name: 'tri_stations')]
+public function triStations(Request $request, StationRepository $stationRepository): Response
+{
+    if ($request->isXmlHttpRequest()) {
+        $critereTri = $request->query->get('tri'); // Récupérer le critère de tri depuis la requête AJAX
+        $ordre = $request->query->get('ordre', 'ASC'); // Récupérer l'ordre de tri (ASC ou DESC)
+
+        // Effectuer le tri en fonction du critère et de l'ordre
+        $stations = $stationRepository->findBy([], [$critereTri => $ordre]);
+
+        // Préparer les données triées pour la réponse JSON
+        $stationsArray = [];
+        foreach ($stations as $station) {
+            $stationsArray[] = [
+                'id' => $station->getId(),
+                'nomStation' => $station->getNomStation(),
+                'addressStation' => $station->getAddressStation(),
+                'typeVehicule' => $station->getTypeVehicule(),
+                'imageStation' => $station->getImageStation(),
+            ];
+        }
+
+        // Renvoyer les résultats triés au format JSON
+        return new JsonResponse(['stations' => $stationsArray]);
+    } else {
+        // Si la requête n'est pas une requête AJAX, renvoyer une réponse d'erreur
+        return new JsonResponse('This route accepts only AJAX requests', Response::HTTP_BAD_REQUEST);
+    }
+}
 }

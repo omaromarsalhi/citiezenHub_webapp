@@ -96,12 +96,18 @@ document.getElementById('lastname').addEventListener('input', validateLastName);
 
 function testImage(filePath) {
     var critere=0;
-    let rep ;
+    let rep ="";
+    let formData = new FormData();
+    formData.append('file', filePath);
     $.ajax({
-        url: '/AbonnementScan/'+filePath,
+        url: '/AbonnementScan',
         type: "POST", // Change the request type to POST
+        data:formData,
+        processData: false,
+        contentType: false,
         success: function (response) {
-            for( i=0;i<10;i++){
+         
+          for( i=0;i<10;i++){
                if( response.result.tags[i].confidence>0 &&response.result.tags[i].tag.en=="person")
                {
                 critere++;
@@ -164,10 +170,12 @@ var input = document.getElementById('createinputfile');
     //console.log(imagePath);  
   //  testImage("C:\Users\azeez\Downloads\images (3).jpg");
 //});
-document.getElementById("createinputfile").addEventListener("change", function () {
-    var imageFile = this.files[0];
-    console.log(imageFile);
-    testImage(imageFile.name);
+document.getElementById("createinputfile").addEventListener("change", function (event) {
+    
+  var imageFile = this.files[0];
+
+
+    testImage(imageFile);
 })
 
 

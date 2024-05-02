@@ -27,6 +27,9 @@ class Abonnement
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $datefin = null;
+    
+    #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
@@ -35,11 +38,7 @@ class Abonnement
     #[ORM\Column(length: 255)]
     private ?string $TypeAbonnement = null;
     
-    #[ORM\Column(type: 'date',name: "dateFin")]
-    private ?\DateTimeInterface $datefin;
-
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $datedebut;
+   
 
     #[Vich\UploadableField(mapping: 'abonnement', fileNameProperty: 'image')]
     private ?File $imageFile = null;
@@ -84,17 +83,19 @@ class Abonnement
 
         return $this;
     }
-    public function getdatefin(): ?\DateTimeInterface
+    
+    public function getdatefin(): ?string
     {
         return $this->datefin;
     }
-
+/*
     public function setdatefin(?\DateTimeInterface $datefin): static
     {
         $this->datefin = $datefin;
 
         return $this;
     }
+  */  
 
     public function getTypeAbonnement(): ?string
     {

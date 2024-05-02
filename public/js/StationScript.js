@@ -244,9 +244,10 @@ $('#name').change(function() {
     }
 
 
-// search.js
 
-// public/js/search.js
+ 
+
+public/js/search.js
 
    $('#search-input').change( function(event) {
         console.log("bbbb");
@@ -271,45 +272,7 @@ $('#name').change(function() {
             // If the search query is empty, remove the search results
             // and revert to the original content
                 $('#table-latest-review-body').append(`
-                {% for station in stationlist %}
-
-
-
-
-                <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                  <td class="fs-9 align-middle ps-0">
-                    <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"product":"Apple MacBook Pro 13 inch-M1-8/256GB-space","productImage":"/products/60x60/3.png","customer":{"name":"Woodrow Burton","avatar":"/team/40x40/58.webp"},"rating":4.5,"review":"It&#39;s a Mac, after all. Once you&#39;ve gone Mac, there&#39;s no going back. My first Mac lasted over nine years, and this is my second.","status":{"title":"Pending","badge":"warning","icon":"clock"},"time":"Just now"}' /></div>
-                  </td>
-                  <td class="align-middle product white-space-nowrap py-0"><a class="d-block rounded-2 border border-translucent" href="apps/e-commerce/landing/product-details.html"><img src=" assetsAdmin/assets/img/products/60x60/3.png" alt="" width="53" /></a></td>
-                  <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">{{station.NomStation}}</a></td>
-                  <td class="align-middle customer white-space-nowrap"><a class="d-flex align-items-center text-body" href="apps/e-commerce/landing/profile.html">
-                      <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/station/{{ station.imagestation }}"  alt="" /></div>
-                      <h6 class="mb-0 ms-3 text-body"> {{station.TypeVehicule}}</h6>
-                    </a></td>
-                  <td class="align-middle rating white-space-nowrap fs-10"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span></td>
-                  <td class="align-middle review" style="min-width:350px;">
-                    <p class="fs-9 fw-semibold text-body-highlight mb-0">{{station.AddressStation}}</p>
-                  </td>
-                  <td class="align-middle text-start ps-5 status"><span class="badge badge-phoenix fs-10 badge-phoenix-warning"><span class="badge-label">Pending</span><span class="ms-1" data-feather="clock" style="height:12.8px;width:12.8px;"></span></span></td>
-                  <td class="align-middle text-end time white-space-nowrap">
-                    <div class="hover-hide">
-                      <h6 class="text-body-highlight mb-0">Just now</h6>
-                    </div>
-                  </td>
-                  <td class="align-middle white-space-nowrap text-end pe-0">
-                    <div class="position-relative">
-                      <div class="hover-actions"> <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick="showModifierPopup('{{ station.id }}','{{ station.NomStation }}','{{ station.AddressStation }}','{{ station.imagestation }}','{{ station.TypeVehicule }}')"></span></button>
-                      <button class="btn btn-sm btn-phoenix-secondary fs-10" onclick="deleteStation({{station.id}})"><span class="fas fa-trash"></span></button></div> 
-                      </div>
-                    <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
-                      <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Update</a>
-                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr> 
-               
-                      {% endfor %}
+                 
                 `);
         }
     });
@@ -320,7 +283,7 @@ $('#name').change(function() {
         var searchQuery = $(this).val();
         console.log("Search query:", searchQuery); // Add this line
         // Rest of your code
-    });
+    });// 
 
  
 function deleteStation(stationId) {

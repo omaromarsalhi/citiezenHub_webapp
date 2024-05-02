@@ -6,6 +6,7 @@ use App\Entity\Abonnement;
 use App\Entity\Transport;
 use App\Form\AbonnementType;
 use App\Form\TransportType;
+use App\MyHelpers\UploadImage;
 use App\Repository\AbonnementRepository;
 use App\Repository\TransportRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\ImaggaService;
+use App\Service\UploadImageApi;
+
 
 
 
@@ -82,15 +85,7 @@ class AbonnementController extends AbstractController
             $Type=$request->get('type');
             $Image=$request->files->get('image');
 
-                $systemDate = new \DateTimeImmutable();
-                $interval = match ($Type) {
-                    'Mensuelle' => 30,
-                    'Annuel' => 365,
-                    default => 0,
-                };
-                $endDate = $systemDate->add(new \DateInterval("P{$interval}D"));
-        
-            $abonnement->setDateFin($endDate);
+ 
             $abonnement->setNom($Name);
             $abonnement->setPrenom($Lastname);
             $abonnement->setTypeAbonnement($Type);
@@ -122,14 +117,13 @@ class AbonnementController extends AbstractController
         ]);
     }
 
-    #[Route('/AbonnementScan/{path}', name: 'imageScan')]
-    public function imageScan(ImaggaService $imaggaService,Request $request,$path): JsonResponse
+    #[Route('/AbonnementScan', name: 'imageScan')]
+    public function imageScan(ImaggaService $imaggaService,Request $request,UploadImageApi $uploadImage): JsonResponse
     {
-      $filePath ="C:/Users/azeez/Downloads";
-
-      $concatenatedString=$filePath."/".$path;
+      $image=$request->files->get('file');     
+      $imagePath = $uploadImage->uploadImageToImgBB($image); 
       try {
-          $tags = $imaggaService->tagImage($concatenatedString);
+          $tags = $imaggaService->tagImage($imagePath);
 
           return new JsonResponse($tags);
       } catch (\Exception $e) {
