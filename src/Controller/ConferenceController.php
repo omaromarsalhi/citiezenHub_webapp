@@ -183,13 +183,13 @@ class ConferenceController extends AbstractController
         // Return the response data
         return new JsonResponse($responseData);
     }
-    
+
     #[Route('/statistics', name: 'app_statistics')]
     public function showStatistics(EntityManagerInterface $entityManager): Response
     {
         // Fetch total number of reclamations
         $totalReclamations = $entityManager->getRepository(Reeclamation::class)->count([]);
-    
+
         // Fetch number of responded reclamations
         $respondedReclamations = $entityManager->getRepository(Reeclamation::class)
             ->createQueryBuilder('r')
@@ -198,30 +198,62 @@ class ConferenceController extends AbstractController
             ->where('resp.id IS NOT NULL')
             ->getQuery()
             ->getSingleScalarResult();
-    
+
         // Calculate pending reclamations
         $pendingReclamations = $totalReclamations - $respondedReclamations;
 
         // Fetch reclamations per day
         $reclamationsPerDay = $entityManager->getRepository(Reeclamation::class)
             ->createQueryBuilder('r')
-            ->select('SUBSTRING(r.createdAt, 1, 10) as day, COUNT(r.id) as count')
+            ->select('SUBSTRING(r.createdAt, 1, 10) as day, COUNT(r.id) as total')
             ->groupBy('day')
             ->orderBy('day', 'ASC')
             ->getQuery()
             ->getResult();
 
-        // Calculate simple prediction for future reclamations
-        $reclamationChanges = [];
-        $previousCount = null;
-        foreach ($reclamationsPerDay as $day => $count) {
-            if ($previousCount !== null) {
-                $reclamationChanges[] = $count['count'] - $previousCount;
-            }
-            $previousCount = $count['count'];
+        // Fetch responded reclamations per day
+        $respondedReclamationsPerDay = $entityManager->getRepository(Reeclamation::class)
+            ->createQueryBuilder('r')
+            ->leftJoin('r.reponse', 'resp')
+            ->select('SUBSTRING(r.createdAt, 1, 10) as day, COUNT(r.id) as responded')
+            ->where('resp.id IS NOT NULL')
+            ->groupBy('day')
+            ->getQuery()
+            ->getResult();
+
+        // Combine total and responded data by day
+        $combinedReclamationsPerDay = [];
+        foreach ($reclamationsPerDay as $entry) {
+            $day = $entry['day'];
+            $combinedReclamationsPerDay[$day] = [
+                'day' => $day,
+                'total' => $entry['total'],
+                'responded' => 0 // Initialize responded count
+            ];
         }
-        $averageChange = count($reclamationChanges) > 0 ? array_sum($reclamationChanges) / count($reclamationChanges) : 0;
-        $predictedReclamations = end($reclamationsPerDay)['count'] + $averageChange;
+
+        foreach ($respondedReclamationsPerDay as $entry) {
+            $day = $entry['day'];
+            if (isset($combinedReclamationsPerDay[$day])) {
+                $combinedReclamationsPerDay[$day]['responded'] = $entry['responded'];
+            }
+        }
+
+        // Flatten array for Twig
+        $finalData = array_values($combinedReclamationsPerDay);
+
+        // Calculate simple prediction for future reclamations
+$reclamationChanges = [];
+$previousCount = null;
+foreach ($finalData as $data) {
+    if ($previousCount !== null) {
+        $reclamationChanges[] = $data['total'] - $previousCount; // use 'total' instead of 'count'
+    }
+    $previousCount = $data['total'];
+}
+$averageChange = count($reclamationChanges) > 0 ? array_sum($reclamationChanges) / count($reclamationChanges) : 0;
+$predictedReclamations = $previousCount + $averageChange; // Updated to use $previousCount
+
 
         // Render the statistics view with all the data
         return $this->render('conference/statistics.html.twig', [
@@ -229,15 +261,9 @@ class ConferenceController extends AbstractController
                 'total_reclamations' => $totalReclamations,
                 'responded_reclamations' => $respondedReclamations,
                 'pending_reclamations' => $pendingReclamations,
-                'reclamations_per_day' => $reclamationsPerDay,
+                'reclamations_per_day' => $finalData,
                 'predicted_reclamations' => round($predictedReclamations)
             ],
         ]);
     }
-    
-    
-    
-    
-    
-
 }
