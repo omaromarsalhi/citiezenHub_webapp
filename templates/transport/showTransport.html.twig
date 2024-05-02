@@ -2,6 +2,71 @@
 
 {% block body %}
    
+
+
+
+      <div class="rn-top-top-seller-area nice-selector-transparent rn-section-gapTop">
+        <div class="container">
+            <div class="row  mb--30">
+                <div class="col-12 justify-sm-center d-flex">
+                    <h3 class="title" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">Top Rated Transports</h3>
+                    <select>
+                        <option data-display="1 day"> 1 day</option>
+                        <option value="1">7 Day's</option>
+                        <option value="2">15 Day's</option>
+                        <option value="4">30 Day's</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row justify-sm-center g-5 top-seller-list-wrapper">
+                <!-- start single top-seller -->
+          <      
+ 
+ {% for transport in transports|slice(0, 5)  %}
+    <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
+        <div class="top-seller-inner-one">
+            <div class="top-seller-wrapper">
+                <div class="thumbnail varified">
+                    <a href="author.html"><img src="/images/transports/{{ transport.VehiculeImage }}" alt="Transport_Image"></a>
+                </div>
+                <div class="top-seller-content">
+                    <a href="author.html">
+                      {% for station_dep in stations %}
+                                  {% if station_dep.id == transport.Stationdepart %}
+                        <h6 class="name">{{station_dep.NomStation}}</h6>
+                                    {% endif %}
+                                    {% endfor %}
+
+
+                                        {% for station_ari in stations %}
+                                  {% if station_ari.id == transport.Stationarrive %}
+
+                       <h6 class="name">{{station_ari.NomStation}}</h6>
+
+                                         {% endif %}
+
+                              {% endfor %}
+                    </a>
+                    <span class="count-number">
+                        {{ transport.averageRating }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+        
+                
+        
+        
+            </div>
+        </div>
+    </div>
+
+
+
+
+
     <div class="rn-upcoming-area rn-section-gap">
         <div class="container">
             <div class="row">
@@ -44,7 +109,7 @@
 
                                 </tr>
                             </thead>
-                            <tbody class="ranking">
+                            <tbody class="ranking" id="transport-table-body">
                                                {% for transport in transports %}
                              
 
@@ -69,7 +134,7 @@
                                   {% if station_ari.id == transport.Stationarrive %}
 
                                     <td><span class="color-green">{{station_ari.NomStation}}</span></td>
-                                                                        {% endif %}
+                                         {% endif %}
 
                               {% endfor %}
                                     <td><span>{{transport.TypeVehicule}}</span></td>
@@ -81,19 +146,17 @@
                         </table>
                     </div>
                     <!-- table End -->
-                    <div class="row">
-                        <div class="col-lg-12" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
-                            <nav class="pagination-wrapper" aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                 <div class="row">
+    <div class="col-lg-12" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
+        <nav class="pagination-wrapper" aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a id="prev-page" class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a id="page-1" class="page-link active" href="#">1</a></li>
+                <li class="page-item"><a id="next-page" class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
                 </div>
             </div>
         </div>
@@ -184,7 +247,7 @@
   var rating = 0;
   var id;
   var stationId ;
-  var userId=187;
+  var userId=115;
 
   // Function to open the modal
   function openModal(station) {
@@ -248,6 +311,52 @@
     });
 }
 
+ var currentPage = 1;
+var rowsPerPage = 2; // Change this to the number of rows you want per page
+
+function updateTable() {
+    var tableBody = document.getElementById('transport-table-body');
+    var rows = Array.from(tableBody.children);
+    var totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    // Hide all rows
+    rows.forEach(function(row) {
+        row.style.display = 'none';
+    });
+
+    // Show only the rows for the current page
+    var start = (currentPage - 1) * rowsPerPage;
+    var end = start + rowsPerPage;
+    rows.slice(start, end).forEach(function(row) {
+        row.style.display = '';
+    });
+
+    // Update the current page number
+    document.querySelector('.page-link.active').textContent = currentPage;
+}
+
+document.getElementById('prev-page').addEventListener('click', function(event) {
+    event.preventDefault();
+    if (currentPage > 1) {
+        currentPage--;
+        updateTable();
+    }
+});
+
+document.getElementById('next-page').addEventListener('click', function(event) {
+    event.preventDefault();
+    var tableBody = document.getElementById('transport-table-body');
+    var rows = Array.from(tableBody.children);
+    var totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        updateTable();
+    }
+});
+
+// Initialize the table
+updateTable();
 </script>
  
     {% endblock %}

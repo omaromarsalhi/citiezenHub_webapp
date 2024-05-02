@@ -53,10 +53,35 @@ class TransportController extends AbstractController
       ]);
     }
     #[Route('/transportClient', name: 'app_transport_client')]
-    public function transportClient(StationRepository $StationRep): Response
+    public function transportClient(StationRepository $StationRep,RatingRepository $ratingRepository): Response
     {
+
+
+        $transports = $this->getDoctrine()->getManager()->getRepository(Transport::class)->findAll();
+
+        foreach ($transports as $transport) {
+            $ratings = $ratingRepository->findBy(['id_Transport' => $transport->getIdTransport()]);
+            $totalRatings = count($ratings);
+            $sumRatings = 0;
+    
+            foreach ($ratings as $rating) {
+                $sumRatings += $rating->getRating(); // Supposons que la valeur de l'évaluation soit stockée dans une propriété "value"
+            }
+    
+            $averageRating = ($totalRatings > 0) ? $sumRatings / $totalRatings : 0;
+    
+            $transport->setAverageRating($averageRating);
+        }
+
+
+
+    
+        usort($transports, function($a, $b) {
+            return $b->getAverageRating() <=> $a->getAverageRating();
+        });
+
       $stations = $StationRep->findAll();
-      $transports = $this->getDoctrine()->getManager()->getRepository(Transport::class)->findAll();
+      //$transports = $this->getDoctrine()->getManager()->getRepository(Transport::class)->findAll();
       $entityManager = $this->getDoctrine()->getManager();
 
  
@@ -68,6 +93,53 @@ class TransportController extends AbstractController
       ]);
     }
 
+    #[Route('/transportClientFilter/{id}', name: 'app_transport_client_filterer')]
+    public function transportClientFiltre(StationRepository $StationRep,$id,RatingRepository $ratingRepository): Response
+    {
+
+
+
+
+
+
+        $repository = $this->getDoctrine()->getManager()->getRepository(Transport::class);
+        
+         $query = $repository->createQueryBuilder('t')
+            ->where('t.Station_depart = :stationId')
+            ->setParameter('stationId', $id)
+            ->getQuery();
+        
+        $transports = $query->getResult();
+
+
+
+        foreach ($transports as $transport) {
+            $ratings = $ratingRepository->findBy(['id_Transport' => $transport->getIdTransport()]);
+            $totalRatings = count($ratings);
+            $sumRatings = 0;
+    
+            foreach ($ratings as $rating) {
+                $sumRatings += $rating->getRating(); // Supposons que la valeur de l'évaluation soit stockée dans une propriété "value"
+            }
+    
+            $averageRating = ($totalRatings > 0) ? $sumRatings / $totalRatings : 0;
+    
+            $transport->setAverageRating($averageRating);
+        }
+        usort($transports, function($a, $b) {
+            return $b->getAverageRating() <=> $a->getAverageRating();
+        });
+
+        $stations = $StationRep->findAll();
+       
+
+    
+      return $this->render('transport/showTransport.html.twig', [
+        
+          'stations' => $stations,
+          'transports' => $transports,
+      ]);
+    }
 
  
     
@@ -256,7 +328,7 @@ public function add(Request $request): JsonResponse
 
     if ($existingRating) {
         $existingRating = $ratingRepository->findOneBy([
-            'id_Transport' => $stationId,
+            'id_User' => $userId,
         ]);
         if ($existingRating) {
             $existingRating->setRating($ratingValue);
