@@ -370,4 +370,32 @@ function showModifierPopup(id, name, address,image,type) {
     stationLocationInput.value = address;
    // stationImageInput.value=image;
     $('#updateDealModal').modal('show');
+
+
+    
 }
+
+
+
+// assets/js/map.js
+// assets/js/map.js
+
+function initMap() {
+    // Coordinates to center the map
+    var myLatLng = {lat: 34.397, lng: 9.644};
+
+    // Create the map
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: myLatLng,
+        zoom: 8
+    });
+
+    // Create a marker on the map
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: 'Hello World!'
+    });
+}
+
+

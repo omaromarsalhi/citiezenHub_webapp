@@ -33,6 +33,17 @@ class StationController extends AbstractController
             'stationlist' => $station
         ]);
     }
+    #[Route('/stationClient', name: 'stationClient')]
+    public function showMap(): Response
+    {
+     
+     
+        $station = $this->getDoctrine()->getManager()->getRepository(station::class)->findAll();
+        return $this->render('station/stations.html.twig', [
+            'controller_name' => 'StationController',
+            'stationlist' => $station
+        ]);
+    }
  
 
  #[Route('/addStation', name: 'addStation')]

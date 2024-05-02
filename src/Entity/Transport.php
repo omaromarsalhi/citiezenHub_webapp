@@ -37,7 +37,7 @@ class Transport
 
     private ?string $vehiculeimage = null;
     
-    #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'vehiculeimage')]
+    #[Vich\UploadableField(mapping: 'transport', fileNameProperty: 'Vehicule_Image')]
     #[Assert\NotBlank(message:"Image can't be null ")]
     private ?File $imageFile = null;
     
