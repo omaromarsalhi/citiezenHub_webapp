@@ -147,8 +147,7 @@ Gang_of_SIXXXX
       <td align="center" valign="top" width="14.28%"><a href="http://www.jeffallen.io/"><img src="https://avatars0.githubusercontent.com/u/5266810?v=3?s=100" width="100px;" alt="Jeff Allen"/><br /><sub><b>Latifa ben zaied</b></sub></a><br /><a href="https://github.com/codesandbox/codesandbox-client/commits?author=vueu" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/bengummer"><img src="https://avatars0.githubusercontent.com/u/1089897?v=3?s=100" width="100px;" alt="Ben Gummer"/><br /><sub><b>omar marrakchi</b></sub></a><br /><a href="https://github.com/codesandbox/codesandbox-client/commits?author=bengummer" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://twitter.com/faceyspacey"><img src="https://avatars3.githubusercontent.com/u/154732?v=3?s=100" width="100px;" alt="James Gillmore"/><br /><sub><b>aziz gamty</b></sub></a><br /><a href="https://github.com/codesandbox/codesandbox-client/commits?author=faceyspacey" title="Code">💻</a> <a href="https://github.com/codesandbox/codesandbox-client/issues?q=author%3Afaceyspacey" title="Bug reports">🐛</a></td>
-	    <td align="center" valign="top" width="14.28%"><a href="http://twitter.com/faceyspacey"><img src="https://avatars3.githubusercontent.com/u/154732?v=3?s=100" width="100px;" alt="James Gillmore"/><br /><sub><b>Laroussi Ghassen 
-</b></sub></a><br /><a href="https://github.com/codesandbox/codesandbox-client/commits?author=faceyspacey" title="Code">💻</a> <a href="https://github.com/codesandbox/codesandbox-client/issues?q=author%3Afaceyspacey" title="Bug reports">🐛</a></td> 
+	    
     </tr>
 
   </tbody>
