@@ -160,47 +160,24 @@ window.onscroll = function () {
 
 function addPost(event) {
     event.preventDefault();
+
+    let imageFile = document.querySelector('#nipa').files[0]; // Récupérer l'image de l'input
+
     let formData = new FormData();
-    let caption = $('#contact-message').val();
-    let files = $('#nipa')[0].files;
-    for (let i = 0; i < files.length; i++) {
-        formData.append('images[]', files[i]);
-    }
-    formData.append('caption', caption);
+    formData.append('image', imageFile);
+
     $.ajax({
-        url: '/new',
-        type: "POST",
+        url: '/checkImage', // URL de la méthode checkImage dans BlogController.php
+        type: 'POST',
         data: formData,
-        async: true,
         processData: false,
         contentType: false,
-        success: function (response) {
-            if (response.success) {
-                var newPostHTML = createPostHTML(response.post, response.post.url);
-                $('#postsContainer').prepend(newPostHTML);
-                posts.unshift(response.post);
-                $('html, body').animate({
-                    scrollTop: 950
-                }, 300);
-                $('#contact-message').val('');
-                $('#nipa').val('');
-                document.getElementById("previousImage").style.display = "none";
-                document.getElementById("nextImage").style.display = "none";
-                $('#rbtinput2').attr('src', 'aucuneImg.png');
-                $('#ajoutPost').prop('disabled', true);
-                document.getElementById("delImage").style.display = "none";
-                Swal.fire(
-                    'Ajouté!',
-                    'Votre post a été ajouté.',
-                    'success'
-                )
-            } else {
-                console.error('Failed to create post: ' + response.message);
-            }
+        success: function(data) {
+            console.log(data); // Affiche la réponse de l'API
         },
-        error: function (response) {
-            console.error("error");
-        },
+        error: function() {
+            console.log('Une erreur est survenue lors de l\'envoi de l\'image.');
+        }
     });
 }
 

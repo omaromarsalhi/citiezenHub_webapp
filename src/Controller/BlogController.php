@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-
+use App\MyHelpers\ImageExpliciteApi;
 use App\Entity\CommentPost;
 use App\Entity\ImagePsot;
+use App\MyHelpers\UploadImage;
 use App\Repository\CommentPostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class BlogController extends AbstractController
 {
@@ -423,5 +425,24 @@ class BlogController extends AbstractController
                 'dateComment' => $comment->getDateComment()->format('Y-m-d H:i:s'),
             ]
         ]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    #[Route('/checkImage', name: 'checkImage', methods: ['POST'])]
+    public function checkImage(Request $request, ImageExpliciteApi $imageExpliciteApi, UploadImage $uploadImage): Response
+    {
+        $imageFile = $request->files->get('image');
+
+        if ($imageFile) {
+            $imageUrl = $uploadImage->uploadImageToImgBB($imageFile);
+
+            $response = $imageExpliciteApi->checkExplicitContent($imageUrl);
+
+            return new JsonResponse($response);
+        }
+
+        return new JsonResponse(['error' => 'Aucune image n\'a été reçue.']);
     }
 }
