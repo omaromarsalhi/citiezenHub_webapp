@@ -30,48 +30,59 @@
   <a href="#license">License</a>
 </p>
 
-## Login Interface
+## reclmation Interface
 
-![image](https://github.com/omaromarsalhi/javaFX/assets/100521806/4acc555b-4054-4596-a3e8-9cf57f01b9eb)
-
- ## Main Window
-
-![image](https://github.com/omaromarsalhi/javaFX/assets/100521806/eed25829-7448-4f56-b297-d7027cac472a)
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/e9ec0193-d2d9-447a-b182-6617f7cae893)
 
 
-## Add Reclamation
+ ## chatbot interface 
 
-
-![image](https://github.com/omaromarsalhi/javaFX/assets/100521806/8ab83854-e6d4-4b2b-9917-a63ffb9b6810)
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/e16014b2-0382-4a21-b856-54835d2fa5ee)
 
 
 
-## Show Reclamation
-![image](https://github.com/omaromarsalhi/javaFX/assets/100521806/679beb3c-90fc-4d24-8c92-5560be4e8f03)
+## show all reclmation Reclamation avec filtre et changement d'etat 
 
 
-## Reponse Using Streaming speach to text
-
-![image](https://github.com/omaromarsalhi/javaFX/assets/100521806/579c3bc2-cb9d-468f-809a-3357393af85b) 
-
-
-## Email Personailise and pdf Aussi
-
-
-![image](https://github.com/omaromarsalhi/javaFX/assets/100521806/c4710af8-117a-46ea-ab01-ce946203b62c)
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/5343372c-6a9d-443e-b5b5-34a5724e68fb)
 
 
 
+
+## Show Reclamation details 
+
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/f612f5b7-af64-4b40-84c5-4485462d5812)
+
+
+## show reclamtion for admin 
+
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/be3eb556-8652-42f5-be07-36c0335bb98a)
+
+
+
+## ajouter Reponse 
+
+
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/06555327-c39d-496d-aa74-d26a7e6f9f36)
+
+
+
+
+
+##  staistique for admin with prediction 
+
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/5a64bd89-417d-49cf-acc7-d7c5d496aa92)
 
 
 
 ## Key Features
 
-*  JavaFx application
+*  Symfony
 *  smart city
 *  Reclamation
-*  Google vision
+*  Google gloud
 *  api
+*  chat GPT
   
 ## How To Use
 
@@ -95,23 +106,22 @@ Need google Cloud account
 
 ## Emailware
 
-CitzenHub is an [emailware](https://en.wiktionary.org/wiki/Wiktionary:Main_Page). Meaning, if you liked using this app or it has helped you in any way, I'd like you send me an email at <khalil.rmila@esprit.tn> about anything you'd want to say about this software. I'd really appreciate it!
+![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/b1e0d425-7760-418a-be38-4b44a489268b)
 
 ## Credits
 
 This software uses the following open source packages:
 
-- Google vision[Google vision]([http://electron.atom.io/](https://console.cloud.google.com/apis/library/vision.googleapis.com?project=citizenhub-416011))
-- java fx [java fx]([https://nodejs.org/](https://openjfx.io))
+- symfony [java fx]([https://nodejs.org/](https://openjfx.io))
 - openai [openai]([https://github.com/chjj/marked](https://platform.openai.com/docs/overview))
-- google map [google map]([http://showdownjs.github.io/showdown/](https://console.cloud.google.com/apis/library/maps-backend.googleapis.com?hl=en&project=citizenhub-416011))
+- ollama 
+- google cloud  [google map]([http://showdownjs.github.io/showdown/](https://console.cloud.google.com/apis/library/maps-backend.googleapis.com?hl=en&project=citizenhub-416011))
 - speach to text [speach to text]([http://codemirror.net/](https://cloud.google.com/speech-to-text/?hl=en))
+- text to speech [speach to text]([http://codemirror.net/](https://cloud.google.com/speech-to-text/?hl=en))
 - Emojis are taken from [here](https://github.com/arvida/emoji-cheat-sheet.com)
 
 ## Related
-
-application desktop
-web (comming soon)
+web application
 ## Support
 
 <a href="https://www.buymeacoffee.com/5Zn8Xh3l9" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
