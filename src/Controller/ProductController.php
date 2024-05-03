@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 
+use App\CustomEvent\ProductCustomEvent;
 use App\Entity\Product;
+use App\Event\ProductEvent;
 use App\EventListener\ProductEventListener;
 use App\MyHelpers\AiDataHolder;
 use App\MyHelpers\ImageHelper;
 use App\MyHelpers\AiVerificationMessage;
+use App\Observer\MarketPlaceObserver;
+use App\Provider\ProductProvider;
 use App\Repository\AiResultRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,6 +32,7 @@ class ProductController extends AbstractController
 
 
     private $eventDispatcher;
+
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
@@ -162,10 +167,10 @@ class ProductController extends AbstractController
             $imageHelper->saveImages($images, $product);
             $imageHelper->deleteImages($imagesNotToDelete, $product->getImages());
 
-//            $product = $productRepository->findOneBy(['idProduct' => $product->getIdProduct()]);
+            $product = $productRepository->findOneBy(['idProduct' => $product->getIdProduct()]);
 
 
-            $paths = [];
+         /*   $paths = [];
             for ($i = 0; $i < sizeof($product->getImages()); $i++) {
                 $paths[] = str_replace('usersImg/', '', $product->getImages()[$i]->getPath());
             }
@@ -178,7 +183,10 @@ class ProductController extends AbstractController
                 'mode' => 'edit'
             ];
 
-            $messageBus->dispatch(new AiVerificationMessage($obj));
+            $messageBus->dispatch(new AiVerificationMessage($obj));*/
+
+//            $event = new ProductCustomEvent($product);
+//            $this->eventDispatcher->dispatch($event, 'product.updated');
 
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
@@ -243,9 +251,4 @@ class ProductController extends AbstractController
 
 
 
-    public function notify(): void
-    {
-        $event = new ProductEventListener($this);
-        $this->eventDispatcher->dispatch($event,'product.updated');
-    }
 }

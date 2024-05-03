@@ -4,9 +4,38 @@
 
 
 $(document).ready(function () {
+
+    const eventSource = new EventSource('/sse/product');
+
+    eventSource.onmessage = (event) => {
+        console.log('Received message:', event.data);
+    };
+
+    eventSource.onerror = (error) => {
+        console.error('SSE Error:', error);
+        eventSource.close()
+    };
+
+
     regex();
     changeImageUpdate()
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function changeImageUpdate() {
     $('input[type="checkbox"]').click(function () {
