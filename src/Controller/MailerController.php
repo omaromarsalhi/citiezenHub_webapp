@@ -35,7 +35,7 @@ class MailerController extends AbstractController
 
         $email = (new Email())
             ->from('salhiomar362@gmail.com')
-            ->to($to)
+            ->to('omar.salhi.gob@gmail.com')
             ->subject('Hello from Symfony Mailer')
             ->text('This is the plain text body.')
             ->html('<p>This is the HTML body.</p>');

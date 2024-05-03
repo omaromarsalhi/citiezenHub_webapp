@@ -30,7 +30,7 @@ class UserController extends AbstractController
     public function index(): Response
     {
 
-        return $this->render('user/index.html.twig', [
+        return $this->render('user/chat-index.html.twig.twig', [
             'controller_name' => 'UserController',
         ]);
     }

@@ -6,7 +6,6 @@
 $(document).ready(function () {
     regex();
     changeImageUpdate()
-    new Splide('#image-slider').mount();
 });
 
 function changeImageUpdate() {
@@ -85,14 +84,19 @@ function updateProduct(id) {
         form_data.append('file-' + (i + 1), list[i]);
     }
     let str = ''
-    for (let i = 1; i <= $('#nbrImages').val(); i++) {
-        var myElement = document.getElementById("image-slider-slide0" + i);
-        if (myElement) {
-            str += $("#image-slider-slide0" + i).data('value');
-            str += '_';
+    let state = document.getElementById('singLeImageUploaded')
+    if (state) {
+        str=$("#singLeImageUploaded" ).data('value')
+    } else {
+        for (let i = 1; i <= $('#nbrImages').val(); i++) {
+            var myElement = document.getElementById("image-slider-slide0" + i);
+            if (myElement) {
+                str += $("#image-slider-slide0" + i).data('value');
+                str += '_';
+            }
         }
+        str = str.replace(/_$/, '')
     }
-    str=str.replace(/_$/,'')
 
     form_data.append('name', name);
     form_data.append('description', description);
@@ -101,6 +105,7 @@ function updateProduct(id) {
     form_data.append('category', category);
     form_data.append('idProduct', id);
     form_data.append('savedImages', str);
+
 
 
     $.ajax({
@@ -120,7 +125,6 @@ function updateProduct(id) {
         },
     });
 }
-
 
 
 function deleteProduct(id, index, type) {

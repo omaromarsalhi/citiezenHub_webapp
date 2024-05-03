@@ -7,16 +7,15 @@
 {% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/chat.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/detials.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/junk.css') }}"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
+
 {% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('js/user_dashboard.js') }}"></script>
-    <script src="{{ asset('js/product.js') }}"></script>
-    <script src="{{ asset('js/loader.js') }}"></script>
-    <script src="{{ asset('js/details.js') }}"></script>
-    <script src="{{ asset('js/ai.js') }}"></script>
-{% endblock %}
+
 
 {% block body %}
 
@@ -124,82 +123,99 @@
     <div class="rn-authore-profile-area">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <div class="tab-wrapper-one">
-                        <nav class="tab-button-one">
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <button
-                                        class="nav-link active"
-                                        id="nav-home-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#nav-home"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-home"
-                                        aria-selected="true"
-                                >
-                                    On Sale
-                                </button>
-                                <button
-                                        class="nav-link"
-                                        id="nav-profile-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#nav-profile"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-profile"
-                                        aria-selected="false"
-                                >
-                                    Owned
-                                </button>
-                                <button
-                                        class="nav-link"
-                                        id="nav-contact-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#nav-contact"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-contact"
-                                        aria-selected="false"
-                                >
-                                    Created
-                                </button>
-                                <button
-                                        class="nav-link"
-                                        id="nav-unverified-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#nav-unverified"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-unverified"
-                                        aria-selected="false"
-                                >
-                                    Unverified
-                                </button>
-                            </div>
-                        </nav>
-                    </div>
+            <div class="col-12">
+                <div class="tab-wrapper-one">
+                    <nav class="tab-button-one">
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button
+                                    class="nav-link active"
+                                    id="nav-home-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-home"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-home"
+                                    aria-selected="true"
+                            >
+                                On Sale
+                            </button>
+                            <button
+                                    class="nav-link"
+                                    id="nav-profile-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-profile"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-profile"
+                                    aria-selected="false"
+                            >
+                                Purchased
+                            </button>
+                            <button
+                                    class="nav-link"
+                                    id="nav-contact-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-contact"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-contact"
+                                    aria-selected="false"
+                            >
+                                Sold
+                            </button>
+                            <button
+                                    class="nav-link"
+                                    id="nav-unverified-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-unverified"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-unverified"
+                                    aria-selected="false"
+                            >
+                                Unverified
+                            </button>
+                            <button
+                                    class="nav-link "
+                                    id="nav-chat-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-chat"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-chat"
+                                    aria-selected="false"
+                                    onclick="loadChatInfo()"
+                            >
+                                Chat
+                            </button>
+                        </div>
+                    </nav>
                 </div>
             </div>
-
-            <div class="tab-content rn-bid-content" id="nav-tabContent">
-
+        </div>
+            <div class="tab-content rn-bid-content " id="nav-tabContent">
                 <div class="tab-pane row g-5 d-flex fade show active" id="nav-home" role="tabpanel"
                      aria-labelledby="nav-home-tab">
                     <div class="rn-new-items ">
-                        <div class="container " style="margin-top: 10px;margin-bottom: 100px">
-                            <div class="woocommerce-notices-wrapper" id="notification_box">
+                        {% if on_sale.getNbrPages() >= 2 %}
+                        <div class="container " style="margin-top: 10px">
+                            {% else %}
+                            <div class="container " style="margin-top: 10px;;margin-bottom: 100px">
 
-                            </div>
-                            <div id="sub-on_sale-block" class="row g-5">
-                                <!-- start single product -->
-                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': on_sale.getNProducts(10),'underverif': false,'type':'on_sale'} %}
-                                <!-- end single product -->
+                                {% endif %}
+                                <div class="woocommerce-notices-wrapper" id="notification_box">
+
+                                </div>
+                                <div id="sub-on_sale-block" class="row g-5">
+                                    <!-- start single product -->
+                                    {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': on_sale.getNProducts(10),'underverif': false,'type':'on_sale'} %}
+                                    <!-- end single product -->
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    {% if on_sale.getNbrPages() >= 2 %}
-                        <nav class="pagination-wrapper" aria-label="Page navigation example">
+                        {% if on_sale.getNbrPages() >= 2 %}
+                        <nav class="pagination-wrapper" aria-label="Page navigation example"
+                             style="margin-top: 10px;margin-bottom: 100px">
                             <ul class="pagination single-column-blog">
                                 <li class="page-item">
                                     <a class="page-link" onclick="DisplayListProducts4Owner('previous','on_sale')">Previous</a>
@@ -209,161 +225,281 @@
                                        id="on_sale-page-1">1</a>
                                 </li>
                                 {% for i in 2..on_sale.getNbrPages() %}
-                                    <li class="page-item">
-                                        <a class="page-link" onclick="DisplayListProducts4Owner({{ i }},'on_sale')"
-                                           id="on_sale-page-{{ i }}">{{ i }}</a>
-                                    </li>
-                                {% endfor %}
                                 <li class="page-item">
-                                    <a class="page-link" onclick="DisplayListProducts4Owner('next','on_sale')">Next</a>
+                                    <a class="page-link" onclick="DisplayListProducts4Owner({{ i }},'on_sale')"
+                                       id="on_sale-page-{{ i }}">{{ i }}</a>
                                 </li>
-                            </ul>
-                        </nav>
-                    {% endif %}
-                </div>
-                <div class="tab-pane row g-5 d-flex fade" id="nav-profile" role="tabpanel"
-                     aria-labelledby="nav-profile-tab">
-                    <!-- start single product -->
-                    <!-- end single product -->
-                </div>
-                <div class="tab-pane row g-5 d-flex fade" id="nav-contact" role="tabpanel"
-                     aria-labelledby="nav-contact-tab">
-                    <!-- start single product -->
-                    <!-- end single product -->
-                </div>
-                <div class="tab-pane row g-5 d-flex fade" id="nav-unverified" role="tabpanel"
-                     aria-labelledby="nav-unverified-tab">
-                    <div class="rn-new-items">
-                        <div class="container" style="margin-top: 10px;margin-bottom: 100px">
-                            <div id="sub-unverified-block" class="row g-5">
-                                <!-- start single product -->
-                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': unverified.getNProducts(10),'underverif':true,'type':'unverified','aiResult':unverified.getAiResult(10)} %}
-                                <!-- end single product -->
-                            </div>
-                        </div>
-                    </div>
-                    {% if unverified.getNbrPages() >= 2 %}
-                        <nav class="pagination-wrapper" aria-label="Page navigation example"
-                             style="margin-top: 10px;margin-bottom: 100px">
-                            <ul class="pagination single-column-blog">
-                                <li class="page-item">
-                                    <a class="page-link" onclick="DisplayListProducts4Owner('previous','unverified')">Previous</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link active" onclick="DisplayListProducts4Owner(1,'unverified')"
-                                       id="unverified-page-1">1</a>
-                                </li>
-                                {% for i in 2..unverified.getNbrPages() %}
-                                    <li class="page-item">
-                                        <a class="page-link" onclick="DisplayListProducts4Owner({{ i }},'unverified')"
-                                           id="unverified-page-{{ i }}">{{ i }}</a>
-                                    </li>
                                 {% endfor %}
                                 <li class="page-item">
                                     <a class="page-link"
-                                       onclick="DisplayListProducts4Owner('next','unverified')">Next</a>
+                                       onclick="DisplayListProducts4Owner('next','on_sale')">Next</a>
                                 </li>
                             </ul>
                         </nav>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane row g-5 d-flex fade" id="nav-profile" role="tabpanel"
+                         aria-labelledby="nav-profile-tab">
+                        {% if purchased.getNbrPages() >= 2 %}
+                        <div class="container " style="margin-top: 10px">
+                            {% else %}
+                            <div class="container " style="margin-top: 10px;;margin-bottom: 100px">
 
+                                {% endif %}
+                                <div class="woocommerce-notices-wrapper" id="notification_box">
 
-    <!-- Modal -->
-    <div
-            class="rn-popup-modal report-modal-wrapper modal fade"
-            id="aiModel"
-            tabindex="-1"
-            aria-hidden="true"
-    >
-        <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-        >
-            <i data-feather="x"></i>
-        </button>
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content report-content-wrapper" style="padding: 40px 20px 10px 20px !important;">
-                <div class="modal-header report-modal-header align-self-center">
-                    <h4 class="modal-title">Security Check Completed</h4>
-                </div>
-                <div class="modal-body overflow-hidden align-content-center">
-                    <section id="sectionData">
-                        {#                        <details> #}
-                        {#                            <summary>Details</summary> #}
-                        {#                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div> #}
-                        {#                        </details> #}
-                        {#                        <details> #}
-                        {#                            <summary>Details</summary> #}
-                        {#                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div> #}
-                        {#                        </details> #}
-                    </section>
-                    <section>
-                        <details>
-                            <summary style="color: #ce2727"> NOTE</summary>
-                            <div> Please do update this product before it gets deleted otherwise it will be deleted
-                                after remainig time ends
-                                <i class="fa-regular fa-face-smile-beam ms-2"
-                                   style="color: #2899d8;font-size: 15px;"></i>
+                                </div>
+                                <div class="row g-5">
+                                    <div class="col-lg-12">
+                                        <div
+                                                class="tab-pane lg-product_tab-pane lg-product-col-2 fade show active"
+                                                {#                                            id="nav-home-main" #}
+                                                id="sub-purchased-block"
+                                                role="tabpanel"
+                                                aria-labelledby="nav-home-main-tab"
+
+                                        >
+                                            {% include 'user_dashboard/sub_saled_purchased.html.twig' with { 'transactions': purchased.getNProducts(10),'type':'purchased'} %}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </details>
-                    </section>
-                </div>
-                <div class="report-form-box mt-4">
-                    <div class="d-flex gap-1 justify-content-end me-0">
-                        <button type="button" class="btn btn-primary-alta  w-auto" id="updateBtn">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </button>
-                        <button type="button" class="btn btn-primary-alta  w-auto" id="refreshAiResult">
-                            <i class="fa-solid fa-arrows-rotate"></i>
-                        </button>
+                            {% if purchased.getNbrPages() >= 2 %}
+                            <nav class="pagination-wrapper" aria-label="Page navigation example"
+                                 style="margin-top: 10px;margin-bottom: 100px">
+                                <ul class="pagination single-column-blog">
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           onclick="DisplayListProducts4Owner('previous','purchased')">Previous</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link active"
+                                           onclick="DisplayListProducts4Owner(1,'purchased')"
+                                           id="purchased-page-1">1</a>
+                                    </li>
+                                    {% for i in 2..purchased.getNbrPages() %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           onclick="DisplayListProducts4Owner({{ i }},'purchased')"
+                                           id="purchased-page-{{ i }}">{{ i }}</a>
+                                    </li>
+                                    {% endfor %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           onclick="DisplayListProducts4Owner('next','purchased')">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane row g-5 d-flex fade" id="nav-contact" role="tabpanel"
+                             aria-labelledby="nav-contact-tab">
+                            {% if sold.getNbrPages() >= 2 %}
+                            <div class="container " style="margin-top: 10px">
+                                {% else %}
+                                <div class="container " style="margin-top: 10px;;margin-bottom: 100px">
+
+                                    {% endif %}
+                                    <div class="woocommerce-notices-wrapper" id="notification_box">
+
+                                    </div>
+                                    <div class="row g-5">
+                                        <div class="col-lg-12">
+                                            <div
+                                                    class="tab-pane lg-product_tab-pane lg-product-col-2 fade show active"
+                                                    {#                                                id="nav-home-main" #}
+                                                    id="sub-sold-block"
+                                                    role="tabpanel"
+                                                    aria-labelledby="nav-home-main-tab"
+                                            >
+                                                {% include 'user_dashboard/sub_saled_purchased.html.twig' with { 'transactions': sold.getNProducts(10),'type':'sold'} %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if sold.getNbrPages() >= 2 %}
+                                <nav class="pagination-wrapper" aria-label="Page navigation example"
+                                     style="margin-top: 10px;margin-bottom: 100px">
+                                    <ul class="pagination single-column-blog">
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               onclick="DisplayListProducts4Owner('previous','sold')">Previous</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link active"
+                                               onclick="DisplayListProducts4Owner(1,'sold')"
+                                               id="sold-page-1">1</a>
+                                        </li>
+                                        {% for i in 2..sold.getNbrPages() %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               onclick="DisplayListProducts4Owner({{ i }},'sold')"
+                                               id="sold-page-{{ i }}">{{ i }}</a>
+                                        </li>
+                                        {% endfor %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               onclick="DisplayListProducts4Owner('next','sold')">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane row g-5 d-flex fade" id="nav-unverified" role="tabpanel"
+                                 aria-labelledby="nav-unverified-tab">
+                                <div class="rn-new-items">
+                                    {% if unverified.getNbrPages() >= 2 %}
+                                    <div class="container " style="margin-top: 10px">
+                                        {% else %}
+                                        <div class="container " style="margin-top: 10px;;margin-bottom: 100px">
+
+                                            {% endif %}
+                                            <div id="sub-unverified-block" class="row g-5">
+                                                <!-- start single product -->
+                                                {% include 'user_dashboard/sub_onsale_products.html.twig' with { 'products': unverified.getNProducts(10),'underverif':true,'type':'unverified','aiResult':unverified.getAiResult(10)} %}
+                                                <!-- end single product -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if unverified.getNbrPages() >= 2 %}
+                                    <nav class="pagination-wrapper" aria-label="Page navigation example"
+                                         style="margin-top: 10px;margin-bottom: 100px">
+                                        <ul class="pagination single-column-blog">
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   onclick="DisplayListProducts4Owner('previous','unverified')">Previous</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link active"
+                                                   onclick="DisplayListProducts4Owner(1,'unverified')"
+                                                   id="unverified-page-1">1</a>
+                                            </li>
+                                            {% for i in 2..unverified.getNbrPages() %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   onclick="DisplayListProducts4Owner({{ i }},'unverified')"
+                                                   id="unverified-page-{{ i }}">{{ i }}</a>
+                                            </li>
+                                            {% endfor %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   onclick="DisplayListProducts4Owner('next','unverified')">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                    {% endif %}
+                                </div>
+                                <div class="tab-pane row g-5 d-flex fade " id="nav-chat" role="tabpanel"
+                                     aria-labelledby="nav-chat-tab">
+                                    <div class="rn-new-items">
+                                        {{ render(controller('App\\Controller\\ChatController::show')) }}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Modal -->
+                    <div
+                            class="rn-popup-modal report-modal-wrapper modal fade"
+                            id="aiModel"
+                            tabindex="-1"
+                            aria-hidden="true"
+                    >
                         <button
                                 type="button"
-                                class="btn btn-primary-alta w-auto"
+                                class="btn-close"
                                 data-bs-dismiss="modal"
-                                id="deleteBtn"
+                                aria-label="Close"
                         >
-                            <i class="fa-regular fa-trash-can"></i>
+                            <i data-feather="x"></i>
                         </button>
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content report-content-wrapper"
+                                 style="padding: 40px 20px 10px 20px !important;">
+                                <div class="modal-header report-modal-header align-self-center">
+                                    <h4 class="modal-title">Security Check Completed</h4>
+                                </div>
+                                <div class="modal-body overflow-hidden align-content-center">
+                                    <section id="sectionData">
+                                        {#                        <details> #}
+                                        {#                            <summary>Details</summary> #}
+                                        {#                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div> #}
+                                        {#                        </details> #}
+                                        {#                        <details> #}
+                                        {#                            <summary>Details</summary> #}
+                                        {#                            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis sit autem cupiditate eaque blanditiis vero quidem aperiam quasi aspernatur error dolor, et, consequatur eius amet dignissimos laboriosam recusandae tempora suscipit.</div> #}
+                                        {#                        </details> #}
+                                    </section>
+                                    <section>
+                                        <details>
+                                            <summary style="color: #ce2727"> NOTE</summary>
+                                            <div> Please do update this product before it gets deleted otherwise it will
+                                                be
+                                                deleted
+                                                after remainig time ends
+                                                <i class="fa-regular fa-face-smile-beam ms-2"
+                                                   style="color: #2899d8;font-size: 15px;"></i>
+                                            </div>
+                                        </details>
+                                    </section>
+                                </div>
+                                <div class="report-form-box mt-4">
+                                    <div class="d-flex gap-1 justify-content-end me-0">
+                                        <button type="button" class="btn btn-primary-alta  w-auto" id="updateBtn">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary-alta  w-auto" id="refreshAiResult">
+                                            <i class="fa-solid fa-arrows-rotate"></i>
+                                        </button>
+                                        <button
+                                                type="button"
+                                                class="btn btn-primary-alta w-auto"
+                                                data-bs-dismiss="modal"
+                                                id="deleteBtn"
+                                        >
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
-    <!-- Modal -->
-    <div
-            class="rn-popup-modal report-modal-wrapper modal fade"
-            id="loadingModel"
-            tabindex="-1"
-            aria-hidden="true"
-    >
-        <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-        >
-            <i data-feather="x"></i>
-        </button>
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content report-content-wrapper">
-                <div class="modal-header report-modal-header align-self-center">
-                    <h2 class="modal-title" style="color: #2899d8">Security Check</h2>
-                </div>
-                <div class="modal-body overflow-hidden align-content-center">
-                    <p>
-                        This Product Is Currently Under AI Verification To Check It's Compatibility With Our Terms
-                        <i class="fa-regular fa-face-smile-beam ms-4" style="color: #2899d8;font-size: 20px;"></i>
-                        <i class="fa-regular fa-face-smile-beam ms-1" style="color: #2899d8;font-size: 20px;"></i>
-                    </p>
-                    <!--{# <div class="report-form-box">
+                    <!-- Modal -->
+                    <div
+                            class="rn-popup-modal report-modal-wrapper modal fade"
+                            id="loadingModel"
+                            tabindex="-1"
+                            aria-hidden="true"
+                    >
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        >
+                            <i data-feather="x"></i>
+                        </button>
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content report-content-wrapper">
+                                <div class="modal-header report-modal-header align-self-center">
+                                    <h2 class="modal-title" style="color: #2899d8">Security Check</h2>
+                                </div>
+                                <div class="modal-body overflow-hidden align-content-center">
+                                    <p>
+                                        This Product Is Currently Under AI Verification To Check It's Compatibility With
+                                        Our
+                                        Terms
+                                        <i class="fa-regular fa-face-smile-beam ms-4"
+                                           style="color: #2899d8;font-size: 20px;"></i>
+                                        <i class="fa-regular fa-face-smile-beam ms-1"
+                                           style="color: #2899d8;font-size: 20px;"></i>
+                                    </p>
+                                    <!--{# <div class="report-form-box">
                         <h6 class="title">Message</h6>
                         <textarea name="message" placeholder="Write issues"></textarea>
                         <div class="report-button">
@@ -379,17 +515,34 @@
                             </button>
                         </div>
                     </div> #}-->
-                    <div class="aiverif">
-                        <div class="profile-share">
-                            <img
-                                    src="{{ asset('marketPlaceImages/t9gQ2ptYYn.gif') }}"
-                                    alt="Nft_Profile"
-                            />
+                                    <div class="aiverif">
+                                        <div class="profile-share">
+                                            <img
+                                                    src="{{ asset('marketPlaceImages/t9gQ2ptYYn.gif') }}"
+                                                    alt="Nft_Profile"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        var currentUser = {{ app.user.getId()|json_encode }};
+    </script>
+    <script src="{{ asset('js/user_dashboard.js') }}"></script>
+    <script src="{{ asset('js/product.js') }}"></script>
+    <script src="{{ asset('js/loader.js') }}"></script>
+    <script src="{{ asset('js/details.js') }}"></script>
+    <script src="{{ asset('js/ai.js') }}"></script>
+    <script src="{{ asset('js/chat.js') }}"></script>
 {% endblock %}

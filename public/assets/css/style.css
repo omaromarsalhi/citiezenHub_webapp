@@ -19857,6 +19857,7 @@ button .small-image {
 .product-style-one .bid-react-area {
   display: flex;
   justify-content: space-between;
+  align-content: center;
   margin-top: 10px;
 }
 

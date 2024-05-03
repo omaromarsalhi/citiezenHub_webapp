@@ -32,6 +32,14 @@
             type="image/x-icon"
             href="{{ asset('assets/images/favicon.png') }}"
     />
+
+
+    <!-- Style css -->
+    {% block stylesheets_firstPlace %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+
     <!-- CSS
     ============================================ -->
     <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}"/>
@@ -60,6 +68,8 @@
     <!--Swiper slider css-->
     <link href="{{ asset('assetsOfOutsiderElements/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet"
           type="text/css">
+
+
 
 
     {% block stylesheets %}
@@ -1267,6 +1277,8 @@
 </div>
 <!-- End Top To Bottom Area  -->
 
+
+
 <!-- JS ============================================ -->
 <script src="{{ asset('bestFormAssets/js/2.js') }}"></script>
 
@@ -1300,7 +1312,6 @@
 <script src="{{ asset('assets/js/vendor/maralis.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/nft.js') }}"></script>
 
-
 <script src="{{ asset('assetsOfOutsiderElements/libs/swiper/swiper-bundle.min.js') }}"></script>
 <script src="{{ asset('assetsOfOutsiderElements/js/pages/extended-swiper.js') }}"></script>
 
@@ -1315,6 +1326,10 @@
 {% block scripts %}
     {{ encore_entry_link_tags('app') }}
 {% endblock %}
+
+
+
+
 
 </body>
 </html>

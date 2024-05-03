@@ -1,5 +1,7 @@
 $(document).ready(function () {
     countBasket()
+    new Splide('#image-slider').mount();
+    launchSwiper()
 });
 
 function countBasket() {

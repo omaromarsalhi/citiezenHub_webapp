@@ -1,0 +1,93 @@
+{% for i,transaction in transactions %}
+
+    <!-- start single product -->
+    <div
+            class="lg-product-wrapper colum-2 two-colum-parent-product col-lg-6"
+    >
+        <div class="inner">
+            <div class="lg-left-content">
+
+                <a class="thumbnail"
+                   onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
+                    <img
+                            src="{{ asset(transaction.product.images[0].path()) }}"
+                            alt="Nft_Portfolio"
+                    />
+                </a>
+
+                <div class="read-content">
+                    <div class="product-share-wrapper">
+                        <!-- all bids -->
+                        <div class="profile-share">
+                            <a
+                                    href=""
+                                    class="avatar"
+                                    data-tooltip="Seller:Mr.{{ transaction.product.user.firstName|capitalize~' '~transaction.product.user.lastName|capitalize }}"
+                                    tabindex="0"
+                            ><img
+                                        src="{{ asset('/marketPlaceImages/ic_haha.png') }}"
+                                        alt="Nft_Profile"
+                                /></a>
+
+                            <a
+                                    href=""
+                                    class="avatar"
+                                    data-tooltip="Buyer:Mr.{{ app.user.firstName|capitalize~' '~app.user.lastName|capitalize }}"
+                                    tabindex="0"
+                            ><img
+                                        src="{{ asset('/marketPlaceImages/omar.jpg') }}"
+
+                                        alt="Nft_Profile"
+                                /></a>
+                            <a class="more-author-text" href="#" tabindex="0"
+                            >{{ transaction.product.user.firstName|capitalize~' '~transaction.product.user.lastName|capitalize }}
+                                , </a
+                            >
+                            <a class="more-author-text" href="#" tabindex="0"
+                            >{{ app.user.firstName|capitalize~' '~app.user.lastName|capitalize }}</a
+                            >
+                        </div>
+                        <!-- all bids End-->
+                    </div>
+                    <a href="#"
+                       onclick="document.getElementById('form_details_{{ type }}_{{ i }}').submit(); return false;">
+                        <h5 class="title"
+                            style="margin: -10px 0 10px 0;color: #2899d8">{{ transaction.product.name|capitalize }}</h5>
+                    </a>
+
+                    <span class="latest-bid">Price : {{ transaction.pricePerUnit }} Dt</span>
+                    <br>
+                    <span class="latest-bid">Quantity : {{ transaction.quantity }} Pieces</span>
+                    <br>
+                    <span class="latest-bid">Category : {{ transaction.product.category|capitalize }}</span>
+                    <br>
+                    <span class="latest-bid">Meeting took place in  : {{ transaction.contract.recivingLocation|capitalize }}</span>
+                    <br>
+                    <span class="latest-bid">Payment Method  : {{ transaction.contract.paymentMethod|capitalize }}</span>
+                    <br>
+                    <span class="latest-bid">Effective Date : {{ transaction.contract.effectiveDate|date('d/m/Y') }}</span>
+                </div>
+            </div>
+
+            <a
+                    href="{{ path('app_basket_generatePdfWithoutMail',{'idTransaction':transaction.getId()}) }}"
+                    id="generatePdfBtn_{{ i }}"
+                    type="button"
+                    class="btn btn-primary-alta pdfBtn"
+                    onclick="generatePdf({{ i }})"
+            >
+                <span class="text_pdf">Contract</span>
+                <i class="fa-solid fa-download"></i>
+            </a>
+        </div>
+    </div>
+    <!-- End single product -->
+
+    <form id="form_details_{{ type }}_{{ i }}" method="post"
+          action="{{ path('app_product_product_details',{'index': i }) }}">
+        <input type="hidden" name="_token_{{ i }}"
+               value="{{ transaction.product.idProduct }}">
+    </form>
+{% endfor %}
+
+

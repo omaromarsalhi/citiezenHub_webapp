@@ -34,16 +34,14 @@
                     {% endif %}
                 </a>
                 {% if underverif %}
-                    {% if aiResult|length > 0 %}
-                        {% if aiResult[i] is defined %}
-                            {% if aiResult[i].idProduct == product.idProduct %}
+<!--                        {% if aiResult[i] is defined %}-->
+<!--                            {% if aiResult[i].idProduct == product.idProduct %}-->
                                 <div class="countdown" data-date="{{ aiResult[i].getTerminationDateDate() }}"
                                      data-time="{{ aiResult[i].getTerminationDateTime() }}"
                                      data-value="{{ product.iDProduct }}:{{ i }}">
                                 </div>
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
+<!--                            {% endif %}-->
+<!--                        {% endif %}-->
                 {% endif %}
                 <div class="rbt-quick-action--btns">
                     {% if underverif %}
@@ -115,20 +113,29 @@
 
             </div>
 
-            <a href="../pages/product-details.html"
-            ><span class="product-name"><strong id="name_model">{{ product.name }}</strong></span></a
-            >
-            <span class="latest-bid">
-                <span id="quantity_model">10 Pieces/</span>
-                <strong
-                        style="color: #2899d8">In Stock
-                </strong>
+            <a href="../pages/product-details.html">
+                <h2 id="name_model" class="product-name" style="margin: 4px 0 !important;font-size: 30px">{{ product.name|capitalize }}</h2>
+            </a>
+
+            <span class="latest-bid" >
+                    <span class="latest-bid " style="margin-top: 4px !important;">Quantity : {{ product.quantity }} Pieces</span>
+                    <br>
+                    <span class="latest-bid">Category : {{ product.category|capitalize }}</span>
             </span>
-            <br>
-            <span id="category_model">Sports</span>
-            <div class="bid-react-area m-0 ">
-                <div class="last-bid mt-3 " id="price_model">120 DT</div>
+            <div class="bid-react-area m-0 " >
+                {% if product.quantity > 0 %}
+                    <div class="last-bid mt-3 " id="">
+                        In Stock
+                    </div>
+                {% else %}
+                    <div class="last-bid mt-3 " style="color: #a81515" id="">
+                        Out Of Stock
+                    </div>
+
+                {% endif %}
+                <div class="last-bid mt-3 " id="price_model" >{{ product.price }} DT</div>
             </div>
+
         </div>
 
         <form id="form_details_{{ type }}_{{ i }}" method="post"

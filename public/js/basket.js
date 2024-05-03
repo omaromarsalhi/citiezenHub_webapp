@@ -28,7 +28,6 @@ function checkOut() {
 
         },
     });
-
 }
 
 function updateBasket() {

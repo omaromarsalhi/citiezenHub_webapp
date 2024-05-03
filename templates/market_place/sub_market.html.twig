@@ -14,30 +14,30 @@
             <div class="card-thumbnail">
                 <a href="../pages/product-details.html">
                     {% if product.images|length > 1 %}
-                        <!-- Swiper -->
-                        <div class="swiper effect-creative-swiper rounded">
-                            <div class="swiper-wrapper">
-                                {% for image in product.images %}
-                                    <div class="swiper-slide">
-                                        <a href="#">
-                                            <img src="{{ asset(image.path)|default("Not available") }}"
-                                                 alt="NFT_portfolio"
-                                                 class="fixedSubImages4MarketPlace"/>
-                                        </a>
-                                    </div>
-                                {% endfor %}
+                    <!-- Swiper -->
+                    <div class="swiper effect-creative-swiper rounded">
+                        <div class="swiper-wrapper">
+                            {% for image in product.images %}
+                            <div class="swiper-slide">
+                                <a href="#">
+                                    <img src="{{ asset(image.path)|default("Not available") }}"
+                                         alt="NFT_portfolio"
+                                         class="fixedSubImages4MarketPlace"/>
+                                </a>
                             </div>
-                            <div class="swiper-pagination"></div>
+                            {% endfor %}
                         </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
                     {% else %}
-                        <div>
-                            <a href="#">
-                                <img src="{{ asset(product.images[0].path) }}"
-                                     alt="NFT_portfolio"
-                                     class="fixedSubImages4MarketPlace"
-                                >
-                            </a>
-                        </div>
+                    <div>
+                        <a href="#">
+                            <img src="{{ asset(product.images[0].path) }}"
+                                 alt="NFT_portfolio"
+                                 class="fixedSubImages4MarketPlace"
+                            >
+                        </a>
+                    </div>
                     {% endif %}
                 </a>
 
@@ -95,30 +95,36 @@
                             class="avatar"
                             data-tooltip="Owener:Mr.{{ product.user.firstName|capitalize~' '~ product.user.lastName|capitalize }}"
                     ><img
-                                src="{{ asset('assets/images/client/client-1.png') }}"
+                                src="{{ asset('/marketPlaceImages/omar.jpg') }}"
                                 alt="Nft_Profile"
-                        />
+                    />
                     </a>
                     <a class="more-author-text"
                        href="#">{{ product.user.firstName|capitalize~' '~ product.user.lastName|capitalize }}</a>
                 </div>
             </div>
-            <a href="../pages/product-details.html"
-            >
-                <span class="product-name m-0">
-                    <h4 id="name_model">{{ product.name|capitalize }}</h4>
-                </span>
+            <a href="../pages/product-details.html">
+                <h2 id="name_model" class="product-name"
+                    style="margin: 4px 0 !important;font-size: 30px">{{ product.name|capitalize }}</h2>
             </a>
+
             <span class="latest-bid">
-                <span id="quantity_model">{{ product.quantity }} Pieces/</span>
-                <strong
-                        style="color: #2899d8">In Stock
-                </strong>
+                    <span class="latest-bid " style="margin-top: 4px !important;">Quantity : {{ product.quantity }} Pieces</span>
+                    <br>
+                    <span class="latest-bid">Category : {{ product.category|capitalize }}</span>
             </span>
-            <br>
-            <span id="category_model">{{ product.category|capitalize }}</span>
             <div class="bid-react-area m-0 ">
-                <div class="last-bid mt-3 " id="price_model">120 DT</div>
+                {% if product.quantity > 0 %}
+                <div class="last-bid mt-3 " id="">
+                    In Stock
+                </div>
+                {% else %}
+                <div class="last-bid mt-3 " style="color: #a81515" id="">
+                    Out Of Stock
+                </div>
+
+                {% endif %}
+                <div class="last-bid mt-3 " id="price_model">{{ product.price }} DT</div>
             </div>
         </div>
     </div>

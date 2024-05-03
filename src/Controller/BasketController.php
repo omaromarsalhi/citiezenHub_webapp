@@ -12,8 +12,10 @@ use App\Repository\ProductRepository;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -164,7 +166,7 @@ class BasketController extends AbstractController
                     'emailBuyer' => 'omar.salhi.job@gmail.com',
                     'idSeller' => $new_transaction->getIdSeller(),
                     'idBuyer' => $new_transaction->getIdBuyer(),
-                    'html'=>$html
+                    'html' => $html
                 ];
 
                 $messageBus->dispatch(new SendPdfMessage($obj));
@@ -176,6 +178,31 @@ class BasketController extends AbstractController
             return new Response('success', Response::HTTP_OK);
         }
         return $this->render('contract/success.html.twig');
+    }
+
+    #[Route('/generatePdfWithoutMail', name: '_generatePdfWithoutMail')]
+    public function generatePdfWithoutMail(Request $request, TransactionRepository $transactionRepository): Response
+    {
+        $transactions = $transactionRepository->findOneBy(['idTransaction' => $request->get('idTransaction')]);
+
+        $html = $this->renderView('contract/pdf_template.html.twig', [
+            'transaction' => $transactions
+        ]);
+
+        $pdf = new TCPDF();
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Omar Salhi');
+        $pdf->SetTitle('PDF Transaction');
+        $pdf->SetSubject('Transaction Details');
+        $pdf->SetKeywords('PDF, Transaction');
+        $pdf->SetFont('helvetica', '', 11);
+        $pdf->AddPage();
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        $pdf->Output('transaction.pdf', 'D');
+
+        return new Response('', Response::HTTP_OK);
     }
 
     public function generatePdf($obj): void
@@ -195,8 +222,8 @@ class BasketController extends AbstractController
         $pdfFilePath = sys_get_temp_dir() . '/Contract.pdf';
         $pdf->Output($pdfFilePath, 'F');
 
-        $mail->sendMail($pdfFilePath,$obj['emailSeller']);
-        $mail->sendMail($pdfFilePath,$obj['emailBuyer']);
+        $mail->sendMail($pdfFilePath, $obj['emailSeller']);
+        $mail->sendMail($pdfFilePath, $obj['emailBuyer']);
 
     }
 
