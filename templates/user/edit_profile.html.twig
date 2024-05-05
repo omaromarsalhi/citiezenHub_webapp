@@ -412,10 +412,6 @@
                                     <!-- start Notification Setting  -->
                                     <div class="nuron-information">
                                         <h5 class="title">Choose Your Location </h5>
-                                        <p class="notice-disc">
-                                            Choose you location so that we can determine the municipality you belongs to
-                                        </p>
-                                        <hr/>
                                         <!-- start notice wrapper parrent -->
                                         <div id="mapCss">
                                             <div class="pac-card" id="pac-card">
@@ -427,9 +423,27 @@
                                                 <span id="place-address"></span>
                                             </div>
                                         </div>
+                                        <div class="input-two-wrapper mt--15">
+                                            <div class="old-password half-wid">
+                                                <label for="mapAddress" class="form-label">Address: </label>
+                                                <input  id="mapAddress" type="text" disabled>
+                                                <div id="other">
+                                                </div>
+                                            </div>
+                                            <div class="new-password">
+                                                <label for="municipality" class="form-label">Municipality: </label>
+                                                <input  id="municipality" type="text" disabled>
+                                                <div id="password">
+                                                </div>
+                                            </div>
+                                            <div class="new-password mt-3">
+                                                <a href="#" class="btn btn-primary save-btn-edit " sty
+                                                   onclick="customAlert.alert('Successfully saved Your Notificationm setting')">Save</a>
+                                            </div>
+
+                                        </div>
                                         <!-- end notice wrapper parrent -->
-                                        <a href="#" class="btn btn-primary save-btn-edit"
-                                           onclick="customAlert.alert('Successfully saved Your Notificationm setting')">Save</a>
+
                                     </div>
                                     <!-- End Notification Setting  -->
 
