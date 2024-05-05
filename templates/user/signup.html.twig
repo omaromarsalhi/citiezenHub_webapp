@@ -1,13 +1,8 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets_wtf %}
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
-{% endblock %}
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-{% endblock %}
-
-
 {% block body %}
+    <script src="{{ asset('js/userScript.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
     <!-- start page title area -->
     <div class="rn-breadcrumb-inner ptb--30">
         <div class="container">
@@ -29,50 +24,69 @@
 
     {% if errors is not empty %}
         <div class="message-container">
-            {% for error in errors %}
-                <div class="error">{{ error.message }}</div>
-            {% endfor %}
+            <div class="error">fixed your errors </div>
         </div>
     {% endif %}
-{#    {% if errors is empty %}#}
-{#        <div class="message-container">#}
-{#            {% for error in errors %}#}
-{#                <div class="success">{{ error.message }}</div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#    {% endif %}#}
+
     <!-- login form -->
-    <div class="login-area rn-section-gapTop">
+    <div  id='main-content' class="login-area rn-section-gapTop">
         <div class="container">
             <div class="row g-5">
                 <div class="offset-2 col-lg-4 col-md-6 ml_md--0 ml_sm--0 col-sm-12">
                     <div class="form-wrapper-one registration-area">
                         <h4>Sign up</h4>
-                        <form method="POST" action="{{ path('app_register') }}">
+                        <form id="signup-form" method="POST" action="{{ path('app_register') }}">
                             <div class="mb-5">
                                 <label for="firstName" class="form-label">First name</label>
-                                <input type="text" id="firstName" name="user[firstName]" value=" {{ name }}" >
-{#                                {% for error in errors %}#}
-{#                                    {% if error.propertyPath == 'firstName' %}#}
-{#                                        <div class="error">{{ error.message }}</div>#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
+                                <input type="text" id="firstName" name="user[firstName]" value="{{ name }}">
+                                <div>
+                                    {% if errors['firstName'] is defined %}
+                                    <div class="test">{{ errors['firstName'] }}</div>
+                                    {% endif %}
+                                </div>
+                                <style>
+                                    .test {
+                                        color: red;
+                                        font-weight: bold;
+                                    }
+                                </style>
+
                             </div>
                             <div class="mb-5">
                                 <label for="lastName" class="form-label">Last name</label>
-                                <input type="text" id="lastName" name="user[lastName]" value=" {{ lastName }}" >
+                                <input type="text" id="lastName" name="user[lastName]" value="{{ lastName }}" >
+                                <div >
+                                    {% if errors['lastName'] is defined %}
+                                        <div class="test">{{ errors['lastName'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" id="exampleInputEmail1" name="user[email]" value=" {{ email }}">
+                                <input  id="exampleInputEmail1" name="user[email]" value="{{ email }}">
+                                <div >
+                                    {% if errors['Email'] is defined %}
+                                        <div class="test">{{ errors['Email'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="Address" class="form-label">Address</label>
-                                <input type="address" id="Address" name="user[address]" >
+                                <input type="address" id="address" name="user[address]" >
+                                <div >
+                                    {% if errors['email'] is defined %}
+                                        <div class="test">{{ errors['address'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="newPassword" class="form-label">Create Password</label>
                                 <input type="password" id="newPassword" name="user[password]">
+                                <div >
+                                    {% if errors['password'] is defined %}
+                                        <div class="test">{{ errors['password'] }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <label for="exampleInputPassword1" class="form-label">Re Password</label>
@@ -85,13 +99,14 @@
                                     condition</label>
                             </div>
                             <button  type="submit" name="submit_button" class="btn btn-primary mr--15">Sign Up</button>
-                            <a href="{{path('app_login')}}" class="btn btn-primary-alta">Sign Up</a>
+                            <a href="{{path('app_login')}}" class="btn btn-primary-alta">login Up</a>
                         </form>
 
                     </div>
                 </div>
-
-
+                <div id="loader" style="display: none;">
+                    <img src="images/img/Animation - 1714076220937.gif"  alt="Loader">
+                </div>
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="social-share-media form-wrapper-one">
@@ -112,26 +127,9 @@
             </div>
         </div>
     </div>
+
     <!-- login form end -->
 
 
 {% endblock %}
 
-{#{% block title %}Hello TestController!{% endblock %}#}
-
-{#{% block body %}#}
-{#    <style>#}
-{#        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }#}
-{#        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }#}
-{#    </style>#}
-
-{#    <div class="example-wrapper">#}
-{#        <h1>Hello {{ controller_name }}! ✅</h1>#}
-
-{#        This friendly message is coming from:#}
-{#        <ul>#}
-{#            <li>Your controller at <code><a href="{{ 'C:/Users/Latifa/pi/src/Controller/TestController.php'|file_link(0) }}">src/Controller/TestController.php</a></code></li>#}
-{#            <li>Your template at <code><a href="{{ 'C:/Users/Latifa/pi/templates/test/index.html.twig'|file_link(0) }}">templates/test/index.html.twig</a></code></li>#}
-{#        </ul>#}
-{#    </div>#}
-{#{% endblock %}#}

@@ -44,7 +44,7 @@ class MarketPlaceController extends AbstractController
 
         }
 
-        $session->set('allProducts', $productRepository->findAll());
+        $session->set('allProducts', $productRepository->findBy(['state'=>'verified']));
         $prods = $session->get('allProducts');
         $session->set('nbr_pages', ceil(sizeof($prods) / 12));
         $session->set('current_page', 1);

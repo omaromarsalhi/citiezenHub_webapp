@@ -17,6 +17,7 @@ security:
             lazy: true
             provider:  my_custom_provider
             custom_authenticator: App\Security\UserAuthanticatorAuthenticator
+            entry_point: security.authenticator.guard.main.0  # Référence à votre premier authenticator
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -28,10 +29,9 @@ security:
                 path: /
                 always_remember_me: true
 
-
-#            guard:
-#                authenticators:
-#                    - App\Security\GoogleAuthentificator
+            guard:
+                authenticators:
+                    - App\Security\GoogleAuthentificator
 
 
 
@@ -43,9 +43,9 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-#    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+    access_control:
+    # - { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:

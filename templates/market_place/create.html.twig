@@ -142,16 +142,22 @@
                                     {% if product.images|length <= 1 %}
                                         <input hidden="" name="createinputfile" id="createinputfile" type="file"
                                                class="inputfile" multiple>
-                                        <div class="brows-file-wrapper">
+                                        <div class="brows-file-wrapper" id="singLeImageUploaded"  data-value="{{ product.images[0].getIdImage() }}">
                                             <img id="createfileImage"
                                                  src="{{ asset(product.images[0].path) }}" alt=""
                                                  data-black-overlay="6">
-                                            <!-- our custom upload button -->
-                                            <label for="createinputfile" title="No File Choosen">
-                                                <i class="feather-upload"></i>
-                                                <span class="text-center">Choose a File</span>
-                                                <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br> Max
-                                                    1Gb.</p>
+                                            <label for="" title="No File Choosen"
+                                                   class="updateImageLabel_0"
+                                                   id="updateImageLabel_0">
+                                                <button type="button"
+                                                        name="deleteBtns"
+                                                        style="border: none !important;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmModel"
+                                                        data-value="0">
+                                                    <i class="fa-regular fa-trash-can"></i>
+                                                </button>
+                                                <span class="text-center">Delete a File</span>
                                             </label>
                                         </div>
                                     {% else %}

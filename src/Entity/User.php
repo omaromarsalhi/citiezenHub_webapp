@@ -9,81 +9,171 @@ use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Vich\Uploadable]
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements PasswordAuthenticatedUserInterface,UserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:"idUser")]
+    #[ORM\Column(name: "idUser")]
     private ?int $idUser = null;
 
-    #[ORM\Column(name:"firstName",length: 255)]
-    #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide')]
-    #[Assert\Length(
-        min:3, minMessage: 'le nom il faut contenir au moi 5 caractere',
+
+
+
+
+    #[ORM\Column(name: "firstName", length: 255)]
+    #[Assert\NotBlank(message: 'Please enter at least 3 alphabetical characters.')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]{3,}$/',
+        message: "Please enter at least 3 alphabetical characters. ",
+        groups: ['add'],
     )]
     private ?string $firstName = null;
 
-    #[ORM\Column(name:"lastName",length: 255)]
-    #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
-    #[Assert\Length(
-        min:5, minMessage: 'le prenon il faut contenir au moi 5 caractere',
+
+
+
+    #[ORM\Column(name: "lastName", length: 255)]
+    #[Assert\NotBlank(message: 'Please enter at least 3 alphabetical characters.')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]{3,}$/',
+        message: "Please enter at least 3 alphabetical characters. ",
+        groups: ['add'],
     )]
     private ?string $lastName = null;
 
-    #[ORM\Column(name:"cin",length: 255)]
+
+
+
+    #[ORM\Column(name: "cin", length: 255)]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{8}$/',
+        message: "Please enter exactly 8 digits. ",
+        groups: ['creation'],
+    )]
     private ?string $cin = null;
-    /**
-     * @Assert\NotBlank(message="Le prénom ne peut pas être vide.")
-     * @Assert\Email
-     */
-    #[ORM\Column(name:"email",length: 255)]
+
+
+
+
+    #[ORM\Column(name: "email", length: 255)]
+    #[Assert\NotBlank(message: 'Lemail ne pas etre vide ')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+        message: "Please enter a valid email address.",
+        groups: ['add'],
+    )]
+    #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(name:"age")]
+
+
+
+    #[ORM\Column(name: "age")]
+    #[Assert\GreaterThanOrEqual(
+        value: 18,
+        message: "You must be at least 18 years old.",
+        groups: ['creation'],
+
+    )]
     private ?int $age = null;
 
-    #[ORM\Column(name:"phoneNumber")]
-    private ?int $phoneNumber = null;
-    #[Assert\NotBlank(message: 'Le lastname ne peut pas être vide')]
-    #[Assert\Length(
-        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
+
+
+
+    #[Assert\NotBlank(message: 'phone number ')]
+    #[Assert\Regex(
+        pattern: '/^\d{1,8}$/',
+        message: "Please enter a valid phone number",
+        groups: ['creation'],
+
     )]
-    #[ORM\Column(name:"address",length: 255)]
+    #[ORM\Column(name: "phoneNumber")]
+    private ?int $phoneNumber = null;
+
+
+    #[Assert\NotBlank(message: 'Ladresse ne peut pas être vide')]
+//    #[Assert\Length(
+//        min:5, minMessage: 'ladresse il faut contenir au moi 5 caractere',
+//    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9\s-]+$/',
+        message: "Please enter a valid address.",
+        groups: ['add'],
+    )]
+    #[ORM\Column(name: "address", length: 255)]
     private ?string $address = null;
 
-    #[ORM\Column(name:"role",length: 255)]
+    #[ORM\Column(name: "role", length: 255)]
     private ?string $role = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le password ne peut pas être vide')]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+        message: "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.",
+        groups: ['add'],
+    )]
     private ?string $password = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+//    #[Assert\LessThan("today",message: 'Le password ne peut pas être vide')]
+//    #[Assert\Regex(
+//        groups: ['creation'],
+//    )]
+
     private ?\DateTimeInterface $dob = null;
 
-    #[ORM\Column(name:"status",length: 255)]
+    #[ORM\Column(name: "status", length: 255)]
     private ?string $status = null;
 
-    #[ORM\Column(name:"image",length: 255)]
+    #[ORM\Column(name: "image", length: 255)]
     private ?string $image = null;
 
-    #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
-    #@Ignore()
-    private ?File $imageFile = null;
 
-    #[ORM\Column(name:"gender",length: 255, nullable: true)]
+    #[ORM\Column(name: "state")]
+    private ?int $state = null;
+
+    public function getState(): ?int
+    {
+        return $this->state;
+    }
+
+    public function setState(?int $state): void
+    {
+        $this->state = $state;
+    }
+
+//    #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
+//    #@Ignore()
+//    private ?File $imageFile = null;
+
+    #[ORM\Column(name: "gender", length: 255, nullable: true)]
     private ?string $gender = null;
+    #[ORM\ManyToOne(targetEntity: Municipalite::class, inversedBy: "users")]
+    #[ORM\JoinColumn(name: "idMunicipalite ", referencedColumnName: "idMunicipalite", nullable: false)]
+    private $municipalite;
+    private ?\DateTimeInterface $informationCompletionDate;
+
+    public function getMunicipalite(): ?Municipalite
+    {
+        return $this->municipalite;
+    }
+
+    public function setMunicipalite(?Municipalite $municipalite): self
+    {
+        $this->municipalite = $municipalite;
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -244,22 +334,19 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
         $this->image = $image;
         return $this;
     }
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
+//
 
-    public function setImageFile($imageFile)
-    {
-        $this->imageFile = $imageFile;
-        if ($imageFile) {
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
-
-        return $this;
-
-    }
+//    public function setImageFile($imageFile)
+//    {
+//        $this->imageFile = $imageFile;
+//        if ($imageFile) {
+//            // otherwise the event listeners won't be called and the file is lost
+//            $this->updatedAt = new \DateTimeImmutable();
+//        }
+//
+//        return $this;
+//
+//    }
 
     public function getRoles()
     {
@@ -288,6 +375,8 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
     {
         // TODO: Implement @method string getUserIdentifier()
     }
+
+
     public function getUserIdentifier(): string
     {
 
@@ -305,15 +394,22 @@ class User implements PasswordAuthenticatedUserInterface,UserInterface
 
         return $this;
     }
-    public function serialize()
+
+    public function setInformationCompletionDate(?\DateTimeInterface $informationCompletionDate): self
     {
-        $this->image = base64_encode($this->image);
+        $this->informationCompletionDate = $informationCompletionDate;
+
+        return $this;
     }
 
-    public function unserialize($serialized)
+    /**
+     * Get the information completion date.
+     *
+     * @return \DateTimeInterface|null
+     */
+    public function getInformationCompletionDate(): ?\DateTimeInterface
     {
-        $this->image = base64_decode($this->image);
-
+        return $this->informationCompletionDate;
     }
 
 

@@ -3,14 +3,20 @@
 namespace App\Controller;
 
 
+use App\CustomEvent\ProductCustomEvent;
 use App\Entity\Product;
+use App\Event\ProductEvent;
+use App\EventListener\ProductEventListener;
 use App\MyHelpers\AiDataHolder;
 use App\MyHelpers\ImageHelper;
 use App\MyHelpers\AiVerificationMessage;
+use App\Observer\MarketPlaceObserver;
+use App\Provider\ProductProvider;
 use App\Repository\AiResultRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +29,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/product', name: 'app_product')]
 class ProductController extends AbstractController
 {
+
+
+    private $eventDispatcher;
+
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     #[Route('/new', name: '_new', methods: ['GET', 'POST'])]
     public function new(MessageBusInterface $messageBus, Request $request, EntityManagerInterface $entityManager, ImageHelper $imageHelper, ProductRepository $productRepository, ValidatorInterface $validator): Response
     {
@@ -44,7 +60,7 @@ class ProductController extends AbstractController
             $new_product->setQuantity(floatval($quantity));
             $new_product->setCategory($category);
             $new_product->setIsDeleted(0);
-            $new_product->setState('verified');
+            $new_product->setState('unverified');
             $new_product->setType('BIEN');
 
             $errors = $validator->validate($new_product);
@@ -76,7 +92,7 @@ class ProductController extends AbstractController
                 'mode' => 'add'
             ];
 
-//            $messageBus->dispatch(new AiVerificationMessage($obj));
+            $messageBus->dispatch(new AiVerificationMessage($obj));
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
 
@@ -149,25 +165,27 @@ class ProductController extends AbstractController
 
             $images = $request->files->all();
             $imageHelper->saveImages($images, $product);
-//            $imageHelper->deleteImages($imagesNotToDelete, $product->getImages());
+            $imageHelper->deleteImages($imagesNotToDelete, $product->getImages());
 
             $product = $productRepository->findOneBy(['idProduct' => $product->getIdProduct()]);
 
 
-            $paths = [];
-            for ($i = 0; $i < sizeof($product->getImages()); $i++) {
-                $paths[] = str_replace('usersImg/', '', $product->getImages()[$i]->getPath());
-            }
+            /*   $paths = [];
+               for ($i = 0; $i < sizeof($product->getImages()); $i++) {
+                   $paths[] = str_replace('usersImg/', '', $product->getImages()[$i]->getPath());
+               }
 
-            $obj = [
-                'title' => $product->getName(),
-                'category' => $product->getCategory(),
-                'id' => $product->getIdProduct(),
-                'images' => $paths,
-                'mode' => 'edit'
-            ];
+               $obj = [
+                   'title' => $product->getName(),
+                   'category' => $product->getCategory(),
+                   'id' => $product->getIdProduct(),
+                   'images' => $paths,
+                   'mode' => 'edit'
+               ];
 
-            $messageBus->dispatch(new AiVerificationMessage($obj));
+               $messageBus->dispatch(new AiVerificationMessage($obj));*/
+//            $event = new ProductCustomEvent($product);
+//            $this->eventDispatcher->dispatch($event, 'product.updated');
 
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
@@ -231,14 +249,5 @@ class ProductController extends AbstractController
     }
 
 
-//    #[Route('/test', name: 'test', methods: ['POST', 'GET'])]
-//    public function test(): Response
-//    {
-//        $aiResult = new AiResult();
-//        $aiResult->setBody('qfdgqrfg');
-//        $entityManager = $this->get('doctrine')->getManager();
-//        $entityManager->persist($aiResult);
-//        $entityManager->flush();
-//        return new JsonResponse($aiResult);
-//    }
+
 }

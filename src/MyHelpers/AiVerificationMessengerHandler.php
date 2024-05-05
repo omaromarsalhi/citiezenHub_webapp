@@ -24,6 +24,7 @@ class AiVerificationMessengerHandler
 
     public function __invoke(AiVerificationMessage $message): void
     {
+
         $obj = $message->getObj();
 
         $aiVerification = new AiVerification();
@@ -32,14 +33,11 @@ class AiVerificationMessengerHandler
 
         ProductController::changeState($this->aiResultRepository, $this->productRepository, $this->entityManager, $aiDataHolder, $obj['id']);
 
-
         $aiResultController = new AiResultController();
 
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
 
-
-        var_dump($obj);
         if ($obj['mode'] === 'edit') {
             $aiResultController->edit($serializedData,$obj['id'],$this->entityManager,$this->aiResultRepository);
         } else {
@@ -50,6 +48,8 @@ class AiVerificationMessengerHandler
 
             $aiResultController->new($aiResult, $this->entityManager);
         }
+
+//        SendSms::send();
 
     }
 }

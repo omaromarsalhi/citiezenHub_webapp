@@ -1,347 +1,455 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets_wtf %}
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
+ {% block stylesheets %}
+     <link rel="stylesheet" href="{{ asset('css/map.css') }}"/>
+ {% endblock %}
 
-{% endblock %}
 
  {% block javascripts %}
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.6/flatpickr.min.js"></script>
+     <script src="jquery-2.1.1.js"></script>
      <script src="{{ asset('js/userScript.js') }}"></script>
+
+
+
+
+     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+     <script src="{{ asset('js/map.js') }}"></script>
+
+
  {% endblock %}
 
 {% block body %}
 
-    <!-- Start tabs area -->
-    <div class="edit-profile-area rn-section-gapTop">
-        <div class="container">
-            <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
-                <div class="col-12 d-flex justify-content-between mb--30 align-items-center">
-                    <h4 class="title-left">Edit Your Profile</h4>
-                    <a  href="" class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
+    <div>
+        <div class="" id="loading-div">
+        </div>
+        <div class="" id="container">
+
+            <div class="rn-breadcrumb-inner ptb--30">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <h5 class="title text-center text-md-start">Edit Profile</h5>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <ul class="breadcrumb-list">
+                                <li class="item"><a href="index.html">Home</a></li>
+                                <li class="separator"><i class="feather-chevron-right"></i></li>
+                                <li class="item current">Edit Profile</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
-                <div class="col-lg-3 col-md-3 col-sm-12">
-                    <!-- Start tabs area -->
-                    <nav class="left-nav rbt-sticky-top-adjust-five">
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true"><i class="feather-edit"></i>Edit Profile Image</button>
-                            <button class="nav-link" id="nav-home-tabs" data-bs-toggle="tab" data-bs-target="#nav-homes" type="button" role="tab" aria-controls="nav-homes" aria-selected="false"><i class="feather-user"></i>Personal Information</button>
-                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"> <i class="feather-unlock"></i>Change Password</button>
-                            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="feather-bell"></i>Notification Setting</button>
+
+            <!-- Start tabs area -->
+            <div class="edit-profile-area rn-section-gapTop">
+                <div class="container">
+                    <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
+                        <div class="col-12 d-flex justify-content-between mb--30 align-items-center">
+                            <h4 class="title-left">Edit Your Profile</h4>
+                            <a href="{{ path('profile',{image:image,name:name,lastname:lastname,email:email}) }}"
+                               class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
                         </div>
-                    </nav>
-                    <!-- End tabs area -->
-                </div>
-                <div class="col-lg-9 col-md-9 col-sm-12 mt_sm--30">
-                    <div class="tab-content tab-content-edit-wrapepr" id="nav-tabContent">
+                    </div>
+                    <div class="woocommerce-notices-wrapper" id="notification_box">
+                    </div>
 
-                        <!-- sigle tab content -->
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <!-- start personal information -->
-                            <div class="nuron-information">
 
-                                <div class="profile-change row g-5">
-{#                                    <div class="profile-left col-lg-4">#}
-{#                                        <div class="profile-image mb--30">#}
-{#                                            <h6 class="title">Change Your Profile Picture</h6>#}
-{#                                            <img id="rbtinput1" src="" alt="Profile-NFT">#}
-{#                                        </div>#}
-{#                                        <div class="button-area">#}
-{#                                            <div class="brows-file-wrapper">#}
-{#                                                <!-- actual upload which is hidden -->#}
-{#                                                <input name="image" id="image" type="file">#}
-{#                                                <!-- our custom upload button -->#}
-{#                                                <label for="image" title="No File Choosen">#}
-{#                                                    <span class="text-center color-white">Upload Profile</span>#}
-{#                                                </label>#}
-{#                                            </div>#}
-{#                                            <div class="button-area save-btn-edit">#}
-{#                                                <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editImage(event)">Save#}
-{#                                                </button>#}
+                    {% set currentTime = "now"|date("Y-m-d H:i:s") %}
+                    {% set currentTimeMinusOneHour = currentTime|date("Y-m-d H:i:s")|date_modify("-1 hour") %}
+                    {#            {{ currentTimeMinusOneHour|date("Y-m-d H:i:s") }} #}
+                    {% if app.session.has('profile_alert_message') and expiry_time| date("Y-m-d H:i:s") > currentTimeMinusOneHour|date("Y-m-d H:i:s") %}
+                        <div class="woocommerce-notices-wrapper" id="notification">
+                            <div class="woocommerce-message" id="notifDiv" role="alert">
+                                <i class="notifIcon mt-6 pb-0 fa-solid fa-circle-check"></i> You Shoud Edit Your Account
+                                Beffor
+                                30 Minutes Otherwise Your Account Will Be Deleted.<a href=""
+                                                                                     class="restore-item">Undo?</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <script>
+                        setTimeout(function () {
+                            var alertElement = document.getElementById('notification');
+                            if (alertElement) {
+                                alertElement.style.display = 'none';
+                            }
+                        }, 60000);
+                    </script>
 
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                    </div>#}
+                    <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
+                        <div class="col-lg-3 col-md-3 col-sm-12">
+                            <!-- Start tabs area -->
+                            <nav class="left-nav rbt-sticky-top-adjust-five">
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                                            aria-selected="true"><i class="feather-edit"></i>Edit Profile Image
+                                    </button>
+                                    <button class="nav-link" id="nav-home-tabs" data-bs-toggle="tab"
+                                            data-bs-target="#nav-homes" type="button" role="tab"
+                                            aria-controls="nav-homes"
+                                            aria-selected="false"><i class="feather-user"></i>Personal Information
+                                    </button>
+                                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-profile" type="button" role="tab"
+                                            aria-controls="nav-profile" aria-selected="false"><i
+                                                class="feather-unlock"></i>Change
+                                        Password
+                                    </button>
+                                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-contact" type="button" role="tab"
+                                            aria-controls="nav-contact" aria-selected="false">
+                                        <i class="fa-solid fa-map-location-dot"></i>Location
+                                        Setting
+                                    </button>
+                                </div>
+                            </nav>
+                            <!-- End tabs area -->
+                        </div>
+                        <div id="main-content" class="col-lg-9 col-md-9 col-sm-12 mt_sm--30">
+                            <div class="tab-content tab-content-edit-wrapepr" id="nav-tabContent">
 
+                                <!-- sigle tab content -->
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                     aria-labelledby="nav-home-tab">
+                                    <!-- start personal information -->
+                                    <div class="nuron-information">
+
+                                        <!--{# <div class="profile-change row g-5">
                                     <div class="profile-left right col-lg-8">
-                                        <div class="profile-image mb--30">
+                                        <div class="profile-image mb&#45;&#45;30">
                                             <h6 class="title">Change Your Cover Photo</h6>
-                                            <img id="rbtinput2" src="{{ asset('images/users/' ~ image) }}" alt="Profile-NFT">
+                                            <img id="rbtinput2" src="{{ asset('images/user/profile.png') }}" alt="Profile-NFT">
                                         </div>
                                         <div class="button-area">
                                             <div class="brows-file-wrapper">
-                                                <!-- actual upload which is hidden -->
+                                                &lt;!&ndash; actual upload which is hidden &ndash;&gt;
                                                 <input name="nipa" id="nipa" type="file">
-                                                <!-- our custom upload button -->
+                                                &lt;!&ndash; our custom upload button &ndash;&gt;
                                                 <label for="nipa" title="No File Choosen">
                                                     <span class="text-center color-white">Upload Cover</span>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+                                </div> #}-->
+
+                                        <div class="profile-change row g-5">
+                                            <div class="profile-left col-lg-4">
+                                                <div class="profile-image mb--30">
+                                                    <h6 class="title">Change Your Profile Picture</h6>
+                                                    <!--{#                                                <img id="rbtinput1" src="{{ asset('images/user/profile.png') }}" #}-->
+                                                    <!--{#                                                     alt="Profile-NFT"> #}-->
+                                                    <div class="upload-area">
+
+                                                        <div class="brows-file-wrapper">
+                                                            <!-- actual upload which is hidden -->
+                                                            <input
+                                                                    name="createinputfile"
+                                                                    id="createinputfile"
+                                                                    type="file"
+                                                                    class="inputfile"
+                                                            />
+                                                            <img
+                                                                    id="createfileImage"
+                                                                    {% if(app.user.image) %}
+                                                                        src="{{ asset('usersImg/'~app.user.image) }}"
+                                                                    {% else %}
+                                                                        src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                                                    {% endif %}
+                                                                    alt=""
+                                                                    data-black-overlay="6"
+                                                            />
+
+                                                            <!-- our custom upload button -->
+                                                            <label for="createinputfile" title="No File Choosen">
+                                                                <i class="feather-upload"></i>
+                                                                <span class="text-center">Choose a File</span>
+                                                                <p class="text-center mt&#45;&#45;10">
+                                                                    PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                                                    Max 1Gb.
+                                                                </p>
+                                                            </label>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="button-area">
+                                                    <div class="brows-file-wrapper">
+                                                        <label for="fatima" title="No File Choosen">
+                                                            <span class="text-center color-white" onclick="editImage()">Save Profile</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-left right col-lg-8">
+                                                <div class="profile-image mb--30">
+                                                    <h6 class="title">Change Your Cover Photo</h6>
+                                                    <img id="rbtinput2" src="assets/images/profile/cover-04.png"
+                                                         alt="Profile-NFT">
+                                                </div>
+                                                <div class="button-area">
+                                                    <div class="brows-file-wrapper">
+                                                        <!-- actual upload which is hidden -->
+                                                        <input name="nipa" id="nipa" type="file">
+                                                        <!-- our custom upload button -->
+                                                        <label for="nipa" title="No File Choosen">
+                                                            <span class="text-center color-white">Upload Cover</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End personal information -->
+                                </div>
+                                <!-- End single tabv content -->
+                                <!-- sigle tab content -->
+                                <div id="test">
+
+                                </div>
+                                <div class="tab-pane fade" id="nav-homes" role="tabpanel"
+                                     aria-labelledby="nav-home-tab">
+
+
+                                    <div id="mesaage">
+
+                                    </div>
+                                    <style>
+                                        .test {
+                                            color: red;
+                                            font-weight: bold;
+
+                                        }
+                                    </style>
+
+
+                                    <!-- start personal information -->
+                                    <form>
+                                        <div class="nuron-information">
+                                            <div class="profile-form-wrapper">
+                                                <div class="input-two-wrapper mb--15">
+                                                    <div class="first-name half-wid">
+                                                        <label for="contact-name" class="form-label">First Name</label>
+                                                        <input name="name" id="firstnamee" type="text" value={{ name }}>
+                                                        <div id="firstName">
+                                                        </div>
+                                                    </div>
+                                                    <div class="last-name half-wid">
+                                                        <label for="contact-name-last" class="form-label">Last
+                                                            Name</label>
+                                                        <input name="lastname" id="lastnamee" type="text"
+                                                               value={{ lastname }}>
+                                                        <div id="lastName">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="email-area">
+
+                                                    <label for="Email" class="form-label">Edit Your Email</label>
+                                                    <input name="email" id="email" type="email"
+                                                           value={{ email }} readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="input-two-wrapepr-prifile">
+
+                                                <!-- start Role area -->
+                                                <div class="role-area mt--15">
+                                                    <label for="Address" class="form-label mb--10">Your Address</label>
+                                                    <input name="address" id="address" type="text"
+                                                           value={{ address }}  readonly>
+                                                </div>
+                                                <select class="profile-edit-select" name="user[status]" id="status">
+                                                    {% set status = status %}
+                                                    <option value="Married"
+                                                            {% if status == 'Married' %}selected{% endif %}>
+                                                        Married
+                                                    </option>
+                                                    <option value="Single"
+                                                            {% if status == 'Single' %}selected{% endif %}>
+                                                        Single
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="input-two-wrapepr-prifile">
+                                                <!-- start Role area -->
+                                                <div class="role-area mt--15">
+                                                    <label for="Role" class="form-label mb--10">Your Role</label>
+                                                    <input name=role" id="role" type="text" value={{ role }}>
+                                                </div>
+                                                <select class="profile-edit-select" name="user[gender]" id="gender">
+                                                    {% set gender = gender %}
+                                                    <option value="Male"
+                                                            {% if gender == 'Married' %}selected{% endif %}>
+                                                        Male
+                                                    </option>
+                                                    <option value="Female"
+                                                            {% if gender == 'Single' %}selected{% endif %}>
+                                                        Female
+                                                    </option>
+                                                </select>
+                                                <!-- end gender -->
+                                            </div>
+
+
+                                            <div class="profile-form-wrapper">
+                                                <div class="input-two-wrapper mt--15">
+                                                    <div class="first-name half-wid">
+                                                        <label for="Age" class="form-label mb--10">Your Age</label>
+                                                        <input name="user[age]" id="agee" type="text" value={{ age }}>
+                                                        <div id="age">
+                                                        </div>
+                                                    </div>
+                                                    <div class="last-name half-wid">
+
+                                                        <label for="PhoneNumber" class="form-label">Phone Number</label>
+                                                        <input name="phoneNumber" id="phoneNumberr" type="text"
+                                                               value={{ phoneNumber }}>
+                                                        <div id="phoneNumber">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-form-wrapper">
+                                                <div class="input-two-wrapper mt--15">
+                                                    <div class="first-name half-wid">
+                                                        <label for="cin" class="form-label">Your Cin Number</label>
+                                                        <input name="cin" id="cinn" type="text" value={{ cin }}>
+                                                        <div id="cin">
+                                                        </div>
+                                                    </div>
+                                                    <div class="last-name half-wid">
+                                                        <label class="dob" for="datepicker">Date of brith</label>
+                                                        <input class="form-control datetimepicker" id="date" type="date"
+                                                               data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}'
+                                                               value="{{ dob|date('Y-m-d') }}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                    <style>
+                                        .notifIcon {
+                                            color: #3EB75E;
+                                            margin: 0 10px 0 0;
+                                        }
+
+                                        .notifDiv {
+                                            font-size: 20px;
+                                        }
+                                    </style>
+                                    <div class="button-area save-btn-edit">
+                                        <a href="{{ path('editProfile') }}" class="btn btn-primary-alta mr--15"
+                                           onclick="customAlert.alert('Cancel Edit Profile?')">Clean</a>
+                                        <button type="submit" id="submit_button" name="submit_button"
+                                                class="btn btn-primary mr--15" onclick="editProfile(event)">Update
+                                        </button>
+                                    </div>
+
+                                    <!-- End personal information -->
+
+                                </div>
+                                <!-- End single tabv content -->
+
+                                <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                                     aria-labelledby="nav-profile-tab">
+                                    <!-- change password area Start -->
+                                    <div class="nuron-information">
+                                        <div class="condition">
+                                            <h5 class="title">Create Your Password</h5>
+                                            <p class="condition">
+                                                Passwords are a critical part of information and network security.
+                                                Passwords
+                                                serve to protect user accounts but a poorly chosen password, if
+                                                compromised,
+                                                could put the entire network at risk.
+                                            </p>
+                                            <hr/>
+                                            <div class="email-area">
+                                                <label for="Email2" class="form-label">Enter Email</label>
+                                                <input name="email" id="Email2" type="email" value="">
+                                            </div>
+                                        </div>
+                                        <div class="input-two-wrapper mt--15">
+                                            <div class="old-password half-wid">
+                                                <label for="oldPass" class="form-label">Enter Old Password</label>
+                                                <input name="pass" id="oldPass" type="password">
+                                                <div id="other">
+                                                </div>
+                                            </div>
+                                            <div class="new-password half-wid">
+                                                <label for="NewPass" class="form-label">Create New Password</label>
+                                                <input name="password" id="NewPass" type="password">
+                                                <div id="password">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="email-area mt--15">
+                                            <label for="rePass" class="form-label">Confirm Password</label>
+                                            <input name="Password" id="rePass" type="password" value="">
+                                        </div>
+                                        <a href="#" class="btn btn-primary save-btn-edit"
+                                           onclick="editPassword(event)">Save</a>
+                                    </div>
+                                    <!-- change password area ENd -->
+                                </div>
+
+                                <div class="tab-pane fade " id="nav-contact" role="tabpanel"
+                                     aria-labelledby="nav-contact-tab">
+
+                                    <!-- start Notification Setting  -->
+                                    <div class="nuron-information">
+                                        <h5 class="title">Choose Your Location </h5>
+                                        <p class="notice-disc">
+                                            Choose you location so that we can determine the municipality you belongs to
+                                        </p>
+                                        <hr/>
+                                        <!-- start notice wrapper parrent -->
+                                        <div id="mapCss">
+                                            <div class="pac-card" id="pac-card">
+                                                <input id="pac-input" type="text" placeholder="Enter a location"/>
+                                            </div>
+                                            <div id="map" style="min-height: 500px"></div>
+                                            <div id="infowindow-content">
+                                                <span id="place-name" class="title"></span><br/>
+                                                <span id="place-address"></span>
+                                            </div>
+                                        </div>
+                                        <!-- end notice wrapper parrent -->
+                                        <a href="#" class="btn btn-primary save-btn-edit"
+                                           onclick="customAlert.alert('Successfully saved Your Notificationm setting')">Save</a>
+                                    </div>
+                                    <!-- End Notification Setting  -->
+
                                 </div>
                             </div>
-                            <!-- End personal information -->
-                        </div>
-                        <!-- End single tabv content -->
-                        <!-- sigle tab content -->
-                        <div class="tab-pane fade" id="nav-homes" role="tabpanel" aria-labelledby="nav-home-tab">
-
-                            <!-- start personal information -->
-                            <form>
-                             <div class="nuron-information">
-                                <div class="profile-form-wrapper">
-                                    <div class="input-two-wrapper mb--15">
-                                        <div class="first-name half-wid">
-                                            <label for="contact-name" class="form-label">First Name</label>
-                                            <input  name="name" id="firstname" type="text" value={{ name }}>
-                                        </div>
-                                        <div class="last-name half-wid">
-                                            <label for="contact-name-last" class="form-label">Last Name</label>
-                                            <input name="lastname" id="lastname" type="text" value={{ lastname }}>
-                                        </div>
-                                    </div>
-                                    <div class="email-area">
-
-                                        <label for="Email" class="form-label">Edit Your Email</label>
-                                        <input name="email" id="email" type="email" value={{ email }} readonly>
-                                    </div>
-                                </div>
-
-
-
-
-                                <div class="input-two-wrapepr-prifile">
-
-                                    <!-- start Role area -->
-                                    <div class="role-area mt--15">
-                                        <label for="Address" class="form-label mb--10">Your Address</label>
-                                        <input name="address" id="address" type="text" value={{ address }}  readonly >
-                                    </div>
-                                    <select class="profile-edit-select" name="user[status]"  id="status" >
-                                        {% set status = status %}
-                                        <option value="Married" {% if status == 'Married' %}selected{% endif %}>Married</option>
-                                        <option value="Single" {% if status == 'Single' %}selected{% endif %}>Single</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-two-wrapepr-prifile">
-                                    <!-- start Role area -->
-                                    <div class="role-area mt--15">
-                                        <label for="Role" class="form-label mb--10">Your Role</label>
-                                        <input name=role" id="role" type="text" value={{role}}>
-                                    </div>
-                                    <select class="profile-edit-select" name="user[gender]"  id="gender" >
-                                        {% set gender = gender %}
-                                        <option value="Male" {% if gender == 'Married' %}selected{% endif %}>Male</option>
-                                        <option value="Female" {% if gender == 'Single' %}selected{% endif %}>Female</option>
-                                    </select>
-                                    <!-- end gender -->
-                                </div>
-
-
-                                 <div class="profile-form-wrapper">
-                                     <div class="input-two-wrapper mt--15">
-                                         <div class="first-name half-wid">
-                                             <label for="Age" class="form-label mb--10">Your Age</label>
-                                             <input name="user[age]" id="age" type="text" value={{age}} >
-                                         </div>
-                                         <div class="last-name half-wid">
-
-                                             <label for="PhoneNumber" class="form-label">Phone Number</label>
-                                             <input name="phoneNumber" id="phoneNumber" type="text" value={{phoneNumber}} >
-                                         </div>
-                                     </div>
-                                 </div>
-
-                                 <div class="profile-form-wrapper">
-                                     <div class="input-two-wrapper mt--15">
-                                         <div class="first-name half-wid">
-                                             <label for="cin" class="form-label">Your Cin Number</label>
-                                             <input  name="cin" id="cin" type="text" value={{ cin }}>
-                                         </div>
-                                         <div class="last-name half-wid">
-                                             <label class="dob" for="datepicker">Date of birth</label>
-                                             <input class="form-control datetimepicker" id="date" type="date" placeholder="dd/mm/yyyy" data-options='{"disableMobile":true,"dateFormat":"d/m/Y hh:MM"}' />
-                                         </div>
-                                     </div>
-                                 </div>
-
-                             </div>
-
-
-                            </form>
-
-                                <div class="button-area save-btn-edit">
-                                    <a href="#" class="btn btn-primary-alta mr--15" onclick="customAlert.alert('Cancel Edit Profile?')">Cancel</a>
-                                    <button type="submit" id="submit_button" name="submit_button" class="btn btn-primary mr--15" onclick="editProfile(event)">Save
-                                    </button>
-                                </div>
-                                <a href="{{path('app_user_delete')}}" class="btn btn-primary-alta mr--15" >Delete</a>
-
-                            <!-- End personal information -->
-
-                        </div>
-                        <!-- End single tabv content -->
-
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <!-- change password area Start -->
-                            <div class="nuron-information">
-                                <div class="condition">
-                                    <h5 class="title">Create Your Password</h5>
-                                    <p class="condition">
-                                        Passwords are a critical part of information and network security. Passwords
-                                        serve to protect user accounts but a poorly chosen password, if compromised,
-                                        could put the entire network at risk.
-                                    </p>
-                                    <hr />
-                                    <div class="email-area">
-                                        <label for="Email2" class="form-label">Enter Email</label>
-                                        <input name="email" id="Email2" type="email" value="">
-                                    </div>
-                                </div>
-                                <div class="input-two-wrapper mt--15">
-                                    <div class="old-password half-wid">
-                                        <label for="oldPass" class="form-label">Enter Old Password</label>
-                                        <input name="pass" id="oldPass" type="password">
-                                    </div>
-                                    <div class="new-password half-wid">
-                                        <label for="NewPass" class="form-label">Create New Password</label>
-                                        <input name="password" id="NewPass" type="password">
-                                    </div>
-                                </div>
-                                <div class="email-area mt--15">
-                                    <label for="rePass" class="form-label">Confirm Password</label>
-                                    <input name="Password" id="rePass" type="password" value="">
-                                </div>
-                                <a href="#" class="btn btn-primary save-btn-edit" onclick="editPassword(event)">Save</a>
-                            </div>
-                            <!-- change password area ENd -->
-                        </div>
-
-                        <div class="tab-pane fade " id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-
-                            <!-- start Notification Setting  -->
-                            <div class="nuron-information">
-                                <h5 class="title">Make Sure Your Notification setting </h5>
-                                <p class="notice-disc">
-                                    Notification Center is where you can find app notifications and Quick Settings—which
-                                    give you quick access to commonly used settings and apps. You can change your
-                                    notification settings at any time from the Settings app. Select Start , then select
-                                    Settings
-                                </p>
-                                <hr />
-                                <!-- start notice wrapper parrent -->
-                                <div class="notice-parent-wrapper d-flex">
-                                    <div class="notice-child-wrapper">
-                                        <!-- single notice wrapper -->
-                                        <div class="single-notice-setting">
-                                            <div class="input">
-                                                <input type="checkbox" id="themeSwitch" name="theme-switch" class="theme-switch__input" />
-                                                <label for="themeSwitch" class="theme-switch__label">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="content-text">
-                                                <p>Order Confirmation Notice</p>
-                                            </div>
-                                        </div>
-                                        <!-- single notice wrapper End -->
-
-                                        <!-- single notice wrapper -->
-                                        <div class="single-notice-setting mt--15">
-                                            <div class="input">
-                                                <input type="checkbox" id="themeSwitchs" name="theme-switch" class="theme-switch__input" />
-                                                <label for="themeSwitchs" class="theme-switch__label">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="content-text">
-                                                <p>New Items Notification</p>
-                                            </div>
-                                        </div>
-                                        <!-- single notice wrapper End -->
-
-                                        <!-- single notice wrapper -->
-                                        <div class="single-notice-setting mt--15">
-                                            <div class="input">
-                                                <input type="checkbox" id="OrderNotice" name="theme-switch" class="theme-switch__input" />
-                                                <label for="OrderNotice" class="theme-switch__label">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="content-text">
-                                                <p>New Bid Notification</p>
-                                            </div>
-                                        </div>
-                                        <!-- single notice wrapper End -->
-
-                                        <!-- single notice wrapper -->
-                                        <div class="single-notice-setting mt--15">
-                                            <div class="input">
-                                                <input type="checkbox" id="newPAy" name="theme-switch" class="theme-switch__input" />
-                                                <label for="newPAy" class="theme-switch__label">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="content-text">
-                                                <p>Payment Card Notification</p>
-                                            </div>
-                                        </div>
-                                        <!-- single notice wrapper End -->
-
-                                        <!-- single notice wrapper -->
-                                        <div class="single-notice-setting mt--15">
-                                            <div class="input">
-                                                <input type="checkbox" id="EndBid" name="theme-switch" class="theme-switch__input" />
-                                                <label for="EndBid" class="theme-switch__label">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="content-text">
-                                                <p>Ending Bid Notification Before 5 min</p>
-                                            </div>
-                                        </div>
-                                        <!-- single notice wrapper End -->
-
-                                        <!-- single notice wrapper -->
-                                        <div class="single-notice-setting mt--15">
-                                            <div class="input">
-                                                <input type="checkbox" id="Approve" name="theme-switch" class="theme-switch__input" />
-                                                <label for="Approve" class="theme-switch__label">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="content-text">
-                                                <p>Notification for approving product</p>
-                                            </div>
-                                        </div>
-                                        <!-- single notice wrapper End -->
-                                    </div>
-
-
-
-                                    <div class="notice-child-wrapper">
-                                    </div>
-                                </div>
-                                <!-- end notice wrapper parrent -->
-                                <a href="#" class="btn btn-primary save-btn-edit" onclick="customAlert.alert('Successfully saved Your Notificationm setting')">Save</a>
-                            </div>
-                            <!-- End Notification Setting  -->
-
 
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
-
     <!-- End tabs area -->
+{% endblock %}
 
+{% block scripts %}
 
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=places&v=weekly&solution_channel=GMP_CCS_autocomplete_v1"
+            defer
+    ></script>
 {% endblock %}

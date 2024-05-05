@@ -65,7 +65,7 @@
 
 :root {
   --color-primary: #2899d8;
-  --color-primary-alta: #141515;
+  --color-primary-alta: #212e48;
   --color-gray: #f6f6f6;
   --color-gray-2: #f5f8fa;
   --color-subtitle: #f9004d;
@@ -19857,6 +19857,7 @@ button .small-image {
 .product-style-one .bid-react-area {
   display: flex;
   justify-content: space-between;
+  align-content: center;
   margin-top: 10px;
 }
 

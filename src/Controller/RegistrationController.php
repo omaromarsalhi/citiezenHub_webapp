@@ -3,13 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\MunicipaliteRepository;
+use App\Repository\UserRepository;
 use App\Security\UserAuthanticatorAuthenticator;
-use DateTime;
+use App\MyHelpers\GeocodingService;
+
+;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
@@ -20,11 +27,16 @@ class RegistrationController extends AbstractController
 {
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator): Response
+    public function register(UserRepository $userRepository, Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager, SessionInterface $session, ValidatorInterface $validator, TranslatorInterface $translator, MunicipaliteRepository $municipaliteRepository): Response
     {
+
+        $geo = new GeocodingService();
+        $email = $request->query->get('email');
+        $name = $request->query->get('name');
+        $parts = explode(" ", $name);
         $user = $session->get('authenticatedUser');
         $userData = $request->request->get('user');
-        $errors = [];
+        $errorMessages = [];
         if ($request->isMethod('POST') && $userData !== null) {
             if ($request->request->has('submit_button')) {
                 $user = new User();
@@ -33,85 +45,58 @@ class RegistrationController extends AbstractController
                 $user->setAddress($userData['address']);
                 $user->setEmail($userData['email']);
                 $user->setPassword($userData['password']);
-                $errors = $validator->validate($user);
-                if (count($errors) === 0 && $userData['password'] === $userData['password1']) {
-                    $hashedPassword = $userPasswordHasher->hashPassword(
-                        $user,
-                        $userData['password']
-                    );
-                    $user->setPassword($hashedPassword);
-                    $user->setRole("Citoyen");
-                    $user->setDate(new DateTime());
-                    $entityManager->persist($user);
-                    $entityManager->flush();
-                    return $userAuthenticator->authenticateUser(
-                        $user,
-                        $authenticator,
-                        $request
-                    );
+                $user->setState(0);
+                $errors = $validator->validate($user, null, 'add');
+                foreach ($errors as $error) {
+                    $field = $error->getPropertyPath();
+                    $errorMessages[$field] = $error->getMessage();
                 }
-            } else {
-                return  $this->redirectToRoute('app_login');
+                if ($userRepository->count(['email' => $userData['email']]) !== 0) {
+                    $field = 'Email';
+                    $errorMessages[$field] = 'Mail already exists';
+                } else {
+                    $muni = $municipaliteRepository->findOneBy(['name' => $geo->getMunicipalityFromAddress($userData['address'])]);
+                    if (count($errors) === 0 && $userData['password'] === $userData['password1'] && $muni) {
+
+                        $hashedPassword = $userPasswordHasher->hashPassword(
+                            $user,
+                            $userData['password']
+                        );
+
+                        $user->setMunicipalite($muni);
+                        $user->setPassword($hashedPassword);
+                        $user->setRole("Citoyen");
+                        $user->setDate(new \DateTime('now', new \DateTimeZone('Africa/Tunis')));
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+
+
+
+
+
+                        return $userAuthenticator->authenticateUser(
+                            $user,
+                            $authenticator,
+                            $request
+                        );
+                    }
+                }
             }
+
         }
+
+
+
+
         return $this->render('user/signup.html.twig', [
-            'name' => $user ? $user->getFirstName() : '',
+            'name' => $parts[0] ?: ($user ? $user->getFirstName() : ''),
             'lastName' => $user ? $user->getLastName() : '',
-            'email' => $user ? $user->getEmail() : '',
+            'email' => $email ?: ($user ? $user->getEmail() : ''),
             'role' => $user ? $user->getRole() : '',
-            'errors' => $errors,
+            'errors' => $errorMessages,
         ]);
+
     }
-//    #[Route('/register', name: 'app_register')]
-//    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthanticatorAuthenticator $authenticator, EntityManagerInterface $entityManager,SessionInterface $session, ValidatorInterface $validator): Response
-//    {   $user = $session->get('authenticatedUser');
-//        $userData = $request->request->get('user');
-//        if ($request->isMethod('POST') && $userData !== null) {
-//            if ($request->request->has('submit_button')) {
-////            $user = $request->findOneBy(['email' => $userData['email']]);
-//                $errors = $validator->validate($user);
-//
-//                if (count($errors) === 0 && $userData['password'] === $userData['password1']) {
-//                    $user = new User();
-//                    $user->setFirstName($userData['firstName']);
-//                    $user->setLastName($userData['lastName']);
-//                    $user->setAddress($userData['address']);
-//                    $user->setEmail($userData['email']);
-//                    $hashedPassword = $userPasswordHasher->hashPassword(
-//                        $user,
-//                        $userData['password']
-//                    );
-//                    $user->setPassword($hashedPassword);
-//                    $user->setRole("Citoyen");
-//                    $user->setDate(new DateTime());
-//                    $em = $entityManager;
-//                    $em->persist($user);
-//                    $em->flush();
-//                    return $userAuthenticator->authenticateUser(
-//                        $user,
-//                        $authenticator,
-//                        $request
-//                    );
-//                }
-//            }
-//            else
-//                return  $this->redirectToRoute('app_login');
-//        }
-//        if($user)
-//        {
-//            return $this->render('test/signup.html.twig', [
-//                'name'=>$user->getFirstName(),
-//                'lastName'=>$user->getLastName(),
-//                'email' => $user->getEmail(),
-//                'errors' => $errors ?? null,
-//            ]);
-//        }
-//        return $this->render('test/signup.html.twig', [
-//            'name'=>'',
-//            'lastName'=>'',
-//            'email' =>'',
-//            'errors' => $errors ?? null, // Passer les erreurs de validation au template Twig
-//        ]);
-//    }
+
 }
 

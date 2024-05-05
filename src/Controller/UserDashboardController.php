@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\AiResult;
 use App\MyHelpers\PaginationHelper;
 use App\Repository\AiResultRepository;
 use App\Repository\ProductRepository;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TransactionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +17,7 @@ class UserDashboardController extends AbstractController
 {
 
     #[Route('/', name: '_index')]
-    public function index(AiResultRepository $aiResultRepository, ProductRepository $productRepository, Request $request): Response
+    public function index(TransactionRepository $transactionRepository, AiResultRepository $aiResultRepository, ProductRepository $productRepository, Request $request): Response
     {
         $session = $request->getSession();
 
@@ -44,14 +42,21 @@ class UserDashboardController extends AbstractController
             $map[$page]->setPreviousPage($previous_page);
             $session->set('user_products_map', $map);
 
-            $underverif = $page == 'unverified';
 
-            $template = $this->render('user_dashboard/sub_onsale_products.html.twig', [
-                'products' => $map[$page]->getNProducts(10),
-                'underverif' => $underverif,
-                'type' => $page,
-                'aiResult' => $map[$page]->getAiResult(10),
-            ]);
+            if (($page == 'on_sale' || $page == 'unverified')) {
+                $underverif = $page == 'unverified';
+                $template = $this->render('user_dashboard/sub_onsale_products.html.twig', [
+                    'products' => $map[$page]->getNProducts(10),
+                    'underverif' => $underverif,
+                    'type' => $page,
+                    'aiResult' => $map[$page]->getAiResult(10),
+                ]);
+            } else {
+                $template = $this->render('user_dashboard/sub_saled_purchased.html.twig', [
+                    'transactions' => $map[$page]->getNProducts(10),
+                    'type' => $page,
+                ]);
+            }
 
             return new JsonResponse([
                 'template' => $template->getContent(),
@@ -61,27 +66,29 @@ class UserDashboardController extends AbstractController
             ]);
         }
 
-        $on_sale = $productRepository->findBy(['user' => $this->getUser(),'state' => 'verified']);
-        $unverified = $productRepository->findBy(['user' => $this->getUser(),'state' => 'unverified']);
+        $on_sale = $productRepository->findBy(['user' => $this->getUser(), 'state' => 'verified']);
+        $unverified = $productRepository->findBy(['user' => $this->getUser(), 'state' => 'unverified']);
         $aiResults = $aiResultRepository->findByIdProduct($productRepository->findByIdUser($this->getUser()));
+
+        $purchased = $transactionRepository->findBy(['idBuyer' => $this->getUser()]);
+        $sold = $transactionRepository->findBy(['idSeller' => $this->getUser()]);
+
 
         $map = [
             'on_sale' => new PaginationHelper($on_sale, 1, 2, ceil(sizeof($on_sale) / 10)),
-            'unverified' => new PaginationHelper($unverified, 1, 2, ceil(sizeof($unverified) / 10), $aiResults)
+            'unverified' => new PaginationHelper($unverified, 1, 2, ceil(sizeof($unverified) / 10), $aiResults),
+            'purchased' => new PaginationHelper($purchased, 1, 2, ceil(sizeof($purchased) / 10)),
+            'sold' => new PaginationHelper($sold, 1, 2, ceil(sizeof($sold) / 10)),
         ];
 
         $session->set('user_products_map', $map);
 
         return $this->render('user_dashboard/author.html.twig', [
             'on_sale' => $map['on_sale'],
-            'unverified' => $map['unverified']
+            'unverified' => $map['unverified'],
+            'purchased' => $map['purchased'],
+            'sold' => $map['sold'],
         ]);
 
-//        return $this->render('user_dashboard/author.html.twig', [
-//            'products' => array_slice($prods, 0, 10),
-//            'nbr_pages' => ceil(sizeof($prods) / 10),
-//            'current_page' => 1,
-//            'previous_page' => 2,
-//        ]);
     }
 }

@@ -25,7 +25,7 @@ class AiResultController extends AbstractController
 //    #[Route('/', name: 'app_ai_result_index', methods: ['GET'])]
 //    public function index(AiResultRepository $aiResultRepository): Response
 //    {
-//        return $this->render('ai_result/index.html.twig', [
+//        return $this->render('ai_result/chat-index.html.twig.twig', [
 //            'ai_results' => $aiResultRepository->findAll(),
 //        ]);
 //    }
