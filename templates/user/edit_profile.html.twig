@@ -394,15 +394,17 @@
                                         </div>
                                         <div class="input-two-wrapper mt--15">
                                             <div class="old-password half-wid">
-                                                <label for="mapAddress" class="form-label" >Address: </label>
-                                                <input id="mapAddress" type="text" value="{{ app.user.address|default('none') }}" disabled>
+                                                <label for="mapAddress" class="form-label">Address: </label>
+                                                <input id="mapAddress" type="text"
+                                                       value="{{ app.user.address|default('none') }}" disabled>
                                                 <div id="other">
                                                 </div>
                                             </div>
                                             <div class="new-password">
                                                 <label for="municipality" class="form-label">Municipality: </label>
-                                                <input id="municipality" type="text" disabled value="{{ app.user.getMunicipalite().name|default('none') }}">
-                                                <input  id="municipalityAddressNew" type="hidden" disabled >
+                                                <input id="municipality" type="text" disabled
+                                                       value="{{ app.user.getMunicipalite().name|default('none') }}">
+                                                <input id="municipalityAddressNew" type="hidden" disabled>
                                                 <div id="password">
                                                 </div>
                                             </div>
@@ -482,7 +484,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <a  class="btn btn-primary save-btn-edit mt-1 mb-1"
+                                        <a class="btn btn-primary save-btn-edit mt-1 mb-1"
                                            onclick="saveCin()">Save</a>
                                     </div>
                                     <!-- End personal information -->
@@ -502,7 +504,8 @@
 {% block scripts %}
 
     <script
-            src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=places&v=weekly&solution_channel=GMP_CCS_autocomplete_v1"
+            src="https://maps.googleapis.com/maps/api/js?key={{ app.request.server.get('MAP_VARIABLE') }}
+&callback=initMap&libraries=places&v=weekly&solution_channel=GMP_CCS_autocomplete_v1"
             defer
     ></script>
 {% endblock %}
