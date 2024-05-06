@@ -140,7 +140,7 @@
                     <th class="sort white-space-nowrap align-middle" scope="col"></th>
                     <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:360px;" data-sort="product">NOM STATION</th>
                     <th class="sort align-middle" scope="col" data-sort="customer" style="min-width:200px;">IMAGE</th>
-                    <th class="sort align-middle" scope="col" data-sort="rating" style="min-width:110px;">RATING</th>
+                    <th class="sort align-middle" scope="col" data-sort="rating" style="min-width:110px;">Type Vehicule</th>
                     <th class="sort align-middle" scope="col" style="max-width:350px;" data-sort="review">Address</th>
                     <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">STATUS</th>
                     <th class="sort text-end align-middle" scope="col" data-sort="time"></th>
@@ -161,11 +161,12 @@
                     <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">{{station.NomStation}}</a></td>
                     <td class="align-middle customer white-space-nowrap"><a class="d-flex align-items-center text-body" href="apps/e-commerce/landing/profile.html">
                         <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/station/{{ station.imagestation }}"  alt="" /></div>
-                        <h6 class="mb-0 ms-3 text-body"> {{station.TypeVehicule}}</h6>
                       </a></td>
-                    <td class="align-middle rating white-space-nowrap fs-10"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span></td>
+                    <td class="align-middle rating white-space-nowrap fs-10">
+                    <h6 class="fs-9 fw-semibold text-body-highlight mb-0">{{station.TypeVehicule}}</h6>
+                    </td>
                     <td class="align-middle review" style="min-width:350px;">
-                      <p class="fs-9 fw-semibold text-body-highlight mb-0">{{station.AddressStation}}</p>
+                      <h6 class="fs-9 fw-semibold text-body-highlight mb-0">{{station.AddressStation}}</h6>
                     </td>
                     <td class="align-middle text-start ps-5 status"><span class="badge badge-phoenix fs-10 badge-phoenix-warning"><span class="badge-label">Pending</span><span class="ms-1" data-feather="clock" style="height:12.8px;width:12.8px;"></span></span></td>
                     <td class="align-middle text-end time white-space-nowrap">

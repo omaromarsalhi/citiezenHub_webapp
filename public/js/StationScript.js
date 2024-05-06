@@ -326,9 +326,9 @@ function updateStationList(stationList) {
                     <td class="align-middle product white-space-nowrap"><a class="fw-semibold" href="apps/e-commerce/landing/product-details.html">${station.nomstation}</a></td>
                     <td class="align-middle customer white-space-nowrap"><a class="d-flex align-items-center text-body" href="apps/e-commerce/landing/profile.html">
                          <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/station/${station.image_station}" + station.image_station   alt="" /></div> 
-                        <h6 class="mb-0 ms-3 text-body"> ${station.Type_Vehicule}</h6>
                       </a></td>
-                    <td class="align-middle rating white-space-nowrap fs-10"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span></td>
+                    <td class="align-middle rating white-space-nowrap fs-10">                        <h6 class="mb-0 ms-3 text-body"> ${station.Type_Vehicule}</h6>
+                    </td>
                     <td class="align-middle review" style="min-width:350px;">
                       <p class="fs-9 fw-semibold text-body-highlight mb-0">${station.addressstation}</p>
                     </td>

@@ -98,10 +98,6 @@ class TransportController extends AbstractController
     {
 
 
-
-
-
-
         $repository = $this->getDoctrine()->getManager()->getRepository(Transport::class);
         
          $query = $repository->createQueryBuilder('t')
@@ -126,6 +122,7 @@ class TransportController extends AbstractController
     
             $transport->setAverageRating($averageRating);
         }
+        
         usort($transports, function($a, $b) {
             return $b->getAverageRating() <=> $a->getAverageRating();
         });
