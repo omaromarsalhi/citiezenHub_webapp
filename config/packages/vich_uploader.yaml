@@ -1,16 +1,27 @@
 vich_uploader:
-    db_driver: orm
-    metadata:
-        type: attribute
+  db_driver: orm
+  metadata:
+    type: attribute
 
-    mappings:
-        blog:
-            uri_prefix: /usersImg
-            upload_destination: '%kernel.project_dir%/public/usersImg'
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
-
-    #mappings:
-    #    products:
-    #        uri_prefix: /images/products
-    #        upload_destination: '%kernel.project_dir%/public/images/products'
-    #        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+  mappings:
+    blog:
+      uri_prefix: /usersImg
+      upload_destination: '%kernel.project_dir%/public/usersImg'
+      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+    abonnement:
+      uri_prefix: /images/abonnements
+      upload_destination: '%kernel.project_dir%/public/images/abonnements'
+      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+    station:
+        uri_prefix: /images/stations
+        upload_destination: '%kernel.project_dir%/public/images/station'
+        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+    transport:
+        uri_prefix: /images/transports
+        upload_destination: '%kernel.project_dir%/public/images/transports'
+        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+  #mappings:
+  #    products:
+  #        uri_prefix: /images/products
+  #        upload_destination: '%kernel.project_dir%/public/images/products'
+  #        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
