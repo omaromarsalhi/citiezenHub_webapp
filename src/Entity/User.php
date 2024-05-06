@@ -164,6 +164,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private $municipalite;
     private ?\DateTimeInterface $informationCompletionDate;
 
+    #[ORM\Column(name:'cin_images',length: 1000, nullable: true)]
+    private ?string $cin_images = null;
+
     public function getMunicipalite(): ?Municipalite
     {
         return $this->municipalite;
@@ -410,6 +413,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function getInformationCompletionDate(): ?\DateTimeInterface
     {
         return $this->informationCompletionDate;
+    }
+
+    public function getCinImages(): ?string
+    {
+        return $this->cin_images;
+    }
+
+    public function setCinImages(?string $cin_images): static
+    {
+        $this->cin_images = $cin_images;
+
+        return $this;
     }
 
 

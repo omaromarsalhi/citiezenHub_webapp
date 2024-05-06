@@ -1,0 +1,32 @@
+
+{% extends 'base.html.twig' %}
+
+{% block stylesheets_wtf2 %}
+  <link rel="stylesheet" href="{{ asset('css/wtf.css') }}"/>
+{% endblock %}
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/cart.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="rn-not-found-area rn-section-gapTop">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="rn-not-found-wrapper">
+                        <h2 class="large-title"><i class="fa-solid fa-check" style="color: green"></i></h2>
+                        <h3 class="title">Payment Went Successfully</h3>
+                        <p>You Will Receive The Contract Soon.</p>
+                        <a href="{{ path('app_market_place_index') }}" class="btn btn-primary btn-large">Go Back To Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

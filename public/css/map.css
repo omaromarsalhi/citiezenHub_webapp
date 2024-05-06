@@ -1,0 +1,123 @@
+/**
+         * @license
+         * Copyright 2019 Google LLC. All Rights Reserved.
+         * SPDX-License-Identifier: Apache-2.0
+         */
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+    height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+
+
+#mapCss #description {
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+#mapCss #infowindow-content .title {
+    font-weight: bold;
+}
+
+#mapCss #infowindow-content {
+    display: none;
+}
+
+#mapCss #map #infowindow-content {
+    display: inline;
+}
+
+#mapCss .pac-card {
+    background-color: #fff !important;
+    border-radius: 5px !important;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3) !important;
+    margin: 10px !important;
+    font: 400 18px Roboto, Arial, sans-serif !important;
+    overflow: hidden !important;
+    height: 40px ;
+    border-color: black;
+
+}
+
+#mapCss #pac-container {
+    height: 40px ;
+
+}
+
+#mapCss .pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+}
+
+#mapCss .pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+#mapCss #pac-input {
+    display: block !important;
+    background-color: #fff !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    padding: 0 11px 0 13px !important;
+    text-overflow: ellipsis !important;
+    color: black;
+    width: 400px;
+    height: 40px ;
+}
+
+#mapCss #pac-input:focus {
+    border-color: black;
+}
+
+#mapCss #title {
+    color: #fff;
+    background-color: #4d90fe;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 6px 12px;
+}
+
+
+
+
+#mapCss input[type=button] {
+    background-color: #fff;
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    margin: 10px;
+    padding: 0 0.5em;
+    font: 400 18px Roboto, Arial, sans-serif;
+    overflow: hidden;
+    height: 40px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+#mapCss input[type=button]:hover {
+    background: rgb(235, 235, 235);
+}
+#mapCss input[type=button].button-primary {
+    background-color: #1a73e8;
+    color: white;
+}
+#mapCss input[type=button].button-primary:hover {
+    background-color: #1765cc;
+}
+#mapCss input[type=button].button-secondary {
+    background-color: white;
+    color: #1a73e8;
+}
+#mapCss  input[type=button].button-secondary:hover {
+    background-color: #d2e3fc;
+}

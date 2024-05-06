@@ -31,6 +31,8 @@
             imJs.unloadImage2();
             imJs.unloadImage();
             imJs.unloadImage3();
+            imJs.unloadImage4();
+            imJs.unloadImage5();
             imJs.darkLight();
             imJs.vedioActivation();
             imJs.tiltJS();
@@ -665,22 +667,37 @@
                 $("#createinputfile").click();
             });
             function rbtPreview() {
-                // const [file2] = createinputfile.files
                 const fileList = createinputfile.files;
-                // for (let i = 0; i < fileList.length; i++) {
-                //     console.log(fileList[i])
                     createfileImage.src = URL.createObjectURL(fileList[0])
-                // }
-                // console.log(file2)
-                // if (file2) {
-                //     createfileImage.src = URL.createObjectURL(file2)
-                // }
             }
             $("#createinputfile").change(function () {
                 rbtPreview(this);
             });
         },
-
+        unloadImage4: function name() {
+            $("#createfileImage4").click(function (e) {
+                $("#createinputfile4").click();
+            });
+            function rbtPreview() {
+                const fileList = createinputfile4.files;
+                createfileImage4.src = URL.createObjectURL(fileList[0])
+            }
+            $("#createinputfile4").change(function () {
+                rbtPreview(this);
+            });
+        },
+        unloadImage5: function name() {
+            $("#createfileImage5").click(function (e) {
+                $("#createinputfile5").click();
+            });
+            function rbtPreview() {
+                const fileList = createinputfile5.files;
+                createfileImage5.src = URL.createObjectURL(fileList[0])
+            }
+            $("#createinputfile5").change(function () {
+                rbtPreview(this);
+            });
+        },
         
         darkLight: function () {
             var styleMode = document.querySelector('meta[name="theme-style-mode"]').content;

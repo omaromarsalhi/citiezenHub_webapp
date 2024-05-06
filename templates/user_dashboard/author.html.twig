@@ -30,26 +30,10 @@
                     <div class="author-wrapper">
                         <div class="author-inner">
                             <div class="user-thumbnail">
-                                <img src="{{ asset('marketPlaceImages/banner-06.png') }}" alt=""/>
+                                <img src="{{ asset('usersImg/'~app.user.image) }}" alt=""/>
                             </div>
                             <div class="rn-author-info-content">
-                                <h4 class="title">MRS SUNAYRA AHSAN</h4>
-                                <a href="#" class="social-follw">
-                                    <i data-feather="twitter"></i>
-                                    <span class="user-name">it0bsession</span>
-                                </a>
-                                <div class="follow-area">
-                                    <div class="follow followers">
-                      <span
-                      >186k <a href="#" class="color-body">followers</a></span
-                      >
-                                    </div>
-                                    <div class="follow following">
-                      <span
-                      >156 <a href="#" class="color-body">following</a></span
-                      >
-                                    </div>
-                                </div>
+                                <h4 class="title">{{ app.user.firstName|upper~' '~app.user.lastName }}</h4>
                                 <div class="author-button-area">
                     <span class="btn at-follw follow-button"
                     ><i data-feather="user-plus"></i> Follow</span
@@ -397,8 +381,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <!-- Modal -->
                     <div
                             class="rn-popup-modal report-modal-wrapper modal fade"

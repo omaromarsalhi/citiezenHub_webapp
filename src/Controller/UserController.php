@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 
+use App\Entity\Municipalite;
+use App\MyHelpers\AiVerification;
 use App\MyHelpers\ImageHelperUser;
+use App\Repository\MunicipaliteRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Client;
 use Ivory\GoogleMap\Map;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,6 +32,75 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
+
+    #[Route('/cinUpdate', name: 'app_user_cinUpdate', methods: ['GET', 'POST'])]
+    public function cinUpdate(AiVerification $aiVerification,Request $request, EntityManagerInterface $entityManager, ImageHelperUser $imageHelperUser): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+
+            $frontId = $request->files->get('frontId');
+            $backId = $request->files->get('backId');
+            $frontIdPath = $imageHelperUser->saveImages($frontId);
+            $backIdPath = $imageHelperUser->saveImages($backId);
+            $user = $this->getUser();
+            $user->setCinImages($frontIdPath . '_' . $backIdPath);
+            $entityManager->flush();
+
+            $obj=[
+                'pathFrontCin'=>'../citiezenHub_webapp/public/usersImg/'.$frontIdPath,
+                'pathBackCin'=>'../citiezenHub_webapp/public/usersImg/'.$backIdPath,
+                'fileNameFront'=>md5('user_front'.($user->getId()*1000+17)),
+                'fileNameBackCin'=>md5('user_backCin'.($user->getId()*1000+17)),
+            ];
+
+            $aiVerification->runOcr($obj);
+
+            return new Response('done', Response::HTTP_OK);
+        }
+
+        return new Response('error', Response::HTTP_FORBIDDEN);
+
+    }
+
+
+    #[Route('/updateAddress', name: 'app_user_updateAddress', methods: ['GET', 'POST'])]
+    public function updateAddress(Request $request, EntityManagerInterface $entityManager, MunicipaliteRepository $municipalityRepository): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            $municipalityName = $request->get('municipality');
+            $mapAddress = $request->get('mapAddress');
+            $municipalityAddress = $request->get('municipalityAddressNew');
+
+            var_dump($municipalityAddress);
+            if (!$this->getUser()) {
+                return new Response('error', Response::HTTP_FORBIDDEN);
+            }
+
+            $user = $this->getUser();
+            $user->setAddress($mapAddress);
+
+            if ($user->getMunicipalite() !== null && $user->getMunicipalite()->getName() === $municipalityName) {
+                $entityManager->flush();
+                return new Response('done', Response::HTTP_OK);
+            }
+
+            $municipality = new Municipalite();
+            $municipality->setName($municipalityName);
+            $municipality->setAddress($municipalityAddress);
+
+            $user->setMunicipalite($municipality);
+
+            $entityManager->persist($municipality);
+            $entityManager->flush();
+
+
+            return new Response('done', Response::HTTP_OK);
+        }
+
+        return new Response('error', Response::HTTP_FORBIDDEN);
+    }
+
 
     #[Route('/editProfile', name: 'editProfile', methods: ['GET', 'POST'])]
     public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req, ValidatorInterface $validator, ImageHelperUser $imageHelper, SessionInterface $session): Response
@@ -110,7 +183,7 @@ class UserController extends AbstractController
         }
 
         $map = new Map();
-
+        $cinImages=explode("_",$user->getCinImages());
 
         return $this->render('user/edit_profile.html.twig', [
             'name' => $user->getFirstName(),
@@ -129,6 +202,8 @@ class UserController extends AbstractController
             'routePrecedente' => $path,
             'expiry_time' => $expiryTime,
             'date' => $user->getDate(),
+            'cinFront'=>$cinImages[0],
+            'cinBack'=>$cinImages[1],
             'map' => $map,
         ]);
 
@@ -207,7 +282,7 @@ class UserController extends AbstractController
                     $errorMessages[$field] = $error->getMessage();
                     dump($field);
                 }
-                $errorMessages["other"] ='nnnnnnnnnn';
+                $errorMessages["other"] = 'nnnnnnnnnn';
             }
 
             $user->setPassword($hashedPassword);

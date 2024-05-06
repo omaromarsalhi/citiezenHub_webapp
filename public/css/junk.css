@@ -1,0 +1,31 @@
+
+.pdfBtn {
+    overflow: hidden;
+    background-color: transparent !important;
+    transition: background-color 0.8s ease;
+}
+
+.text_pdf {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s ease;
+}
+
+.pdfBtn:hover {
+    background-color: #2899d8 !important;
+    border-radius: 20px !important;
+}
+
+.pdfBtn:hover .text_pdf {
+    visibility: visible;
+    opacity: 1;
+}
+
+.loaderPdf{
+    max-height: 60px;
+}
+
+.pdfBtn_disabled {
+    overflow: hidden;
+    background-color: transparent !important;
+}

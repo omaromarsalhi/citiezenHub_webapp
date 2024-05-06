@@ -51,8 +51,8 @@
                     <div class="row plr--70 padding-control-edit-wrapper pl_md--0 pr_md--0 pl_sm--0 pr_sm--0">
                         <div class="col-12 d-flex justify-content-between mb--30 align-items-center">
                             <h4 class="title-left">Edit Your Profile</h4>
-                            <a href="{{ path('profile',{image:image,name:name,lastname:lastname,email:email}) }}"
-                               class="btn btn-primary ml--10"><i class="feather-eye mr--5"></i>Preview</a>
+                            <a href="{{ path('app_user_dashboard_index') }}"
+                               class="btn btn-primary ml--10"><i class="fa-regular fa-user mr--5"></i>Profile</a>
                         </div>
                     </div>
                     <div class="woocommerce-notices-wrapper" id="notification_box">
@@ -61,7 +61,7 @@
 
                     {% set currentTime = "now"|date("Y-m-d H:i:s") %}
                     {% set currentTimeMinusOneHour = currentTime|date("Y-m-d H:i:s")|date_modify("-1 hour") %}
-                    {#            {{ currentTimeMinusOneHour|date("Y-m-d H:i:s") }} #}
+                    {# {{ currentTimeMinusOneHour|date("Y-m-d H:i:s") }} #}
                     {% if app.session.has('profile_alert_message') and expiry_time| date("Y-m-d H:i:s") > currentTimeMinusOneHour|date("Y-m-d H:i:s") %}
                         <div class="woocommerce-notices-wrapper" id="notification">
                             <div class="woocommerce-message" id="notifDiv" role="alert">
@@ -104,8 +104,13 @@
                                     <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
                                             data-bs-target="#nav-contact" type="button" role="tab"
                                             aria-controls="nav-contact" aria-selected="false">
-                                        <i class="fa-solid fa-map-location-dot"></i>Location
+                                        <i class="fa-regular fa-map"></i>Location
                                         Setting
+                                    </button>
+                                    <button class="nav-link" id="nav-cin-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-cin" type="button" role="tab"
+                                            aria-controls="nav-cin" aria-selected="false">
+                                        <i class="fa-regular fa-address-card"></i>Insert Cin
                                     </button>
                                 </div>
                             </nav>
@@ -113,31 +118,11 @@
                         </div>
                         <div id="main-content" class="col-lg-9 col-md-9 col-sm-12 mt_sm--30">
                             <div class="tab-content tab-content-edit-wrapepr" id="nav-tabContent">
-
                                 <!-- sigle tab content -->
                                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                      aria-labelledby="nav-home-tab">
                                     <!-- start personal information -->
                                     <div class="nuron-information">
-
-                                        <!--{# <div class="profile-change row g-5">
-                                    <div class="profile-left right col-lg-8">
-                                        <div class="profile-image mb&#45;&#45;30">
-                                            <h6 class="title">Change Your Cover Photo</h6>
-                                            <img id="rbtinput2" src="{{ asset('images/user/profile.png') }}" alt="Profile-NFT">
-                                        </div>
-                                        <div class="button-area">
-                                            <div class="brows-file-wrapper">
-                                                &lt;!&ndash; actual upload which is hidden &ndash;&gt;
-                                                <input name="nipa" id="nipa" type="file">
-                                                &lt;!&ndash; our custom upload button &ndash;&gt;
-                                                <label for="nipa" title="No File Choosen">
-                                                    <span class="text-center color-white">Upload Cover</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> #}-->
 
                                         <div class="profile-change row g-5">
                                             <div class="profile-left col-lg-4">
@@ -215,6 +200,8 @@
                                 <div id="test">
 
                                 </div>
+
+
                                 <div class="tab-pane fade" id="nav-homes" role="tabpanel"
                                      aria-labelledby="nav-home-tab">
 
@@ -229,7 +216,6 @@
 
                                         }
                                     </style>
-
 
                                     <!-- start personal information -->
                                     <form>
@@ -264,9 +250,10 @@
 
                                                 <!-- start Role area -->
                                                 <div class="role-area mt--15">
-                                                    <label for="Address" class="form-label mb--10">Your Address</label>
-                                                    <input name="address" id="address" type="text"
-                                                           value={{ address }}  readonly>
+                                                    <label for="Age" class="form-label mb--10">Your Age</label>
+                                                    <input name="user[age]" id="agee" type="text" value={{ age }}>
+                                                    <div id="age">
+                                                    </div>
                                                 </div>
                                                 <select class="profile-edit-select" name="user[status]" id="status">
                                                     {% set status = status %}
@@ -284,8 +271,11 @@
                                             <div class="input-two-wrapepr-prifile">
                                                 <!-- start Role area -->
                                                 <div class="role-area mt--15">
-                                                    <label for="Role" class="form-label mb--10">Your Role</label>
-                                                    <input name=role" id="role" type="text" value={{ role }}>
+                                                    <label for="PhoneNumber" class="form-label">Phone Number</label>
+                                                    <input name="phoneNumber" id="phoneNumberr" type="text"
+                                                           value={{ phoneNumber }}>
+                                                    <div id="phoneNumber">
+                                                    </div>
                                                 </div>
                                                 <select class="profile-edit-select" name="user[gender]" id="gender">
                                                     {% set gender = gender %}
@@ -299,26 +289,6 @@
                                                     </option>
                                                 </select>
                                                 <!-- end gender -->
-                                            </div>
-
-
-                                            <div class="profile-form-wrapper">
-                                                <div class="input-two-wrapper mt--15">
-                                                    <div class="first-name half-wid">
-                                                        <label for="Age" class="form-label mb--10">Your Age</label>
-                                                        <input name="user[age]" id="agee" type="text" value={{ age }}>
-                                                        <div id="age">
-                                                        </div>
-                                                    </div>
-                                                    <div class="last-name half-wid">
-
-                                                        <label for="PhoneNumber" class="form-label">Phone Number</label>
-                                                        <input name="phoneNumber" id="phoneNumberr" type="text"
-                                                               value={{ phoneNumber }}>
-                                                        <div id="phoneNumber">
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             <div class="profile-form-wrapper">
@@ -408,7 +378,6 @@
 
                                 <div class="tab-pane fade " id="nav-contact" role="tabpanel"
                                      aria-labelledby="nav-contact-tab">
-
                                     <!-- start Notification Setting  -->
                                     <div class="nuron-information">
                                         <h5 class="title">Choose Your Location </h5>
@@ -425,31 +394,101 @@
                                         </div>
                                         <div class="input-two-wrapper mt--15">
                                             <div class="old-password half-wid">
-                                                <label for="mapAddress" class="form-label">Address: </label>
-                                                <input  id="mapAddress" type="text" disabled>
+                                                <label for="mapAddress" class="form-label" >Address: </label>
+                                                <input id="mapAddress" type="text" value="{{ app.user.address|default('none') }}" disabled>
                                                 <div id="other">
                                                 </div>
                                             </div>
                                             <div class="new-password">
                                                 <label for="municipality" class="form-label">Municipality: </label>
-                                                <input  id="municipality" type="text" disabled>
+                                                <input id="municipality" type="text" disabled value="{{ app.user.getMunicipalite().name|default('none') }}">
+                                                <input  id="municipalityAddressNew" type="hidden" disabled >
                                                 <div id="password">
                                                 </div>
                                             </div>
                                             <div class="new-password mt-3">
-                                                <a href="#" class="btn btn-primary save-btn-edit " sty
-                                                   onclick="customAlert.alert('Successfully saved Your Notificationm setting')">Save</a>
+                                                <a class="btn btn-primary save-btn-edit "
+                                                   onclick="saveUserLocation()">Save</a>
                                             </div>
-
                                         </div>
                                         <!-- end notice wrapper parrent -->
-
                                     </div>
                                     <!-- End Notification Setting  -->
-
                                 </div>
-                            </div>
 
+                                <div class="tab-pane fade" id="nav-cin" role="tabpanel"
+                                     aria-labelledby="nav-cin-tab">
+                                    <!-- start personal information -->
+                                    <div class="nuron-information">
+
+                                        <div class="row g-5">
+                                            <div class="profile-left col-lg-6">
+                                                <div class="profile-image mb--30">
+                                                    <h6 class="title">Insert Front Image Of Your Id</h6>
+                                                    <div class="upload-area">
+                                                        <div class="brows-file-wrapper">
+                                                            <input
+                                                                    name="createinputfile4"
+                                                                    id="createinputfile4"
+                                                                    type="file"
+                                                                    class="inputfile"
+                                                            />
+                                                            <img
+                                                                    id="createfileImage4"
+                                                                    src="{{ asset('usersImg/'~cinFront) }}"
+                                                                    alt=""
+                                                                    data-black-overlay="6"
+                                                            />
+                                                            <label for="createinputfile4" title="No File Choosen">
+                                                                <i class="feather-upload"></i>
+                                                                <span class="text-center">Choose a File</span>
+                                                                <p class="text-center mt&#45;&#45;10">
+                                                                    PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                                                    Max 1Gb.
+                                                                </p>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-left right col-lg-6">
+                                                <div class="profile-image mb--30">
+                                                    <h6 class="title">Insert Back Image Of Your Id</h6>
+                                                    <div class="upload-area">
+                                                        <div class="brows-file-wrapper">
+                                                            <input
+                                                                    name="createinputfile5"
+                                                                    id="createinputfile5"
+                                                                    type="file"
+                                                                    class="inputfile"
+                                                            />
+                                                            <img
+                                                                    id="createfileImage5"
+                                                                    src="{{ asset('usersImg/'~cinBack) }}"
+                                                                    alt=""
+                                                                    data-black-overlay="6"
+                                                            />
+                                                            <label for="createinputfile5" title="No File Choosen">
+                                                                <i class="feather-upload"></i>
+                                                                <span class="text-center">Choose a File</span>
+                                                                <p class="text-center mt&#45;&#45;10">
+                                                                    PNG, GIF, WEBP, MP4 or MP3. <br/>
+                                                                    Max 1Gb.
+                                                                </p>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a  class="btn btn-primary save-btn-edit mt-1 mb-1"
+                                           onclick="saveCin()">Save</a>
+                                    </div>
+                                    <!-- End personal information -->
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
