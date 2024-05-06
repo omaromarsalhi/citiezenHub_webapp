@@ -1,0 +1,234 @@
+.modal {
+    display: none; /* Masquer la modal par défaut */
+    position: fixed; /* Positionnement fixe pour rester au centre */
+    left: 0;
+    top: 0;
+    width: 100%; /* Pleine largeur */
+    height: 100%; /* Pleine hauteur */
+    overflow: auto; /* Activer le défilement si nécessaire */
+    background-color: rgba(0, 0, 0, 0.4); /* Fond semi-transparent */
+}
+
+.modal-contente {
+    overflow: auto; /* Empêche le défilement */
+    width: 80%; /* Ajustez la largeur selon vos besoins */
+    height: 80%; /* Ajustez la hauteur selon vos besoins */
+    background-color: #1d1d26; /* Couleur de fond */
+    margin: auto; /* Centrez horizontalement */
+    padding: 30px;
+    border: 2px solid #30303b;
+    border-radius: 10px;
+    position: relative; /* Position relative pour centrer verticalement */
+    top: 50%; /* Déplacez la moitié de la hauteur de la modal vers le haut */
+    transform: translateY(-50%); /* Ajustez pour centrer verticalement */
+}
+
+/*.close {
+    font-size: 30px;
+    cursor: pointer;
+}*/
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 5px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-content button:hover {
+    background-color: rgba(187, 187, 187, 0.49);
+    border-radius: 5px;
+}
+
+button.dropbtn .fas.fa-cog {
+    font-size: 21px;
+}
+
+button.dropbtnComment .fas.fa-cog {
+    font-size: 17px;
+}
+
+.dropbtnComment {
+    border: none;
+}
+
+.dropbtn {
+    border: none;
+}
+
+#delImage .feather-x {
+    position: absolute;
+    top: 50%; /* Ajustez cette valeur selon vos besoins */
+    left: 50%; /* Ajustez cette valeur selon vos besoins */
+    transform: translate(-50%, -50%); /* Centrer l'icône par rapport à sa position */
+}
+#delImageUpdate .feather-x {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#translateBtn:hover {
+    cursor: pointer;
+    background-color: rgba(187, 187, 187, 0.49);
+}
+
+
+
+.modal#statusSuccessModal .modal-content,
+.modal#statusErrorsModal .modal-content {
+    border-radius: 30px;
+}
+.modal#statusSuccessModal .modal-content svg,
+.modal#statusErrorsModal .modal-content svg {
+    width: 100px;
+    display: block;
+    margin: 0 auto;
+}
+.modal#statusSuccessModal .modal-content .path,
+.modal#statusErrorsModal .modal-content .path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+}
+.modal#statusSuccessModal .modal-content .path.circle,
+.modal#statusErrorsModal .modal-content .path.circle {
+    -webkit-animation: dash 0.9s ease-in-out;
+    animation: dash 0.9s ease-in-out;
+}
+.modal#statusSuccessModal .modal-content .path.line,
+.modal#statusErrorsModal .modal-content .path.line {
+    stroke-dashoffset: 1000;
+    -webkit-animation: dash 0.95s 0.35s ease-in-out forwards;
+    animation: dash 0.95s 0.35s ease-in-out forwards;
+}
+.modal#statusSuccessModal .modal-content .path.check,
+.modal#statusErrorsModal .modal-content .path.check {
+    stroke-dashoffset: -100;
+    -webkit-animation: dash-check 0.95s 0.35s ease-in-out forwards;
+    animation: dash-check 0.95s 0.35s ease-in-out forwards;
+}
+
+@-webkit-keyframes dash {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+    100%{
+        stroke-dashoffset: 0;
+    }
+}
+@-webkit-keyframes dash {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 1000;}
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+@-webkit-keyframes dash-check {
+    0% {
+        stroke-dashoffset: -100;
+    }
+    100% {
+        stroke-dashoffset: 900;
+    }
+}
+@keyframes dash-check {
+    0% {
+        stroke-dashoffset: -100;
+    }
+    100% {
+        stroke-dashoffset: 900;
+    }
+}
+.box00{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+
+
+.popup {
+    width:400px;
+    background:#fff;
+    border-radius: 6px;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    text-align: center ;
+    padding: 0 30px 30px;
+    color :#333;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+}
+.popup img{
+    width : 100px;
+    margin-top: -50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.popup h2{
+    font-size:38px;
+    font-weight : 500;
+    margin: 30px 0 10px;
+    color:#000000 ;
+}
+.open-popup{
+    visibility: visible;
+    top: 50%;
+    transform: translate(-40%,-100%) scale(1);
+
+}
+.popup button{
+    width: 100%;
+    margin-top: 50px;
+    padding : 10px 0;
+    background: #6fd649 ;
+    color: #fff;
+    border: 0;
+    outline: none;
+    font-size: 19px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+}
+

@@ -504,8 +504,7 @@
 {% block scripts %}
 
     <script
-            src="https://maps.googleapis.com/maps/api/js?key={{ app.request.server.get('MAP_VARIABLE') }}
-&callback=initMap&libraries=places&v=weekly&solution_channel=GMP_CCS_autocomplete_v1"
+            src="https://maps.googleapis.com/maps/api/js?key={{ app.request.server.get('MAP_VARIABLE') }}&callback=initMap&libraries=places&v=weekly&solution_channel=GMP_CCS_autocomplete_v1"
             defer
     ></script>
 {% endblock %}

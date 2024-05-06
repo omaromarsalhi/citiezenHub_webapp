@@ -1,0 +1,381 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/blogStyle.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/BlogScript.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+
+
+
+
+    <div class="rn-breadcrumb-inner ptb--30">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <h5 class="title text-center text-md-start">Blog Details</h5>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-list">
+                        <li class="item"><a href="index.html">Home</a></li>
+                        <li class="separator"><i class="feather-chevron-right"></i></li>
+                        <li class="item current">Blog Details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end page title area -->
+
+
+    <!-- blog details area start -->
+    <div class="rn-blog-area rn-blog-details-default rn-section-gapTop">
+        <div class="container">
+            <div class="row g-6">
+                <div class="col-xl-8 col-lg-8">
+                    <div class="rn-blog-listen">
+                        <div class="blog-content-top">
+                            <h2 class="title">Omar marrakchi Post</h2>
+                            <span class="date">{{ post.datePost|date('Y-m-d H:i:s') }}</span>
+                        </div>
+                        <div class="bd-thumbnail">
+                            <div class="large-img mb--10" style="position: relative">
+                                {% if images|length > 0 %}
+                                    <button id="prev-button" class="nav-button prev-button"
+                                            style="position: absolute; background: none; border: none; top: 50%; left: 0; transform: translateY(-50%); font-size: 25px; width: 10px;">
+                                        &#8592;
+                                    </button>
+                                    <img id="post-image" class="w-100" src="{{ asset('usersImg/' ~ images[0]) }}"
+                                         alt="Blog Images" style="width: 930px; height: 523px; object-fit: contain;">
+                                    <button id="next-button" class="nav-button next-button"
+                                            style="position: absolute; background: none; border: none; top: 50%; right: 22px; transform: translateY(-50%); font-size: 25px; width: 10px;">
+                                        &#8594;
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="news-details">
+                            <h4>Caption : </h4>
+                            <p style="font-size: 25px;">{{ post.caption }}</p>
+                        </div>
+                        <div class="comments-wrapper pt--40">
+                            <div class="comments-area">
+                                <div class="trydo-blog-comment">
+                                    <h5 class="comment-title mb--10">{{ nbComments }} replies on Omar marrakchi Post</h5>
+                                    <!-- Start Coment List  -->
+                                    <ul class="comment-list">
+
+                                        <!-- Start Single Comment  -->
+                                        <div id="commentContainer">
+
+                                        </div>
+
+                                        {% for comment in comments %}
+                                            <li class="comment parent" id="comment-{{ comment.id }}"
+                                                style="position: relative;">
+                                                <div class="single-comment">
+                                                    <div class="comment-author comment-img">
+                                                        <img class="comment-avatar"
+                                                             src="{{ asset('images/blog/ddbdd0d4-9b35-48a7-af56-9170ec809c04-1-661abe8155a9f401920793.jpg') }}"
+                                                             alt="Comment Image"
+                                                             style="width: 45px; height: 45px;"
+                                                        >
+                                                        <div class="m-b-20">
+                                                            <div class="commenter">Omar marrakchi</div>
+                                                            <div class="time-spent">{{ comment.dateComment }}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="comment-text">
+                                                        <input id="caption-{{ comment.id }}" type="text"
+                                                               value="{{ comment.caption }}" disabled>
+                                                    </div>
+
+
+                                                    <div id="updateBtn-{{ comment.id }}">
+
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="meta"
+                                                     style="position: absolute; right: 15px; top: 32%; transform: translateY(-50%);">
+                                                    <div class="dropdown">
+                                                        <button class="dropbtnComment"><i class="fas fa-cog"></i>
+                                                        </button>
+                                                        <div class="dropdown-content">
+                                                            <button onclick="handleMenuAction(this, {{ comment.id }}, '{{ comment.caption }}',  {{ comment.idPost }}, 'modifier')">
+                                                                Modifier
+                                                            </button>
+                                                            <button onclick="handleMenuAction(this, {{ comment.id }}, '{{ comment.caption }}',  {{ comment.idPost }}, 'supprimer')">
+                                                                supprimer
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- comment form area Start -->
+
+                        <!-- Start Contact Form Area  -->
+                        <div class="rn-comment-form pt--60">
+                            <div class="inner">
+                                <div class="section-title">
+                                    <span class="subtitle">Have a Comment?</span>
+                                    <h2 class="title">Leave a Reply</h2>
+                                </div>
+                                <form class="mt--40" method="POST">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-12">
+                                            <div class="rnform-group" id="contact-message"><textarea
+                                                        placeholder="Comment"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <input type="hidden" name="post_id" id="post_id" value="{{ post.id }}"/>
+                                            <div class="blog-btn">
+                                                <a class="btn btn-primary-alta btn-large w-100" type="submit"
+                                                   onclick="addComment(event)"><span>SEND
+                                                        MESSAGE</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Contact Form Area  -->
+
+
+
+
+
+
+
+                        <!-- comment form area End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var images = {{ images|json_encode|raw }};
+        var currentIndex = 0;
+
+
+        document.getElementById('prev-button').addEventListener('click', function () {
+
+
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = images.length - 1; // Aller à la dernière image
+            }
+
+            document.getElementById('post-image').src = '/images/blog/' + images[currentIndex];
+        });
+
+        document.getElementById('next-button').addEventListener('click', function () {
+
+            currentIndex++;
+            if (currentIndex >= images.length) {
+                currentIndex = 0; // Retourner à la première image
+            }
+
+            document.getElementById('post-image').src = '/images/blog/' + images[currentIndex];
+        });
+
+
+        function addComment(event) {
+            event.preventDefault();
+
+            // Récupérer les données du formulaire
+            let caption = document.querySelector('#contact-message textarea').value;
+            let postId = document.querySelector('#post_id').value;
+
+
+            let formData = new FormData();
+            formData.append('caption', caption);
+            formData.append('post_id', postId);
+
+
+            $.ajax({
+                url: '/newComment',
+                type: 'POST',
+                data: formData,
+                processData: false,  // Indique à jQuery de ne pas traiter les données
+                contentType: false,  // Indique à jQuery de ne pas définir le type de contenu
+                success: function (response) {
+                    // Gérer la réponse du serveur
+                    if (response.success) {
+                        if (response.success) {
+                            var newCommentHTML = createCommentHTML(response.comment);
+                            $('#commentContainer').prepend(newCommentHTML);
+                            $('html, body').animate({
+                                scrollTop: 950
+                            }, 300);
+                            document.querySelector('#contact-message textarea').value = '';
+                            Swal.fire(
+                                'Ajouté!',
+                                'Votre commentaire a été ajouté.',
+                                'success'
+                            )
+                        }
+                    } else {
+                        console.error('Une erreur est survenue lors de l\'ajout du commentaire.');
+                    }
+                },
+                error: function () {
+                    console.error('Une erreur est survenue lors de l\'envoi de la requête AJAX.');
+                }
+            });
+        }
+
+        function createUpdateBtn(id) {
+
+            var updateBtn = document.createElement('div');
+            updateBtn.className = 'reply-edit';
+
+
+            var replyDiv = document.createElement('div');
+            replyDiv.className = 'reply';
+            var link = document.createElement('a');
+            link.className = 'comment-reply-link';
+            link.style.cursor = 'pointer';
+            var icon = document.createElement('i');
+            icon.className = 'rbt feather-corner-down-right';
+            link.appendChild(icon);
+            link.appendChild(document.createTextNode('Update'));
+            replyDiv.appendChild(link);
+
+
+            updateBtn.appendChild(replyDiv);
+
+            return updateBtn;
+        }
+
+        function createCommentHTML(comment) {
+            return `
+        <li class="comment parent" id="comment-${comment.id}" style="position: relative;">
+            <div class="single-comment">
+                <div class="comment-author comment-img">
+                    <img class="comment-avatar"
+                        src="{{ asset('images/blog/ddbdd0d4-9b35-48a7-af56-9170ec809c04-1-661abe8155a9f401920793.jpg') }}"
+                        alt="Comment Image"
+                        style="width: 45px; height: 45px;"
+                    >
+                        <div class="m-b-20">
+                            <div class="commenter">Omar marrakchi</div>
+                                <div class="time-spent">${comment.dateComment}</div>
+                            </div>
+                        </div>
+
+                        <div class="comment-text">
+                            <input id="caption-${comment.id}" type="text"
+                                value="${comment.caption}" disabled>
+                            </div>
+
+                        <div id="updateBtn-${comment.id}">
+
+                         </div>
+                </div>
+                <div class="meta" style="position: absolute; right: 15px; top: 32%; transform: translateY(-50%);">
+                    <div class="dropdown">
+                        <button class="dropbtnComment"><i class="fas fa-cog"></i></button>
+                            <div class="dropdown-content">
+                                <button onclick="handleMenuAction(this, ${comment.id}, '${comment.caption}', '${comment.idPost}', 'modifier')">Modifier</button>
+                                <button onclick="handleMenuAction(this, ${comment.id}, '${comment.caption}', '${comment.idPost}', 'supprimer')">Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+        </li>
+    `;
+        }
+
+        function handleMenuAction(button, id, caption, postId, action) {
+            var captionElement = document.getElementById('caption-' + id);
+            if (action === "modifier") {
+                captionElement.disabled = false;
+                captionElement.style.border = "1px solid #fff";
+                captionElement.style.borderRadius = "5px";
+                captionElement.style.cursor = "text";
+                captionElement.style.whiteSpace = "pre-wrap";
+
+                var updateBtn = createUpdateBtn(id);
+                document.getElementById('updateBtn-' + id).appendChild(updateBtn);
+
+                updateBtn.addEventListener('click', function () {
+                    $.ajax({
+                        url: '/updateComment/' + id,
+                        type: 'POST',
+                        data: {
+                            caption: captionElement.value,
+                            post_id: postId
+                        },
+                        success: function (response) {
+                            document.getElementById('comment-' + id).remove();
+                            var newCommentHTML = createCommentHTML(response.comment);
+                            $('#commentContainer').prepend(newCommentHTML);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+            } else if (action === "supprimer") {
+                deleteComment(id);
+            }
+        }
+
+        function deleteComment(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Vous ne pourrez pas revenir en arrière!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimez-le!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/deleteComment/' + id,
+                        type: 'DELETE',
+                        success: function (response) {
+                            if (response.success) {
+                                document.getElementById('comment-' + id).remove();
+                                Swal.fire(
+                                    'Supprimé!',
+                                    'Votre commentaire a été supprimé.',
+                                    'success'
+                                )
+                            } else {
+                                console.error('Une erreur est survenue lors de la suppression du commentaire.');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        }
+
+
+    </script>
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}

@@ -18,4 +18,5 @@ return [
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
     Ivory\GoogleMapBundle\IvoryGoogleMapBundle::class => ['all' => true],
     Oh\GoogleMapFormTypeBundle\OhGoogleMapFormTypeBundle::class => ['all' => true],
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
 ];
