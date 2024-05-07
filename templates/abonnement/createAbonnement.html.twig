@@ -1,0 +1,179 @@
+
+{% extends 'base.html.twig' %}
+  {% block stylesheets %}
+      <link rel="stylesheet" href="{{ asset('css/abonnementUser.css') }}">
+      <link rel="stylesheet" href="{{ asset('css/abonnement.css') }}">
+  {% endblock %}
+
+
+
+{%  block body %}
+
+
+
+
+     <div class="rn-breadcrumb-inner ptb--30">
+         <div class="container">
+             <div class="row align-items-center">
+                 <div class="col-lg-6 col-md-6 col-12">
+                     <h5 class="title text-center text-md-start">Ajouter a new abonnement</h5>
+                 </div>
+
+             </div>
+         </div>
+     </div>
+     <!-- create new product area -->
+     <div class="create-area rn-section-gapTop">
+         <div class="container">
+             <div class="row g-5">
+                 <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+                     <!-- file upload area -->
+                     <div class="upload-area">
+
+                         <div class="upload-formate mb--30">
+                             <h6 class="title">
+                                 Upload file
+                             </h6>
+                             <p class="formate">
+                                 Drag or choose your file to upload
+                             </p>
+                         </div>
+
+                         <div class="brows-file-wrapper">
+                             <!-- actual upload which is hidden -->
+                             <input name="createinputfile" id="createinputfile" type="file" class="inputfile"  />
+                             <img id="createfileImage" src="assets/images/portfolio/portfolio-05.jpg" alt="" data-black-overlay="6">
+
+{#                             <img id="createfileImage" src="{{ asset('/assets/images/portfolio/1.jpeg') }}"  data-black-overlay="6">#}
+
+                             <label for="createinputfile" title="No File Choosen">
+                                 <i class="feather-upload" id="btnTest"></i>
+                                 <span class="text-center">Choose a File</span>
+                                 <p class="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br>    Max 1Gb.</p>
+                             </label>
+                         </div>
+                     </div>
+                     <!-- end upoad file area -->
+
+                     <div class="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
+                         <h5> Note: </h5>
+                         <span> Image accepted : <strong>22.5%</strong> </span> <br>
+                         <span> Image should be : <strong> in Portrait mode</strong></span>
+                     </div>
+
+                 </div>
+
+                 <div class="col-lg-7">
+                     <div class="form-wrapper-one">
+
+
+                         <form class="row" action="#">
+
+                             <div class="col-md-12">
+                                 <div class="input-box pb--20">
+                                     <label for="name" class="form-label"> Name</label>
+                                     <input name="name" id="name" placeholder="e. g. `Digital Awesome Game`">
+                                 </div>
+                             </div>
+
+                             <div class="col-md-12">
+                                 <div class="input-box pb--20">
+                                     <label for="name" class="form-label"> Last Name</label>
+                                     <input name="lastname" id="lastname" placeholder="e. g. `Digital Awesome Game`">
+                                 </div>
+                             </div>
+
+
+
+
+                             <div class="col-lg-12">
+                                 <div class="collection-single-wized">
+                                     <label class="title">Category</label>
+                                     <div class="create-collection-input">
+                                         <div class="nice-select mb--30" tabindex="0">
+                                             <span class="current">Subscription type</span>
+                                             <ul class="list" name="type" id="type">
+                                                 <li data-value="Annuel" data-display="Annuel" class="option selected focus">Annuel</li>
+                                                 <li data-value="Mensuelle" class="option">Mensuelle</li>
+
+                                             </ul>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+
+
+                             <div class="col-md-12 col-xl-4">
+                                 <div class="input-box">
+                                     <button type="button" class="btn btn-primary-alta btn-large w-100" data-bs-toggle="modal" data-bs-target="#uploadModal" onclick="openPopup()">Preview</button>
+                                 </div>
+                             </div>
+
+                             <div class="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
+                                 <div class="input-box">
+                                     <button class="btn btn-primary btn-large w-100" onclick="addPost(event)">Submit Item</button>
+ 
+                                 </div>
+                             </div>
+
+                         </form>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+
+ 
+ <div class="container  p-5">
+	<div class="row">
+
+
+		<div class="modal fade" id="statusErrorsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"> 
+			<div class="modal-dialog modal-dialog-centered modal-sm" role="document"> 
+				<div class="modal-content"> 
+					<div class="modal-body text-center p-lg-4"> 
+						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+							<circle class="path circle" fill="none" stroke="#db3646" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" /> 
+							<line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+							<line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" X2="34.4" y2="92.2" /> 
+						</svg> 
+						<h4 class="text-danger mt-3">Invalid email!</h4> 
+						<p id="error-message" class="mt-3" >This email is already registered, please login.</p>
+						<button type="button" class="btn btn-sm mt-3 btn-danger" data-bs-dismiss="modal">Ok</button> 
+					</div> 
+				</div> 
+			</div> 
+		</div>
+
+		<div class="modal fade" id="statusSuccessModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"> 
+			<div class="modal-dialog modal-dialog-centered modal-sm" role="document"> 
+				<div class="modal-content"> 
+					<div class="modal-body text-center p-lg-4"> 
+						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+							<circle class="path circle" fill="none" stroke="#198754" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+							<polyline class="path check" fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " /> 
+						</svg> 
+						<h4 class="text-success mt-3">Oh Yeah!</h4> 
+						<p class="mt-3" id="sucess-message"></p>
+						<button type="button" class="btn btn-sm mt-3 btn-success" data-bs-dismiss="modal">Ok</button> 
+					</div> 
+				</div> 
+			</div> 
+		</div>
+	</div>
+</div>
+
+  
+ 
+   
+{% endblock %}
+
+
+
+  {% block scripts %}
+      <script src="{{ asset('js/AbonnementScript.js') }}"></script>
+      <script src="{{ asset('js/TransportScript.js') }}"></script>
+  {% endblock %}
+
+

@@ -1,0 +1,244 @@
+   {% extends '/home/index.html.twig' %}
+
+{% block body %}
+   
+
+
+
+      <div class="rn-top-top-seller-area nice-selector-transparent rn-section-gapTop">
+        <div class="container">
+            <div class="row  mb--30">
+                <div class="col-12 justify-sm-center d-flex">
+                    <h3 class="title" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">Top Rated Transports</h3>
+                    <select>
+                        <option data-display="1 day"> 1 day</option>
+                        <option value="1">7 Day's</option>
+                        <option value="2">15 Day's</option>
+                        <option value="4">30 Day's</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row justify-sm-center g-5 top-seller-list-wrapper">
+                <!-- start single top-seller -->
+          <      
+ 
+ {% for transport in transports|slice(0, 5)  %}
+    <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
+        <div class="top-seller-inner-one">
+            <div class="top-seller-wrapper">
+                <div class="thumbnail varified">
+                    <a href="author.html"><img src="/images/transports/{{ transport.VehiculeImage }}" alt="Transport_Image"></a>
+                </div>
+                <div class="top-seller-content">
+                    <a href="author.html">
+                      {% for station_dep in stations %}
+                                  {% if station_dep.id == transport.Stationdepart %}
+                        <h6 class="name">{{station_dep.NomStation}}</h6>
+                                    {% endif %}
+                                    {% endfor %}
+
+
+                                        {% for station_ari in stations %}
+                                  {% if station_ari.id == transport.Stationarrive %}
+
+                       <h6 class="name">{{station_ari.NomStation}}</h6>
+
+                                         {% endif %}
+
+                              {% endfor %}
+                    </a>
+                    <span class="count-number">
+                        {{ transport.averageRating }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+        
+                
+        
+        
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="rn-upcoming-area rn-section-gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- start Table Title -->
+                    <div class="table-title-area d-flex">
+                        <i data-feather="briefcase"></i>
+                        <h3>Les Transports dispo</h3>
+
+                    </div>
+                    <!-- End Table Title -->
+
+                    <!-- table area Start -->
+                    <div class="box-table table-responsive">
+                        <table class="table upcoming-projects">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span>Num</span>
+                                    </th>
+                                    <th>
+                                        <span>Company</span>
+                                    </th>
+                                    <th>
+                                        <span>Heure</span>
+                                    </th>
+                                    <th>
+                                        <span>Depart</span>
+                                    </th>
+                                    <th>
+                                        <span>Arrive</span>
+                                    </th>
+                                    <th>
+                                        <span>Type Vehicule</span>
+                                    </th>
+                                    <th>
+                                        <span>Prix</span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="ranking" id="transport-table-body">
+                                               {% for transport in transports %}
+                             
+
+                                <tr class="color-light">
+                              
+
+                                    <td><span>1.</span></td>
+                                    <td>
+                                        <div class="product-wrapper d-flex align-items-center">
+                                            <a  onclick="openModal({{transport.idTransport}})" class="thumbnail">
+                                                <img src="/images/transports/{{ transport.VehiculeImage }}" alt="Nft_Profile">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td><span >{{transport.Heure}}</span></td>
+                                  {% for station_dep in stations %}
+                                  {% if station_dep.id == transport.Stationdepart %}
+                                    <td><span class="color-danger">{{station_dep.NomStation}}</span></td>
+                                    {% endif %}
+                                    {% endfor %}
+                                {% for station_ari in stations %}
+                                  {% if station_ari.id == transport.Stationarrive %}
+
+                                    <td><span class="color-green">{{station_ari.NomStation}}</span></td>
+                                         {% endif %}
+
+                              {% endfor %}
+                                    <td><span>{{transport.TypeVehicule}}</span></td>
+                                    <td><span>{{transport.Prix}}</span></td>
+                                </tr>
+                                
+                                               {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- table End -->
+                 <div class="row">
+    <div class="col-lg-12" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
+        <nav class="pagination-wrapper" aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a id="prev-page" class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a id="page-1" class="page-link active" href="#">1</a></li>
+                <li class="page-item"><a id="next-page" class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</head>
+<body>
+
+ 
+<div id="ratingModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Rate Our Service</h2>
+    <p>Please rate your experience:</p>
+    <div class="stars">
+      <span class="star" onclick="setRating(1)">★</span>
+      <span class="star" onclick="setRating(2)">★</span>
+      <span class="star" onclick="setRating(3)">★</span>
+      <span class="star" onclick="setRating(4)">★</span>
+      <span class="star" onclick="setRating(5)">★</span>
+    </div>
+    <button onclick="submitRating()">Submit</button>
+  </div>
+
+</div>
+
+  <style>
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+    }
+
+    .star {
+      font-size: 30px;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .star:hover,
+    .star.checked {
+      color: gold;
+    }
+  </style>
+ 
+    {% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+
+
+
+
+
+
+
+
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/abonnementUser.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/abonnement.css') }}">
+    {% endblock %}
+    {% block javascripts %}
+        <script src="{{ asset('js/AbonnementScript.js') }}"></script>
+        <script src="{{ asset('js/TransportScript.js') }}"></script>
+    {% endblock %}
+
+
+
+{% block body %}
+
+
+
+
+
+    <div class="rn-breadcrumb-inner ptb--30">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <h5 class="title text-center text-md-start">My Subscriptions</h5>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="rn-banner-area">
+        <div class="slider-activation-banner-4 game-banner-short-slick-wrapper slick-arrow-style-one rn-slick-dot-style">
+            {#            <div id="abonnements-list"> #}{# Ajout de l'ID abonnements-list #}
+            {% for abonnement in l %}
+                <div class="slider-style-7 border-radious-none bg_image--2 pt--150 pb--190 pt_sm--70 pb_sm--70 bg_image"
+                     data-black-overlay="6">
+                    <div class="rn-banner-wrapper g-5 row">
+                        <div class="col-xl-4 col-lg-12 col-12 order-3 order-xl-1 order-sm-1">
+                            <a href="product-details.html">
+                                <h2 class="title pl--30">
+                                    {{ abonnement.Nom }}
+                                    {{ abonnement.Prenom }}
+
+                                    <br>
+                                </h2>
+                                <h2 class="title pl--30">
+                                        <span>{{ abonnement.TypeAbonnement }}
+
+</span>
+                                </h2>
+                            </a>
+                        </div>
+                        <div class="col-xl-6 col-lg-12 col-12 order-2 order-xl-2 order-sm-2">
+                            <div class="item-description">
+                                <p>
+                                    Cet abonnement est personnel et ne permet qu'à celui qui l'achète de l'utiliser.
+                                </p>
+                                <div class="product-share-wrapper">
+                                    <div class="profile-share">
+                                        <a href="author.html" class="avatar"
+                                           data-tooltip={{ abonnement.nom }} {{ abonnement.Prenom }}>
+                                            <img src="{{ asset('/images/abonnements/'~ abonnement.image ) }}"
+                                                 alt="Nft_Profile">
+                                        </a>
+                                        <a class="more-author-text" href="#">2+ </a>
+                                    </div>
+                                    <!-- Start Countdown area -->
+                                    <div class="countdown" data-date="{{ abonnement.dateFin }}">
+                                        <div class="countdown-container days">
+                                            <span class="countdown-value days-bottom">285</span>
+                                            <span class="countdown-heading days-top">Day</span>
+                                        </div>
+                                        <div class="countdown-container hours">
+                                            <span class="countdown-value hours-bottom">09</span>
+                                            <span class="countdown-heading hours-top">Hr's</span>
+                                        </div>
+                                        <div class="countdown-container minutes">
+                                            <span class="countdown-value minutes-bottom">30</span>
+                                            <span class="countdown-heading minutes-top">Min's</span>
+                                        </div>
+                                        <div class="countdown-container seconds">
+                                            <span class="countdown-value seconds-bottom">15</span>
+                                            <span class="countdown-heading seconds-top">Sec</span>
+                                        </div>
+                                    </div>
+                                    <!-- End Countdown area -->
+                                </div>
+                                <button type="button" class="btn btn-primary-alta btn-large mt--35"
+                                        data-bs-toggle="modal" data-bs-target="#placebidModal" tabindex="0">Voir détails
+                                </button>
+                                {#   <button type="button" class="btn btn-primary-alta btn-large mt--35" data-bs-toggle="modal" data-bs-target="#placebidModal" tabindex="0" onclick="deletePost({{abonnement.id}})">Supprimer l'abonnement</button> #}
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-12 col-12 order-1 order-xl-3 order-sm-3">
+                            <div class="img-thumb-award d-flex justify-content-center">
+                                <img src="{{ asset('/images/abonnements/'~ abonnement.image ) }}" alt="Nuron-Logo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {#            </div> #}
+        </div>
+    </div>
+    <style>
+        .bg_image--2 {
+            background-image: url('/images/transport/trans.gif');
+            background-size: cover;
+            background-position: center;
+        }
+
+    </style>
+{% endblock %}

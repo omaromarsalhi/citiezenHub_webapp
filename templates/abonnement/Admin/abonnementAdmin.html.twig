@@ -1,0 +1,81 @@
+{% extends '/home/index_admin.html.twig' %}
+ {% block body  %}
+    <div class="row g-5 gy-7">
+            <div class="col-12 col-xl-8 col-xxl-9">
+              <div id="orderTable" data-list='{"valueNames":["products","color","size","price","quantity","total"],"page":10}'>
+                <div class="table-responsive scrollbar">
+                  <table class="table fs-9 mb-0 border-top border-translucent">
+                    <thead>
+                      <tr>
+                        <th class="sort white-space-nowrap align-middle fs-10" scope="col"></th>
+                        <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:400px;" data-sort="products">PRODUCTS</th>
+                        <th class="sort align-middle ps-4" scope="col" data-sort="color" style="width:150px;">COLOR</th>
+                        <th class="sort align-middle ps-4" scope="col" data-sort="size" style="width:300px;">SIZE</th>
+                        <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRICE</th>
+                        <th class="sort align-middle text-end ps-4" scope="col" data-sort="quantity" style="width:200px;">QUANTITY</th>
+                        <th class="sort align-middle text-end ps-4" scope="col" data-sort="total" style="width:250px;">TOTAL</th>
+                      </tr>
+                    </thead>
+                    <tbody class="list" id="order-table-body">
+                    {% for abn in list %}
+                      <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                        <td class="align-middle white-space-nowrap py-2"><a class="d-block border border-translucent rounded-2" href="../landing/product-details.html"><img src="assetsAdmin/assets/img/products/1.png" alt="" width="53" /></a></td>
+                        <td class="products align-middle py-0"><a class="fw-semibold line-clamp-2 mb-0" href="../landing/product-details.html">Fitbit Sense Advanced Smartwatch with Tools for Heart Health, Stress Management &amp; Skin Temperature Trends, Carbon/Graphite, One Size (S &amp; L Bands)</a></td>
+                        <td class="color align-middle white-space-nowrap text-body py-0 ps-4">Pure matte black</td>
+                        <td class="size align-middle white-space-nowrap text-body-tertiary fw-semibold py-0 ps-4">42</td>
+                        <td class="price align-middle text-body fw-semibold text-end py-0 ps-4">$57</td>
+                        <td class="quantity align-middle text-end py-0 ps-4 text-body-tertiary">4</td>
+                        <td class="total align-middle fw-bold text-body-highlight text-end py-0 ps-4">$228</td>
+                      </tr>
+                       {% endfor %}
+ 
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="d-flex flex-between-center py-3 border-bottom border-translucent mb-6">
+                <p class="text-body-emphasis fw-semibold lh-sm mb-0">Items subtotal :</p>
+                <p class="text-body-emphasis fw-bold lh-sm mb-0">$1690</p>
+              </div>
+          
+            </div>
+            <div class="col-12 col-xl-4 col-xxl-3">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <h3 class="card-title mb-4">Summary</h3>
+                      <div>
+                        <div class="d-flex justify-content-between">
+                          <p class="text-body fw-semibold">Items subtotal :</p>
+                          <p class="text-body-emphasis fw-semibold">$691</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <p class="text-body fw-semibold">Discount :</p>
+                          <p class="text-danger fw-semibold">-$59</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <p class="text-body fw-semibold">Tax :</p>
+                          <p class="text-body-emphasis fw-semibold">$126.20</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <p class="text-body fw-semibold">Subtotal :</p>
+                          <p class="text-body-emphasis fw-semibold">$665</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <p class="text-body fw-semibold">Shipping Cost :</p>
+                          <p class="text-body-emphasis fw-semibold">$30</p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between border-top border-translucent border-dashed pt-4">
+                        <h4 class="mb-0">Total :</h4>
+                        <h4 class="mb-0">$695.20</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+              </div>
+            </div>
+          </div>
+{% endblock %}

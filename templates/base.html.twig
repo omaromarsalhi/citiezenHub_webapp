@@ -88,10 +88,10 @@
         <div class="header-inner">
             <div class="header-left">
                 <div class="logo-thumbnail logo-custom-css">
-                    <a class="logo-light" href="index.html"
+                    <a class="logo-light" href="{{ path('app_home') }}"
                     ><img src="{{ asset('assets/images/logo/newLogo.png') }}" alt="nft-logo"
                         /></a>
-                    <a class="logo-dark" href="index.html"
+                    <a class="logo-dark" href="{{ path('app_home') }}"
                     ><img src="{{ asset('assets/images/logo/newLogo.png') }}" alt="nft-logo"
                         /></a>
                 </div>
@@ -99,400 +99,53 @@
                     <nav id="sideNav" class="mainmenu-nav d-none d-xl-block">
                         <!-- Start Mainmanu Nav -->
                         <ul class="mainmenu">
-                            <li class="has-droupdown has-menu-child-item">
-                                <a href="index.html">Home</a>
-                                <ul class="submenu">
-                                    <li>
-                                        <a href="../home/index-10.html"
-                                        >Home page - 01 <i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-2.html"
-                                        >Home page - 02<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-3.html"
-                                        >Home page - 03<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-4.html"
-                                        >Home page - 04<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-five.html"
-                                        >Home page - 05<i class="5-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-6.html"
-                                        >Home page - 06<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-7.html"
-                                        >Home page - 07<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-8.html"
-                                        >Home page - 08<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-9.html"
-                                        >Home page - 09<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-11.html"
-                                        >Home page - 10<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-11.html"
-                                        >Home page - 11<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-
-                                    <li>
-                                        <a href="../otherHomes/index-12.html"
-                                        >Home page - 12<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-13.html"
-                                        >Home page - 13<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-14.html"
-                                        >Home page - 14<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-15.html"
-                                        >Home page - 15<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-16.html"
-                                        >Home page - 16<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-17.html"
-                                        >Home page - 17<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../otherHomes/index-18.html"
-                                        >Home page - 18<i class="feather-home"></i
-                                            ></a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <li ><a href="{{ path('app_home') }}">Home</a></li>
                             <li><a href="../pages/about.html">About</a></li>
                             <li class="has-droupdown has-menu-child-item">
-                                <a href="#">Explore</a>
+                                <a href="#">Market</a>
                                 <ul class="submenu">
                                     <li>
-                                        <a href="../explore/explore-one.html"
-                                        >Explore Filter<i class="feather-fast-forward"></i
+                                        <a href="{{ path('app_market_place_index') }}"
+                                        >Market Place<i class="fa-solid fa-shop"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('app_product_new') }}"
+                                        >Add Product<i class="fa-solid fa-plus"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('app_basket_index') }}"
+                                        >Basket<i class="fa-solid fa-basket-shopping"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('app_user_dashboard_index') }}"
+                                        >Product details<i class="feather-fast-forward"></i
                                             ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-two.html"
-                                        >Explore Isotop<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-three.html"
-                                        >Explore Carousel<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-four.html"
-                                        >Explore Simple<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-five.html"
-                                        >Explore Place Bid<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-six.html"
-                                        >Place Bid With Filter<i
-                                                    class="feather-fast-forward"
-                                            ></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-seven.html"
-                                        >Place Bid With Isotop<i
-                                                    class="feather-fast-forward"
-                                            ></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-eight.html"
-                                        >Place Bid With Carousel<i
-                                                    class="feather-fast-forward"
-                                            ></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-list-style.html"
-                                        >Explore Style List<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/explore-list-column-two.html"
-                                        >Explore List Col-Two<i
-                                                    class="feather-fast-forward"
-                                            ></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../explore/marketPlace.html.twig"
-                                        >Explore Left Filter<i
-                                                    class="feather-fast-forward"
-                                            ></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a class="live-expo" href="../explore/explore-live.html"
-                                        >Live Explore</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                                class="live-expo"
-                                                href="../explore/explore-live-two.html"
-                                        >Live Explore Carousel</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                                class="live-expo"
-                                                href="../explore/explore-live-three.html"
-                                        >Live With Place Bid</a
-                                        >
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="with-megamenu">
-                                <a href="#">Pages</a>
-                                <div class="rn-megamenu">
-                                    <div class="wrapper">
-                                        <div class="row row--0">
-                                            <div class="col-lg-3 single-mega-item">
-                                                <ul class="mega-menu-item">
-                                                    <li>
-                                                        <a href="../pages/create.html"
-                                                        >Create NFT<i data-feather="file-plus"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/upload-variants.html"
-                                                        >Upload Type<i data-feather="layers"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/activity.html"
-                                                        >Activity<i data-feather="activity"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/creator.html"
-                                                        >Creators<i data-feather="users"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/collection.html"
-                                                        >Our Collection<i data-feather="package"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/upcoming_projects.html"
-                                                        >Upcoming Projects<i data-feather="loader"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/create-collection.html"
-                                                        >Create Collection<i data-feather="edit-3"></i
-                                                            ></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-lg-3 single-mega-item">
-                                                <ul class="mega-menu-item">
-                                                    <li>
-                                                        <a href="../user/login.html"
-                                                        >Log In <i data-feather="log-in"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../user/sign-up.html"
-                                                        >Registration <i data-feather="user-plus"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../user/forget.html"
-                                                        >Forget Password <i data-feather="key"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../user/author.html"
-                                                        >Author/Profile(User)
-                                                            <i data-feather="user"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../user/connect.html"
-                                                        >Connect to Wallet
-                                                            <i data-feather="pocket"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/privacy-policy.html"
-                                                        >Privacy Policy
-                                                            <i data-feather="file-text"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/newsletter.html"
-                                                        >Newsletter<i data-feather="book-open"></i
-                                                            ></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-lg-3 single-mega-item">
-                                                <ul class="mega-menu-item">
-                                                    <li>
-                                                        <a href="../pages/product.html"
-                                                        >Product<i data-feather="folder"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/product-details.html"
-                                                        >Product Details <i data-feather="layout"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/ranking.html"
-                                                        >NFT Ranking<i data-feather="trending-up"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../user/edit-profile.html"
-                                                        >Edit Profile<i data-feather="edit"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../blog/blog-details.html"
-                                                        >Blog Details<i data-feather="book-open"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/404.html"
-                                                        >404 <i data-feather="alert-triangle"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/forum-community.html"
-                                                        >Forum & Community<i
-                                                                    data-feather="message-circle"
-                                                            ></i
-                                                            ></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-lg-3 single-mega-item">
-                                                <ul class="mega-menu-item">
-                                                    <li>
-                                                        <a href="../pages/about.html"
-                                                        >About Us<i data-feather="award"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../contact/contact.html"
-                                                        >Contact <i data-feather="headphones"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/support.html"
-                                                        >Support/FAQ <i data-feather="help-circle"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/terms-condition.html"
-                                                        >Terms & Condition <i data-feather="list"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/coming-soon.html"
-                                                        >Coming Soon <i data-feather="clock"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/maintenance.html"
-                                                        >Maintenance <i data-feather="cpu"></i
-                                                            ></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="../pages/forum-details.html"
-                                                        >Forum Details
-                                                            <i data-feather="message-circle"></i
-                                                            ></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </li>
                             <li class="has-droupdown has-menu-child-item">
                                 <a class="down" href="../blog/blog.html">Blog</a>
                                 <ul class="submenu">
                                     <li>
                                         <a href="../blog/blog-single-col.html"
-                                        >Blog Single Column<i class="feather-fast-forward"></i
+                                        >Consult blog<i class="feather-fast-forward"></i
                                             ></a>
                                     </li>
                                     <li>
                                         <a href="../blog/blog-col-two.html"
-                                        >Blog Two Column<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../blog/blog-col-three.html"
-                                        >Blog Three Column<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../blog/blog.html"
-                                        >Blog Four Column<i class="feather-fast-forward"></i
-                                            ></a>
-                                    </li>
-                                    <li>
-                                        <a href="../blog/blog-details.html"
-                                        >Blog Details<i class="feather-fast-forward"></i
+                                        >Add blog<i class="feather-fast-forward"></i
                                             ></a>
                                     </li>
                                 </ul>
                             </li>
+                            <li><a href="../contact/contact.html">News</a></li>
                             <li><a href="../contact/contact.html">Contact</a></li>
                         </ul>
                         <!-- End Mainmanu Nav -->
                     </nav>
                 </div>
             </div>
-            <div class="header-right">
+            <div class="header-right mr-2 ml-2">
                 <div class="setting-option d-none d-lg-block">
                     <form class="search-form-wrapper" action="#">
                         <input
@@ -524,18 +177,19 @@
                     </form>
                 </div>
 
-                <div
-                        class="setting-option header-btn rbt-site-header"
-                        id="rbt-site-header"
-                >
-                    <div class="icon-box">
-                        <a
-                                id="connectbtn"
-                                class="btn btn-primary-alta btn-small"
-                                href="../user/connect.html"
-                        >Wallet connect</a>
-                    </div>
-                </div>
+                <!--{#                <div#}-->
+                <!--{#                        class="setting-option header-btn rbt-site-header"#}-->
+                <!--{#                        id="rbt-site-header"#}-->
+                <!--{#                >#}-->
+                <!--{#                    <div class="icon-box">#}-->
+                <!--{#                        <a#}-->
+                <!--{#                                id="connectbtn"#}-->
+                <!--{#                                class="btn btn-primary-alta btn-small"#}-->
+                <!--{#                                href="../user/connect.html"#}-->
+                <!--{#                        >Wallet connect</a>#}-->
+                <!--{#                    </div>#}-->
+                <!--{#                </div>#}-->
+
                 <div class="setting-option rn-icon-list notification-badge">
                     <div class="icon-box">
                         <a href="../pages/activity.html"
@@ -544,82 +198,7 @@
                     </div>
                 </div>
 
-                <div class="header_admin" id="header_admin">
-                    <div class="setting-option rn-icon-list user-account">
-                        <div class="icon-box">
-                            <a href="author.html"
-                            ><img
-                                        src="{{ asset('assets/images/icons/boy-avater.png') }}"
-                                        alt="Images"
-                                /></a>
-                            <div class="rn-dropdown">
-                                <div class="rn-inner-top">
-                                    <h4 class="title">
-                                        <a href="../pages/product-details.html"
-                                        >Christopher William</a
-                                        >
-                                    </h4>
-                                    <span><a href="#">Set Display Name</a></span>
-                                </div>
-                                <div class="rn-product-inner">
-                                    <ul class="product-list">
-                                        <li class="single-product-list">
-                                            <div class="thumbnail">
-                                                <a href="../pages/product-details.html"
-                                                ><img
-                                                            src="{{ asset('assets/images/portfolio/portfolio-07.jpg') }}"
-                                                            alt="Nft Product Images"
-                                                    /></a>
-                                            </div>
-                                            <div class="content">
-                                                <h6 class="title">
-                                                    <a href="../pages/product-details.html"
-                                                    >Balance</a
-                                                    >
-                                                </h6>
-                                                <span class="price">25 ETH</span>
-                                            </div>
-                                            <div class="button"></div>
-                                        </li>
-                                        <li class="single-product-list">
-                                            <div class="thumbnail">
-                                                <a href="../pages/product-details.html"
-                                                ><img
-                                                            src="{{ asset('assets/images/portfolio/portfolio-01.jpg') }}"
-                                                            alt="Nft Product Images"
-                                                    /></a>
-                                            </div>
-                                            <div class="content">
-                                                <h6 class="title">
-                                                    <a href="../pages/product-details.html"
-                                                    >Balance</a
-                                                    >
-                                                </h6>
-                                                <span class="price">25 ETH</span>
-                                            </div>
-                                            <div class="button"></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="add-fund-button mt--20 pb--20">
-                                    <a
-                                            class="btn btn-primary-alta w-100"
-                                            href="../user/connect.html"
-                                    >Add Your More Funds</a
-                                    >
-                                </div>
-                                <ul class="list-inner">
-                                    <li><a href="../user/author.html">My Profile</a></li>
-                                    <li>
-                                        <a href="../user/edit-profile.html">Edit Profile</a>
-                                    </li>
-                                    <li><a href="../user/connect.html">Manage funds</a></li>
-                                    <li><a href="../user/login.html">Sign Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="setting-option mobile-menu-bar d-block d-xl-none">
                     <div class="hamberger">
                         <button class="hamberger-button">
@@ -666,6 +245,26 @@
                             <span class="rbt-cart-count" id="itmesNumber">0</span>
                         </span>
                     </a>
+                </div>
+                <div class="" id="header_admin">
+                    <div class="setting-option rn-icon-list user-account">
+                        <div class="icon-box">
+                            <a href="author.html"
+                            ><img
+                                        src="{{ asset('assets/images/icons/boy-avater.png') }}"
+                                        alt="Images"
+                                /></a>
+                            <div class="rn-dropdown">
+                                <ul class="list-inner">
+                                    <li><a href="{{ path('app_user_dashboard_index') }}">My Profile</a></li>
+                                    <li>
+                                        <a href="{{ path('editProfile') }}">Edit Profile</a>
+                                    </li>
+                                    <li><a href="{{ path('app_logout') }}">Sign Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

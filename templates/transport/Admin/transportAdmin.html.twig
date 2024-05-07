@@ -1,0 +1,312 @@
+{% extends '/home/index_admin.html.twig' %}
+ {% block body  %}
+
+
+<div class="d-xl-flex justify-content-between">
+    <div class="mb-3"><button class="btn btn-primary me-4" type="button" data-bs-toggle="modal" data-bs-target="#addDealModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-plus me-2"></span>Add Transport</button><button class="btn btn-link text-body px-0"><span class="fa-solid fa-file-export fs-9 me-2"></span>Export</button></div>
+    <div class="d-flex mb-4">
+        <div class="search-box">
+            <form class="position-relative" data-bs-toggle="search" data-bs-display="static"><input class="form-control search-input search" type="search" placeholder="Search by name" aria-label="Search" />
+                <span class="fas fa-search search-box-icon"></span>
+            </form>
+        </div><select class="form-select w-auto mx-2" id="select-deals">
+            <option>Sort</option>
+        </select><button class="btn px-3 btn-phoenix-secondary" type="button" data-bs-toggle="modal" data-bs-target="#reportsFilterModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fa-solid fa-filter text-primary" data-fa-transform="down-3"></span></button>
+    </div>
+</div>
+
+         <div class="row gx-6">
+          <div class="col-12 col-xl-6">
+            <div data-list='{"valueNames":["country","users","transactions","revenue","conv-rate"],"page":5}'>
+              <div class="mb-5 mt-7">
+                <h3>Our Transports </h3>
+                <p class="text-body-tertiary">Tous les Transports sont affiche ici</p>
+              </div>
+              <div class="table-responsive scrollbar">
+                <table class="table fs-10 mb-0">
+                  <thead>
+                    <tr>
+                      <th class="sort border-top border-translucent ps-0 align-middle" scope="col" data-sort="country" style="width:32%">DEPART</th>
+                      <th class="sort border-top border-translucent align-middle" scope="col" data-sort="users" style="width:17%">ARRIVE</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">IMAGE</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">RATING</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="revenue" style="width:20%">PRIX</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">TYPE</th>
+                      <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="revenue" style="width:20%">HEURE</th>
+                          <th class="sort border-top border-translucent text-end align-middle" scope="col" data-sort="transactions" style="width:16%">REFERENCE</th>
+                   
+                    </tr>
+                  </thead>
+                
+                  <tbody class="list" id="table-regions-by-revenue">
+              
+                                            {% for transport in transports %}
+
+                    <tr>
+                      <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="{{ path('app_station') }}">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                                  {% for station_dep in stations %}
+                                  {% if station_dep.id == transport.Stationdepart %}
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >{{station_dep.NomStation}}</p>
+                                  {% endif %}
+                                  {% endfor %}
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                       <td class="white-space-nowrap ps-0 country" style="width:32%">
+                        <div class="d-flex align-items-center">
+                           <a href="{{ path('app_station') }}">
+                            <div class="d-flex align-items-center"><img src="assetsAdmin/assets/img/country/india.png" alt="" width="24" />
+                                   
+                                {% for station_ari in stations %}
+                                  {% if station_ari.id == transport.Stationarrive %}
+                              <p class="mb-0 ps-3 text-primary fw-bold fs-9" >{{station_ari.NomStation}}</p>
+                                    {% endif %}
+                                    {% endfor %}
+                            </div>
+                          </a>
+                        </div>
+                      </td>
+                     <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0"><span>
+           <div class="avatar avatar-l"><img class="rounded-circle"  src="/images/transports/{{ transport.VehiculeImage }}"  alt="" /></div>
+                      </span></h6>
+                      </td>
+                    <td class="align-middle rating white-space-nowrap fs-10">
+                    <span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star star-icon text-warning"></span>
+                     <h7 class="mb-0" >{{transport.averageRating}}</span></h7>
+
+                    </td>
+
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">{{transport.Prix}}</span></h6>
+                      </td>
+                      <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">{{transport.TypeVehicule}}</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">{{transport.Heure}}</span></h6>
+                      </td>
+                           <td class="align-middle text-end transactions" style="width:17%">
+                        <h6 class="mb-0">{{transport.Reference}}</span></h6>
+                      </td>
+                     
+                             <td class="align-middle white-space-nowrap text-end pe-0">
+                      <div class="position-relative">
+                        <div class="hover-actions"> <button class="btn btn-sm btn-phoenix-secondary me-1 fs-10" onclick=""></span></button><button class="btn btn-sm btn-phoenix-secondary fs-10" onclick=""><span class="fas fa-trash"></span></button></div> 
+                        </div>
+                      <div class="btn-reveal-trigger position-static">
+                      <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                        <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item"   onclick="showModifierPopup('{{transport.idTransport}}','{{transport.prix}}','{{transport.reference}}','{{transport.heure}}')">Update</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger"   onclick="deleteTransport({{transport.idTransport}})">Remove</a>
+                        </div>
+                      </div>
+                    </td>
+                 
+                    </tr>
+                       {% endfor %}
+        
+                   
+            
+                  </tbody>
+                </table>
+              </div>
+              <div class="row align-items-center py-1">
+                <div class="pagination d-none"></div>
+                <div class="col d-flex fs-9">
+                  <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p>
+                </div>
+                <div class="col-auto d-flex">
+                  <button class="btn btn-link px-1 me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left me-2"></span>Previous</button><button class="btn btn-link px-1 ms-1" type="button" title="Next" data-list-pagination="next">Next<span class="fas fa-chevron-right ms-2"></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-xl-6">
+            <div class="mx-n4 mx-lg-n6 ms-xl-0 h-100">
+              <div class="h-100 w-100">
+                <div class="h-100 bg-body-emphasis" id="map" style="min-height: 300px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+ 
+<div class="modal fade" id="updateDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addDealModal" aria-hidden="true">
+    <form   id="contact-form" method="POST">
+
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-body-highlight p-6">
+            <div class="modal-header border-0 p-0 mb-2">
+                <h3 class="mb-0"> Update Transport </h3><button class="btn btn-sm btn-phoenix-secondary" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times text-danger"></span></button>
+            </div>
+            <div class="modal-body px-0">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Type Vehicule</label>
+                            <select class="form-select" id="typeSelectUpd">
+                                <option>Metro</option>
+                                <option>Bus</option>
+                            </select>
+                        </div>
+
+                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"> Depart</label>
+                         <select class="form-select" id="station-departUpd">
+                            {% for station in stations %}
+                                <option value="{{ station.id }}">{{station.nomstation}}</option>
+                             {% endfor %}
+                            </select>
+                        </div>
+                   
+                        <div class="mb-4">
+                            <label class="text-body-highlight fw-bold mb-2">Reference</label>
+                            <input class="form-control input-target" type="text" placeholder="Enter deal name" name="ReferenceUpd" id="ReferenceUpd" />
+                        </div>
+
+                    
+                    </div>
+                    <div class="col-lg-6">
+                    <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Start Time</label><input class="form-control datetimepicker" type="text" name="TimeUpd" id="TimeUpd" placeholder="H:i" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' /></div>
+                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Arrive</label>
+                          <select class="form-select" id="station-arriveUpd">
+                            {% for station in stations %}
+                                <option value="{{ station.id }}">{{station.nomstation}}</option>
+                             {% endfor %}
+                            </select>
+                        </div>
+                                                <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"  id="">Prix</label><input name="PrixUpd" id="PrixUpd" class="form-control input-target" type="text" placeholder="Enter contact name" /></div>
+
+                        <div class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-6"><label class="text-body-highlight fw-bold mb-2">Station Image</label>                             
+                                <input name="createinputfileUpd" id="createinputfileUpd" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
+                                </div>
+
+                            </div>
+                       
+
+                            <div>
+
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="mb-4"><label class=" fw-bold mb-2 error-label" id ="error-label"></label> </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer border-0 pt-6 px-0 pb-0">
+                <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button class="btn btn-primary my-0" type="submit" onclick="updateTransport(event)">      
+                Update Station</button>
+            </div>
+
+        </div>
+    </div>
+     </form>
+</div>
+
+<div class="modal fade" id="addDealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addDealModal" aria-hidden="true">
+    <form id="contact-form" method="POST">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-body-highlight p-6">
+            <div class="modal-header border-0 p-0 mb-2">
+                <h3 class="mb-0">New Transport</h3><button class="btn btn-sm btn-phoenix-secondary" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times text-danger"></span></button>
+            </div>
+            <div class="modal-body px-0">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Type Vehicule</label>
+                            <select class="form-select" id="typeSelect">
+                                <option>Metro</option>
+                                <option>Bus</option>
+                            </select>
+                        </div>
+
+                         <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"> Depart</label>
+                         <select class="form-select" id="station-depart">
+                            {% for station in stations %}
+                                <option value="{{ station.id }}">{{station.nomstation}}</option>
+                             {% endfor %}
+                            </select>
+                        </div>
+                   
+                        <div class="mb-4">
+                            <label class="text-body-highlight fw-bold mb-2">Reference</label>
+                            <input class="form-control input-target" type="text" placeholder="Enter deal name" name="Reference" id="Reference" />
+                        </div>
+
+                                                 <div class="mb-4"><label class=" fw-bold mb-2 error-label" id ="error-label"></label> </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                    <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Start Time</label>
+    <input class="form-control" type="time" name="Time" id="Time" placeholder="HH:mm" step="60" />
+                    </div>
+                        <div class="mb-4"><label class="text-body-highlight fw-bold mb-2">Arrive</label>
+                          <select class="form-select" id="station-arrive">
+                            {% for station in stations %}
+                                <option value="{{ station.id }}">{{station.nomstation}}</option>
+                             {% endfor %}
+                            </select>
+                        </div>
+                                                <div class="mb-4"><label class="text-body-highlight fw-bold mb-2"  id="">Prix</label><input name="Prix" id="Prix" class="form-control input-target" type="text" placeholder="Enter contact name" /></div>
+
+                        <div class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-6"><label class="text-body-highlight fw-bold mb-2">Station Image</label>                             
+                                <input name="createinputfile" id="createinputfile" type="file" class="form-control input-target  text-body-highlight fw-bold mb-2" />
+                                </div>
+
+                            </div>
+                       
+
+                            <div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer border-0 pt-6 px-0 pb-0">
+                <button class="btn btn-link text-danger px-3 my-0" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button class="btn btn-primary my-0" type="submit" onclick="addTransport(event)">      
+                Add Transport</button>
+            </div>
+
+        </div>
+    </div>  
+    </form>
+</div>
+
+
+<style>
+    .input-invalid {
+        border-color: #DC143C; /* Change border color to red */
+    }
+       .input-valid {
+        border-color: green; /* Change border color to red */
+    }
+
+    .input-typing {
+        border-color: #50C878;
+    }
+  .error-label {
+        color: red;
+    }
+   
+
+</style>
+ 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/transportAdmin.js') }}"></script>
+{% endblock %}
