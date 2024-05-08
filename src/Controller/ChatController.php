@@ -19,19 +19,26 @@ class ChatController extends AbstractController
 {
 
     #[Route('/show', name: '_show')]
-    public function show(UserRepository $userRepository,ChatRepository $chatRepository): Response
+    public function show(UserRepository $userRepository, ChatRepository $chatRepository): Response
     {
-        $users=$userRepository->findAll();
-        $messages=[];
+        $users = $userRepository->findAll();
+        $messages = [];
 
         foreach ($users as $user) {
-            if($user!==$this->getUser()) {
-                $chat = $chatRepository->selectLastMessage($user->getId())[0];
-                $messages[] = [$chat->getSender()->getId(), $chat->getMessage(), $chat->getTimestamp()->format('Y-m-d H:i'), $chat->getMsgState()];
+            if ($user !== $this->getUser()) {
+                $chat = $chatRepository->selectLastMessage($user->getId());
+                if(sizeof($chat) > 0) {
+                    $chat = $chat[0];
+                    $messages[] = [$chat->getSender()->getId(), $chat->getMessage(), $chat->getTimestamp()->format('Y-m-d H:i'), $chat->getMsgState()];
+                }
+                else{
+                    $messages[] = [$user->getId(), '', '',-1];
+                }
             }
         }
 
-        return $this->render('chat/chat.html.twig',[
+
+        return $this->render('chat/chat.html.twig', [
             'users' => $users,
             'messages' => $messages,
         ]);
@@ -39,28 +46,28 @@ class ChatController extends AbstractController
 
 
     #[Route('/getData', name: '_getData')]
-    public function getData(ChatRepository $chatRepository,Request $request): Response
+    public function getData(ChatRepository $chatRepository, Request $request): Response
     {
-        if($request->isXmlHttpRequest()) {
-            $idSender=$request->get('idSender');
-            $idReciver=$request->get('idReciver');
+        if ($request->isXmlHttpRequest()) {
+            $idSender = $request->get('idSender');
+            $idReciver = $request->get('idReciver');
 
-            $messages=[];
-            foreach ($chatRepository->findByReciverOrSender(intval($idSender),intval($idReciver)) as $chat) {
-                $messages[]=[$chat->getMessage(),$chat->getTimestamp()->format('Y-m-d H:i'),$chat->getSender()===$this->getUser()];
+            $messages = [];
+            foreach ($chatRepository->findByReciverOrSender(intval($idSender), intval($idReciver)) as $chat) {
+                $messages[] = [$chat->getMessage(), $chat->getTimestamp()->format('Y-m-d H:i'), $chat->getSender() === $this->getUser()];
             }
 
             $chatRepository->updateChatState($this->getUser());
 
 
-            return new JsonResponse(['messages'=>$messages]);
+            return new JsonResponse(['messages' => $messages]);
         }
 
-        return new Response('bad',Response::HTTP_BAD_REQUEST);
+        return new Response('bad', Response::HTTP_BAD_REQUEST);
     }
 
     #[Route('/new', name: '_new')]
-    public function new(UserRepository $userRepository,EntityManagerInterface $entityManager, Request $request): Response
+    public function new(UserRepository $userRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
 
         if ($request->isXmlHttpRequest()) {

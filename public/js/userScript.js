@@ -1,8 +1,3 @@
-
-
-
-
-
 function saveCin() {
 
     let formData = new FormData();
@@ -30,8 +25,8 @@ function saveUserLocation() {
     let mapAddress = $('#mapAddress').val()
     let municipality = $('#municipality').val()
     let municipalityAddressNew = $('#municipalityAddressNew').val()
-    console.log('omar')
-    console.log('omarm' + municipalityAddressNew)
+    let state = $('#state').val()
+
     if (mapAddress === '' || municipality === '') {
         alert('error')
     }
@@ -42,7 +37,8 @@ function saveUserLocation() {
         data: {
             mapAddress: mapAddress,
             municipality: municipality,
-            municipalityAddressNew: municipalityAddressNew
+            municipalityAddressNew: municipalityAddressNew,
+            state: state,
         },
         async: true,
         success: function (response) {
@@ -168,15 +164,15 @@ function editProfile(event) {
             loader_stop(3000)
             setTimeout(function () {
                 if (response.success) {
+                    showValidPop("Data updated successfully");
                     removeInputs();
                 }
                 if (response.redirect) {
-
                     window.location.href = response.redirect;
                     console.log("plplplp");
                 } else {
                     let errors = response.errors;
-                    console.log(errors);
+                    showInvalidPop("Data not updated successfully");
                 }
             }, 3000)
         },
@@ -186,7 +182,7 @@ function editProfile(event) {
                 const messagesErreur = parserMessagesErreur(response.responseText);
                 console.log(messagesErreur);
                 afficherMessagesErreur(messagesErreur);
-                alert('Il y a des erreurs dans le formulaire. Veuillez corriger et réessayer.');
+                showInvalidPop("Data not updated successfully");
             }, 3000)
         },
     });
@@ -214,10 +210,12 @@ function editImage() {
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response.state);
+            showValidPop("image updated successfully");
         },
         error: function (response) {
             console.log("error");
+            showInvalidPop()
+            showInvalidPop("image not updated successfully");
         },
     });
 }
@@ -229,6 +227,10 @@ function editPassword(event) {
     let oldPass = $('#oldPass').val();
     let NewPass = $('#NewPass').val();
     let rePass = $('#rePass').val();
+    if (oldPass === '' || NewPass === '' || rePass === '') {
+        showInvalidPop("password not updated successfully");
+        return
+    }
     $.ajax({
         url: '/changePassword',
         type: "POST",
@@ -239,55 +241,18 @@ function editPassword(event) {
         },
         async: true,
         success: function (response) {
-            console.log(response.state);
-            customAlert.alertWithPromise('Votre mot de passe a été modifié avec succès. Vous devez vous déconnecter et saisir vos nouvelles informations.')
-                .then(function () {
-                    removeInputsChangePassword();
-                })
-                .catch(function () {
-                    console.log("L'utilisateur a annulé l'action.");
-                });
+            showValidPop("password updated successfully");
+            removeInputsChangePassword();
         },
 
         error: function (response) {
-            const messagesErreur = parserMessagesErreur(response.responseText);
-            console.log(messagesErreur);
+            showInvalidPop("password not updated successfully");
             afficherMessagesErreur(messagesErreur);
         },
     });
 }
 
-function AddMunicipality(event) {
-    event.preventDefault();
-    let formData = new FormData();
-    let name = $('#namee').val();
-    let adresse = $('#adresse').val();
-    formData.append('imagee', $('#createinputfile').prop('files')[0]);
-    formData.append('name', name);
-    formData.append('adresse', adresse);
-    $.ajax({
 
-        url: '/AddMunicipality',
-        type: "POST",
-        data: formData,
-        async: true,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-            console.log(response.state);
-            removeInputs();
-            Swal.fire(
-                'Ajouté!',
-                'success'
-            )
-        },
-        error: function (response) {
-            const messagesErreur = parserMessagesErreur(response.responseText);
-            console.log(messagesErreur);
-            afficherMessagesErreur(messagesErreur);
-        },
-    });
-}
 
 
 function DeleteCustomer(event) {
@@ -297,7 +262,6 @@ function DeleteCustomer(event) {
 function editProfileAdmin(event) {
 
     event.preventDefault();
-
     // showLoaderAndBlockUI("test");
     let formData = new FormData();
     let name = $('#firstnamee').val();

@@ -74,14 +74,13 @@ function initMap() {
 
                 }
 
-                municipality=getCityFromGeocodeResponse(results)
+                getCityFromGeocodeResponse(results)
 
             }
         });
 
         setTimeout(function () {
-            geocoder.geocode({ address: 'Municipalité de '+municipality }, function(results, status) {
-                console.log(municipality)
+            geocoder.geocode({ address: 'Municipalité de '+$('#municipality').val() }, function(results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         const municipalityAddress = results[0].formatted_address;
@@ -207,12 +206,17 @@ function getCityFromGeocodeResponse(response) {
     $('#mapAddress').val(placeName)
 
     for (const component of addressComponents) {
+        if (component.types.includes('administrative_area_level_1')) {
+            municipality = component.long_name;
+
+            console.log('state:', municipality);
+            $('#state').val(municipality)
+        }
         if (component.types.includes('administrative_area_level_2')) {
             municipality = component.long_name;
 
             console.log('Municipality:', municipality);
             $('#municipality').val(municipality)
-            return municipality
         }
     }
 }

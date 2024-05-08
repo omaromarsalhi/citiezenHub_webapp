@@ -42,7 +42,6 @@ class RegistrationController extends AbstractController
                 $user = new User();
                 $user->setFirstName($userData['firstName']);
                 $user->setLastName($userData['lastName']);
-                $user->setAddress($userData['address']);
                 $user->setEmail($userData['email']);
                 $user->setPassword($userData['password']);
                 $user->setState(0);
@@ -55,24 +54,18 @@ class RegistrationController extends AbstractController
                     $field = 'Email';
                     $errorMessages[$field] = 'Mail already exists';
                 } else {
-                    $muni = $municipaliteRepository->findOneBy(['name' => $geo->getMunicipalityFromAddress($userData['address'])]);
-                    if (count($errors) === 0 && $userData['password'] === $userData['password1'] && $muni) {
+                    if (count($errors) === 0 && $userData['password'] === $userData['password1']) {
 
                         $hashedPassword = $userPasswordHasher->hashPassword(
                             $user,
                             $userData['password']
                         );
 
-                        $user->setMunicipalite($muni);
                         $user->setPassword($hashedPassword);
                         $user->setRole("Citoyen");
                         $user->setDate(new \DateTime('now', new \DateTimeZone('Africa/Tunis')));
                         $entityManager->persist($user);
                         $entityManager->flush();
-
-
-
-
 
                         return $userAuthenticator->authenticateUser(
                             $user,

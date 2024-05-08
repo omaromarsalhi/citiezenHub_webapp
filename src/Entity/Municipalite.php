@@ -30,10 +30,13 @@ class Municipalite
     )]
     private ?string $Address = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $photo = null;
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: "municipalite")]
     private Collection $users;
+
+    #[ORM\Column(length: 1000, nullable: true)]
+    private ?string $goverment = null;
+
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -69,17 +72,6 @@ class Municipalite
         return $this;
     }
 
-    public function getPhoto(): ?string
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(string $photo): static
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
     /**
      * @return User[]
      */
@@ -94,6 +86,18 @@ class Municipalite
             $this->users[] = $User;
             $User->setMunicipalite($this);
         }
+
+        return $this;
+    }
+
+    public function getGoverment(): ?string
+    {
+        return $this->goverment;
+    }
+
+    public function setGoverment(?string $goverment): static
+    {
+        $this->goverment = $goverment;
 
         return $this;
     }

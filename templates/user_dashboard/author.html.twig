@@ -35,13 +35,13 @@
                             <div class="rn-author-info-content">
                                 <h4 class="title">{{ app.user.firstName|upper~' '~app.user.lastName }}</h4>
                                 <div class="author-button-area">
-                    <span class="btn at-follw follow-button"
+                    <span class="btn at-follw follow-button" onclick="showPop()"
                     ><i data-feather="user-plus"></i> Follow</span
                     >
                                     <span
                                             class="btn at-follw share-button"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#shareModal"
+                                            data-bs-target="#statusSuccessModal"
                                     ><i data-feather="share-2"></i
                                         ></span>
                                     <div class="count at-follw">

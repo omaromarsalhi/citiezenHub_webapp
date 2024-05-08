@@ -20,3 +20,19 @@ function countBasket() {
         },
     })
 }
+
+
+function showInvalidPop(msg) {
+    $('#error-message').html(msg);
+    $('#statusErrorsModal').modal('show')
+}
+function hideInvalidPop() {
+    $('#statusErrorsModal').modal('hide')
+}
+function showValidPop(msg) {
+    $('#success-message').html(msg);
+    $('#statusSuccessModal').modal('show')
+}
+function hideValidPop() {
+    $('#statusSuccessModal').modal('hide')
+}

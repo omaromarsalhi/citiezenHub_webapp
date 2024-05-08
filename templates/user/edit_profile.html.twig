@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+
+{% block stylesheets_wtf1 %}
+    <link rel="stylesheet" href="{{ asset('css/wtf.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}"/>
+{% endblock %}
+
  {% block stylesheets %}
      <link rel="stylesheet" href="{{ asset('css/map.css') }}"/>
  {% endblock %}
@@ -405,6 +411,7 @@
                                                 <input id="municipality" type="text" disabled
                                                        value="{{ app.user.getMunicipalite().name|default('none') }}">
                                                 <input id="municipalityAddressNew" type="hidden" disabled>
+                                                <input id="state" type="hidden" disabled>
                                                 <div id="password">
                                                 </div>
                                             </div>
@@ -437,7 +444,11 @@
                                                             />
                                                             <img
                                                                     id="createfileImage4"
-                                                                    src="{{ asset('usersImg/'~cinFront) }}"
+                                                                    {% if(cinFront=='none') %}
+                                                                        src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                                                    {% else %}
+                                                                        src="{{ asset('usersImg/'~cinFront) }}"
+                                                                    {% endif %}
                                                                     alt=""
                                                                     data-black-overlay="6"
                                                             />
@@ -467,7 +478,11 @@
                                                             />
                                                             <img
                                                                     id="createfileImage5"
-                                                                    src="{{ asset('usersImg/'~cinBack) }}"
+                                                                    {% if(cinBack=='none') %}
+                                                                        src="{{ asset('assets/images/portfolio/portfolio-05.jpg') }}"
+                                                                    {% else %}
+                                                                        src="{{ asset('usersImg/'~cinBack) }}"
+                                                                    {% endif %}
                                                                     alt=""
                                                                     data-black-overlay="6"
                                                             />

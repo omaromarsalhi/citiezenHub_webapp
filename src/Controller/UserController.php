@@ -9,7 +9,6 @@ use App\MyHelpers\ImageHelperUser;
 use App\Repository\MunicipaliteRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Client;
 use Ivory\GoogleMap\Map;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +34,7 @@ class UserController extends AbstractController
 
 
     #[Route('/cinUpdate', name: 'app_user_cinUpdate', methods: ['GET', 'POST'])]
-    public function cinUpdate(AiVerification $aiVerification,Request $request, EntityManagerInterface $entityManager, ImageHelperUser $imageHelperUser): Response
+    public function cinUpdate(AiVerification $aiVerification, Request $request, EntityManagerInterface $entityManager, ImageHelperUser $imageHelperUser): Response
     {
         if ($request->isXmlHttpRequest()) {
 
@@ -47,11 +46,11 @@ class UserController extends AbstractController
             $user->setCinImages($frontIdPath . '_' . $backIdPath);
             $entityManager->flush();
 
-            $obj=[
-                'pathFrontCin'=>'../citiezenHub_webapp/public/usersImg/'.$frontIdPath,
-                'pathBackCin'=>'../citiezenHub_webapp/public/usersImg/'.$backIdPath,
-                'fileNameFront'=>md5('user_front'.($user->getId()*1000+17)),
-                'fileNameBackCin'=>md5('user_backCin'.($user->getId()*1000+17)),
+            $obj = [
+                'pathFrontCin' => '../citiezenHub_webapp/public/usersImg/' . $frontIdPath,
+                'pathBackCin' => '../citiezenHub_webapp/public/usersImg/' . $backIdPath,
+                'fileNameFront' => md5('user_front' . ($user->getId() * 1000 + 17)),
+                'fileNameBackCin' => md5('user_backCin' . ($user->getId() * 1000 + 17)),
             ];
 
             $aiVerification->runOcr($obj);
@@ -71,6 +70,7 @@ class UserController extends AbstractController
             $municipalityName = $request->get('municipality');
             $mapAddress = $request->get('mapAddress');
             $municipalityAddress = $request->get('municipalityAddressNew');
+            $state = $request->get('state');
 
             var_dump($municipalityAddress);
             if (!$this->getUser()) {
@@ -88,6 +88,7 @@ class UserController extends AbstractController
             $municipality = new Municipalite();
             $municipality->setName($municipalityName);
             $municipality->setAddress($municipalityAddress);
+            $municipality->setGoverment($state);
 
             $user->setMunicipalite($municipality);
 
@@ -97,7 +98,6 @@ class UserController extends AbstractController
 
             return new Response('done', Response::HTTP_OK);
         }
-
         return new Response('error', Response::HTTP_FORBIDDEN);
     }
 
@@ -183,7 +183,11 @@ class UserController extends AbstractController
         }
 
         $map = new Map();
-        $cinImages=explode("_",$user->getCinImages());
+        if ($user->getCinImages() === null) {
+            $cinImages=['none','none'];
+        } else
+            $cinImages = explode("_", $user->getCinImages());
+
 
         return $this->render('user/edit_profile.html.twig', [
             'name' => $user->getFirstName(),
@@ -202,12 +206,10 @@ class UserController extends AbstractController
             'routePrecedente' => $path,
             'expiry_time' => $expiryTime,
             'date' => $user->getDate(),
-            'cinFront'=>$cinImages[0],
-            'cinBack'=>$cinImages[1],
+            'cinFront' => $cinImages[0] ,
+            'cinBack' => $cinImages[1] ,
             'map' => $map,
         ]);
-
-
     }
 
 
