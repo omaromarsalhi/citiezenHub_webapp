@@ -61,7 +61,7 @@ class Transport
  
 
     #[ORM\Column]
-    #[ORM\ManyToOne(targetEntity:"App\Entity\Station")]
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Station")  ]
     #[ORM\JoinColumn(name:"station_depart", referencedColumnName:"id")]
 
     private ?int $Station_depart = null;

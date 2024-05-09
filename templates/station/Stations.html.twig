@@ -7,9 +7,6 @@
  {% endblock %}
 
 
-
-
-
  {% block javascripts %}
      <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
      <script src="{{ asset('js/mapStations.js') }}"></script>
@@ -18,17 +15,10 @@
 
 {% block body %}
 
-
-
-
-
     <div class="rn-live-bidding-area rn-section-gapTop">
         <div class="container lg-product-wrapper mt-2">
             <div class="row">
                 <div id="mapCss">
-                    <div class="pac-card" id="pac-card">
-                        <input id="pac-input" type="text" placeholder="Enter a location"/>
-                    </div>
                     <div id="map" style="min-height: 800px"></div>
                     <div id="infowindow-content">
                         <span id="place-name" class="title"></span><br/>
@@ -46,18 +36,13 @@
     </script>-->
 {% endblock %}
 
-
 {% block scripts %}
-
-{#    <script>#}
-{#        function initMap() {#}
-{#            var mapOptions = {#}
-{#                center: {lat: 36.397, lng: 9.644},#}
-{#                zoom: 8#}
-{#            };#}
-{#            var map = new google.maps.Map(document.getElementById('map'), mapOptions);#}
-{#        }#}
-{#    </script>#}
+    <script>
+        var nomstationArray = [];
+        {% for station in stationlist %}
+        nomstationArray.push("{{ station.AddressStation }}");
+        {% endfor %}
+    </script>
     <script
             src="https://maps.googleapis.com/maps/api/js?key={{ app.request.server.get('MAP_VARIABLE') }}&callback=initMap&libraries=places&v=weekly&solution_channel=GMP_CCS_autocomplete_v1"
             defer

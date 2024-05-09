@@ -1,11 +1,35 @@
-   {% extends '/home/index.html.twig' %}
+{% extends '/home/index.html.twig' %}
+ {% block stylesheets %}
+     <link rel="stylesheet" href="{{ asset('css/map.css') }}"/>
+ {% endblock %}
 
+
+
+
+{% block javascripts %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="{{ asset('js/mapTransport.js') }}"></script>
+
+{% endblock %}
 {% block body %}
-   
+
+    <div class="rn-live-bidding-area rn-section-gapTop">
+        <div class="container lg-product-wrapper mt-2">
+            <div class="row">
+                <div id="mapCss">
+                    <div id="map" style="min-height: 800px"></div>
+                    <div id="infowindow-content">
+                        <span id="place-name" class="title"></span><br/>
+                        <span id="place-address"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 
-
-      <div class="rn-top-top-seller-area nice-selector-transparent rn-section-gapTop">
+    <div class="rn-top-top-seller-area nice-selector-transparent rn-section-gapTop">
         <div class="container">
             <div class="row  mb--30">
                 <div class="col-12 justify-sm-center d-flex">
@@ -20,45 +44,45 @@
             </div>
             <div class="row justify-sm-center g-5 top-seller-list-wrapper">
                 <!-- start single top-seller -->
-          <      
- 
- {% for transport in transports|slice(0, 5)  %}
-    <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-        <div class="top-seller-inner-one">
-            <div class="top-seller-wrapper">
-                <div class="thumbnail varified">
-                    <a href="author.html"><img src="/images/transports/{{ transport.VehiculeImage }}" alt="Transport_Image"></a>
-                </div>
-                <div class="top-seller-content">
-                    <a href="author.html">
-                      {% for station_dep in stations %}
-                                  {% if station_dep.id == transport.Stationdepart %}
-                        <h6 class="name">{{station_dep.NomStation}}</h6>
-                                    {% endif %}
-                                    {% endfor %}
+
+
+                {% for transport in transports|slice(0, 5)  %}
+                    <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
+                        <div class="top-seller-inner-one">
+                            <div class="top-seller-wrapper">
+                                <div class="thumbnail varified">
+                                    <a href="author.html"><img src="/images/transports/{{ transport.VehiculeImage }}" alt="Transport_Image"></a>
+                                </div>
+                                <div class="top-seller-content">
+                                    <a href="author.html">
+                                        {% for station_dep in stations %}
+                                            {% if station_dep.id == transport.Stationdepart %}
+                                                <h6 class="name">{{station_dep.NomStation}}</h6>
+                                            {% endif %}
+                                        {% endfor %}
 
 
                                         {% for station_ari in stations %}
-                                  {% if station_ari.id == transport.Stationarrive %}
+                                            {% if station_ari.id == transport.Stationarrive %}
 
-                       <h6 class="name">{{station_ari.NomStation}}</h6>
+                                                <h6 class="name">{{station_ari.NomStation}}</h6>
 
-                                         {% endif %}
+                                            {% endif %}
 
-                              {% endfor %}
-                    </a>
-                    <span class="count-number">
+                                        {% endfor %}
+                                    </a>
+                                    <span class="count-number">
                         {{ transport.averageRating }}
                     </span>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endfor %}
-        
-                
-        
-        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+
+
             </div>
         </div>
     </div>
@@ -84,161 +108,321 @@
                     <div class="box-table table-responsive">
                         <table class="table upcoming-projects">
                             <thead>
-                                <tr>
-                                    <th>
-                                        <span>Num</span>
-                                    </th>
-                                    <th>
-                                        <span>Company</span>
-                                    </th>
-                                    <th>
-                                        <span>Heure</span>
-                                    </th>
-                                    <th>
-                                        <span>Depart</span>
-                                    </th>
-                                    <th>
-                                        <span>Arrive</span>
-                                    </th>
-                                    <th>
-                                        <span>Type Vehicule</span>
-                                    </th>
-                                    <th>
-                                        <span>Prix</span>
-                                    </th>
+                            <tr>
 
-                                </tr>
+                                <th>
+                                    <span>Company</span>
+                                </th>
+                                <th>
+                                    <span>Heure</span>
+                                </th>
+                                <th>
+                                    <span>Depart</span>
+                                </th>
+                                <th>
+                                    <span>Arrive</span>
+                                </th>
+                                <th>
+                                    <span>Type Vehicule</span>
+                                </th>
+                                <th>
+                                    <span>Prix</span>
+                                </th>
+                                <th>
+                                    <span>Live Demo</span>
+                                </th>
+                            </tr>
                             </thead>
                             <tbody class="ranking" id="transport-table-body">
-                                               {% for transport in transports %}
-                             
+                            {% for transport in transports %}
+
 
                                 <tr class="color-light">
-                              
 
-                                    <td><span>1.</span></td>
+
                                     <td>
                                         <div class="product-wrapper d-flex align-items-center">
-                                            <a  onclick="openModal({{transport.idTransport}})" class="thumbnail">
-                                                <img src="/images/transports/{{ transport.VehiculeImage }}" alt="Nft_Profile">
+                                            <img src="/images/transports/{{ transport.VehiculeImage }}" alt="Nft_Profile">
                                             </a>
                                         </div>
                                     </td>
                                     <td><span >{{transport.Heure}}</span></td>
-                                  {% for station_dep in stations %}
-                                  {% if station_dep.id == transport.Stationdepart %}
-                                    <td><span class="color-danger">{{station_dep.NomStation}}</span></td>
-                                    {% endif %}
+                                    {% for station_dep in stations %}
+                                        {% if station_dep.id == transport.Stationdepart %}
+                                            <td><span class="color-danger">{{station_dep.NomStation}}</span></td>
+                                        {% endif %}
                                     {% endfor %}
-                                {% for station_ari in stations %}
-                                  {% if station_ari.id == transport.Stationarrive %}
+                                    {% for station_ari in stations %}
+                                        {% if station_ari.id == transport.Stationarrive %}
 
-                                    <td><span class="color-green">{{station_ari.NomStation}}</span></td>
-                                         {% endif %}
+                                            <td><span class="color-green">{{station_ari.NomStation}}</span></td>
+                                        {% endif %}
 
-                              {% endfor %}
+                                    {% endfor %}
                                     <td><span>{{transport.TypeVehicule}}</span></td>
                                     <td><span>{{transport.Prix}}</span></td>
+                                    <td>
+                                        <button onclick="openModal({{ transport.idTransport }})" class="btn btn-sm btn-info">
+                                            <i class="fas fa-star"></i> <!-- Font Awesome star icon -->
+                                        </button>
+                                        <button type="button" data-toggle="modal" data-target="#mapModal" id="refreshButton" name="mapBtn" onclick="getStationCoordinates({{ transport.Stationdepart }}, {{ transport.Stationarrive }})" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-map-marker-alt"></i> <!-- Font Awesome map marker icon -->
+                                        </button>                                    </td>
+
                                 </tr>
-                                
-                                               {% endfor %}
+
+
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
                     <!-- table End -->
-                 <div class="row">
-    <div class="col-lg-12" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
-        <nav class="pagination-wrapper" aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a id="prev-page" class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a id="page-1" class="page-link active" href="#">1</a></li>
-                <li class="page-item"><a id="next-page" class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
-    </div>
-</div>
+                    <div class="row">
+                        <div class="col-lg-12" data-sal="slide-up" data-sal-delay="550" data-sal-duration="800">
+                            <nav class="pagination-wrapper" aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item"><a id="prev-page" class="page-link" href="#">Previous</a></li>
+                                    <li class="page-item"><a id="page-1" class="page-link active" href="#">1</a></li>
+                                    <li class="page-item"><a id="next-page" class="page-link" href="#">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-</head>
-<body>
+    <button   >Open Map Modal</button>
+    <!--
 
- 
-<div id="ratingModal" class="modal">
+        <div class="modal" id="mapModal">
+        <div class="rn-live-bidding-area rn-section-gapTop">
+            <div class="container lg-product-wrapper mt-2">
+                <div class="row">
+                    <div id="mapCss">
+                        <div id="map" style="min-height: 480px"></div>
+                        <div id="infowindow-content">
+                            <span id="place-name" class="title"></span><br/>
+                            <span id="place-address"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    -->
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2>Rate Our Service</h2>
-    <p>Please rate your experience:</p>
-    <div class="stars">
-      <span class="star" onclick="setRating(1)">★</span>
-      <span class="star" onclick="setRating(2)">★</span>
-      <span class="star" onclick="setRating(3)">★</span>
-      <span class="star" onclick="setRating(4)">★</span>
-      <span class="star" onclick="setRating(5)">★</span>
+
+
+    <div id="ratingModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Rate Our Service</h2>
+            <p>Please rate your experience:</p>
+            <div class="stars">
+                <span class="star" onclick="setRating(1)">★</span>
+                <span class="star" onclick="setRating(2)">★</span>
+                <span class="star" onclick="setRating(3)">★</span>
+                <span class="star" onclick="setRating(4)">★</span>
+                <span class="star" onclick="setRating(5)">★</span>
+            </div>
+            <button onclick="submitRating()">Submit</button>
+        </div>
+
     </div>
-    <button onclick="submitRating()">Submit</button>
-  </div>
 
-</div>
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-  <style>
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
 
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 400px;
-      text-align: center;
-    }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
 
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
+        .stars {
+            display: flex;
+            justify-content: center;
+        }
 
-    .stars {
-      display: flex;
-      justify-content: center;
-    }
+        .star {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-    .star {
-      font-size: 30px;
-      color: #ccc;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
+        .star:hover,
+        .star.checked {
+            color: gold;
+        }
+    </style>
 
-    .star:hover,
-    .star.checked {
-      color: gold;
-    }
-  </style>
- 
-    {% endblock %}
+    <script>
+
+
+        // Get the modal
+        var modal = document.getElementById('ratingModal');
+        var rating = 0;
+        var id;
+        var stationId ;
+        var userId=115;
+
+        // Function to open the modal
+        function openModal(station) {
+            modal.style.display = 'block';
+            stationId=station;
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Function to set the rating
+        function setRating(stars) {
+            rating = stars;
+            var starsElements = document.getElementsByClassName('star');
+            for (var i = 0; i < starsElements.length; i++) {
+                if (i < stars) {
+                    starsElements[i].classList.add('checked');
+                } else {
+                    starsElements[i].classList.remove('checked');
+                }
+            }
+        }
+
+        // Function to submit the rating
+        function submitRating(event) {
+            var ratingValue = rating;
+
+            // Check if rating value is valid
+            if (!ratingValue || ratingValue < 1 || ratingValue > 5) {
+                alert('Please select a valid rating.');
+                return; // Exit the function early if rating is invalid
+            }
+
+            // Get rating value from the input field
+
+
+            let formData = new FormData();
+            formData.append('rating', ratingValue);
+            formData.append('stationId', stationId);
+            formData.append('userId', userId);
+            console.log(formData);
+
+            // Make AJAX request to Symfony controller endpoint
+            $.ajax({
+                url: '/rating/add',
+                type: 'POST',
+                data: formData,
+                contentType: false, // Do not set content type
+                processData: false, // Do not process data
+                success: function(response) {
+                    // Rating submitted successfully
+                    alert('Rating submitted successfully!');
+                    closeModal(); // Close the modal or perform any other action
+                },
+                error: function(xhr, status, error) {
+                    // Error handling: Display an error message if the request fails
+                    alert('An error occurred while submitting the rating.');
+                }
+            });
+        }
+
+        var currentPage = 1;
+        var rowsPerPage = 5; // Change this to the number of rows you want per page
+
+        function updateTable() {
+            var tableBody = document.getElementById('transport-table-body');
+            var rows = Array.from(tableBody.children);
+            var totalPages = Math.ceil(rows.length / rowsPerPage);
+
+            // Hide all rows
+            rows.forEach(function(row) {
+                row.style.display = 'none';
+            });
+
+            // Show only the rows for the current page
+            var start = (currentPage - 1) * rowsPerPage;
+            var end = start + rowsPerPage;
+            rows.slice(start, end).forEach(function(row) {
+                row.style.display = '';
+            });
+
+            // Update the current page number
+            document.querySelector('.page-link.active').textContent = currentPage;
+        }
+
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable();
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            var tableBody = document.getElementById('transport-table-body');
+            var rows = Array.from(tableBody.children);
+            var totalPages = Math.ceil(rows.length / rowsPerPage);
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable();
+            }
+        });
+
+        // Initialize the table
+        updateTable();
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key={{ app.request.server.get('MAP_VARIABLE') }}&callback=initMap&libraries=places&v=weekly&solution_channel=GMP_CCS_autocomplete_v1"
+            defer
+    ></script>
+{% endblock %}

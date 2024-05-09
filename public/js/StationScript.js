@@ -247,7 +247,7 @@ $('#name').change(function() {
 
  
 
-public/js/search.js
+
 
    $('#search-input').change( function(event) {
         console.log("bbbb");

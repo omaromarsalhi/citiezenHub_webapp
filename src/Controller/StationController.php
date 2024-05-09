@@ -28,7 +28,7 @@ class StationController extends AbstractController
      
      
         $station = $this->getDoctrine()->getManager()->getRepository(station::class)->findAll();
-        return $this->render('station/stationAdmin.html.twig', [
+        return $this->render('station/station_Admin.html.twig', [
             'controller_name' => 'StationController',
             'stationlist' => $station
         ]);

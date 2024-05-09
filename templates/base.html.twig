@@ -104,7 +104,23 @@
                         <!-- Start Mainmanu Nav -->
                         <ul class="mainmenu">
                             <li ><a href="{{ path('app_home') }}">Home</a></li>
-                            <li><a href="../pages/about.html">About</a></li>
+                            <li class="has-droupdown has-menu-child-item">
+                                <a href="#">Transport</a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href="{{ path('app_transport_client') }}"
+                                        >Transport<i class="fa-solid fa-shop"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('stationClient') }}"
+                                        >Station<i class="fa-solid fa-shop"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('show_abonnement') }}"
+                                        >Abonnement<i class="fa-solid fa-plus"></i></a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="has-droupdown has-menu-child-item">
                                 <a href="#">Market</a>
                                 <ul class="submenu">
@@ -142,7 +158,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="../contact/contact.html">News</a></li>
+                            <li style="min-width: 100px"><a class="live-expo"  href="{{ path('app_news') }}">News</a></li>
                             <li><a href="{{  path('app_reclamation') }}">Contact</a></li>
                         </ul>
                         <!-- End Mainmanu Nav -->
@@ -237,7 +253,7 @@
                         </span>
                     </a>
                 </div>
-                <div class="" id="header_admin">
+                <div class="has-menu-child-item" id="header_admin" style="max-width: 100px !important;">
                     <div class="setting-option rn-icon-list user-account">
                         <div class="icon-box">
                             <a href="author.html"
@@ -245,7 +261,7 @@
                                         src="{{ asset('assets/images/icons/boy-avater.png') }}"
                                         alt="Images"
                                 /></a>
-                            <div class="rn-dropdown">
+                            <div class="rn-dropdown" style="max-width: 100px !important;">
                                 <ul class="list-inner">
                                     <li><a href="{{ path('app_user_dashboard_index') }}">My Profile</a></li>
                                     <li>

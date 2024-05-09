@@ -4,9 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Rating;
 use App\Entity\Transport;
-use App\Entity\Station;
-
-use App\Form\TransportType;
 use App\Repository\PostRepository;
 use App\Repository\RatingRepository;
 use App\Repository\TransportRepository;
@@ -15,10 +12,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Service\ImaggaService;
@@ -359,6 +356,42 @@ public function add(Request $request): JsonResponse
     // Return a JSON response indicating success
     return new JsonResponse(['success' => true]);
 }
+    /**
+     * @Route("/get-station-coordinates", name="get_station_coordinates")
+     */
+    public function getStationCoordinates(Request $request, StationRepository $stationRepository): JsonResponse|Response
+    {
 
+        if ($request->isXmlHttpRequest()) {
+            $departId = $request->get('departId');
+            $arriveId = $request->get('arriveId');
+
+            $departStation = $stationRepository->findBy(['id' => $departId]);
+            $arriveStation = $stationRepository->findBy(['id' => $arriveId]);
+
+            // Process depart station
+            if ($departStation) {
+                $departAddressParts = explode(",", $departStation[0]->getaddressstation()); // Assuming getAddress() method
+                $response['depart'] = [
+                    'latitude' => (float)$departAddressParts[0],
+                    'longitude' => (float)$departAddressParts[1],
+                ];
+            }
+
+            // Process arrive station
+            if ($arriveStation) {
+                $arriveAddressParts = explode(",", $arriveStation[0]->getaddressstation()); // Assuming getAddress() method
+                $response['arrive'] = [
+                    'latitude' => (float)$arriveAddressParts[0],
+                    'longitude' => (float)$arriveAddressParts[1],
+                ];
+            }
+
+
+
+            return new JsonResponse(['data'=>$response]);
+        }
+        return new Response('omar', Response::HTTP_BAD_REQUEST);
+    }
 
 }

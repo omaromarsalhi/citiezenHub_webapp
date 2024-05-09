@@ -1,165 +1,73 @@
-let municipality = ''
+let map; // Define map variable in the global scope
 
+// Initialization function
 function initMap() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        center: {lat: 34.28091343530563, lng: 9.391573951354815},
-        zoom: 7,
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 0, lng: 0 }, // Initialize with a default center
+        zoom: 355,
         mapTypeControl: true,
     });
 
-    const card = document.getElementById("pac-card");
-    const input = document.getElementById("pac-input");
-    const biasInputElement = document.getElementById("use-location-bias");
+    // Call function to display all stations (assuming nomstationArray is defined somewhere)
+    displayAllStations(map, nomstationArray);
 
-    const strictBoundsInputElement =
-        document.getElementById("use-strict-bounds");
-    const options = {
-        fields: ["formatted_address", "geometry", "name"],
-        strictBounds: false,
-    };
+    // Calculate the map bounds based on marker positions
 
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
+    const bounds = new google.maps.LatLngBounds();
+    nomstationArray.forEach(function (station) {
+        const [lat, lng] = station.split(',').map(parseFloat);
+        bounds.extend(new google.maps.LatLng(lat, lng));
+    });
 
-    const autocomplete = new google.maps.places.Autocomplete(
-        input,
-        options
-    );
+    // Fit the map to the calculated bounds
+    map.fitBounds(bounds);
 
+    // Set a maximum zoom level to prevent zooming in too close
+    const maxZoom = 70;
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function () {
+        if (this.getZoom() > maxZoom) {
+            this.setZoom(maxZoom);
+        }
+    });
 
-    let markers = []; // Array to store created markers
-    const infoWindow = new google.maps.InfoWindow();
-    const geocoder = new google.maps.Geocoder();
-
-
-    map.addListener('click', function (event) {
-        const clickedLatLng = event.latLng;
-        console.log('Clicked Lat:', clickedLatLng.lat(), 'Lng:', clickedLatLng.lng());
+}
 
 
+// Function to display all stations
+function displayAllStations(map, stationArray) {
+    stationArray.forEach(function (station) {
+        // Split the address string into latitude and longitude
+        const [lat, lng] = station.split(',').map(parseFloat);
+
+        // Create a marker for each station
         const marker = new google.maps.Marker({
-            position: clickedLatLng,
+            position: { lat: lat, lng: lng },
+            map: map,
+            title: station.nomstation,
         });
 
-        marker.setMap(map);
-        markers.push(marker); // Add the marker to the array
-        if (markers.length > 1) {
-            markers[markers.length - 2].setMap(null); // Remove previous marker
-        }
-
-
+        // Add click listener to each marker
+        marker.addListener('click', function () {
+            // You can perform any action when a marker is clicked
+            console.log('Clicked station:', station.nomstation);
+        });
     });
+}
 
-    infoWindow.setOptions({
-        maxWidth: 200, // Maximum width of the info window
-        pixelOffset: new google.maps.Size(0, -30) // Adjust position relative to marker
-    });
+// Function to display path between stations
 
-
-    autocomplete.bindTo("bounds", map);
-
-    const infowindow = new google.maps.InfoWindow();
-    const infowindowContent = document.getElementById("infowindow-content");
-
-    infowindow.setContent(infowindowContent);
-
-    const marker = new google.maps.Marker({
-        map,
-        anchorPoint: new google.maps.Point(0, -29),
-    });
-
-    autocomplete.addListener("place_changed", () => {
-        infowindow.close();
-        marker.setVisible(false);
-
-        const place = autocomplete.getPlace();
-
-        if (!place.geometry || !place.geometry.location) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
-            window.alert(
-                "No details available for input: '" + place.name + "'"
-            );
-            return;
-        }
-
-        // If the place has a geometry, then present it on a map.
-        if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(17);
-        }
-
-        marker.setPosition(place.geometry.location);
-        marker.setVisible(true);
-        infowindowContent.children["place-name"].textContent = place.name;
-        infowindowContent.children["place-address"].textContent =
-            place.formatted_address;
-        infowindow.open(map, marker);
-    });
-
-
-    /* // Define starting and ending point coordinates
-     const startPoint = {lat: 36.55476265189162, lng: 9.9657544026299}; // Example coordinates (Tunis, Tunisia)
-     const endPoint = {lat: 36.045651413849015, lng: 9.9547680745049};  // Example coordinates (Bardo, Tunisia)
-
-
-     // Create a directions service object
-     const directionsService = new google.maps.DirectionsService();
-     // Define the directions request
-     const directionsRequest = {
-         origin: new google.maps.LatLng(startPoint.lat, startPoint.lng),
-         destination: new google.maps.LatLng(endPoint.lat, endPoint.lng),
-         travelMode: 'DRIVING', // Adjust travel mode as needed (e.g., DRIVING, BICYCLING, etc.)
-     };
-
-     // Request directions from the Directions API
-     directionsService.route(directionsRequest, (response, status) => {
-         if (status === 'OK') {
-             const route = response.routes[0];
-             const polyline = new google.maps.Polyline({
-                 path: route.overview_path,
-                 map: map,
-                 strokeColor: '#0000FF', // Set a blue color for the line
-                 strokeWeight: 2,
-             });
-         } else {
-             console.error('Directions request failed:', status);
-         }
-     });
-
-     const markerLocations = [
-         {lat: 36.55476265189162, lng: 9.9657544026299, title: "Sydney"}, // Example marker (Sydney)
-         {lat: 36.045651413849015, lng: 9.9547680745049, title: "Melbourne"}, // Example marker (Melbourne)
-     ];
-
-     // Add markers to the map
-     for (const location of markerLocations) {
-         const marker = new google.maps.Marker({
-             position: location,
-             map: map,
-             title: location.title,
-         });
-         marker.setMap(map);
-    */
-
-
-// Define starting and ending point coordinates
-    const startPoint = {lat: 36.55476265189162, lng: 9.9657544026299}; // Example coordinates (Tunis, Tunisia)
-    const endPoint = {lat: 36.045651413849015, lng: 9.9547680745049};  // Example coordinates (Bardo, Tunisia)
-
-
-// Create a directions service object
+function displayPathBetweenStations(map, startPoint, endPoint) {
+    // Create a directions service object
     const directionsService = new google.maps.DirectionsService();
 
-// Define the directions request
+    // Define the directions request
     const directionsRequest = {
-        origin: new google.maps.LatLng(startPoint.lat, startPoint.lng),
-        destination: new google.maps.LatLng(endPoint.lat, endPoint.lng),
-        travelMode: 'DRIVING',
+        origin: startPoint,
+        destination: endPoint,
+        travelMode: 'DRIVING', // Adjust travel mode as needed
     };
 
-// Request directions from the Directions API
+    // Request directions from the Directions API
     directionsService.route(directionsRequest, (response, status) => {
         if (status === 'OK') {
             const route = response.routes[0];
@@ -170,23 +78,20 @@ function initMap() {
                 strokeWeight: 2,
             });
 
-
             // Create a car marker
             const carMarker = new google.maps.Marker({
                 position: startPoint,
                 map: map,
-
             });
 
             // Animate the car along the route
             let step = 0;
             const numSteps = route.overview_path.length;
-            const delay = 100; // 1 second interval
+            const delay = 100; // 100 milliseconds interval
 
             function animateCar() {
                 if (step >= numSteps) {
-                    step=0
-                    // return;
+                    step = 0;
                 }
                 carMarker.setPosition(route.overview_path[step]);
                 step++;
@@ -201,6 +106,14 @@ function initMap() {
     });
 }
 
-window.initMap = initMap;
+// Add event listener to button for displaying path between stations
+const displayPathButton = document.getElementById("mapBtn"); // Ensure you have a button with this ID in your HTML
 
-
+displayPathButton.addEventListener("click", function () {
+    // Get the start and end point coordinates
+    const startPoint = { lat: 36.805551, lng: 10.179325 };
+    const endPoint = { lat: 36.7956335, lng: 10.0893454 };
+alert("displayed")
+    // Call the displayPathBetweenStations function with the points
+   // displayPathBetweenStations(map, startPoint, endPoint);
+});
