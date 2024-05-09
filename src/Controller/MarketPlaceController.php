@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,6 +50,7 @@ class MarketPlaceController extends AbstractController
         $session->set('nbr_pages', ceil(sizeof($prods) / 12));
         $session->set('current_page', 1);
 
+
 //        $productimage=new ProductImages();
 //        $productimage->setPath('usersImg/f76c774e989a81e8ad43906570a26d48.png');
 //
@@ -65,8 +67,37 @@ class MarketPlaceController extends AbstractController
             'nbr_pages' => ceil(sizeof($prods) / 12),
             'current_page' => 1,
             'previous_page' => 2,
+            'sortingData'=>$productRepository->findMinMaxPrices()
         ]);
     }
 
+    #[Route('/filtered', name: 'app_market_place_filtered', methods: ['GET', 'POST'])]
+    public function filtered(ProductRepository $productRepository, Request $request): Response
+    {
+        $session = $request->getSession();
+
+        if ($request->isXmlHttpRequest()) {
+
+            $filterBy=$request->get('filterBy');
+            $prods=$productRepository->findByPriceTest($filterBy);
+            $session->set('allProducts',$prods);
+            $session->set('nbr_pages', ceil(sizeof($prods) / 12));
+            $session->set('current_page', 1);
+
+
+            $subMarket=$this->render('market_place/sub_market.html.twig', [
+                'products' => array_slice($prods, 0, 12),
+                'current_page' => 1,
+                'previous_page' => 2,
+            ]);
+            $nav=$this->render('market_place/nav.html.twig', [
+                'nbr_pages' => $session->get('nbr_pages'),
+            ]);
+
+            return new JsonResponse(['subMarket'=>$subMarket->getContent(),'nav'=>$nav->getContent()]);
+        }
+
+        return new Response('', Response::HTTP_BAD_REQUEST);
+    }
 
 }

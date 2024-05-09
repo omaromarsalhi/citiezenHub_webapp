@@ -1,9 +1,58 @@
 // OMAR SALHI  IS THE OWNER OF THIS PIECE OF USELESS CODE
 
-/*$(document).ready(function () {
-    // DisplayListProducts();
-});*/
 
+$(document).ready(function () {
+    $('input[type="checkbox"]').click(function () {
+        let currentState=this.checked
+        let keyValue = this.id.split('_')
+        Object.keys(filterBy[keyValue[0]]).forEach(function (key) {
+            let id= keyValue[0] +'_'+key
+            console.log(id)
+            $('#'+id).prop('checked',false)
+            filterBy[keyValue[0]][key] = false
+            }
+        )
+
+        $(this).prop('checked',currentState)
+        filterBy[keyValue[0]][keyValue[1]] = currentState
+        console.log(filterBy);
+        filterByPrice()
+    })
+});
+
+
+function filterByPrice() {
+    console.log(filterBy);
+    $.ajax({
+        url: '/market/place/filtered',
+        type: "post",
+        data: {
+            filterBy: filterBy,
+        },
+        async: true,
+        success: function (response) {
+
+            $("#sub-market-block").html(response.subMarket);
+            $("#navPages").html(response.nav);
+
+            setTimeout(function () {
+                showProducts();
+                launchSwiper();
+            }, 1000);
+
+            jQuery('html, body').animate({scrollTop: 10}, 550);
+
+            var page_index_to_enable = $('#currentPage').val();
+            var page_index_to_disable = $('#previousPage').val();
+
+            document.getElementById("page-" + page_index_to_enable).classList.add("active")
+            document.getElementById("page-" + page_index_to_disable).classList.remove("active")
+        },
+        error: function (response) {
+            console.log(response);
+        },
+    });
+}
 
 
 function DisplayListProducts(movement_direction) {
@@ -17,18 +66,18 @@ function DisplayListProducts(movement_direction) {
         success: function (response) {
             $("#sub-market-block").html(response);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 showProducts();
                 launchSwiper();
             }, 1000);
 
             jQuery('html, body').animate({scrollTop: 10}, 550);
 
-            var page_index_to_enable=$('#currentPage').val();
-            var page_index_to_disable=$('#previousPage').val();
+            var page_index_to_enable = $('#currentPage').val();
+            var page_index_to_disable = $('#previousPage').val();
 
-            document.getElementById("page-"+page_index_to_enable).classList.add("active")
-            document.getElementById("page-" +page_index_to_disable ).classList.remove("active")
+            document.getElementById("page-" + page_index_to_enable).classList.add("active")
+            document.getElementById("page-" + page_index_to_disable).classList.remove("active")
         },
         error: function (response) {
             console.log(response);

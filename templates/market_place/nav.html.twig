@@ -1,0 +1,23 @@
+
+{% if nbr_pages>=2 %}
+<nav class="pagination-wrapper" aria-label="Page navigation example">
+    <ul class="pagination single-column-blog">
+        <li class="page-item">
+            <a class="page-link" onclick="DisplayListProducts('previous')">Previous</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link active" onclick="DisplayListProducts(1)" id="page-1">1</a>
+        </li>
+
+        {% for i in 2..nbr_pages %}
+            <li class="page-item">
+                <a class="page-link" onclick="DisplayListProducts({{ i }})"
+                   id="page-{{ i }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+        <li class="page-item">
+            <a class="page-link" onclick="DisplayListProducts('next')">Next</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

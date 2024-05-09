@@ -11,7 +11,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/marketScript.js') }}"></script>
     <script src="{{ asset('js/basket.js') }}"></script>
     <script src="{{ asset('js/chatPopUp.js') }}"></script>
 {% endblock %}
@@ -47,501 +46,12 @@
         <div class="container">
             <div class="row mb--40">
                 <div class="col-12">
-                    <h3 class="title">Find Your Non Replaceable Token</h3>
+                    <h3 class="title">Find The Best Products</h3>
                 </div>
             </div>
             <div class="row g-5">
                 <div class="col-lg-3 order-2 order-lg-1">
                     <div class="nu-course-sidebar">
-                        <!-- Start Widget Wrapper  -->
-                        <div class="nuron-expo-filter-widget widget-shortby">
-                            <div class="inner">
-                                <h5 class="widget-title">Sort By</h5>
-                                <div class="content">
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="short-check1"/>
-                                        <label for="short-check1">Newest</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="short-check2"/>
-                                        <label for="short-check2">Oldest</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="short-check3"/>
-                                        <label for="short-check3">Popular Courses</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="short-check4"/>
-                                        <label for="short-check4">Featured On This Month</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Widget Wrapper  -->
-
-                        <!-- Start Widget Wrapper  -->
-                        <div class="nuron-expo-filter-widget widget-category mt--30">
-                            <div class="inner">
-                                <h5 class="widget-title">Categories</h5>
-                                <div class="content">
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="cat-check1"/>
-                                        <label for="cat-check1"
-                                        >Art &amp; Design <span>(24)</span></label
-                                        >
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="cat-check2"/>
-                                        <label for="cat-check2"
-                                        >Web Development <span>(12)</span></label
-                                        >
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="cat-check3"/>
-                                        <label for="cat-check3"
-                                        >Business Management <span>(8)</span></label
-                                        >
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="cat-check4"/>
-                                        <label for="cat-check4"
-                                        >Digital Marketing <span>(3)</span></label
-                                        >
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="cat-check5"/>
-                                        <label for="cat-check5"
-                                        >Music &amp; Fashion <span>(13)</span></label
-                                        >
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="cat-check6"/>
-                                        <label for="cat-check6"
-                                        >Financial Management <span>(25)</span></label
-                                        >
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="cat-check7"/>
-                                        <label for="cat-check7">Sports <span>(19)</span></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Widget Wrapper  -->
-
-                        <!-- Start Widget Wrapper  -->
-                        <div class="nuron-expo-filter-widget widget-shortby mt--30">
-                            <div class="inner">
-                                <h5 class="widget-title">Level</h5>
-                                <div class="content">
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="level-check1"/>
-                                        <label for="level-check1">All Skill</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="level-check2"/>
-                                        <label for="level-check2">Beginner</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="level-check3"/>
-                                        <label for="level-check3">Intermediate</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="level-check4"/>
-                                        <label for="level-check4">High</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Widget Wrapper  -->
-
-                        <!-- Start Widget Wrapper  -->
-                        <div class="nuron-expo-filter-widget widget-shortby mt--30">
-                            <div class="inner">
-                                <h5 class="widget-title">Price</h5>
-                                <div class="content">
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="price-check1"/>
-                                        <label for="price-check1">All Prices</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="price-check2"/>
-                                        <label for="price-check2">Price: Low to High</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="price-check3"/>
-                                        <label for="price-check3">Price: High to Low</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="price-check4"/>
-                                        <label for="price-check4">Free Paid</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Widget Wrapper  -->
-
-                        <!-- Start Widget Wrapper  -->
-                        <div class="nuron-expo-filter-widget widget-shortby mt--30">
-                            <div class="inner">
-                                <h5 class="widget-title">Language</h5>
-                                <div class="content">
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="lang-check1"/>
-                                        <label for="lang-check1">All Language</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="lang-check2"/>
-                                        <label for="lang-check2">Arabic</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="lang-check3"/>
-                                        <label for="lang-check3">English</label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="lang-check4"/>
-                                        <label for="lang-check4">Russian</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Widget Wrapper  -->
-
-                        <!-- Start Widget Wrapper  -->
-                        <div class="nuron-expo-filter-widget widget-shortby mt--30">
-                            <div class="inner">
-                                <h5 class="widget-title">Short By Rating</h5>
-                                <div class="content">
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="rating-check1"/>
-                                        <label for="rating-check1">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                        </label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="rating-check2"/>
-                                        <label for="rating-check2">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                        </label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="rating-check3"/>
-                                        <label for="rating-check3">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                        </label>
-                                    </div>
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="rating-check4"/>
-                                        <label for="rating-check4">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                        </label>
-                                    </div>
-
-                                    <div class="nuron-form-check">
-                                        <input type="checkbox" id="rating-check5"/>
-                                        <label for="rating-check5">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-star-fill off"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                                />
-                                            </svg>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Widget Wrapper  -->
 
                         <!-- Start Widget Wrapper  -->
                         <div class="nuron-expo-filter-widget widget-shortby mt--30">
@@ -580,6 +90,92 @@
                             </div>
                         </div>
                         <!-- End Widget Wrapper  -->
+
+
+                        <!-- Start Widget Wrapper  -->
+                        <div class="nuron-expo-filter-widget widget-shortby">
+                            <div class="inner">
+                                <h5 class="widget-title">Sort By Date</h5>
+                                <div class="content">
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="datetime_today"/>
+                                        <label for="datetime_today">Today</label>
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="datetime_thisWeek"/>
+                                        <label for="datetime_thisWeek">This Week</label>
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="datetime_thisMonth"/>
+                                        <label for="datetime_thisMonth">This Month</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Widget Wrapper  -->
+
+                        <!-- Start Widget Wrapper  -->
+                        <div class="nuron-expo-filter-widget widget-category mt--30">
+                            <div class="inner">
+                                <h5 class="widget-title">Categories</h5>
+                                <div class="content">
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="category_sports"/>
+                                        <label for="category_sports"
+                                        >Sports</label
+                                        >
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="category_food"/>
+                                        <label for="category_food"
+                                        >Food</label
+                                        >
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="category_realEstate"/>
+                                        <label for="category_realEstate"
+                                        >RealEstate</label
+                                        >
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="category_vehicle"/>
+                                        <label for="category_vehicle"
+                                        >Vehicle</label>
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="category_entertainment"/>
+                                        <label for="category_entertainment"
+                                        >Entertainment</label
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Widget Wrapper  -->
+
+                        <!-- Start Widget Wrapper  -->
+                        <div class="nuron-expo-filter-widget widget-shortby mt--30">
+                            <div class="inner">
+                                <h5 class="widget-title">Price</h5>
+                                <div class="content">
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="price_allPrices"/>
+                                        <label for="price_allPrices">All Prices</label>
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="price_asc"/>
+                                        <label for="price_asc">Price: Low to High</label>
+                                    </div>
+                                    <div class="nuron-form-check">
+                                        <input type="checkbox" id="price_desc"/>
+                                        <label for="price_desc">Price: High to Low</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Widget Wrapper  -->
+
+
                     </div>
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
@@ -587,30 +183,11 @@
                         <div id="sub-market-block" class="row g-5">
                             {% include 'market_place/sub_market.html.twig' with { 'products': products} %}
                         </div>
-                        {% if nbr_pages>=2 %}
-                            <nav class="pagination-wrapper" aria-label="Page navigation example">
-                                <ul class="pagination single-column-blog">
-                                    <li class="page-item">
-                                        <a class="page-link" onclick="DisplayListProducts('previous')">Previous</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link active" onclick="DisplayListProducts(1)" id="page-1">1</a>
-                                    </li>
+                        <div id="navPages">
 
-                                    {% for i in 2..nbr_pages %}
-                                        <li class="page-item">
-                                            <a class="page-link" onclick="DisplayListProducts({{ i }})"
-                                               id="page-{{ i }}">{{ i }}</a>
-                                        </li>
-                                    {% endfor %}
+                            {% include 'market_place/nav.html.twig' with { 'nbr_pages': nbr_pages} %}
 
-
-                                    <li class="page-item">
-                                        <a class="page-link" onclick="DisplayListProducts('next')">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
 
@@ -789,7 +366,7 @@
 
 
 
-    <div id="chat-app" class="chat-app">
+    {#  <div id="chat-app" class="chat-app">
 
         <div class="chat-app_toggle toggle">
             <div class="icon send">
@@ -862,6 +439,12 @@
             </div>
 
         </div>
-    </div>
+    </div> #}
 {% endblock %}
 
+{% block scripts %}
+    <script src="{{ asset('js/marketScript.js') }}"></script>
+    <script>
+        setPriceIntervale({{ sortingData['minPrice'] }},{{ sortingData['maxPrice'] }})
+    </script>
+{% endblock %}

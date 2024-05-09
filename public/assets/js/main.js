@@ -1,3 +1,6 @@
+// import { priceIntervale } from'../../js/global_variables.js';
+var uiValues
+
 (function ($) {
     'use strict';
 
@@ -8,9 +11,9 @@
         },
         d: function (e) {
             this._window = $(window),
-            this._document = $(document),
-            this._body = $('body'),
-            this._html = $('html')
+                this._document = $(document),
+                this._body = $('body'),
+                this._html = $('html')
         },
         methods: function (e) {
             imJs.featherAtcivation();
@@ -37,7 +40,7 @@
             imJs.vedioActivation();
             imJs.tiltJS();
         },
-        
+
         featherAtcivation: function () {
             feather.replace()
         },
@@ -55,7 +58,7 @@
                     $(scrollTop).css('opacity', '0');
                 }
             });
-            
+
             //Click event to scroll to top
             $(scrollTop).on('click', function () {
                 $('html, body').animate({
@@ -102,7 +105,7 @@
                 top: 100
             });
         },
-        slickActivation:function(){
+        slickActivation: function () {
             $('.slick-activation-01').slick({
                 infinite: true,
                 slidesToShow: 3,
@@ -114,12 +117,12 @@
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
                 nextArrow: '<button class="slide-arrow next-arrow"><i class="feather-arrow-right"></i></button>',
                 responsive: [{
-                        breakpoint: 1124,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1,
-                        }
-                    },
+                    breakpoint: 1124,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    }
+                },
                     {
                         breakpoint: 868,
                         settings: {
@@ -150,12 +153,12 @@
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
                 nextArrow: '<button class="slide-arrow next-arrow"><i class="feather-arrow-right"></i></button>',
                 responsive: [{
-                        breakpoint: 1124,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1,
-                        }
-                    },
+                    breakpoint: 1124,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    }
+                },
                     {
                         breakpoint: 868,
                         settings: {
@@ -186,12 +189,12 @@
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
                 nextArrow: '<button class="slide-arrow next-arrow"><i class="feather-arrow-right"></i></button>',
                 responsive: [{
-                        breakpoint: 1399,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 1,
-                        }
-                    },
+                    breakpoint: 1399,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                    }
+                },
                     {
                         breakpoint: 1200,
                         settings: {
@@ -239,12 +242,12 @@
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
                 nextArrow: '<button class="slide-arrow next-arrow"><i class="feather-arrow-right"></i></button>',
                 responsive: [{
-                        breakpoint: 1399,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 1,
-                        }
-                    },
+                    breakpoint: 1399,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                    }
+                },
                     {
                         breakpoint: 1200,
                         settings: {
@@ -282,12 +285,12 @@
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
                 nextArrow: '<button class="slide-arrow next-arrow"><i class="feather-arrow-right"></i></button>',
                 responsive: [{
-                        breakpoint: 1399,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
+                    breakpoint: 1399,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
                     }
+                }
                 ]
             });
 
@@ -300,12 +303,12 @@
                 cssEase: 'linear',
                 adaptiveHeight: true,
                 responsive: [{
-                        breakpoint: 1399,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 1,
-                        }
-                    },
+                    breakpoint: 1399,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                    }
+                },
                     {
                         breakpoint: 1200,
                         settings: {
@@ -343,12 +346,12 @@
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
                 nextArrow: '<button class="slide-arrow next-arrow"><i class="feather-arrow-right"></i></button>',
                 responsive: [{
-                        breakpoint: 1399,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 1,
-                        }
-                    },
+                    breakpoint: 1399,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                    }
+                },
                     {
                         breakpoint: 1200,
                         settings: {
@@ -395,7 +398,7 @@
                 adaptiveHeight: true,
                 // autoplay: true,
                 autoplaySpeed: 2000,
-                    responsive: [{
+                responsive: [{
                     breakpoint: 1599,
                     settings: {
                         dots: true,
@@ -414,7 +417,7 @@
                 adaptiveHeight: true,
                 // autoplay: true,
                 autoplaySpeed: 2000,
-                    responsive: [{
+                responsive: [{
                     breakpoint: 1599,
                     settings: {
                         dots: true,
@@ -448,12 +451,12 @@
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
                 nextArrow: '<button class="slide-arrow next-arrow"><i class="feather-arrow-right"></i></button>',
                 responsive: [{
-                        breakpoint: 1399,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 1,
-                        }
-                    },
+                    breakpoint: 1399,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                    }
+                },
                     {
                         breakpoint: 1200,
                         settings: {
@@ -482,39 +485,39 @@
         },
         contactForm: function () {
             $('.rwt-dynamic-form').on('submit', function (e) {
-				e.preventDefault();
-				var _self = $(this);
-				var __selector = _self.closest('input,textarea');
-				_self.closest('div').find('input,textarea').removeAttr('style');
-				_self.find('.error-msg').remove();
-				_self.closest('div').find('button[type="submit"]').attr('disabled', 'disabled');
-				var data = $(this).serialize();
-				$.ajax({
-					url: 'mail.php',
-					type: "post",
-					dataType: 'json',
-					data: data,
-					success: function (data) {
-						_self.closest('div').find('button[type="submit"]').removeAttr('disabled');
-						if (data.code == false) {
-							_self.closest('div').find('[name="' + data.field + '"]');
-							_self.find('.rn-btn').after('<div class="error-msg"><p>*' + data.err + '</p></div>');
-						} else {
-							$('.error-msg').hide();
-							$('.form-group').removeClass('focused');
-							_self.find('.rn-btn').after('<div class="success-msg"><p>' + data.success + '</p></div>');
-							_self.closest('div').find('input,textarea').val('');
+                e.preventDefault();
+                var _self = $(this);
+                var __selector = _self.closest('input,textarea');
+                _self.closest('div').find('input,textarea').removeAttr('style');
+                _self.find('.error-msg').remove();
+                _self.closest('div').find('button[type="submit"]').attr('disabled', 'disabled');
+                var data = $(this).serialize();
+                $.ajax({
+                    url: 'mail.php',
+                    type: "post",
+                    dataType: 'json',
+                    data: data,
+                    success: function (data) {
+                        _self.closest('div').find('button[type="submit"]').removeAttr('disabled');
+                        if (data.code == false) {
+                            _self.closest('div').find('[name="' + data.field + '"]');
+                            _self.find('.rn-btn').after('<div class="error-msg"><p>*' + data.err + '</p></div>');
+                        } else {
+                            $('.error-msg').hide();
+                            $('.form-group').removeClass('focused');
+                            _self.find('.rn-btn').after('<div class="success-msg"><p>' + data.success + '</p></div>');
+                            _self.closest('div').find('input,textarea').val('');
 
-							setTimeout(function () {
-								$('.success-msg').fadeOut('slow');
-							}, 5000);
-						}
-					}
-				});
-			});
+                            setTimeout(function () {
+                                $('.success-msg').fadeOut('slow');
+                            }, 5000);
+                        }
+                    }
+                });
+            });
         },
-        selectJs:function(e){
-            $(document).ready(function() {
+        selectJs: function (e) {
+            $(document).ready(function () {
                 $('select').niceSelect();
             });
         },
@@ -539,7 +542,7 @@
                 e.target === this && $('.popup-mobile-menu').removeClass('active') && $('.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a').siblings('.submenu, .rn-megamenu').removeClass('active').slideUp('400') && $('.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a').removeClass('open');
             });
 
-            $('.one-page-vavigation-popup .mainmenu li > a').on('click' , function (e) {
+            $('.one-page-vavigation-popup .mainmenu li > a').on('click', function (e) {
                 e.preventDefault();
                 $('.popup-mobile-menu').removeClass('active');
                 $('.popup-mobile-menu .mainmenu li > a').siblings('.submenu').removeClass('active');
@@ -588,8 +591,8 @@
         },
         rncounterUp: function () {
             var odo = $('.odometer');
-            odo.each(function() {
-                $('.odometer').appear(function(e) {
+            odo.each(function () {
+                $('.odometer').appear(function (e) {
                     var countNumber = $(this).attr('data-count');
                     $(this).html(countNumber);
                 });
@@ -601,7 +604,7 @@
                 once: true,
             });
         },
-        searchClick:function (e) {
+        searchClick: function (e) {
             var screenWidth = imJs._window.width();
             if (screenWidth < 992) {
                 $('.search-mobile-icon').on('click', function (e) {
@@ -611,6 +614,7 @@
             }
         },
         filterClickButton: function () {
+
             $('.discover-filter-activation').on('click', function () {
                 $(this).toggleClass('open');
                 $('.default-exp-expand').slideToggle('400');
@@ -618,12 +622,17 @@
 
             $('#slider-range').slider({
                 range: true,
-                min: 10,
-                max: 500,
-                values: [100, 300],
+                min: filterBy.priceIntervale.min,
+                max: filterBy.priceIntervale.max,
+                values: [filterBy.priceIntervale.min, filterBy.priceIntervale.max],
                 slide: function (event, ui) {
                     $('#amount').val('$' + ui.values[0] + ' - $' + ui.values[1]);
-                }
+                    uiValues=ui
+                },
+            }).mouseup(function () {
+                filterBy.priceIntervale.min=uiValues.values[0];
+                filterBy.priceIntervale.max=uiValues.values[1];
+                filterByPrice()
             });
             $('#amount').val('$' + $('#slider-range').slider('values', 0) +
                 " - $" + $('#slider-range').slider('values', 1));
@@ -640,6 +649,7 @@
                     rbtinput1.src = URL.createObjectURL(file)
                 }
             }
+
             $("#fatima").change(function () {
                 rbtPreview(this);
             });
@@ -656,6 +666,7 @@
                     rbtinput2.src = URL.createObjectURL(file2)
                 }
             }
+
             $("#nipa").change(function () {
                 rbtPreview(this);
             });
@@ -666,10 +677,12 @@
             $("#createfileImage").click(function (e) {
                 $("#createinputfile").click();
             });
+
             function rbtPreview() {
                 const fileList = createinputfile.files;
-                    createfileImage.src = URL.createObjectURL(fileList[0])
+                createfileImage.src = URL.createObjectURL(fileList[0])
             }
+
             $("#createinputfile").change(function () {
                 rbtPreview(this);
             });
@@ -678,10 +691,12 @@
             $("#createfileImage4").click(function (e) {
                 $("#createinputfile4").click();
             });
+
             function rbtPreview() {
                 const fileList = createinputfile4.files;
                 createfileImage4.src = URL.createObjectURL(fileList[0])
             }
+
             $("#createinputfile4").change(function () {
                 rbtPreview(this);
             });
@@ -690,15 +705,17 @@
             $("#createfileImage5").click(function (e) {
                 $("#createinputfile5").click();
             });
+
             function rbtPreview() {
                 const fileList = createinputfile5.files;
                 createfileImage5.src = URL.createObjectURL(fileList[0])
             }
+
             $("#createinputfile5").change(function () {
                 rbtPreview(this);
             });
         },
-        
+
         darkLight: function () {
             var styleMode = document.querySelector('meta[name="theme-style-mode"]').content;
             var cookieKey = styleMode == 1 ? 'client_dark_mode_style_cookie' : 'client_light_mode_style_cookie';
@@ -706,17 +723,17 @@
                 $('body').removeClass('active-light-mode');
                 $('body').addClass('active-dark-mode');
 
-            } else if( Cookies.get(cookieKey) == 'light') {
+            } else if (Cookies.get(cookieKey) == 'light') {
                 $('body').removeClass('active-dark-mode');
                 $('body').addClass('active-light-mode');
 
             } else {
-                if(styleMode == 1){
+                if (styleMode == 1) {
                     $('body').addClass('active-dark-mode');
-                } else{
+                } else {
                     $('body').addClass('active-light-mode');
                 }
-                
+
             }
         },
         vedioActivation: function (e) {
@@ -741,7 +758,7 @@
                 $('.video-overlay.open').removeClass('open').find('iframe').remove();
             };
         },
-        tiltJS:function(e){
+        tiltJS: function (e) {
             const tilt = document.querySelectorAll(".tilt");
 
             VanillaTilt.init(tilt, {
@@ -760,14 +777,12 @@
                 gyroscopeMinAngleY: -45,
                 gyroscopeMaxAngleY: 45
             });
-            
+
         }
 
     }
 
     imJs.m();
-
-    
 
 
 })(jQuery, window)
