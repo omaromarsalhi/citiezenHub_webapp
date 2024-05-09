@@ -21,7 +21,6 @@ class ProductEventListener implements EventSubscriberInterface
 
     public function onProductUpdated(ProductCustomEvent $event): void
     {
-        ProductSSEController::setData($event);
         echo "omaaaaaaaaaaaaaat";
     }
 

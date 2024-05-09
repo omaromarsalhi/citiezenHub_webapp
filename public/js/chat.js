@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
     setTimeout(function (){
-        // loadChatInfo()
+        loadChatInfo()
     },500)
 });
 
@@ -102,9 +102,11 @@ function loadChatInfo() {
     let index=document.getElementById('#list_user_0')
     let idReciver=0
     if(index){
+        console.log('here')
          idReciver = $('#list_user_0').data('value').split(':')[1]
     }else{
-         idReciver = $('#list_user_1').data('value').split(':')[1]
+        console.log('here2')
+         idReciver = $('#list_user_0').data('value').split(':')[1]
     }
 
     $.ajax({

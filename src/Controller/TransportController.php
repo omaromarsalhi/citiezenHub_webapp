@@ -46,7 +46,7 @@ class TransportController extends AbstractController
 
         $transport->setAverageRating($averageRating);
     }
-      return $this->render('transport/Admin/transportAdmin.html.twig', [
+      return $this->render('transport/transport_Admin.html.twig', [
         
           'stations' => $stations,
           'transports' => $transports,

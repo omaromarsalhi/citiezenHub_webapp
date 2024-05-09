@@ -1,0 +1,96 @@
+{% extends 'index.html.twig' %}
+{% block body %}
+  <script src="{{ asset('js/userScript.js') }}"></script>
+      <div class="content">
+        <nav class="mb-2" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="#!">Page 1</a></li>
+            <li class="breadcrumb-item"><a href="#!">Page 2</a></li>
+            <li class="breadcrumb-item active">Default</li>
+          </ol>
+        </nav>
+        <div class="mb-9">
+          <div class="row align-items-center justify-content-between g-3 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">Customer details</h2>
+            </div>
+            <div class="col-auto">
+              <div class="row g-3">
+                <div class="col-auto"><a class="btn btn-phoenix-danger"   href="{{path('Delete',{email:user.email})}}"><span class="fa-solid fa-trash-can me-2"></span>Delete customer</a></div>
+                <div class="col-auto"><button class="btn btn-phoenix-secondary"><span class="fas fa-key me-2"></span>Reset password</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-5">
+            <div class="col-12 col-xxl-4">
+              <div class="row g-3 g-xxl-0 h-100">
+                <div class="col-12 col-md-7 col-xxl-12 mb-xxl-3">
+                  <div class="card h-100">
+                    <div class="card-body d-flex flex-column justify-content-between pb-3">
+                      <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
+                        <div class="col-12 col-sm-auto mb-sm-2">
+                          <div class="avatar avatar-5xl"><img class="rounded-circle" src="{{ asset('images/users/' ~ user.image) }}" alt="" /></div>
+                        </div>
+                        <div class="col-12 col-sm-auto flex-1">
+                          <h3>{{ user.firstName }}</h3>
+                          <p class="text-body-secondary">Joined  {{subscriptionPeriod }} ago </p>
+                          <div><a class="me-2" href="#!"><span class="fab fa-linkedin-in text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a class="me-2" href="#!"><span class="fab fa-facebook text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a href="#!"><span class="fab fa-twitter text-body-quaternary text-opacity-75 text-primary-hover"></span></a></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-between-center border-top border-dashed pt-4">
+                        <div>
+                          <h6>Gender</h6>
+                          <p class="fs-7 text-body-secondary mb-0">{{ user.gender }}</p>
+                        </div>
+                        <div>
+                          <h6>Status</h6>
+                          <p class="fs-7 text-body-secondary mb-0">{{ user.status }}</p>
+                        </div>
+                        <div>
+                          <h6>Municipalite</h6>
+                          <p class="fs-7 text-body-secondary mb-0">{{ user.idMunicipalite }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-5 col-xxl-12 mb-xxl-3">
+                  <div class="card h-100">
+                    <div class="card-body pb-3">
+                      <div class="d-flex align-items-center mb-3">
+                        <h3 class="me-1">Default Address</h3><button class="btn btn-link p-0"><span class="fas fa-pen fs-8 ms-3 text-body-quaternary"></span></button>
+                      </div>
+                      <h5 class="text-body-secondary">Address</h5>
+                      <p class="text-body-secondary">{{ user.address }}</p>
+                      <div class="mb-3">
+                        <h5 class="text-body-secondary">Email</h5><a>{{user.email}}</a>
+                      </div>
+                      <div class="mb-3">
+                        <h5 class="text-body-secondary">cin</h5><a>{{ user.cin }}</a>
+                      </div>
+                      <div class="mb-3">
+                        <h5 class="text-body-secondary">age</h5><a>{{ user.age }}</a>
+                      </div>
+                      <h5 class="text-body-secondary">Phone</h5><a class="text-body-secondary" href="tel:+1234567890">{{ user.phoneNumber }}</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <footer class="footer position-absolute">
+          <div class="row g-0 justify-content-between align-items-center h-100">
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2023 &copy;<a class="mx-1" href="https://themewagon.com/">Themewagon</a></p>
+            </div>
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 text-body-tertiary text-opacity-85">v1.14.0</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      {% endblock %}

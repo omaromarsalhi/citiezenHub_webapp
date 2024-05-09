@@ -3,7 +3,7 @@
 // src/Command/WebsocketServerCommand.php
 namespace App\Command;
 
-use App\Websocket\MessageHandler;
+use App\Websocket\SiteRealTimeHandler;
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
@@ -19,7 +19,7 @@ class WebsocketServerCommand extends Command
     {
         $server = IoServer::factory(
             new HttpServer(
-                new WsServer(new MessageHandler())
+                new WsServer(new SiteRealTimeHandler())
             ),
             8090 // Port number
         );

@@ -1,0 +1,210 @@
+{% extends 'index.html.twig' %}
+
+
+
+{% block css %}
+    <link href="{{ asset('assetsAdmin/vendors/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+
+
+{% block body %}
+
+
+    <script>
+        var navbarTopShape = window.config.config.phoenixNavbarTopShape;
+        var navbarPosition = window.config.config.phoenixNavbarPosition;
+        var body = document.querySelector('body');
+        var navbarDefault = document.querySelector('#navbarDefault');
+        var navbarTop = document.querySelector('#navbarTop');
+        var topNavSlim = document.querySelector('#topNavSlim');
+        var navbarTopSlim = document.querySelector('#navbarTopSlim');
+        var navbarCombo = document.querySelector('#navbarCombo');
+        var navbarComboSlim = document.querySelector('#navbarComboSlim');
+        var dualNav = document.querySelector('#dualNav');
+
+        var documentElement = document.documentElement;
+        var navbarVertical = document.querySelector('.navbar-vertical');
+
+        if (navbarPosition === 'dual-nav') {
+            topNavSlim.remove();
+            navbarTop.remove();
+            navbarVertical.remove();
+            navbarTopSlim.remove();
+            navbarCombo.remove();
+            navbarComboSlim.remove();
+            navbarDefault.remove();
+            dualNav.removeAttribute('style');
+            document.documentElement.setAttribute('data-navigation-type', 'dual');
+
+        } else if (navbarTopShape === 'slim' && navbarPosition === 'vertical') {
+            navbarDefault.remove();
+            navbarTop.remove();
+            navbarTopSlim.remove();
+            navbarCombo.remove();
+            navbarComboSlim.remove();
+            topNavSlim.style.display = 'block';
+            navbarVertical.style.display = 'inline-block';
+            document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
+
+        } else if (navbarTopShape === 'slim' && navbarPosition === 'horizontal') {
+            navbarDefault.remove();
+            navbarVertical.remove();
+            navbarTop.remove();
+            topNavSlim.remove();
+            navbarCombo.remove();
+            navbarComboSlim.remove();
+            navbarTopSlim.removeAttribute('style');
+            document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
+        } else if (navbarTopShape === 'slim' && navbarPosition === 'combo') {
+            navbarDefault.remove();
+            navbarTop.remove();
+            topNavSlim.remove();
+            navbarCombo.remove();
+            navbarTopSlim.remove();
+            navbarComboSlim.removeAttribute('style');
+            navbarVertical.removeAttribute('style');
+            document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
+        } else if (navbarTopShape === 'default' && navbarPosition === 'horizontal') {
+            navbarDefault.remove();
+            topNavSlim.remove();
+            navbarVertical.remove();
+            navbarTopSlim.remove();
+            navbarCombo.remove();
+            navbarComboSlim.remove();
+            navbarTop.removeAttribute('style');
+            document.documentElement.setAttribute('data-navigation-type', 'horizontal');
+        } else if (navbarTopShape === 'default' && navbarPosition === 'combo') {
+            topNavSlim.remove();
+            navbarTop.remove();
+            navbarTopSlim.remove();
+            navbarDefault.remove();
+            navbarComboSlim.remove();
+            navbarCombo.removeAttribute('style');
+            navbarVertical.removeAttribute('style');
+            document.documentElement.setAttribute('data-navigation-type', 'combo');
+
+
+        } else {
+            topNavSlim.remove();
+            navbarTop.remove();
+            navbarTopSlim.remove();
+            navbarCombo.remove();
+            navbarComboSlim.remove();
+            navbarDefault.removeAttribute('style');
+            navbarVertical.removeAttribute('style');
+        }
+
+        var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
+        var navbarTop = document.querySelector('.navbar-top');
+        if (navbarTopStyle === 'darker') {
+            navbarTop.setAttribute('data-navbar-appearance', 'darker');
+        }
+
+        var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
+        var navbarVertical = document.querySelector('.navbar-vertical');
+        if (navbarVerticalStyle === 'darker') {
+            navbarVertical.setAttribute('data-navbar-appearance', 'darker');
+        }
+    </script>
+
+
+
+
+    <div class="content kanban-boards-content">
+        <div class="mb-9">
+            <div class="border-bottom border-translucent px-4 px-lg-6 pb-5">
+                <div class="row justify-content-between gy-4">
+                    <div class="col-auto">
+                        <h2>Goverments</h2>
+                    </div>
+                    <div class="col-auto d-flex flex-wrap gap-2">
+                        <button class="btn px-4 btn-phoenix-primary d-flex"><span
+                                    class="fa-solid fa-filter me-1"></span><span>Filter</span></button>
+                        <select class="form-select w-auto" id="select-deals">
+                            <option>Sort by - Last visited</option>
+                            <option>Sort by - Name (A - Z)</option>
+                            <option>Sort by - Name (Z - A)</option>
+                            <option>Sort by - Category</option>
+                            <option> Sort by - Date created</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3 border-bottom border-translucent px-4 px-lg-6 py-5"><a
+                        class="btn btn-primary px-3 px-sm-5 px-md-10" href="create-kanban-board.html"><span
+                            class="fas fa-plus me-2"></span>Create New Board</a></div>
+            {% for gouvernement, municipalites in muni %}
+                <div class="px-4 px-lg-6 py-5 border-bottom border-translucent">
+                    <h4 class="mb-4">{{ gouvernement }}</h4>
+                    <div class="swiper-theme-container">
+                        <div class="swiper swiper-container theme-slider"
+                             data-swiper='{"slidesPerView":1,"spaceBetween":24,"speed":800,"breakpoints":{"576":{"slidesPerView":2},"1200":{"slidesPerView":3},"1540":{"slidesPerView":4}}}'>
+                            <div class="swiper-wrapper">
+                                {% for municipalite in municipalites %}
+                                    <div class="swiper-slide"><a class="text-decoration-none" href="{{path('Show_Details_Municipality',{id:municipalite.id})}}">
+                                            <div class="card overflow-hidden bg-transparent h-100">
+                                                <div class="position-relative"><img class="w-100"
+                                                                                    src="../../assets/img/kanban/board-4.png"
+                                                                                    style="height: 128px;" alt=""/>
+                                                    <div class="avatar-group position-absolute"
+                                                         style="bottom: 1rem; left: 1.5rem">
+                                                        <div class="avatar avatar-m  border border-light-subtle rounded-circle">
+                                                            <img class="rounded-circle "
+                                                                 src="../../assets/img/team/14.webp"
+                                                                 alt=""/>
+                                                        </div>
+                                                        <div class="avatar avatar-m  border border-light-subtle rounded-circle">
+                                                            <img class="rounded-circle "
+                                                                 src="../../assets/img/team/15.webp"
+                                                                 alt=""/>
+                                                        </div>
+                                                        <div class="avatar avatar-m  border border-light-subtle rounded-circle">
+                                                            <img class="rounded-circle "
+                                                                 src="../../assets/img/team/16.webp"
+                                                                 alt=""/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body d-flex flex-column justify-content-between">
+                                                    <div>
+                                                        <h3 class="text-body">{{ municipalite.name }}</h3>
+                                                        <p class="text-body-tertiary mb-4">{{ municipalite.address }}</p>
+                                                    </div>
+                                                    <div class="d-flex gap-4">
+                                                        <h5 class="text-body"><span
+                                                                    class="fa-solid fa-user text-body-tertiary me-1"></span>{{ municipalite.size }}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a></div>
+                                {% endfor %}
+                                <div class="swiper-slide"><a
+                                            class="btn btn-phoenix-primary d-flex flex-center h-100 w-100 fs-7 fw-semibold text-truncate"
+                                            href="create-kanban-board.html"><span
+                                                class="fa-solid fa-plus-circle fs-8 me-2"></span>Create New Board</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-nav">
+                            <div class="swiper-button-next"><span class="fas fa-chevron-right nav-icon"></span></div>
+                            <div class="swiper-button-prev"><span class="fas fa-chevron-left nav-icon"></span></div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src={{ asset('assetsAdmin/vendors/swiper/swiper-bundle.min.js') }}></script>
+{% endblock %}

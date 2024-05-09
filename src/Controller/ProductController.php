@@ -14,6 +14,7 @@ use App\Observer\MarketPlaceObserver;
 use App\Provider\ProductProvider;
 use App\Repository\AiResultRepository;
 use App\Repository\ProductRepository;
+use App\Websocket\SiteRealTimeHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -124,7 +125,7 @@ class ProductController extends AbstractController
 
 
     #[Route('/{index}/edit', name: '_edit', methods: ['POST'])]
-    public function edit(AiResultRepository $aiResultRepository, MessageBusInterface $messageBus, ImageHelper $imageHelper, Request $request, ProductRepository $productRepository, EntityManagerInterface $entityManager, int $index): Response
+    public function edit(SiteRealTimeHandler $siteRealTimeHandler,AiResultRepository $aiResultRepository, MessageBusInterface $messageBus, ImageHelper $imageHelper, Request $request, ProductRepository $productRepository, EntityManagerInterface $entityManager, int $index): Response
     {
 
         if ($request->isXmlHttpRequest()) {
@@ -184,8 +185,12 @@ class ProductController extends AbstractController
                ];
 
                $messageBus->dispatch(new AiVerificationMessage($obj));*/
+
+
 //            $event = new ProductCustomEvent($product);
 //            $this->eventDispatcher->dispatch($event, 'product.updated');
+            $message = json_encode(['type' => 'new_product', 'data' => 'New product added!']);
+            $siteRealTimeHandler->broadcastMessage($message);
 
             return new JsonResponse(['state' => 'done'], Response::HTTP_OK);
         }
