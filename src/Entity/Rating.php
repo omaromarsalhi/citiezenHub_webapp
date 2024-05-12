@@ -14,10 +14,10 @@ class Rating
     private ?int $id = null;
 
 
-    #[ORM\Column]
+    #[ORM\Column (name: "id_station")]
     private ?int $id_Transport = null;
 
-    #[ORM\Column]
+    #[ORM\Column (name: "id_user")]
     private ?int $id_User = null;
 
     #[ORM\Column]

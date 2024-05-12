@@ -52,6 +52,7 @@ class TransportController extends AbstractController
           'transports' => $transports,
       ]);
     }
+
     #[Route('/transportClient', name: 'app_transport_client')]
     public function transportClient(StationRepository $StationRep,RatingRepository $ratingRepository): Response
     {
@@ -98,6 +99,10 @@ class TransportController extends AbstractController
     {
 
 
+
+
+
+
         $repository = $this->getDoctrine()->getManager()->getRepository(Transport::class);
         
          $query = $repository->createQueryBuilder('t')
@@ -122,7 +127,6 @@ class TransportController extends AbstractController
     
             $transport->setAverageRating($averageRating);
         }
-        
         usort($transports, function($a, $b) {
             return $b->getAverageRating() <=> $a->getAverageRating();
         });
@@ -187,22 +191,14 @@ class TransportController extends AbstractController
                 $em->persist($transport);
                 $em->flush();
     
-                /*
+                
                 $transports = $transportRepository->findAll();
     
-                $transportsArray = array_map(function ($transport) {
-                    return [
-                       /* 'id' => $transport->getId(),
-                        'nomstation' => $transport->getNomStation(),
-                        'addressstation' => $transport->getAddressStation(),
-                        'Type_Vehicule' => $transport->getTypeVehicule(),
-                        'image_station' => $transport->getImageStation(),*/
-                 /*   ];
-                }, $transports);
-    */
+             
+    
                 $responses = [
-                
-                    'message' => 'Transport added successfully.'
+                    'stations' => $transports,
+                    'message' => 'Station added successfully.'
                 ];        
     
                 return new JsonResponse($responses);
