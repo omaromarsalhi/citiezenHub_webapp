@@ -196,7 +196,6 @@ class AiVerification
         $result = [];
         for ($i = 0; $i < sizeof($images_url); $i++) {
             $result[] = $this->generateImageDescription($images_url[$i]);
-            sleep(30);
         }
         $this->aiDataHolder->setDescriptions($result);
     }
@@ -209,9 +208,7 @@ class AiVerification
         $result2 = [];
         for ($i = 0; $i < sizeof($descriptions); $i++) {
             $result1[] = $this->getTitleValidation($descriptions[$i], $obj['title']);
-            sleep(15);
             $result2[] = $this->getCategoryValidation($descriptions[$i], $obj['category']);
-            sleep(15);
         }
         $this->aiDataHolder->setTitleValidation($result1);
         $this->aiDataHolder->setCategoryValidation($result2);

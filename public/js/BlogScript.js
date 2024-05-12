@@ -8,12 +8,11 @@ var currentImageIndices = {};
 var posts = [];
 var currentImageIndexUpload = 0;
 var isSearching = false;
-var firstLoad = false;
-
+var idUser = 0;
 
 
 //blog de creation de post
-function createPostHTML(post, postUrl) {
+function createPostHTML(post, postUrl, idU) {
     var bouttonImg = '';
     if (post.images.length > 1) {
         bouttonImg = `
@@ -25,7 +24,7 @@ function createPostHTML(post, postUrl) {
     if (post.images.length > 0) {
         imageHTML = `
             <div class="thumbnail" style="position: relative;">
-                <img id="post-image-${post.id}" src="usersImg/${post.images[0]}"
+                <img id="post-image-${post.id}" src="../usersImg/${post.images[0]}"
                      alt="Personal Portfolio Images" style="width: 1300px; height: 500px; object-fit: contain;">
                 ${bouttonImg}
             </div>
@@ -39,19 +38,12 @@ function createPostHTML(post, postUrl) {
             <a class="translateBtn" data-post-id="${post.id}" data-original-caption="${post.caption}" onclick="translateText('${post.id}', '${post.caption}', 'fr', 'ar')">Translate</a>
         `;
     }
-    return `
-        <div class="col-xl-12 col-lg-8" data-post-id="${post.id}">
-            <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
-                <div class="inner">
-                    <div class="content mb-4">
-                        <div class="category-info">                                                                                                                                  
-                            <div class="category-list">
-                                <img src="assets/images/activity/activity-01.jpg" height="50"
-                                     width="50" style="margin-right: 10px">
-                                <a href="blog-details.html">Omar marrakchi</a>
-                            </div>
-                            <div class="meta">
-                                <div class="dropdown">
+
+    var dropDown = '';
+    if (idU === idUser) {
+        dropDown = `
+        <div class="meta">
+            <div class="dropdown">
                                     <button class="dropbtn"><i class="fas fa-cog"></i></button>
                                     <div class="dropdown-content">
                                         <button onclick="handleMenuAction(this, ${post.id}, '${post.caption}', '${post.images}', 'modifier')">Modifier</button>
@@ -59,6 +51,22 @@ function createPostHTML(post, postUrl) {
                                     </div>
                                 </div>
                             </div>
+        `
+    }
+
+
+    return `
+        <div class="col-xl-12 col-lg-8" data-post-id="${post.id}">
+            <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters">
+                <div class="inner">
+                    <div class="content mb-4">
+                        <div class="category-info">                                                                                                                                  
+                            <div class="category-list">
+                                <img src=../usersImg/${post.userImage} height="50"
+                                     width="50" style="margin-right: 10px">
+                                <a href="blog-details.html">${post.userName} ${post.userSurname}</a>
+                            </div>
+                            ${dropDown}
                         </div>
                         <span>${post.datePost}</span>
                         ${captiontext}
@@ -94,7 +102,7 @@ function loadPostsPage(page) {
         type: 'GET',
         success: function (response) {
             response.posts.forEach(function (post) {
-                var newPostHTML = createPostHTML(post, post.url);
+                var newPostHTML = createPostHTML(post, post.url, post.userId);
                 $('#postsContainer').append(newPostHTML);
                 posts.push(post);
             });
@@ -105,7 +113,6 @@ function loadPostsPage(page) {
             }
             isLoading = false;
             document.getElementById('loadingIcon').style.display = 'none';
-            firstLoad=true
         },
         error: function (xhr, status, error) {
             console.error(response.message);
@@ -129,25 +136,32 @@ function getTotalPostsCount(callback) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-
     getTotalPostsCount(function (count) {
         totalPostsCount = count;
         loadPostsPage(currentPage);
     });
+
+    $.ajax({
+        url: '/getUserId',
+        type: 'GET',
+        success: function (response) {
+            idUser = response.userId;
+            console.log(idUser);
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
 });
 
 
-
-
 window.onscroll = function () {
-    if(firstLoad) {
-        var scrollPosition = window.pageYOffset;
-        var windowSize = window.innerHeight;
-        var bodyHeight = document.body.offsetHeight;
+    var scrollPosition = window.pageYOffset;
+    var windowSize = window.innerHeight;
+    var bodyHeight = document.body.offsetHeight;
 
-        if (!isSearching && Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
-            loadPostsPage(currentPage);
-        }
+    if (!isSearching && Math.max(bodyHeight - (scrollPosition + windowSize), 0) < 500) {
+        loadPostsPage(currentPage);
     }
 };
 
@@ -162,7 +176,7 @@ function changeImage(postId, direction) {
     } else if (currentImageIndices[postId] >= images.length) {
         currentImageIndices[postId] = 0;
     }
-    document.getElementById(`post-image-${postId}`).src = `usersImg/${images[currentImageIndices[postId]]}`;
+    document.getElementById(`post-image-${postId}`).src = `../usersImg/${images[currentImageIndices[postId]]}`;
 }
 
 function addPost(event) {
@@ -225,7 +239,7 @@ function addPost(event) {
                                 $('#nipa').val('');
                                 document.getElementById("previousImage").style.display = "none";
                                 document.getElementById("nextImage").style.display = "none";
-                                $('#rbtinput2').attr('src', 'images/blog/aucuneImg.png');
+                                $('#rbtinput2').attr('src', 'aucuneImg.png');
 
                                 document.getElementById("delImage").style.display = "none";
 
@@ -254,7 +268,7 @@ function addPost(event) {
                     $('#nipa').val('');
                     document.getElementById("previousImage").style.display = "none";
                     document.getElementById("nextImage").style.display = "none";
-                    $('#rbtinput2').attr('src', 'images/blogaucuneImg.png');
+                    $('#rbtinput2').attr('src', 'aucuneImg.png');
                 }
             },
             error: function () {
@@ -288,7 +302,7 @@ function addPost(event) {
                     $('#nipa').val('');
                     document.getElementById("previousImage").style.display = "none";
                     document.getElementById("nextImage").style.display = "none";
-                    $('#rbtinput2').attr('src', 'images/blogaucuneImg.png');
+                    $('#rbtinput2').attr('src', 'aucuneImg.png');
 
                     document.getElementById("delImage").style.display = "none";
 
@@ -346,7 +360,7 @@ function showModifierPopup(caption, images) {
 
     if (images !== "") {
         let imageArray = images.split(',');
-        imageModifier.src = "usersImg/" + imageArray[currentImageIndexUpload];
+        imageModifier.src = "../usersImg/" + imageArray[currentImageIndexUpload];
 
         if (imageArray.length <= 1) {
             nextButton.style.display = "none";
@@ -357,18 +371,18 @@ function showModifierPopup(caption, images) {
 
             nextButton.onclick = function () {
                 currentImageIndexUpload = (currentImageIndexUpload + 1) % imageArray.length;
-                imageModifier.src = "usersImg/" + imageArray[currentImageIndexUpload];
+                imageModifier.src = "../usersImg/" + imageArray[currentImageIndexUpload];
             }
 
             prevButton.onclick = function () {
                 currentImageIndexUpload = (currentImageIndexUpload - 1 + imageArray.length) % imageArray.length;
-                imageModifier.src = "usersImg/" + imageArray[currentImageIndexUpload];
+                imageModifier.src = "../usersImg/" + imageArray[currentImageIndexUpload];
             }
         }
 
         document.getElementById("delImageUpdate").style.display = "block";
     } else {
-        imageModifier.src = "images/blog/aucuneImg.png";
+        imageModifier.src = "aucuneImg.png";
         nextButton.style.display = "none";
         prevButton.style.display = "none";
         document.getElementById("delImageUpdate").style.display = "none";
@@ -493,7 +507,7 @@ document.getElementById("delImageUpdate").addEventListener("click", function () 
             var nipaInput = document.getElementById("nipaUpload");
             nipaInput.value = "";
             var rbtinput2 = document.getElementById("imageModifer");
-            rbtinput2.src = "images/blog/aucuneImg.png";
+            rbtinput2.src = "aucuneImg.png";
             this.style.display = "none";
 
             $.ajax({

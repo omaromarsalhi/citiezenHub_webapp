@@ -113,17 +113,16 @@ class UserController extends AbstractController
         $alertMessage = "Votre profil a été modifié avec succès !";
         $session->set('profile_alert_message', $alertMessage);
         $currentDate = $user->getDate();
-        $expiryTime = $currentDate->modify('+1 minutes');
+        $expiryTime = $currentDate->modify('+5 minutes');
         $session->set('profile_alert_expiry', $expiryTime);
         $errorMessages = [];
         $current = new \DateTime('now', new \DateTimeZone('Africa/Tunis'));
         if ($req->isXmlHttpRequest()) {
-            if ($current < $expiryTime || $user->getState()) {
+            if ($current->getTimestamp() < $expiryTime->getTimestamp() || $user->getState()) {
 //                $emailService->envoyerEmail($mailer);
                 $email = $req->get('email');
                 $name = $req->get('name');
                 $lastname = $req->get('lastname');
-                $role = $req->get('role');
                 $age = $req->get('age');
                 $gender = $req->get('gender');
                 $status = $req->get('status');
@@ -136,7 +135,6 @@ class UserController extends AbstractController
                 $user->setAge($age);
                 $user->setPhoneNumber($phoneNumber);
                 $user->setCin($cin);
-                $user->setRole($role);
                 $user->setStatus($status);
                 $user->setGender($gender);
                 if ($fichierImage != null)
@@ -160,7 +158,6 @@ class UserController extends AbstractController
                             'lastname' => $user->getLastName(),
                             'email' => $user->getEmail(),
                             'address' => $user->getAddress(),
-                            'role' => $user->getRole(),
                             'cin' => $user->getCin(),
                             'phoneNumber' => $user->getPhoneNumber(),
                             'age' => $user->getAge(),
@@ -194,7 +191,6 @@ class UserController extends AbstractController
             'lastname' => $user->getLastName(),
             'email' => $user->getEmail(),
             'address' => $user->getAddress(),
-            'role' => $user->getRole(),
             'cin' => $user->getCin(),
             'phoneNumber' => $user->getPhoneNumber(),
             'age' => $user->getAge(),

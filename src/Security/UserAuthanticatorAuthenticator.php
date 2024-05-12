@@ -21,7 +21,7 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
-    public const ADMIN_LOGIN_ROUTE = 'app_login_Admin'; // Nouveau chemin de connexion
+
     private $urlGenerator;
 
     public function __construct(UrlGeneratorInterface $urlGenerator)
@@ -30,10 +30,8 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
     }
     public function supports(Request $request): bool
     {
-        return in_array($request->attributes->get('_route'), [self::LOGIN_ROUTE, self::ADMIN_LOGIN_ROUTE])
+        return self::LOGIN_ROUTE === $request->attributes->get('_route')
             && $request->isMethod('POST');
-//        return self::LOGIN_ROUTE === $request->attributes->get('_route')
-//            && $request->isMethod('POST');
     }
 
     public function authenticate(Request $request): Passport
@@ -49,8 +47,6 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
                 new RememberMeBadge(),
             ]
         );
-
-
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
@@ -63,7 +59,6 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
         }
         if($user->getRole()=='Citoyen') {
 
-
             return new RedirectResponse($this->urlGenerator->generate('editProfile'));
         }
         else
@@ -74,9 +69,9 @@ class UserAuthanticatorAuthenticator extends AbstractLoginFormAuthenticator
     protected function getLoginUrl(Request $request): string
     {
 //        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
-        if ($request->attributes->get('_route') === self::ADMIN_LOGIN_ROUTE) {
-            return $this->urlGenerator->generate(self::ADMIN_LOGIN_ROUTE);
-        }
+//        if ($request->attributes->get('_route') === self::ADMIN_LOGIN_ROUTE) {
+//            return $this->urlGenerator->generate(self::ADMIN_LOGIN_ROUTE);
+//        }
 
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }

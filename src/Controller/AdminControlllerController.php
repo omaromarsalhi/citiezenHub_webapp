@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Municipalite;
 use App\Entity\User;
+use App\MyHelpers\ImageHelperUser;
 use App\Repository\MunicipaliteRepository;
 use App\Repository\UserRepository;
 use App\Security\UserAuthanticatorAuthenticator;
@@ -117,7 +118,7 @@ class AdminControlllerController extends AbstractController
     }
 
     #[Route('/AddMunicipality', name: 'AddMunicipality')]
-    public function AddMunicipality(MunicipaliteRepository $rep, ValidatorInterface $validator, ManagerRegistry $doc, Request $req, ImageHelper $imageHelper): Response
+    public function AddMunicipality(MunicipaliteRepository $rep, ValidatorInterface $validator, ManagerRegistry $doc, Request $req, ImageHelperUser $imageHelper): Response
     {
         $municipalite = new Municipalite();
         $errorMessages = [];
@@ -223,9 +224,9 @@ class AdminControlllerController extends AbstractController
         return $this->render('admin/sign-in.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
     #[Route('/editProfileAdmin', name: 'editProfileAdmin',methods: ['GET', 'POST'])]
-    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelper $imageHelper,SessionInterface $session): Response
+    public function editUser(UserRepository $rep, ManagerRegistry $doc, Request $req,ValidatorInterface $validator,ImageHelperUser $imageHelper,SessionInterface $session): Response
     {
-        $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
+     /*   $user=$rep->findOneBy([ 'email' =>$this->getUser()->getUserIdentifier()]);
         $errorMessages = [];
         if ($req->isXmlHttpRequest()) {
             $email = $req->get('email');
@@ -302,9 +303,10 @@ class AdminControlllerController extends AbstractController
             'dob'=>$user->getDob(),
             'errors' => $errorMessages,
 
-        ]);
+        ]);*/
 
 
+        return new Response('daaa');
     }
 
 

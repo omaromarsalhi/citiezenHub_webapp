@@ -1,9 +1,9 @@
-{% extends 'admin/index.html.twig' %}
+{% extends 'index.html.twig' %}
 
 
 {% block css %}
 
- <link rel="preconnect" href="https://fonts.googleapis.com/">
+    {# <link rel="preconnect" href="https://fonts.googleapis.com/">
  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap"
        rel="stylesheet">
@@ -11,20 +11,20 @@
 
  <!-- <link rel="stylesheet" href="../../../unicons.iconscout.com/release/v4.0.8/css/line.css">-->
  <link href={{ asset('assetsAdmin/vendors/glightbox/glightbox.min.css') }} rel="stylesheet">
- <link href="{{ asset('assetsAdmin/assets/css/theme-rtl.min.css') }}" type="text/css" rel="stylesheet"
+ <link href="{{ asset('assetsAdmin/css/theme-rtl.min.css') }}" type="text/css" rel="stylesheet"
        id="style-rtl">
- <link href="{{ asset('assetsAdmin/assets/css/theme.min.css') }}" type="text/css" rel="stylesheet"
+ <link href="{{ asset('assetsAdmin/css/theme.min.css') }}" type="text/css" rel="stylesheet"
        id="style-default">
- <link href="{{ asset('assetsAdmin/assets/css/user-rtl.min.css') }}" type="text/css" rel="stylesheet"
+ <link href="{{ asset('assetsAdmin/css/user-rtl.min.css') }}" type="text/css" rel="stylesheet"
        id="user-style-rtl">
- <link href="{{ asset('assetsAdmin/assets/css/user.min.css') }}" type="text/css" rel="stylesheet"
+ <link href="{{ asset('assetsAdmin/css/user.min.css') }}" type="text/css" rel="stylesheet"
        id="user-style-default">
  <link href="{{ asset('assetsAdmin/vendors/leaflet/leaflet.css') }}" rel="stylesheet">
  <link href="{{ asset('assetsAdmin/vendors/leaflet.markercluster/MarkerCluster.css') }}" rel="stylesheet">
  <link href="{{ asset('assetsAdmin/vendors/leaflet.markercluster/MarkerCluster.Default.css') }}"
-       rel="stylesheet">
- <link href="assetsAdmin/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" />
- <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+       rel="stylesheet"> #}
+    <link href="assetsAdmin/vendors/flatpickr/flatpickr.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
 
 {% endblock %}
@@ -32,248 +32,165 @@
 
 {% block body %}
 
- <script>
-  var phoenixIsRTL = window.config.config.phoenixIsRTL;
-  if (phoenixIsRTL) {
-   var linkDefault = document.getElementById('style-default');
-   var userLinkDefault = document.getElementById('user-style-default');
-   linkDefault.setAttribute('disabled', true);
-   userLinkDefault.setAttribute('disabled', true);
-   document.querySelector('html').setAttribute('dir', 'rtl');
-  } else {
-   var linkRTL = document.getElementById('style-rtl');
-   var userLinkRTL = document.getElementById('user-style-rtl');
-   linkRTL.setAttribute('disabled', true);
-   userLinkRTL.setAttribute('disabled', true);
-  }
- </script>
- <main class="main" id="top">
-  <script>
-   var navbarTopShape = window.config.config.phoenixNavbarTopShape;
-   var navbarPosition = window.config.config.phoenixNavbarPosition;
-   var body = document.querySelector('body');
-   var navbarDefault = document.querySelector('#navbarDefault');
-   var navbarTop = document.querySelector('#navbarTop');
-   var topNavSlim = document.querySelector('#topNavSlim');
-   var navbarTopSlim = document.querySelector('#navbarTopSlim');
-   var navbarCombo = document.querySelector('#navbarCombo');
-   var navbarComboSlim = document.querySelector('#navbarComboSlim');
-   var dualNav = document.querySelector('#dualNav');
 
-   var documentElement = document.documentElement;
-   var navbarVertical = document.querySelector('.navbar-vertical');
+        <div class="content">
+            <div>
+                <div class="row g-6">
+                    <div class="col-4 col-xl-4">
+                        <div class="card mb-5">
+                            <div class="card-header hover-actions-trigger position-relative mb-10"
+                                 style="min-height: 130px; ">
+                                <div class="bg-holder rounded-top"
+                                     style="background-image: linear-gradient(0deg, #000000 -3%, rgba(0, 0, 0, 0) 83%)">
+                                    <input class="d-none" id="upload-settings-cover-image" type="file"/><label
+                                            class="cover-image-file-input"
+                                            for="upload-settings-cover-image"></label>
+                                    <div class="hover-actions end-0 bottom-0 pe-1 pb-2 text-white dark__text-gray-1100"><span
+                                                class="fa-solid fa-camera me-2"></span></div>
+                                </div>
+                                <input class="d-none" id="upload-settings-porfile-picture" type="file"/><label
+                                        class="avatar avatar-4xl status-online feed-avatar-profile cursor-pointer"
+                                        for="upload-settings-porfile-picture"><img
+                                            class="rounded-circle img-thumbnail shadow-sm border-0"
+                                            src="../../assets/img/team/20.webp" width="200"
+                                            alt=""/></label>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex flex-wrap mb-2 align-items-center">
+                                            <h3 class="me-2">{{ name }}  {{ lastname }}</h3><span
+                                                    class="fw-normal fs-8"></span>
+                                        </div>
+                                        <div class="d-flex d-xl-block d-xxl-flex align-items-center">
+                                            <div class="d-flex"><span
+                                                        class="fa-solid fa-user-check fs-10 me-2 me-lg-1 me-xl-2"></span>
+                                                <h6 class="d-block d-xl-inline-block mb-0"><span
+                                                            class="fw-semibold ms-1">ADMIN</span></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8 col-xl-8">
+                        <div>
+                            <div class="mb-6">
+                                <h4 class="mb-4">Personal Information</h4>
+                                <div class="row g-3">
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-icon-container">
+                                            <div class="form-floating">
+                                                <input class="form-control form-icon-input" id="firstnamee" type="text"
+                                                       placeholder="First Name" value={{ name }}>
+                                                <label class="text-body-tertiary form-icon-label" for="firstName">FIRST
+                                                    NAME</label></div>
+                                            <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
+                                        </div>
 
-   if (navbarPosition === 'dual-nav') {
-    topNavSlim.remove();
-    navbarTop.remove();
-    navbarVertical.remove();
-    navbarTopSlim.remove();
-    navbarCombo.remove();
-    navbarComboSlim.remove();
-    navbarDefault.remove();
-    dualNav.removeAttribute('style');
-    document.documentElement.setAttribute('data-navigation-type', 'dual');
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-icon-container">
+                                            <div class="form-floating"><input class="form-control form-icon-input"
+                                                                              id="lastnamee" type="text"
+                                                                              placeholder="LAST NAME"
+                                                                              value={{ lastname }}>
+                                                <label class="text-body-tertiary form-icon-label" for="firstName">LAST
+                                                    NAME</label></div>
+                                            <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-icon-container">
+                                        <div class="form-floating"><input class="form-control form-icon-input"
+                                                                          id="emailSocial" type="email"
+                                                                          placeholder="Email" value={{ email }}/>
+                                            <label class="text-body-tertiary form-icon-label" for="emailSocial">ENTER
+                                                YOUR EMAIL</label>
+                                        </div>
+                                        <span class="fa-solid fa-envelope text-body fs-9 form-icon"></span>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-icon-container">
+                                            <div class="form-floating">
+                                                <input class="form-control form-icon-input" id="phoneNumberr" type="tel"
+                                                       placeholder="Phone" value={{ phoneNumber }}>
+                                                <label class="text-body-tertiary form-icon-label" for="phone">PHONE
+                                                    NUMBER</label>
+                                            </div>
+                                            <span class="fa-solid fa-phone text-body fs-9 form-icon"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-icon-container">
+                                            <div class="form-floating">
+                                                <input class="form-control form-icon-input" id="cinn" type="text"
+                                                       placeholder="First Name" value={{ cin }}>
+                                                <label class="text-body-tertiary form-icon-label"
+                                                       for="firstName">CIN</label>
+                                            </div>
+                                            <span class="fa-solid far fa-address-card text-body fs-9 form-icon"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-icon-container">
+                                            <div class="form-floating"><input class="form-control form-icon-input"
+                                                                              id="address" type="text"
+                                                                              placeholder="Last Name"
+                                                                              value={{ address }}>
+                                                <label class="text-body-tertiary form-icon-label"
+                                                       for="lastName">ADDRESS</label>
+                                            </div>
+                                            <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-icon-container">
+                                            <div class="form-floating">
+                                                <input class="form-control form-icon-input" id="agee" type="tel"
+                                                       placeholder="Age" value={{ age }}>
+                                                <label class="text-body-tertiary form-icon-label"
+                                                       for="phone">AGE</label>
+                                            </div>
+                                            <span class="fa-solid fa-user text-body fs-9  form-icon"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                    </div>
+                                    <div class="form-icon-container">
+                                        <div class="mb-3">
 
-   } else if (navbarTopShape === 'slim' && navbarPosition === 'vertical') {
-    navbarDefault.remove();
-    navbarTop.remove();
-    navbarTopSlim.remove();
-    navbarCombo.remove();
-    navbarComboSlim.remove();
-    topNavSlim.style.display = 'block';
-    navbarVertical.style.display = 'inline-block';
-    document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
+                                            <input class="form-control datetimepicker" id="dob" type="date"
+                                                   data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}'/>
+                                            <span class="fa-solid far fa-calendar text-body fs-9 form-icon"></span>
+                                            <div class="invalid-feedback">This field is required</div>
+                                        </div>
+                                        <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-   } else if (navbarTopShape === 'slim' && navbarPosition === 'horizontal') {
-    navbarDefault.remove();
-    navbarVertical.remove();
-    navbarTop.remove();
-    topNavSlim.remove();
-    navbarCombo.remove();
-    navbarComboSlim.remove();
-    navbarTopSlim.removeAttribute('style');
-    document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
-   } else if (navbarTopShape === 'slim' && navbarPosition === 'combo') {
-    navbarDefault.remove();
-    navbarTop.remove();
-    topNavSlim.remove();
-    navbarCombo.remove();
-    navbarTopSlim.remove();
-    navbarComboSlim.removeAttribute('style');
-    navbarVertical.removeAttribute('style');
-    document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
-   } else if (navbarTopShape === 'default' && navbarPosition === 'horizontal') {
-    navbarDefault.remove();
-    topNavSlim.remove();
-    navbarVertical.remove();
-    navbarTopSlim.remove();
-    navbarCombo.remove();
-    navbarComboSlim.remove();
-    navbarTop.removeAttribute('style');
-    document.documentElement.setAttribute('data-navigation-type', 'horizontal');
-   } else if (navbarTopShape === 'default' && navbarPosition === 'combo') {
-    topNavSlim.remove();
-    navbarTop.remove();
-    navbarTopSlim.remove();
-    navbarDefault.remove();
-    navbarComboSlim.remove();
-    navbarCombo.removeAttribute('style');
-    navbarVertical.removeAttribute('style');
-    document.documentElement.setAttribute('data-navigation-type', 'combo');
-
-
-   } else {
-    topNavSlim.remove();
-    navbarTop.remove();
-    navbarTopSlim.remove();
-    navbarCombo.remove();
-    navbarComboSlim.remove();
-    navbarDefault.removeAttribute('style');
-    navbarVertical.removeAttribute('style');
-   }
-
-   var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
-   var navbarTop = document.querySelector('.navbar-top');
-   if (navbarTopStyle === 'darker') {
-    navbarTop.setAttribute('data-navbar-appearance', 'darker');
-   }
-
-   var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
-   var navbarVertical = document.querySelector('.navbar-vertical');
-   if (navbarVerticalStyle === 'darker') {
-    navbarVertical.setAttribute('data-navbar-appearance', 'darker');
-   }
-  </script>
-  <div class="content">
-   <div>
-    <div class="row g-6">
-     <div class="col-12 col-xl-4">
-      <div class="card mb-5">
-       <div class="card-header hover-actions-trigger position-relative mb-10" style="min-height: 130px; ">
-        <div class="bg-holder rounded-top"
-             style="background-image: linear-gradient(0deg, #000000 -3%, rgba(0, 0, 0, 0) 83%)">
-         <input class="d-none" id="upload-settings-cover-image" type="file"/><label class="cover-image-file-input"
-                                                                                    for="upload-settings-cover-image"></label>
-         <div class="hover-actions end-0 bottom-0 pe-1 pb-2 text-white dark__text-gray-1100"><span
-                  class="fa-solid fa-camera me-2"></span></div>
+                        <div class="text-end mb-6">
+                            <div>
+                                <button class="btn btn-phoenix-secondary me-2">Cancel Changes</button>
+                                <button type="submit" id="submit_button" name="submit_button"
+                                        class="btn btn-phoenix-primary" onclick="editProfileAdmin(event)">Save
+                                    Information
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <input class="d-none" id="upload-settings-porfile-picture" type="file"/><label
-                class="avatar avatar-4xl status-online feed-avatar-profile cursor-pointer"
-                for="upload-settings-porfile-picture"><img class="rounded-circle img-thumbnail shadow-sm border-0"
-                                                           src="../../assets/img/team/20.webp" width="200"
-                                                           alt=""/></label>
-       </div>
-       <div class="card-body">
-        <div class="row">
-         <div class="col-12">
-          <div class="d-flex flex-wrap mb-2 align-items-center">
-           <h3 class="me-2">{{name}}  {{lastname}}</h3><span class="fw-normal fs-8"></span>
-          </div>
-          <div class="d-flex d-xl-block d-xxl-flex align-items-center">
-           <div class="d-flex"><span class="fa-solid fa-user-check fs-10 me-2 me-lg-1 me-xl-2"></span>
-            <h6 class="d-block d-xl-inline-block mb-0"><span class="fw-semibold ms-1">ADMIN</span></h6>
-           </div>
-          </div>
-         </div>
-        </div>
-       </div>
-      </div>
-     </div>
-     <div class="col-12 col-xl-8">
-      <div>
-       <div class="mb-6">
-        <h4 class="mb-4">Personal Information</h4>
-        <div class="row g-3">
-         <div class="col-12 col-sm-6">
-          <div class="form-icon-container">
-           <div class="form-floating">
-            <input class="form-control form-icon-input" id="firstnamee" type="text" placeholder="First Name" value={{name}}>
-            <label class="text-body-tertiary form-icon-label" for="firstName">FIRST NAME</label></div>
-           <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
-          </div>
-
-         </div>
-         <div class="col-12 col-sm-6">
-          <div class="form-icon-container">
-           <div class="form-floating"><input class="form-control form-icon-input" id="lastnamee" type="text" placeholder="LAST NAME"  value={{lastname}}>
-            <label class="text-body-tertiary form-icon-label" for="firstName">LAST NAME</label></div>
-           <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
-          </div>
-         </div>
-         <div class="form-icon-container">
-          <div class="form-floating"><input class="form-control form-icon-input" id="emailSocial" type="email" placeholder="Email" value={{email}} />
-           <label class="text-body-tertiary form-icon-label" for="emailSocial">ENTER YOUR EMAIL</label>
-          </div>
-          <span class="fa-solid fa-envelope text-body fs-9 form-icon"></span>
-         </div>
-         <div class="col-12 col-sm-6">
-          <div class="form-icon-container">
-           <div class="form-floating">
-            <input class="form-control form-icon-input" id="phoneNumberr" type="tel" placeholder="Phone" value={{phoneNumber}}>
-            <label class="text-body-tertiary form-icon-label" for="phone">PHONE NUMBER</label>
-           </div>
-           <span class="fa-solid fa-phone text-body fs-9 form-icon"></span>
-          </div>
-         </div>
-         <div class="col-12 col-sm-6">
-          <div class="form-icon-container">
-           <div class="form-floating">
-            <input class="form-control form-icon-input" id="cinn" type="text" placeholder="First Name" value={{cin}}>
-            <label class="text-body-tertiary form-icon-label" for="firstName">CIN</label>
-           </div>
-           <span class="fa-solid far fa-address-card text-body fs-9 form-icon"></span>
-          </div>
-         </div>
-         <div class="col-12 col-sm-6">
-          <div class="form-icon-container">
-           <div class="form-floating"><input class="form-control form-icon-input" id="address" type="text" placeholder="Last Name" value={{address}}>
-            <label class="text-body-tertiary form-icon-label" for="lastName">ADDRESS</label>
-           </div>
-           <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
-          </div>
-         </div>
-         <div class="col-12 col-sm-6">
-          <div class="form-icon-container">
-           <div class="form-floating">
-            <input class="form-control form-icon-input" id="agee" type="tel" placeholder="Age"  value={{age}}>
-            <label class="text-body-tertiary form-icon-label" for="phone">AGE</label>
-           </div>
-           <span class="fa-solid fa-user text-body fs-9  form-icon"></span>
-          </div>
-         </div>
-         <div class="col-12 col-sm-6">
-         </div>
-         <div class="form-icon-container">
-          <div class="mb-3">
-
-           <input class="form-control datetimepicker" id="dob" type="date"  data-options='{"disableMobile":true,"dateFormat":"d/m/Y"}'/>
-           <span class="fa-solid far fa-calendar text-body fs-9 form-icon"></span>
-           <div class="invalid-feedback">This field is required</div>
-          </div>
-          <span class="fa-solid fa-user text-body fs-9 form-icon"></span>
-         </div>
-        </div>
-       </div>
-      </div>
-
-      <div class="text-end mb-6">
-       <div>
-        <button class="btn btn-phoenix-secondary me-2">Cancel Changes</button>
-        <button  type="submit" id="submit_button" name="submit_button" class="btn btn-phoenix-primary" onclick="editProfileAdmin(event)">Save Information</button>
-       </div>
-      </div>
-     </div>
-    </div>
-   </div>
-  </div>
-  </div>
- </main>
+ >
 
 
 {% endblock %}
 
 {% block js %}
- <script src={{ asset('assetsAdmin/vendors/popper/popper.min.js') }}></script>
+    {# <script src={{ asset('assetsAdmin/vendors/popper/popper.min.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/bootstrap/bootstrap.min.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/anchorjs/anchor.min.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/is/is.min.js') }}></script>
@@ -283,15 +200,15 @@
  <script src={{ asset('assetsAdmin/vendors/list.js/list.min.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/feather-icons/feather.min.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/dayjs/dayjs.min.js') }}></script>
- <script src={{ asset('assetsAdmin/assets/js/phoenix.js') }}></script>
+ <script src={{ asset('assetsAdmin/js/phoenix.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/echarts/echarts.min.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/leaflet/leaflet.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/leaflet.markercluster/leaflet.markercluster.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js') }}></script>
- <script src={{ asset('assetsAdmin/assets/js/ecommerce-dashboard.js') }}></script>
+ <script src={{ asset('assetsAdmin/js/ecommerce-dashboard.js') }}></script>
  <script src={{ asset('assetsAdmin/vendors/glightbox/glightbox.min.js') }}></script>
- <script src={{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11') }}></script>
+ <script src={{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11') }}></script> #}
 
- <script src="assets/js/flatpickr.js"></script>
- <script src="{{ asset('js/userScript.js') }}"></script>
+    <script src="assets/js/flatpickr.js"></script>
+    <script src="{{ asset('js/userScript.js') }}"></script>
 {% endblock %}

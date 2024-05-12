@@ -7,7 +7,7 @@ use App\Entity\CommentPost;
 use App\Entity\ImagePsot;
 use App\MyHelpers\UploadImage;
 use App\Repository\CommentPostRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,6 +51,13 @@ class BlogController extends AbstractController
 
             $nbComments = count($post->getComments());
 
+
+            $user = $post->getUser();
+            $userName = $user->getLastName();
+            $userSurname = $user->getFirstName();
+            $userImage = $user->getImage();
+            $userId = $user->getId();
+
             return [
                 'id' => $post->getId(),
                 'caption' => $post->getCaption(),
@@ -59,14 +66,31 @@ class BlogController extends AbstractController
                 'images' => $imagesArray,
                 'url' => $postUrl,
                 'nbComments' => $nbComments,
+                'userName' => $userName,
+                'userSurname' => $userSurname,
+                'userImage' => $userImage,
+                'userId' => $userId,
             ];
         }, $posts);
 
         return new JsonResponse(['posts' => $postsArray]);
     }
 
+    #[Route('/getUserId', name: 'app_get_user_id', methods: ['GET'])]
+    public function getUserId(UserRepository $userRepository): Response
+    {
+        $userEmail = $this->getUser()->getUserIdentifier();
+        $user = $userRepository->findOneBy(['email' => $userEmail]);
+        $userId = null;
+        if ($user) {
+            $userId = $user->getId();
+        }
+
+        return new JsonResponse(['userId' => $userId]);
+    }
+
     #[Route('/blog/count', name: 'app_blog_count', methods: ['GET'])]
-    public function count(PostRepository $postRepository): Response
+    public function count(PostRepository $postRepository, UserRepository $userRepository): Response
     {
         $count = $postRepository->count([]);
         return new JsonResponse(['count' => $count]);
@@ -335,11 +359,13 @@ class BlogController extends AbstractController
     }
 
     #[Route('/newComment', name: 'new_comment', methods: ['POST'])]
-    public function newComment(Request $request,EntityManagerInterface $entityManager): Response
+    public function newComment(Request $request): Response
     {
-        // Récupérer les données du formulaire
-        $caption = $request->get('caption');
-        $postId = $request->get('post_id');
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        $caption = $request->request->get('caption');
+        $postId = $request->request->get('post_id');
 
         // Trouver le post correspondant
         $post = $entityManager->getRepository(Post::class)->find($postId);
@@ -351,11 +377,12 @@ class BlogController extends AbstractController
         }
 
         $comment = new CommentPost();
+        $user = $this->getUser();
 
         $comment->setCaption($caption);
         $comment->setPost($post);
         $comment->setDateComment(new \DateTime());
-        $comment->setUser($this->getUser());
+        $comment->setUser($user);
 
         $entityManager->persist($comment);
         $entityManager->flush();
@@ -434,6 +461,7 @@ class BlogController extends AbstractController
     public function checkImage(Request $request, ImageExpliciteApi $imageExpliciteApi, UploadImage $uploadImage): Response
     {
         $imageFile = $request->files->get('image');
+
         if ($imageFile) {
             $imageUrl = $uploadImage->uploadImageToImgBB($imageFile);
 

@@ -12,7 +12,7 @@
             <div class="lg-left-content">
                 <a href="product-details.html" class="thumbnail">
                     <img
-                            src="../../assets/images/portfolio/portfolio-06.jpg"
+                            src="{{ asset('usersImg/'~reclamation.getImage()) }}"
                             alt="Nft_Portfolio"
                     />
                 </a>
@@ -35,12 +35,13 @@
                             >
                         </div>
                         <!-- all bids End-->
-                        <div class="last-bid">0.244wETH</div>
+                        
                     </div>
                     <a href="product-details.html">
-                        <h6 class="title">New Dod Glitter Worlds</h6>
+                        <h6 class="title">{{ reclamation.subject}}</h6>
                     </a>
-                    <span class="latest-bid">Highest bid 1/20</span>
+                    <h3 class="title">{{reclamation.privateKey}} </h3>
+                    <span class="latest-bid">{{ reclamation.description}}</span>
                     <div class="share-wrapper d-flex">
                         <!-- react area -->
                         <div class="react-area mr--15">
@@ -61,51 +62,7 @@
                         </div>
                         <!-- end -->
                         <!-- share area -->
-                        <div class="share-btn share-btn-activation dropdown">
-                            <button
-                                    class="icon"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                    tabindex="0"
-                            >
-                                <svg
-                                        viewBox="0 0 14 4"
-                                        fill="none"
-                                        width="16"
-                                        height="16"
-                                        class="sc-bdnxRM sc-hKFxyN hOiKLt"
-                                >
-                                    <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
-                                            d="M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM8.5 2C8.5 2.82843 7.82843 3.5 7 3.5C6.17157 3.5 5.5 2.82843 5.5 2C5.5 1.17157 6.17157 0.5 7 0.5C7.82843 0.5 8.5 1.17157 8.5 2ZM11.999 3.5C12.8274 3.5 13.499 2.82843 13.499 2C13.499 1.17157 12.8274 0.5 11.999 0.5C11.1706 0.5 10.499 1.17157 10.499 2C10.499 2.82843 11.1706 3.5 11.999 3.5Z"
-                                            fill="currentColor"
-                                    ></path>
-                                </svg>
-                            </button>
-                            <div
-                                    class="share-btn-setting dropdown-menu dropdown-menu-end"
-                            >
-                                <button
-                                        type="button"
-                                        class="btn-setting-text share-text"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#shareModal"
-                                        tabindex="0"
-                                >
-                                    Share
-                                </button>
-                                <button
-                                        type="button"
-                                        class="btn-setting-text report-text"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#reportModal"
-                                        tabindex="0"
-                                >
-                                    Report
-                                </button>
-                            </div>
-                        </div>
+                        
                         <!-- sharea End -->
                     </div>
                 </div>
@@ -120,6 +77,7 @@
             </button>#}-->
 
             <a
+                    href="{{  path('reclamationsh',{'id':reclamation.id}) }}"
                     id="deleteReclamation{{ index }}"
                     type="button"
                     class="btn btn-primary-alta pdfBtn"

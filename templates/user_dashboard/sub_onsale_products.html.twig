@@ -34,14 +34,14 @@
                     {% endif %}
                 </a>
                 {% if underverif %}
-<!--                        {% if aiResult[i] is defined %}-->
-<!--                            {% if aiResult[i].idProduct == product.idProduct %}-->
+                        {% if aiResult[i] is defined %}
+                            {% if aiResult[i].idProduct == product.idProduct %}
                                 <div class="countdown" data-date="{{ aiResult[i].getTerminationDateDate() }}"
                                      data-time="{{ aiResult[i].getTerminationDateTime() }}"
                                      data-value="{{ product.iDProduct }}:{{ i }}">
                                 </div>
-<!--                            {% endif %}-->
-<!--                        {% endif %}-->
+                            {% endif %}
+                        {% endif %}
                 {% endif %}
                 <div class="rbt-quick-action--btns">
                     {% if underverif %}

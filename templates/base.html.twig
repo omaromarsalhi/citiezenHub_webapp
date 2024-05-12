@@ -94,16 +94,16 @@
                 <div class="logo-thumbnail logo-custom-css">
                     <a class="logo-light" href="{{ path('app_home') }}"
                     ><img src="{{ asset('assets/images/logo/newLogo.png') }}" alt="nft-logo"
-                        /></a>
+                    /></a>
                     <a class="logo-dark" href="{{ path('app_home') }}"
                     ><img src="{{ asset('assets/images/logo/newLogo.png') }}" alt="nft-logo"
-                        /></a>
+                    /></a>
                 </div>
                 <div class="mainmenu-wrapper">
                     <nav id="sideNav" class="mainmenu-nav d-none d-xl-block">
                         <!-- Start Mainmanu Nav -->
                         <ul class="mainmenu">
-                            <li ><a href="{{ path('app_home') }}">Home</a></li>
+                            <li><a href="{{ path('app_home') }}">Home</a></li>
                             <li class="has-droupdown has-menu-child-item">
                                 <a href="#">Transport</a>
                                 <ul class="submenu">
@@ -118,6 +118,11 @@
                                     <li>
                                         <a href="{{ path('show_abonnement') }}"
                                         >Abonnement<i class="fa-solid fa-plus"></i></a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ path('app_addAbonnement') }}"
+                                        >add abonnement<i class="fa-solid fa-plus"></i></a>
                                     </li>
                                 </ul>
                             </li>
@@ -139,7 +144,7 @@
                                     <li>
                                         <a href="{{ path('app_user_dashboard_index') }}"
                                         >Product details<i class="feather-fast-forward"></i
-                                            ></a>
+                                        ></a>
                                     </li>
                                 </ul>
                             </li>
@@ -147,25 +152,39 @@
                                 <a class="down" href="../blog/blog.html">Blog</a>
                                 <ul class="submenu">
                                     <li>
-                                        <a href="../blog/blog-single-col.html"
+                                        <a href="{{ path('app_blog') }}"
                                         >Consult blog<i class="feather-fast-forward"></i
-                                            ></a>
+                                        ></a>
                                     </li>
                                     <li>
                                         <a href="../blog/blog-col-two.html"
                                         >Add blog<i class="feather-fast-forward"></i
-                                            ></a>
+                                        ></a>
                                     </li>
                                 </ul>
                             </li>
-                            <li style="min-width: 100px"><a class="live-expo"  href="{{ path('app_news') }}">News</a></li>
-                            <li><a href="{{  path('app_reclamation') }}">Contact</a></li>
+                            <li style="min-width: 100px"><a class="live-expo" href="{{ path('app_news') }}">News</a>
+                            </li>
+                            <li><a href="{{ path('app_reclamation') }}">Contact</a></li>
                         </ul>
                         <!-- End Mainmanu Nav -->
                     </nav>
                 </div>
             </div>
+
+
+
             <div class="header-right mr-2 ml-2">
+
+
+                {% if app.user == null %}
+                    <div class="setting-option header-btn rbt-site-header" >
+                        <div class="icon-box">
+                            <a id="" class="btn btn-primary-alta btn-small" href="{{ path('app_login') }}">Login</a>
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="setting-option d-none d-lg-block">
                     <form class="search-form-wrapper" action="#">
                         <input
@@ -253,14 +272,15 @@
                         </span>
                     </a>
                 </div>
+                {% if app.user %}
                 <div class="has-menu-child-item" id="header_admin" style="max-width: 100px !important;">
                     <div class="setting-option rn-icon-list user-account">
                         <div class="icon-box">
-                            <a href="author.html"
+                            <a href="{{ path('app_user_dashboard_index') }}"
                             ><img
-                                        src="{{ asset('assets/images/icons/boy-avater.png') }}"
-                                        alt="Images"
-                                /></a>
+                                    src="{{ asset('usersImg/'~app.user.getImage()) }}"
+                                    alt="Images"
+                            /></a>
                             <div class="rn-dropdown" style="max-width: 100px !important;">
                                 <ul class="list-inner">
                                     <li><a href="{{ path('app_user_dashboard_index') }}">My Profile</a></li>
@@ -273,6 +293,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

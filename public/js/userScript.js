@@ -134,7 +134,7 @@ function editProfile(event) {
     let name = $('#firstnamee').val();
     let lastname = $('#lastnamee').val();
     let email = $('#email').val();
-    let role = $('#role').val();
+
     let age = $('#agee').val();
     let gender = $('#gender').val();
     let status = $('#status').val();
@@ -145,7 +145,6 @@ function editProfile(event) {
     formData.append('name', name);
     formData.append('lastname', lastname);
     formData.append('email', email);
-    formData.append('role', role);
     formData.append('age', age);
     formData.append('gender', gender);
     formData.append('status', status);

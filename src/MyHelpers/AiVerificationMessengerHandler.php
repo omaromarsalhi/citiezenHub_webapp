@@ -37,15 +37,15 @@ class AiVerificationMessengerHandler
 
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
         $serializedData = $serializer->serialize($aiDataHolder, 'json');
+        $aiResult = new AiResult();
 
         if ($obj['mode'] === 'edit') {
             $aiResultController->edit($serializedData,$obj['id'],$this->entityManager,$this->aiResultRepository);
         } else {
-            $aiResult = new AiResult();
+            var_dump($obj);
             $aiResult->setBody($serializedData);
             $aiResult->setIdProduct($obj['id']);
             $aiResult->setTerminationDate();
-
             $aiResultController->new($aiResult, $this->entityManager);
         }
 

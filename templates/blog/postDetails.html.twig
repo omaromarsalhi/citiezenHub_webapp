@@ -222,11 +222,6 @@
                                 scrollTop: 950
                             }, 300);
                             document.querySelector('#contact-message textarea').value = '';
-                            Swal.fire(
-                                'Ajouté!',
-                                'Votre commentaire a été ajouté.',
-                                'success'
-                            )
                         }
                     } else {
                         console.error('Une erreur est survenue lors de l\'ajout du commentaire.');
@@ -335,16 +330,7 @@
         }
 
         function deleteComment(id) {
-            Swal.fire({
-                title: 'Êtes-vous sûr?',
-                text: "Vous ne pourrez pas revenir en arrière!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Oui, supprimez-le!'
-            }).then((result) => {
-                if (result.isConfirmed) {
+
                     $.ajax({
                         url: '/deleteComment/' + id,
                         type: 'DELETE',
@@ -364,8 +350,6 @@
                             console.error(error);
                         }
                     });
-                }
-            });
         }
 
 

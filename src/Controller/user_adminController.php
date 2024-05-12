@@ -44,6 +44,7 @@ class user_adminController extends AbstractController
                 'name' => $municipalite->getName(),
                 'address' => $municipalite->getAddress(),
                 'size' => count($repUser->findBy(['municipalite' => $municipalite->getId()])),
+                'user'=> $repUser->findBy(['municipalite' => $municipalite->getId()]),
             ];
         }
 

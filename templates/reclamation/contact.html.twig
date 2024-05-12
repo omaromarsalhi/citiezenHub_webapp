@@ -168,12 +168,19 @@
                         data-sal-delay="150"
                         data-sal-duration="800"
                 >
-                    <div class="connect-thumbnail">
-                        <div class="left-image">
-                            <img
-                                    src="../../assets/images/contact/contact1.png"
-                                    alt="Nft_Profile"
-                            />
+                    <div class="upload-area">
+                        <div class="upload-formate mb--30">
+                            <h6 class="title">Upload file</h6>
+                            <p class="formate">Drag or choose your file to upload</p>
+                        </div>
+                        <div class="brows-file-wrapper">
+                            <input type="file" name="" id="reclamation_imageFile_file" required="required" accept="image/*" class="inputfile"/>
+                            <img id="createfileImage" src="{{ asset('assets/images/portfolio/portfolio-0+4.jpg') }}" alt data-black-overlay="6">
+                            <label for="reclamation_imageFile_file" title="No File Choosen">
+                                <i class="feather-upload"></i>
+                                <span class="text-center">Choose a File</span>
+                                <p class="text-center mt--9">PNG, GIF, WEBP, MP4 or MP3. Max 1Gb.</p>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -199,13 +206,14 @@
                             </div>
                             <div class="mb-5">
                                 <label for="contact-message" class="form-label"
-                                >Write Message</label
+                                >Descriptione</label
                                 >
                                 <textarea
                                         name="contact-message"
                                         id="contact-message"
                                         rows="3"
                                 ></textarea>
+                                <button id="startRecording" type="button" class="btn btn-secondary">🎤 Record</button>
                             </div>
                             <div class="mb-5 rn-check-box">
                                 <input
@@ -216,7 +224,9 @@
                                 <label for="condition" class="rn-check-box-label"
                                 >Allow to all tearms & condition</label
                                 >
+                                <input type="hidden" name="private-key" id="private-key" value="{{ privateKey }}">
                             </div>
+
                             <button name="submit" type="submit" class="btn btn-primary" onclick="addReclamation()">
                                 Send Message
                             </button>
@@ -248,7 +258,20 @@
         </div>
     </div>
 
+<script>
+    const input = document.getElementById('reclamation_imageFile_file');
+    const img = document.getElementById('createfileImage');
 
+    input.addEventListener('change', function() {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                img.setAttribute('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+</script>
 
 
 {% endblock %}
