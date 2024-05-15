@@ -29,9 +29,11 @@
   <a href="#related">Related</a> •
   <a href="#license">License</a>
 </p>
-![hippo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWtwYW5tYmNhcGJkZDdtOGh6dTRzeXJrcXB4dXYwNTBpYmtvNGpoYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Z9bpdKzb0HpJHGLKox/giphy.gif)
 
 ## reclmation Interface
+![aaaa](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/32b0114c-8657-43d1-b031-f8d3281e42e5)
+![aaaa](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/3a801300-4d2b-4de6-942e-2d51819023ce)
+
 
 ![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/e9ec0193-d2d9-447a-b182-6617f7cae893)
 
