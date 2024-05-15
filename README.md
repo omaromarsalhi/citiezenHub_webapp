@@ -30,7 +30,7 @@
   <a href="#license">License</a>
 </p>
 
-## reclmation Interface
+## our web site 
 ![aaaa](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/32b0114c-8657-43d1-b031-f8d3281e42e5)
 
 
@@ -42,43 +42,8 @@
 ![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/e16014b2-0382-4a21-b856-54835d2fa5ee)
 
 
-
-## show all reclmation Reclamation avec filtre et changement d'etat 
-
-
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/5343372c-6a9d-443e-b5b5-34a5724e68fb)
-
-
-
-
-## Show Reclamation details 
-
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/f612f5b7-af64-4b40-84c5-4485462d5812)
-
-
-## show reclamtion for admin 
-
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/be3eb556-8652-42f5-be07-36c0335bb98a)
-
-
-
-## ajouter Reponse 
-
-
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/06555327-c39d-496d-aa74-d26a7e6f9f36)
-
-
-
-
-
-##  staistique for admin with prediction 
-
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/5a64bd89-417d-49cf-acc7-d7c5d496aa92)
-
-
-
 ## Key Features
-
+*  JavaFx application
 *  Symfony
 *  smart city
 *  Reclamation
@@ -90,7 +55,8 @@
 
 To clone and run this application, you'll need  From your command line:
 
-```bash
+```
+bash
 # Clone this repository
 
 $ git clone https://github.com/omaromarsalhi/citiezenHub_webapp.git
@@ -121,9 +87,16 @@ This software uses the following open source packages:
 - speach to text [speach to text]([http://codemirror.net/](https://cloud.google.com/speech-to-text/?hl=en))
 - text to speech [speach to text]([http://codemirror.net/](https://cloud.google.com/speech-to-text/?hl=en))
 - Emojis are taken from [here](https://github.com/arvida/emoji-cheat-sheet.com)
+- Google vision[Google vision]([http://electron.atom.io/](https://console.cloud.google.com/apis/library/vision.googleapis.com?project=citizenhub-416011))
+- java fx [java fx]([https://nodejs.org/](https://openjfx.io))
+- openai [openai]([https://github.com/chjj/marked](https://platform.openai.com/docs/overview))
+- google map [google map]([http://showdownjs.github.io/showdown/](https://console.cloud.google.com/apis/library/maps-backend.googleapis.com?hl=en&project=citizenhub-416011))
+- Emojis are taken from [here](https://github.com/arvida/emoji-cheat-sheet.com)
 
+  
 ## Related
 web application
+java application
 ## Support
 
 <a href="https://www.buymeacoffee.com/5Zn8Xh3l9" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
