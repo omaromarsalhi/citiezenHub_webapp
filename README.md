@@ -34,14 +34,6 @@
 ![aaaa](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/32b0114c-8657-43d1-b031-f8d3281e42e5)
 
 
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/e9ec0193-d2d9-447a-b182-6617f7cae893)
-
-
- ## chatbot interface 
-
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/e16014b2-0382-4a21-b856-54835d2fa5ee)
-
-
 ## Key Features
 *  JavaFx application
 *  Symfony
@@ -71,10 +63,6 @@ $ git clone https://github.com/omaromarsalhi/citiezenHub_webapp.git
 
 > **Note**
 Need google Cloud account 
-
-## Emailware
-
-![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/b1e0d425-7760-418a-be38-4b44a489268b)
 
 ## Credits
 
