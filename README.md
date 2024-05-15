@@ -29,6 +29,7 @@
   <a href="#related">Related</a> •
   <a href="#license">License</a>
 </p>
+![ezgif com-animated-gif-maker](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/4855a382-7d2b-498f-90c1-632ec8aeab7d)
 
 ## reclmation Interface
 
