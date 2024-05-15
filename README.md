@@ -32,7 +32,6 @@
 
 ## reclmation Interface
 ![aaaa](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/32b0114c-8657-43d1-b031-f8d3281e42e5)
-![aaaa](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/3a801300-4d2b-4de6-942e-2d51819023ce)
 
 
 ![image](https://github.com/omaromarsalhi/citiezenHub_webapp/assets/100521806/e9ec0193-d2d9-447a-b182-6617f7cae893)
